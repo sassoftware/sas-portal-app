@@ -27,6 +27,8 @@ This architecture was chosen for the following reasons:
 
 - git clone this repo onto your SAS environment
 
+### SAS Stored Processes
+
 - As a SAS Administrator, import the packages/sas-portal-app-services.spk file either through SAS Management Console or through the CLI.
   - By default, the package will be installed into /System/Applications/SAS Portal App
   - When importing:
@@ -39,25 +41,32 @@ This architecture was chosen for the following reasons:
 where you will replace ''this repo directory'' with the directory that you did the git clone to create.
 - **NOTE:** If your stored process server instances are already running, you will need to restart them to pick up the appserver_autoexec_usermods.sas updates.
 
-- Set up your web server
+### Web Application
 
 **NOTE:** There is currently an assumption built into the references to SASStoredProcess web application in this application that it can be reached via the same root url (ie. host:port) as this application is deployed to.
 
-  - Deploy Application
-  Getting the application on to your web server can be done in multiple ways, depending on your configuration.
-    - Copy Files
-    This path should be chosen when the git repo directory is on another machine then your web server or your web server has disabled FollowSymLinks.
-      - under the htdocs directory of your web server, create a new directory, ex. SASPortalApp
-      - copy the contents of the web directory of the git repo into this directory
+  #### Deploy Application
+
+Getting the application on to your web server can be done in multiple ways, depending on your configuration.  Choose **one** of the following approaches: Copy Files or Symlink.
+
+##### Copy Files
+
+This path should be chosen when the git repo directory is on another machine then your web server or your web server has disabled FollowSymLinks.
+
+  - under the htdocs directory of your web server, create a new directory, ex. SASPortalApp
+  - copy the contents of the web directory of the git repo into this directory
   <pre>cp -r this repo directory/web/* SASPortalApp</pre>
-    - Symlink to git repo web directory
-    If you have cloned the repo into a directory accessable to your web server, and it is configured to follow Symlinks, then this option may work for you.
-      - cd htdocs
-      - ln -s <git repo web directory> SASPortalApp
-  - Verify the path to the Portal application and services
-    - If you have chosen to import the package into a different location than the default of /System/Applications/SAS Portal App, then you will need to modify the paths used in index.html to reference the Stored Processes.  
-      - Modify the sasjs configuration appLoc entry to match where they were installed
-      - Modify the /SASStoredProcess references to change the location in the referenced _program parameter
+##### (or) Symlink to git repo web directory
+
+If you have cloned the repo into a directory accessable to your web server, and it is configured to follow Symlinks, then this option may work for you.
+- cd htdocs
+- ln -s <git repo web directory> SASPortalApp
+
+##### Verify the path to the Portal application and services
+
+If you have chosen to import the package into a different location than the default of _/System/Applications/SAS Portal App_, then you will need to modify the paths used in index.html to reference the Stored Processes.  
+  - Modify the sasjs configuration appLoc entry to match where they were installed
+  - Modify the /SASStoredProcess references to change the location in the referenced _program parameter
 
 ## Usage
 
