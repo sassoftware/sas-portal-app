@@ -5,9 +5,12 @@ SAS Portal App
 ## Description
 The purpose of this project is to provide a partial replacement for SAS Information Delivery Portal, that was deprecated as of SAS 9.4M8.  
 
-It is not intended to be a full replacement, but will focus on those items that are most widely used and does not require java server side rendering of content.
+It is not intended to be a full replacement, but will focus on:
 
-This is very much a work in progress... See the list of issues and current limitations
+- rendering pages similar to the layout that was previously supported
+- most widely used portlets and capabilities that do not require java server side rendering of content.
+
+This is very much a work in progress... See the [Roadmap](#roadmap) section for more details.
 
 ## Overview
 
