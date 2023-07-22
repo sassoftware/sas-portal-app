@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <script src="sasjs.js"></script>
+    <script src="custom-sasjs-scripts.js?v=2"></script>
+
+    <link rel="stylesheet" href="/SASTheme_default/themes/default/styles/sasComponents_FF_5.css"/>
+    <link rel="stylesheet" href="/SASTheme_default/themes/default/styles/sasStyle.css"/>
+
+    <style>
+	button.BannerTabButtonCenter {
+	border-radius: 5px 5px 0px 0px;
+	background-color: transparent;
+	color: white
+	border: none
+	}
+
+	button.BannerTabButtonActive{
+	border-radius: 5px 5px 0px 0px;
+	border: none
+	}
+
+	.tabcontent {
+	  display: none;
+	  padding: 10px 20px;
+	}
+
+	.tabcontent.active {
+	  display: block;
+	}
+
+    </style>
+    <script>
+
+	function showTab(evt, tabName) {
+	    // Declare all variables
+	    var i, tabcontent, tablinks;
+
+	    // Get all elements with class="tabcontent" and hide them
+	    tabcontent = document.getElementsByClassName("tabcontent");
+	    for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].className = tabcontent[i].className.replace(" active", "");
+	    }
+            // Get all elements representing portal tabs and unselect them
+            // NOTE: I tried to optimize this to only change info on the one that had the selected class
+            //       but because the collection is dynamic, as soon as I modified the class value that
+            //       was used for searching, the length of the collection changed.
+
+            tablinks = document.getElementsByClassName("tab-button");
+
+            numActiveTabs=tablinks.length;
+
+	    for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace("BannerTabButtonActive", "BannerTabButtonCenter");
+
+	    }
+
+	    // Show the current tab, and add an "active" class to the button that opened the tab
+
+	    document.getElementById(tabName).className += " active";
+
+            // Change the class settings on the selected object to change the styles applied 
+            tabButton=evt.currentTarget;
+
+            tabButton.className = tabButton.className.replace("BannerTabButtonCenter", "BannerTabButtonActive");
+
+	}
+
+	function includeHTML() {
+	  var z, i, elmnt, file, xhttp;
+	  /* Loop through a collection of all HTML elements: */
+	  z = document.getElementsByTagName("*");
+	  for (i = 0; i < z.length; i++) {
+	    elmnt = z[i];
+	    /*search for elements with a certain atrribute:*/
+	    file = elmnt.getAttribute("w3-include-html");
+	    if (file) {
+	      /* Make an HTTP request using the attribute value as the file name: */
+	      xhttp = new XMLHttpRequest();
+	      xhttp.onreadystatechange = function() {
+		if (this.readyState == 4) {
+		  if (this.status == 200) {elmnt.innerHTML = this.responseText;}
+		  if (this.status == 404) {elmnt.innerHTML = "Page not found.";}
+		  /* Remove the attribute, and call this function once more: */
+		  elmnt.removeAttribute("w3-include-html");
+		  includeHTML();
+		}
+	      }
+	      xhttp.open("GET", file, true);
+	      xhttp.send();
+	      /* Exit the function: */
+	      return;
+	    }
+	  }
+	}
+
+    </script>
+  </head>
+
+  <body>
+
+    <!--
+      ## SASJS Adapter config details ##
+
+      * appLoc: The location in metadata or SAS drive where App/services will be deployed
+      * serverType: either SAS9, SASVIYA or SASJS
+      * serverUrl: Url of the server where services are deployed. Can leave blank if frontend and backend is running on same server
+      * loginMechanism: Use 'Default' for regular (user/pass) logins, or 'Redirected' for 2FA/SSO
+      * debug: Whether to enable debug on startup
+
+      ## Viya only settings ##
+      * useComputeApi: either true or false
+      * contextName: Compute Context
+
+    -->
+    <sasjs
+      appLoc="/System/Applications/SAS Portal App"
+      serverType="SAS9"
+      loginMechanism="Redirected"
+      debug="false"
+    ></sasjs>
+
+<!-- Don't display anything on the page until we are logged in, this data-container will be hidden until that happens -->
+
+<div id="data-container" style="display: none"></div>
+ 
+<table width="100%" cellpadding="0" cellspacing="0">
+<tbody>
+  <tr>
+    <td valign="top">
+    <a href="#skipBanner" title="Skip banner" tabindex="1"></a>
+    <!-- Banner -->
+    <div id="banner" style="background-image:url(/SASTheme_default/themes/default/images/BannerBackground.gif)" class="banner_container">
+		<div class="banner_utilitybar_overlay">&nbsp;</div>
+		<table class="banner_utilitybar" cellpadding="0" cellspacing="0" width="100%">
+		<tbody>
+			<tr valign="top">
+			<td class="banner_utilitybar_navigation" width="40%" align="left">
+				&nbsp;   </td>
+			<td class="banner_userrole" nowrap="" align="center" width="20%"> </td>
+			<td width="40%" align="right" valign="top">
+				<a href="#globalMenuBar_skipMenuBar" title="Skip Menu Bar"></a>
+	
+			<span class="SimpleMenuBar SimpleMenuBar_Banner_GlobalMenu_Look" id="globalMenuBar">
+				<table cellpadding="4" cellspacing="1">
+				<tbody>
+				<tr>
+					<td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
+						<img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" src="/SASTheme_default/themes/default/images/spacer.gif" alt="">
+						<a id="globalMenuBar_0_anchor" href="#" title="Select to display the menu for portal customization.">
+						<!--  Comment out Customize toolbar for now
+                                                <span>Customize</span>
+						<img class="SimpleMenuBarSubMenuIndicator SimpleMenuBarSubMenuIndicator_Banner_GlobalMenu_Look" src="/SASTheme_default/themes/default/images/MenuDownArrowBanner.gif" alt=""></a>
+                                                -->
+                                                <!-- placeholder span, remove if customize uncommented -->
+                                                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+						<img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" src="/SASTheme_default/themes/default/images/spacer.gif" alt="">
+					</td>
+					<td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
+						<img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" src="/SASTheme_default/themes/default/images/spacer.gif" alt="">
+						<span class="SimpleMenuBarSeparator SimpleMenuBarSeparator_Banner_GlobalMenu_Look">|</span>
+						<img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" src="/SASTheme_default/themes/default/images/spacer.gif" alt="">
+					</td>
+					<td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
+						<img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" src="/SASTheme_default/themes/default/images/spacer.gif" alt="">
+                                                <!-- Comment out Options toolbar 
+						<a id="globalMenuBar_2_anchor" href="#" title="Select to display the options menu.">
+						<span>Options</span>
+						<img class="SimpleMenuBarSubMenuIndicator SimpleMenuBarSubMenuIndicator_Banner_GlobalMenu_Look" src="/SASTheme_default/themes/default/images/MenuDownArrowBanner.gif" alt=""></a>
+
+                                                -->
+                                                <!-- placeholder span, remove if Options uncommened -->
+                                                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+						<img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" src="/SASTheme_default/themes/default/images/spacer.gif" alt="">
+					</td>
+					<td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
+						<img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" src="/SASTheme_default/themes/default/images/spacer.gif" alt="">
+						<span class="SimpleMenuBarSeparator SimpleMenuBarSeparator_Banner_GlobalMenu_Look">|</span>
+						<img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" src="/SASTheme_default/themes/default/images/spacer.gif" alt="">
+					</td>
+					<td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
+						<img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" src="/SASTheme_default/themes/default/images/spacer.gif" alt="">
+                                                <!-- Comment out search menu
+						<a id="globalMenuBar_4_anchor" href="#" title="Select to go to the portal search page.">
+						<span>Search</span></a>
+                                                -->
+                                                <!-- span placeholder, remove if Search uncommented -->
+                                                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+						<img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" src="/SASTheme_default/themes/default/images/spacer.gif" alt="">
+					</td>
+					<td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
+						<img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" src="/SASTheme_default/themes/default/images/spacer.gif" alt="">
+						<span class="SimpleMenuBarSeparator SimpleMenuBarSeparator_Banner_GlobalMenu_Look">|</span>
+						<img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" src="/SASTheme_default/themes/default/images/spacer.gif" alt="">
+					</td>
+					<td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
+						<img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" src="/SASTheme_default/themes/default/images/spacer.gif" alt="">
+                                                <!--  Comment out log off menu item
+						<a id="globalMenuBar_6_anchor" href="#" title="Log Off SAS Demo User">
+						<span>Log Off SAS Demo User</span></a>
+                                                -->
+
+                                                <!-- span placeholder, remove if Log Off menu uncommented -->
+                                                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+						<img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" src="/SASTheme_default/themes/default/images/spacer.gif" alt="">
+					</td>
+					<td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
+						<img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" src="/SASTheme_default/themes/default/images/spacer.gif" alt="">
+						<span class="SimpleMenuBarSeparator SimpleMenuBarSeparator_Banner_GlobalMenu_Look">|</span>
+						<img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" src="/SASTheme_default/themes/default/images/spacer.gif" alt="">
+					</td>
+					<td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
+						<img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" src="/SASTheme_default/themes/default/images/spacer.gif" alt="">
+                                                <!-- Comment out help menu item 
+						<a id="globalMenuBar_8_anchor" href="#" title="Select to display the help menu.">
+						<span>Help</span>
+						<img class="SimpleMenuBarSubMenuIndicator SimpleMenuBarSubMenuIndicator_Banner_GlobalMenu_Look" src="/SASTheme_default/themes/default/images/MenuDownArrowBanner.gif" alt="">
+                                                -->
+                                                <!-- span placeholder, remove if Help menu item uncommented -->
+                                                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+						</a>
+						<img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" src="/SASTheme_default/themes/default/images/spacer.gif" alt="">
+					</td>
+							</tr>
+							</tbody>
+					</table>
+			</span>
+			</td>
+			</tr>
+		</tbody>
+		</table>
+		<table cellpadding="0" cellspacing="0" width="100%">
+			<tbody>
+						<tr>
+			<td nowrap="" id="bantitle" class="banner_title">SAS<sup style="font-size: smaller;">®</sup> Portal</td>
+			<td id="banbullet" class="banner_bullet"></td>
+			<td nowrap="" id="bantitle2" class="banner_secondaryTitle"></td>
+			<td align="right" id="banlogo" class="banner_logo" width="100%"><img src="/SASTheme_default/themes/default/images/logo.gif" width="62" height="24" border="0" alt=""></td>
+			<td class="banner_logoPadding">&nbsp;</td>
+			</tr>
+			</tbody>
+			</table>
+		<a name="skipBanner"></a>
+		<!-- Page Menus -->
+		<a href="pageTabs_skipTabMenu" title="Skip Tab Menu"></a> 
+                <div id="tabs" w3-include-html="/SASStoredProcess/do?_action=form,properties,execute,nobanner,newwindow&_program=%2fSystem%2fApplications%2fSAS+Portal+App%2fservices%2fgetTabs"></div>
+
+                </div>
+
+		<a name="pageTabs_skipTabMenu"></a>
+		<table class="secondaryMenuTable" width="100%" cellspacing="0" cellpadding="0">
+			<tbody><tr>
+				<td class="secondaryMenuRow" align="left" height="5"></td>
+			</tr>
+		</tbody></table>
+
+    </div>
+    </td>
+</tr>
+</tbody>
+</table>
+<div id="pages" w3-include-html="/SASStoredProcess/do?_action=form,properties,execute,nobanner,newwindow&_program=%2FSystem%2FApplications%2F/SAS+Portal+App%2fservices%2fgetTabContent"></div>
+
+</div>
+
+<div id="debugArea"></div>
+
+  </div>
+
+  </body>
+</html>
+
