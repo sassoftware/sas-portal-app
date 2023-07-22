@@ -76,6 +76,86 @@ The intent for this application is to provide a level of functionality that was 
 
 Here is the list of functionality included in the SAS Information Delivery Portal.  Any input on what functionality needs to be supported is welcome.  This table will be updated as the plans and functionality requirements solidify.
 
+Tools
+
+| Activity | Support |
+| ------ | ------ |
+|  Manage Subscriber Profiles      |  no      |
+|   Manage Subscriptions     |    no   |
+|   Manage Page History      |    no   |
+
+Create New Content
+
+| Content Type | Support |
+| ------ | ------ |
+|  Application      |  tbd      |
+|   Link     |    tbd   |
+|   Syndication Channel      |    no   |
+|   Portlet                  |    tbd  |
+|   Page                     |    tbd  |
+
+Preferences
+
+| Category | Setting | Support |
+| ------ | ------ | ------ |
+|  General | User Theme      |  tbd      |
+|  General | Email Notifications | no    |
+|  General | Alert Notifications | no    |
+|  Regional | User Locale        | tbd   |
+|  Regional | Timezone           | tbd   |
+|  Format   | Date Formats (Date/Time) | tbd |
+|  Format   | Date Formats (Long Date) | tbd |
+|  Format   | Date Formats (Short Date) | tbd |
+|  Format   | Date Formats (Time) | tbd |
+|  Format   | Currency (Negative Values) | tbd |
+|  Format   | Currency (Currency Symbol) | tbd |
+|  Portal   | Preferred Navigation | tbd |
+|  Portal   | Package Sort Order | no |
+
+Search
+
+| Category | Setting | Support |
+| ------ | ------ | ------ |
+| By Keyword | | no |
+| By Content Type | Application | no |
+| By Content Type | File | no |
+| By Content Type | Link | no |
+| By Content Type | Package | no |
+| By Content Type | Page | no |
+| By Content Type | PageTemplate | no |
+| By Content Type | Portlet | no |
+| By Content Type | Publication Channel | no |
+| By Content Type | SAS Information Map | no |
+| By Content Type | SAS Report | no |
+| By Content Type | SAS Stored Process | no |
+| By Content Type | Syndication Channel | no |
+| Search Results | Results Per Page | no |
+
+Capabilities
+
+| Category | Type | View | Add | Remove | Edit Properties | Edit Content |
+| ------ | ------ | ------ | ------ | ------ | ------ | ------ |
+| Portal Page | All | yes | tbd | tbd | tbd | na |
+| Portlet | Collection | yes | tbd | tbd | tbd | tbd |
+| Portlet | Report Portlet | tbd | tbd | tbd | tbd | tbd |
+| Portlet | Report Portlet Local | no | no | no | no | no |
+| Portlet | SAS BI Dashboard | no | no | no | no | no |
+| Portlet | SAS Collections | no | no | no | no | no |
+| Portlet | SAS Diagnostics | no | no | no | no | no |
+| Portlet | SAS Navigator | tbd | no | no | no | no |
+| Portlet | SAS Report | tbd | tbd | no | no | no |
+| Portlet | SAS Stored Process | tbd | tbd | no | no | no |
+| Portlet | Shared Alerts | no | no | no | no | no |
+| Portlet | URL Display Portlet | yes | tbd | no | no | no |
+| Portlet | WebDav Content | no | no | no | no | no |
+| Portlet | WebDav Graph | no | no | no | no | no |
+| Portlet | WebDav Navigator | no | no | no | no | no |
+
+
+
+
+
+
 ## Contributing
 
 The intent is that this project will be maintained by SAS, but that contributions will be submitted from the community.
