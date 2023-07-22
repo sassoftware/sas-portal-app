@@ -61,7 +61,7 @@ In your web browser, go to the URL that matches where you installed the applicat
 
 If you are not already logged in to your SAS Environment, you should be redirected to a logon prompt and/or your single signon should execute to log you in.
 
-**NOTE:** While most issues need to be discovered by looking at the issues for the repo, there is currently one that is glaring that is mentioned here.  When first displaying the page, none of the tab content is being intinitially displayed!  In the short term until this issue is resolved, please just manually select a tab.
+**NOTE:** While most issues need to be discovered by looking at the issues for the repo, [there is currently one that is glaring that is mentioned here.](https://gitlab.sas.com/sascxr/sas-portal-app/-/issues/1)  When first displaying the page, none of the tab content is being intinitially displayed!  In the short term until this issue is resolved, please just manually select a tab.
 
 ## Support
 
