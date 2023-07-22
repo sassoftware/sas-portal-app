@@ -39,6 +39,9 @@ This architecture was chosen for the following reasons:
 where you will replace ''this repo directory'' with the directory that you did the git clone to create.
 
 - Set up your web server
+
+**NOTE:** There is currently an assumption built into the references to SASStoredProcess web application in this application that it can be reached via the same root url (ie. host:port) as this application is deployed to.
+
   - Deploy Application
   Getting the application on to your web server can be done in multiple ways, depending on your configuration.
     - Copy Files
