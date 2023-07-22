@@ -76,6 +76,19 @@ The intent for this application is to provide a level of functionality that was 
 
 Here is the list of functionality included in the SAS Information Delivery Portal.  Any input on what functionality needs to be supported is welcome.  This table will be updated as the plans and functionality requirements solidify.
 
+### Legend
+
+The following legend is used for each of the tables below.
+
+| Value | Definition |
+| ------ | ------ |
+|  available | support for this is already available |
+|    yes    | this is planning on being supported       |
+|  tbd      | this is being considered for support       |
+|  no       | no support for this item is currently planned |
+|  N/A      | this column is not application to this row |
+
+
 ### Toolbar Support
 
 The existing SAS Information Delivery Portal has the following capabilities in the toolbar. 
@@ -141,7 +154,7 @@ The SAS Information Delivery Portal currently supports these categories of objec
 
 | Category | Type | View | Add | Remove | Edit Properties | Edit Content |
 | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
-| Portal Page | All | yes | tbd | tbd | tbd | na |
+| Portal Page | All | yes | tbd | tbd | tbd | N/A |
 | Portlet | Collection | yes | tbd | tbd | tbd | tbd |
 | Portlet | Report Portlet | tbd | tbd | tbd | tbd | tbd |
 | Portlet | Report Portlet Local | no | no | no | no | no |
