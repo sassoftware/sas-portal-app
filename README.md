@@ -37,6 +37,7 @@ This architecture was chosen for the following reasons:
 - Modify the appserver_autoexec_usermods.sas file of the SAS Application Server context selected on import to add the following line:
 <pre>%let portalAppDir=this repo directory;</pre>
 where you will replace ''this repo directory'' with the directory that you did the git clone to create.
+- **NOTE:** If your stored process server instances are already running, you will need to restart them to pick up the appserver_autoexec_usermods.sas updates.
 
 - Set up your web server
 
