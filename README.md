@@ -171,8 +171,24 @@ The SAS Information Delivery Portal currently supports these categories of objec
 | Portlet | WebDav Navigator | no | no | no | no | no |
 
 
+### Layouts
 
+SAS Information Delivery Portal currently supports these layouts.
 
+| Layout Mode | # of Columns | Width | View | Edit |
+| ------ | ------ | ------ | ------ | ------ | 
+| By Column       |  1    | 100% | yes | tbd |
+| By Column       |  1    | Custom | yes | tbd |
+| By Column       |  2    | 100% | yes | tbd |
+| By Column       |  2    | Custom | yes | tbd |
+| By Column       |  3    | 100% | yes | tbd |
+| By Column       |  3    | Custom | yes | tbd |
+| By Grid       |  1    | 100% | yes | tbd |
+| By Grid       |  1    | Custom | yes | tbd |
+| By Grid       |  2    | 100% | yes | tbd |
+| By Grid       |  2    | Custom | yes | tbd |
+| By Grid       |  3    | 100% | yes | tbd |
+| By Grid       |  3    | Custom | yes | tbd |
 
 
 ## Contributing
