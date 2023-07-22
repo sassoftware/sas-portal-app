@@ -35,8 +35,8 @@ This architecture was chosen for the following reasons:
         - It may be desirable to create a new SAS Application Server Context for running this application, this will allow you to control access, scale and configuration separate from other uses.
     - Map the Source Directory to the sas directory in this repo.
 - Modify the appserver_autoexec_usermods.sas file of the SAS Application Server context selected on import to add the following line:
-<code>%let portalAppDir=<this repo directory>;</code>
-where you will replace <this repo directory> with the directory that you did the git clone to create.
+<pre>%let portalAppDir=this repo directory;</pre>
+where you will replace ''this repo directory'' with the directory that you did the git clone to create.
 
 - Set up your web server
   - Deploy Application
@@ -45,7 +45,7 @@ where you will replace <this repo directory> with the directory that you did the
     This path should be chosen when the git repo directory is on another machine then your web server or your web server has disabled FollowSymLinks.
       - under the htdocs directory of your web server, create a new directory, ex. SASPortalApp
       - copy the contents of the web directory of the git repo into this directory
-  <code>cp -r <git repo dir>/web/* SASPortalApp</code>
+  <pre>cp -r this repo directory/web/* SASPortalApp</pre>
     - Symlink to git repo web directory
     If you have cloned the repo into a directory accessable to your web server, and it is configured to follow Symlinks, then this option may work for you.
       - cd htdocs
