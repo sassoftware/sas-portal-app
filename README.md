@@ -76,7 +76,11 @@ The intent for this application is to provide a level of functionality that was 
 
 Here is the list of functionality included in the SAS Information Delivery Portal.  Any input on what functionality needs to be supported is welcome.  This table will be updated as the plans and functionality requirements solidify.
 
-Tools
+### Toolbar Support
+
+The existing SAS Information Delivery Portal has the following capabilities in the toolbar. 
+
+#### Tools
 
 | Activity | Support |
 | ------ | ------ |
@@ -84,7 +88,7 @@ Tools
 |   Manage Subscriptions     |    no   |
 |   Manage Page History      |    no   |
 
-Create New Content
+#### Create New Content
 
 | Content Type | Support |
 | ------ | ------ |
@@ -94,7 +98,7 @@ Create New Content
 |   Portlet                  |    tbd  |
 |   Page                     |    tbd  |
 
-Preferences
+#### Preferences
 
 | Category | Setting | Support |
 | ------ | ------ | ------ |
@@ -112,7 +116,7 @@ Preferences
 |  Portal   | Preferred Navigation | tbd |
 |  Portal   | Package Sort Order | no |
 
-Search
+#### Search
 
 | Category | Setting | Support |
 | ------ | ------ | ------ |
@@ -131,7 +135,9 @@ Search
 | By Content Type | Syndication Channel | no |
 | Search Results | Results Per Page | no |
 
-Capabilities
+### Capabilities
+
+The SAS Information Delivery Portal currently supports these categories of objects and these capabilities on each of these specific object types within that category.
 
 | Category | Type | View | Add | Remove | Edit Properties | Edit Content |
 | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
