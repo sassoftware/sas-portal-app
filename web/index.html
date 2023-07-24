@@ -4,34 +4,14 @@
     <meta charset="utf-8" http-equiv="X-UA-Compatible" content="IE=edge" />
 
     <script src="sasjs.js"></script>
-    <script src="custom-sasjs-scripts.js?v=17"></script>
+    <script src="custom-sasjs-scripts.js?v=18"></script>
 
     <link rel="stylesheet" href="/SASTheme_default/themes/default/styles/sasComponents_FF_5.css"/>
     <link rel="stylesheet" href="/SASTheme_default/themes/default/styles/sasStyle.css"/>
 
-    <style>
-	button.BannerTabButtonCenter {
-	border-radius: 5px 5px 0px 0px;
-	background-color: transparent;
-	color: white
-	border: none
-	}
+    <!-- style extensions specific to this app -->
 
-	button.BannerTabButtonActive{
-	border-radius: 5px 5px 0px 0px;
-	border: none
-	}
-
-	.tabcontent {
-	  display: none;
-	  padding: 10px 20px;
-	}
-
-	.tabcontent.active {
-	  display: block;
-	}
-
-    </style>
+    <link rel="stylesheet" href="thisStyle.css"/>
   </head>
 
   <body>
@@ -182,14 +162,15 @@
 		<a href="pageTabs_skipTabMenu" title="Skip Tab Menu"></a> 
                 <div id="tabs" w3-include-html="/SASStoredProcess/do?_action=form,properties,execute,nobanner,newwindow&_program=%2fSystem%2fApplications%2fSAS+Portal+App%2fservices%2fgetTabs"></div>
 
-                </div>
 
-		<a name="pageTabs_skipTabMenu"></a>
-		<table class="secondaryMenuTable" width="100%" cellspacing="0" cellpadding="0">
-			<tbody><tr>
-				<td class="secondaryMenuRow" align="left" height="5"></td>
-			</tr>
-		</tbody></table>
+                <a name="pageTabs_skipTabMenu"></a>
+                <table class="secondaryMenuTable" width="100%" cellspacing="0" cellpadding="0">
+                        <tbody><tr>
+                                <td class="secondaryMenuRow" align="left" height="5"></td>
+                        </tr>
+                </tbody></table>
+
+                </div>
 
     </div>
     </td>

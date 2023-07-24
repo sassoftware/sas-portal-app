@@ -1,0 +1,27 @@
+button.BannerTabButtonCenter {
+border-radius: 5px 5px 0px 0px;
+background-color: transparent;
+color: white
+border: none
+}
+
+button.BannerTabButtonActive{
+border-radius: 5px 5px 0px 0px;
+border: none;
+}
+
+.portalBannerTabMenuTabCell {
+border-bottom: none;
+vertical-align: bottom;
+
+}
+
+.tabcontent {
+  display: none;
+  padding: 10px 20px;
+}
+
+.tabcontent.active {
+  display: block;
+}
+

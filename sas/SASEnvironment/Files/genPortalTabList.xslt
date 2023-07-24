@@ -9,8 +9,8 @@
 
    <xsl:for-each select="GetMetadataObjects/Objects/Group/Members/PSPortalPage">
 
-           <td  class="BannerTabMenuTabCell">
-                <button class="tab-button BannerTabButtonCenter">
+           <td  class="BannerTabMenuTabCell portalBannerTabMenuTabCell" style="vertical-align: bottom">
+                <button class="tab-button BannerTabButtonCenter" style="border-bottom: none">
                       <xsl:attribute name="onclick">showTab(event, '<xsl:value-of select="@Id"/>')</xsl:attribute>
                       <xsl:if test="position() = 1">
 				           <xsl:attribute name="id">default-tab</xsl:attribute>
