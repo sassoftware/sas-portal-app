@@ -13,7 +13,7 @@ run;
 filename inxml;
 
 /*
-%inc "stepsDir./showFormattedXML.sas";
+%inc "&stepsDir./showFormattedXML.sas";
 */
 
 /*
