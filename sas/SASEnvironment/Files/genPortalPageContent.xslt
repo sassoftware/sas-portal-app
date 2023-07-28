@@ -56,6 +56,13 @@
 
    </xsl:variable>
 
+   <xsl:variable name="iframeHeight">
+
+      <xsl:value-of select="PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='sas_DisplayURL_Height']/@DefaultValue"/>
+
+   </xsl:variable>
+
+
     <!-- If a URI is defined, show it, otherwise just render an empty portlet -->
 	<xsl:choose >
 
@@ -64,6 +71,10 @@
 	        <td class="portletEntry" valign="top">
 			<iframe style="overflow: auto;width: 100%" frameborder="0" >
 	        <xsl:attribute name="src"><xsl:value-of select="$displayURI"/></xsl:attribute>
+			<xsl:if test="'$iframeHeight' != ''">
+                    <xsl:attribute name="height"><xsl:value-of select="$iframeHeight"/></xsl:attribute>
+			</xsl:if>
+
 			</iframe>
 	        </td>
 	        </tr>
@@ -99,31 +110,44 @@
    <!--  It looks like when there isn't a portlet in a given cell in the layout, a place holder portlet
          is put there.  Ignore those.
      -->
-     
-   <xsl:if test="@Name != 'PlaceHolder'">
-	   <table cellpadding="2" cellspacing="0" width="100%" class="portletTableBorder">
-	   <th align="left" class="tableHeader portletTableHeader">
-	   <xsl:value-of select="$portletName"/>
-	   </th>
+   <xsl:choose>     
 
-		<xsl:choose>
-		  <xsl:when test="@portletType='Collection'">
-            <xsl:call-template name="collectionPortlet"/>
-	      </xsl:when>
-  		  <xsl:when test="@portletType='DisplayURL'">
-            <xsl:call-template name="displayURLPortlet"/>
-	      </xsl:when>
+	   <xsl:when test="@Name = 'PlaceHolder'">
+	    <!-- So that the formatting comes out correctly, need to build the table but hide it-->
 
-		  <xsl:otherwise>
-		    <!-- currently unsupported portlet type, render an empty portlet -->
-		    <xsl:call-template name="emptyPortlet"/>
-		  </xsl:otherwise>
-		</xsl:choose>
+		   <table cellpadding="2" cellspacing="0" width="100%" style="border:none">
+   			<th align="left" style="border:none;background:transparent;color:transparent">
+	   			<xsl:value-of select="$portletName"/>
+   			</th>
+    		<xsl:call-template name="emptyPortlet"/>
+			</table>
 
+		</xsl:when>
+		<xsl:otherwise>
+		   <table cellpadding="2" cellspacing="0" width="100%" class="portletTableBorder">
+   			<th align="left" class="tableHeader portletTableHeader">
+	   			<xsl:value-of select="$portletName"/>
+   			</th>
 
-	   </table>
-	   </xsl:if>
-       
+			<xsl:choose>
+
+		  		<xsl:when test="@portletType='Collection'">
+    	       	<xsl:call-template name="collectionPortlet"/>
+      			</xsl:when>
+	  			<xsl:when test="@portletType='DisplayURL'">
+           			<xsl:call-template name="displayURLPortlet"/>
+    			</xsl:when>
+
+	   			<xsl:otherwise>
+		    		<!-- currently unsupported portlet type, render an empty portlet -->
+		    		<xsl:call-template name="emptyPortlet"/>
+		  		</xsl:otherwise>
+			</xsl:choose>
+
+	   		</table>
+	   </xsl:otherwise>
+
+	</xsl:choose>
 
 </xsl:template>
 
