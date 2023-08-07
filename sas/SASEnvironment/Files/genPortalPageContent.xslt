@@ -86,6 +86,40 @@
 
 </xsl:template>
 
+<xsl:template name="SASStoredProcessPortlet">
+
+   <!-- Get the Stored Prcess reference and display it as if it was just a call to a url -->
+
+   <xsl:variable name="stpSBIPURI">
+      <xsl:value-of select="PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/PropertySets/PropertySet[@Name='selectedFolderItem']/SetProperties/Property[@Name='PreferenceInstanceProperty']/@DefaultValue"/>
+	</xsl:variable>
+   <xsl:choose>
+     <xsl:when test="'$stpSBIPURI' != ''">
+         <tr>
+	        <td class="portletEntry" valign="top">
+			
+			<xsl:variable name="stpProgram"><xsl:value-of select="encode-for-uri(substring-after($stpSBIPURI,'SBIP://METASERVER'))"/></xsl:variable>
+			<!-- NOTE: Can't figure out how to pass an & in the value of an attribute, thus not including the _action parameter for now
+			<xsl:variable name="stpURI"><xsl:text>/SASStoredProcess/do?_action=form,properties,execute,nobanner,newwindow&_program=</xsl:text><xsl:value-of select="$stpProgram"/></xsl:variable>
+			-->
+			
+			<xsl:variable name="stpURI"><xsl:text>/SASStoredProcess/do?_program=</xsl:text><xsl:value-of select="$stpProgram"/></xsl:variable>
+			<iframe style="overflow: auto;width: 100%" frameborder="0" >
+            <xsl:attribute name="src"><xsl:value-of select="$stpURI"/></xsl:attribute>
+            </iframe>
+
+	        </td>
+	        </tr>
+
+	 </xsl:when>
+	 <xsl:otherwise>
+		   <xsl:call-template name="emptyPortlet"/>
+	 </xsl:otherwise>
+
+   </xsl:choose>
+
+</xsl:template>
+
 <xsl:template name="emptyPortlet">
 
 	             <tr>
@@ -113,6 +147,7 @@
    <xsl:choose>     
 
 	   <xsl:when test="@Name = 'PlaceHolder'">
+	    <!-- Placeholder porlets seem to be put in place to occupy the space in the layout -->
 	    <!-- So that the formatting comes out correctly, need to build the table but hide it-->
 
 		   <table cellpadding="2" cellspacing="0" width="100%" style="border:none">
@@ -124,6 +159,9 @@
 
 		</xsl:when>
 		<xsl:otherwise>
+
+		   <!-- Non-placeholder portlets -->
+
 		   <table cellpadding="2" cellspacing="0" width="100%" class="portletTableBorder">
    			<th align="left" class="tableHeader portletTableHeader">
 	   			<xsl:value-of select="$portletName"/>
@@ -136,6 +174,9 @@
       			</xsl:when>
 	  			<xsl:when test="@portletType='DisplayURL'">
            			<xsl:call-template name="displayURLPortlet"/>
+    			</xsl:when>
+	  			<xsl:when test="@portletType='SASStoredProcess'">
+           			<xsl:call-template name="SASStoredProcessPortlet"/>
     			</xsl:when>
 
 	   			<xsl:otherwise>

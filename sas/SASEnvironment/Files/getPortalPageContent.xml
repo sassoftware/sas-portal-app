@@ -22,6 +22,7 @@
                         </PSPortlet>
                         <PropertySet Id="" Name="">
                           <SetProperties/>
+                          <PropertySets/>
                         </PropertySet>
                         <Property Id="" Name="" SQLType="" DefaultValue=""/>
                         <Extension Id="" Name="" Value=""/>
