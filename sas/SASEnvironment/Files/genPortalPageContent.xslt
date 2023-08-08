@@ -120,23 +120,16 @@
 
 </xsl:template>
 
-<xsl:template name="SASReportPortlet">
+<xsl:template name="processReportPortlet">
+  <xsl:param name = "reportSBIPURI" />
 
-   <!-- Get the Report reference.  At least for now, just make it a link that can be launched.  Ultimately, it would be nice if we could 
-        show the report in place, but can't find a way to do that yet.
-    -->
-
-   <xsl:variable name="wrsSBIPURI">
-      <xsl:value-of select="PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/PropertySets/PropertySet[@Name='selectedFolderItem']/SetProperties/Property[@Name='PreferenceInstanceProperty']/@DefaultValue"/>
-	</xsl:variable>
-   
-   <xsl:choose>
-     <xsl:when test="'$wrsSBIPURI' != ''">
+    <xsl:choose>
+     <xsl:when test="'$reportSBIPURI' != ''">
          <tr>
 	        <td class="portletEntry" valign="top">
 			
-			<xsl:variable name="wrsProgram"><xsl:value-of select="encode-for-uri($wrsSBIPURI)"/></xsl:variable>
-			<xsl:variable name="wrsPath"><xsl:value-of select="substring-after($wrsSBIPURI,'SBIP://METASERVER')"/></xsl:variable>
+			<xsl:variable name="wrsProgram"><xsl:value-of select="encode-for-uri($reportSBIPURI)"/></xsl:variable>
+			<xsl:variable name="wrsPath"><xsl:value-of select="substring-after($reportSBIPURI,'SBIP://METASERVER')"/></xsl:variable>
 
 			<xsl:variable name="wrsURI"><xsl:text>/SASWebReportStudio/openRVUrl.do?rsRID=</xsl:text><xsl:value-of select="$wrsProgram"/></xsl:variable>
 
@@ -157,7 +150,38 @@
 	 </xsl:otherwise>
 
    </xsl:choose>
+</xsl:template>
 
+<xsl:template name="ReportLocalPortlet">
+
+   <!-- Get the Report reference.  At least for now, just make it a link that can be launched.  Ultimately, it would be nice if we could 
+        show the report in place, but can't find a way to do that yet.
+    -->
+
+   <xsl:variable name="wrsSBIPURI">
+      <xsl:value-of select="PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='SELECTED_REPORT']/@DefaultValue"/>
+	</xsl:variable>
+    
+	<xsl:call-template name="processReportPortlet">
+	   <xsl:with-param name="reportSBIPURI" select="$wrsSBIPURI"/>
+	</xsl:call-template>
+ 
+</xsl:template>
+
+<xsl:template name="SASReportPortlet">
+
+   <!-- Get the Report reference.  At least for now, just make it a link that can be launched.  Ultimately, it would be nice if we could 
+        show the report in place, but can't find a way to do that yet.
+    -->
+
+   <xsl:variable name="wrsSBIPURI">
+      <xsl:value-of select="PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/PropertySets/PropertySet[@Name='selectedFolderItem']/SetProperties/Property[@Name='PreferenceInstanceProperty']/@DefaultValue"/>
+	</xsl:variable>
+
+ 	<xsl:call-template name="processReportPortlet">
+	   <xsl:with-param name="reportSBIPURI" select="$wrsSBIPURI"/>
+	</xsl:call-template>
+   
 </xsl:template>
 
 <xsl:template name="emptyPortlet">
@@ -221,7 +245,9 @@
 	  			<xsl:when test="@portletType='SASReportPortlet'">
            			<xsl:call-template name="SASReportPortlet"/>
     			</xsl:when>
-
+	  			<xsl:when test="@portletType='Report'">
+           			<xsl:call-template name="ReportLocalPortlet"/>
+    			</xsl:when>
 
 	   			<xsl:otherwise>
 		    		<!-- currently unsupported portlet type, render an empty portlet -->
