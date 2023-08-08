@@ -38,11 +38,10 @@
 
 </xsl:template>
 
-<xsl:template name="processCollection">
-
 <!-- there are several types of "collection" portlets, ex. collection, bookmarks, etc. 
      Each of these seem to store content in the same way, so have the common processing here
 	 -->
+<xsl:template name="processCollection">
 
       <xsl:variable name="numGroups">
 	       <xsl:value-of select="count(Groups/Group)"/>
@@ -83,7 +82,7 @@
 
 <xsl:template name="collectionPortlet">
 
-        <!-- Collection portlet, build a list of the links -->
+    <!-- Collection portlet, build a list of the links -->
 
     <!-- not yet convinced there won't be some differences in how the different collections are processed so keep this redirection template here-->
 
@@ -93,7 +92,7 @@
 
 <xsl:template name="bookmarksPortlet">
 
-        <!-- Bookmark portlet, build a list of the links -->
+    <!-- Bookmark portlet, build a list of the links -->
 
     <!-- not yet convinced there won't be some differences in how the different collections are processed so keep this redirection template here-->
 
@@ -101,8 +100,8 @@
 
 </xsl:template>
 
-<xsl:template name="displayURLPortlet">
 <!-- Display URL portlet, display the referenced URL -->
+<xsl:template name="displayURLPortlet">
 
    <!-- Get the property that has the URI in it -->
    <xsl:variable name="displayURI">
