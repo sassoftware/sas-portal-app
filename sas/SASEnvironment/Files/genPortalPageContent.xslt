@@ -1,15 +1,50 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 <xsl:output method="html"/>
 
+<!-- the default template if nothing else matches -->
+
+<xsl:template match="*">
+
+<p>hit default template</p>
+
+</xsl:template>
+
 <xsl:template match="Document">
 
 <a><xsl:attribute name="href"><xsl:value-of select="@URI"/></xsl:attribute><xsl:value-of select="@Name"/></a>
   
 </xsl:template>
 
-<xsl:template name="collectionPortlet">
-<!-- Collection portlet, build a list of the links -->
-       <xsl:variable name="numGroups">
+<!-- Template to handle a reference to a Report (typically in bookmarks)-->
+
+<xsl:template match="Transformation[@TransformRole='Report']">
+
+<!-- Unfortunately, to display a report, you need the entire path to it, thus it is required to navigate the parent tree
+     structure.
+-->
+
+   <xsl:variable name="reportSBIPURI">
+        <xsl:text>SBIP://METASERVER</xsl:text>
+		<xsl:for-each select="Trees//Tree">
+			<xsl:sort select="position()" order="descending"/>
+			<xsl:text>/</xsl:text><xsl:value-of select="@Name"/>
+		</xsl:for-each>
+		<xsl:text>/</xsl:text><xsl:value-of select="@Name"/>
+   </xsl:variable>
+
+    <xsl:call-template name="reportLink">
+	    <xsl:with-param name="reportSBIPURI" select="$reportSBIPURI"/>
+	</xsl:call-template>
+
+</xsl:template>
+
+<xsl:template name="processCollection">
+
+<!-- there are several types of "collection" portlets, ex. collection, bookmarks, etc. 
+     Each of these seem to store content in the same way, so have the common processing here
+	 -->
+
+      <xsl:variable name="numGroups">
 	       <xsl:value-of select="count(Groups/Group)"/>
 	   </xsl:variable>
 
@@ -43,6 +78,26 @@
 			  <xsl:call-template name="emptyPortlet"/>
 
 	      </xsl:if>	
+
+</xsl:template>
+
+<xsl:template name="collectionPortlet">
+
+        <!-- Collection portlet, build a list of the links -->
+
+    <!-- not yet convinced there won't be some differences in how the different collections are processed so keep this redirection template here-->
+
+    <xsl:call-template name="processCollection"/>
+
+</xsl:template>
+
+<xsl:template name="bookmarksPortlet">
+
+        <!-- Bookmark portlet, build a list of the links -->
+
+    <!-- not yet convinced there won't be some differences in how the different collections are processed so keep this redirection template here-->
+
+    <xsl:call-template name="processCollection"/>
 
 </xsl:template>
 
@@ -120,11 +175,10 @@
 
 </xsl:template>
 
-<xsl:template name="processReportPortlet">
+<xsl:template name="reportLink">
+
   <xsl:param name = "reportSBIPURI" />
 
-    <xsl:choose>
-     <xsl:when test="'$reportSBIPURI' != ''">
          <tr>
 	        <td class="portletEntry" valign="top">
 			
@@ -143,6 +197,19 @@
 			
 	        </td>
 	        </tr>
+
+</xsl:template>
+
+<xsl:template name="processReportPortlet">
+  <xsl:param name = "reportSBIPURI" />
+
+    <xsl:choose>
+     <xsl:when test="'$reportSBIPURI' != ''">
+
+	    <xsl:call-template name="reportLink">
+		    <xsl:with-param name="reportSBIPURI" select="$reportSBIPURI"/>
+		</xsl:call-template>
+
 
 	 </xsl:when>
 	 <xsl:otherwise>
@@ -248,6 +315,9 @@
 	  			<xsl:when test="@portletType='Report'">
            			<xsl:call-template name="ReportLocalPortlet"/>
     			</xsl:when>
+	  			<xsl:when test="@portletType='Bookmarks'">
+           			<xsl:call-template name="bookmarksPortlet"/>
+    			</xsl:when>
 
 	   			<xsl:otherwise>
 		    		<!-- currently unsupported portlet type, render an empty portlet -->
@@ -321,4 +391,6 @@
    <xsl:apply-templates select="GetMetadataObjects/Objects/Group/Members/PSPortalPage"/>
 
 </xsl:template>
+
+
 </xsl:stylesheet>
