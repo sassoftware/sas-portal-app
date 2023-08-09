@@ -1,0 +1,23 @@
+/*
+      ## SASJS Adapter config details ##
+
+      * appLoc: The location in metadata or SAS drive where App/services will be deployed
+      * serverType: either SAS9, SASVIYA or SASJS
+      * serverUrl: Url of the server where services are deployed. Can leave blank if frontend and backend is running on same server
+      * loginMechanism: Use 'Default' for regular (user/pass) logins, or 'Redirected' for 2FA/SSO
+      * debug: Whether to enable debug on startup
+
+      ## Viya only settings ##
+      * useComputeApi: either true or false
+      * contextName: Compute Context
+*/
+
+// var sasjsServerUrl='';
+
+var sasjsAppLoc='/System/Applications/SAS Portal App';
+var sasjsServerType="SAS9";
+var sasjsLoginMechanism="Redirected";
+var sasjsDebug="false";
+
+// var sasjsUseComputeApi='';
+// var sasjsContextName=""

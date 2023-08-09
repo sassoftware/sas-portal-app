@@ -11,7 +11,6 @@ filename outxml temp;
 proc metadata in=inxml out=outxml;
 run;
 filename inxml;
-
 /*
 %inc "&stepsDir./showFormattedXML.sas";
 */

@@ -36,6 +36,11 @@ This architecture was chosen for the following reasons:
 - SAS Stored Processes already run code as the client end user identity, so security and authorization of portal content is already covered
 - simple installation
 
+Other goals of this implementation are:
+
+- Enter configuration information in as few places as possible
+- Keep the content needing to be deployed to the webserver minimal, so that updates are mostly to the back end Stored Processes
+
 ## Installation
 
 - git clone this repo onto your SAS environment
@@ -49,37 +54,31 @@ This architecture was chosen for the following reasons:
         - NOTE: The stored process server definition that is chosen must have sufficient capacity to support the scale of the number of users that you expect to use the application.
         - It may be desirable to create a new SAS Application Server Context for running this application, this will allow you to control access, scale and configuration separate from other uses.
     - Map the Source Directory to the sas directory in this repo.
-- Modify the appserver_autoexec_usermods.sas file of the SAS Application Server context selected on import to add the following line:
+- Modify the appserver_autoexec_usermods.sas file of the SAS Application Server context selected on import to add the following lines:
 <pre>%let portalAppDir=this repo directory;</pre>
 where you will replace ''this repo directory'' with the directory that you did the git clone to create.
+<pre>%let appLoc=the folder where the application package was installed to</pre>
+where you will replace ''the folder where the application package was installed to'' with the folder path, ex. /System/Applications/SAS Portal App.  **NOTE:** This path must match the value specified on the web server install for sasjsAppLoc!
+
 - **NOTE:** If your stored process server instances are already running, you will need to restart them to pick up the appserver_autoexec_usermods.sas updates.
 
 ### Web Application
 
 **NOTE:** There is currently an assumption built into the references to SASStoredProcess web application in this application that it can be reached via the same root url (ie. host:port) as this application is deployed to.
 
-  #### Deploy Application
+#### Deploy Application
 
-Getting the application on to your web server can be done in multiple ways, depending on your configuration.  Choose **one** of the following approaches: Copy Files or Symlink.
+Getting the application on to your web server can be done by copying files to your web server.
 
-##### Copy Files
-
-This path should be chosen when the git repo directory is on another machine then your web server or your web server has disabled FollowSymLinks.
-
-  - under the htdocs directory of your web server, create a new directory, ex. SASPortalApp
-  - copy the contents of the web directory of the git repo into this directory
+- under the htdocs directory of your web server, create a new directory, ex. SASPortalApp
+- copy the contents of the web directory of the git repo into this directory
   <pre>cp -r this repo directory/web/* SASPortalApp</pre>
-##### (or) Symlink to git repo web directory
-
-If you have cloned the repo into a directory accessable to your web server, and it is configured to follow Symlinks, then this option may work for you.
-- cd htdocs
-- ln -s <git repo web directory> SASPortalApp
 
 ##### Verify the path to the Portal application and services
 
-If you have chosen to import the package into a different location than the default of _/System/Applications/SAS Portal App_, then you will need to modify the paths used in index.html to reference the Stored Processes.  
-  - Modify the sasjs configuration appLoc entry to match where they were installed
-  - Modify the /SASStoredProcess references to change the location in the referenced _program parameter
+- copy the file setup.js.template as setup.js in your directory under htdocs
+- verify the information defined in that file
+  - sasjsAppLoc = If you have chosen to import the package into a different location than the default of _/System/Applications/SAS Portal App_, then you will need to modify the path in sasjsAppLoc
 
 ## Usage
 
