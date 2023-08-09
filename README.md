@@ -109,6 +109,7 @@ The following legend is used for each of the tables below.
 |  tbd      | this is being considered for support       |
 |  no       | no support for this item is currently planned |
 |  N/A      | this column is not application to this row |
+|  <number>      | See the numbered item in the notes following that table |
 
 
 ### Toolbar Support
@@ -176,22 +177,24 @@ The SAS Information Delivery Portal currently supports these categories of objec
 
 | Category | Type | View | Add | Remove | Edit Properties | Edit Content |
 | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
-| Portal Page | All | yes | tbd | tbd | tbd | N/A |
-| Portlet | Collection | yes | tbd | tbd | tbd | tbd |
-| Portlet | Report Portlet | tbd | tbd | tbd | tbd | tbd |
-| Portlet | Report Portlet Local | no | no | no | no | no |
+| Portal Page | All | available | tbd | tbd | tbd | N/A |
+| Portlet | Collection | available | tbd | tbd | tbd | tbd |
+| Portlet | Report Portlet | 1 | tbd | tbd | tbd | tbd |
+| Portlet | Report Portlet Local | 1 | no | no | no | no |
 | Portlet | SAS BI Dashboard | no | no | no | no | no |
-| Portlet | SAS Collections | no | no | no | no | no |
+| Portlet | SAS Collections | available | no | no | no | no |
 | Portlet | SAS Diagnostics | no | no | no | no | no |
 | Portlet | SAS Navigator | tbd | no | no | no | no |
-| Portlet | SAS Report | tbd | tbd | no | no | no |
-| Portlet | SAS Stored Process | tbd | tbd | no | no | no |
+| Portlet | SAS Report | 1 | tbd | no | no | no |
+| Portlet | SAS Stored Process | available | tbd | no | no | no |
 | Portlet | Shared Alerts | no | no | no | no | no |
-| Portlet | URL Display Portlet | yes | tbd | no | no | no |
+| Portlet | URL Display Portlet | available | tbd | no | no | no |
 | Portlet | WebDav Content | no | no | no | no | no |
 | Portlet | WebDav Graph | no | no | no | no | no |
 | Portlet | WebDav Navigator | no | no | no | no | no |
 
+
+1. All Report portlets will show a link to the report, not the report content or a static image of the report.
 
 ### Layouts
 
