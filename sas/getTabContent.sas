@@ -1,6 +1,6 @@
 %inc "&portalAppDir./sas/setup.sas";
 
-filename inxml "&filesDir./getPortalPageContent.xml";
+filename inxml "&filesDir./getPortalContent.xml";
    
 filename outxml temp;
 
@@ -19,7 +19,7 @@ filename inxml;
  *  Generate the html fragments
  */
 
-filename inxsl "&filesDir./genPortalPageContent.xslt";
+filename inxsl "&filesDir./genPortalTabContent.xslt";
 
 proc xsl in=outxml xsl=inXSL out=_webout;
 run;

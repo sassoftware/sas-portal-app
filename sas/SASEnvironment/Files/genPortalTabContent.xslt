@@ -403,7 +403,7 @@
 
 <xsl:template match="/">
    <!-- Create the tab content area -->
-   <xsl:apply-templates select="GetMetadataObjects/Objects/Group/Members/PSPortalPage"/>
+   <xsl:apply-templates select="//PSPortalPage"/>
 
 </xsl:template>
 
