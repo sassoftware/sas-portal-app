@@ -8,5 +8,11 @@ data _null_;
  infile inhtml;
  file _webout;
  input;
- put _infile_;
+ *put _infile_;
+ length out $1024;
+ out=transtrn(_infile_,trim(left('${APPLOC}')),trim(left("&appLocEncoded.")));
+ put out;
+ 
  run;
+ 
+ filename inhtml;

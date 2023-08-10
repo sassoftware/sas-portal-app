@@ -120,7 +120,7 @@
 		<a name="skipBanner"></a>
 		<!-- Page Menus -->
 		<a href="pageTabs_skipTabMenu" title="Skip Tab Menu"></a> 
-                <div id="tabs" w3-include-html="/SASStoredProcess/do?_action=form,properties,execute,nobanner,newwindow&_program=%2fSystem%2fApplications%2fSAS+Portal+App%2fservices%2fgetTabs"></div>
+                <div id="tabs" w3-include-html="/SASStoredProcess/do?_action=form,properties,execute,nobanner,newwindow&_program=${APPLOC}services%2FgetTabs"></div>
 
 
                 <a name="pageTabs_skipTabMenu"></a>
@@ -137,5 +137,5 @@
 </tr>
 </tbody>
 </table>
-<div id="pages" w3-include-html="/SASStoredProcess/do?_action=form,properties,execute,nobanner,newwindow&_program=%2FSystem%2FApplications%2F/SAS+Portal+App%2fservices%2fgetTabContent"></div>
+<div id="pages" w3-include-html="/SASStoredProcess/do?_action=form,properties,execute,nobanner,newwindow&_program=${APPLOC}services%2FgetTabContent"></div>
 
