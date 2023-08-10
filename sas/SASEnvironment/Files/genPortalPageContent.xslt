@@ -120,12 +120,12 @@
     <!-- If a URI is defined, show it, otherwise just render an empty portlet -->
 	<xsl:choose >
 
-    	<xsl:when test="'$displayURI' != ''">
+    	<xsl:when test="$displayURI != ''">
    	        <tr>
 	        <td class="portletEntry" valign="top">
 			<iframe style="overflow: auto;width: 100%" frameborder="0" >
 	        <xsl:attribute name="src"><xsl:value-of select="$displayURI"/></xsl:attribute>
-			<xsl:if test="'$iframeHeight' != ''">
+			<xsl:if test="'$iframeHeight' != '' and $iframeHeight != 0">
                     <xsl:attribute name="height"><xsl:value-of select="$iframeHeight"/></xsl:attribute>
 			</xsl:if>
 
@@ -147,8 +147,12 @@
    <xsl:variable name="stpSBIPURI">
       <xsl:value-of select="PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/PropertySets/PropertySet[@Name='selectedFolderItem']/SetProperties/Property[@Name='PreferenceInstanceProperty']/@DefaultValue"/>
 	</xsl:variable>
+   <xsl:variable name="stpPortletHeight">
+      <xsl:value-of select="PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/PropertySets/PropertySet[@Name='portletHeight']/SetProperties/Property[@Name='PreferenceInstanceProperty']/@DefaultValue"/>
+	</xsl:variable>
+
    <xsl:choose>
-     <xsl:when test="'$stpSBIPURI' != ''">
+     <xsl:when test="$stpSBIPURI != ''">
          <tr>
 	        <td class="portletEntry" valign="top">
 			
@@ -160,6 +164,18 @@
 			<xsl:variable name="stpURI"><xsl:text>/SASStoredProcess/do?_program=</xsl:text><xsl:value-of select="$stpProgram"/></xsl:variable>
 			<iframe style="overflow: auto;width: 100%" frameborder="0" >
             <xsl:attribute name="src"><xsl:value-of select="$stpURI"/></xsl:attribute>
+
+			<xsl:choose>
+			<xsl:when test="$stpPortletHeight != '' and $stpPortletHeight != 0">
+	            <xsl:attribute name="height"><xsl:value-of select="$stpPortletHeight"/></xsl:attribute>
+            </xsl:when>
+
+			<xsl:otherwise>
+			    <!-- set a default height -->
+                 <xsl:attribute name="height">100</xsl:attribute>
+			</xsl:otherwise>
+			</xsl:choose>
+
             </iframe>
 
 	        </td>
