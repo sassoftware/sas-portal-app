@@ -148,6 +148,57 @@ function updateSTPReference() {
 
 /********************************************************************************
  *
+ *  Populate the passed div tag with the file pointed to by it's w3-include-html attribute
+ *
+ *  Parameters:
+ *
+ *   element - the dom element to see if it has html to include
+ *   cb1     - the function to call back to when this element's html processing is complete
+ *   cb2     - the callback function to pass to the callback function
+ *
+ *******************************************************************************/
+
+function populateDiv(element, cb1, cb2) {
+ 
+    file = element.getAttribute("w3-include-html");
+    if (file) {
+      /* Make an HTTP request using the attribute value as the file name: */
+      xhttp = new XMLHttpRequest();
+      
+      /*
+       *  Start On State Change function definition
+       */
+
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4) {
+          if (this.status == 200) {
+             element.innerHTML = this.responseText;
+             }
+          if (this.status == 404) {
+             element.innerHTML = "Page not found.";
+             }
+          /* Remove the attribute, and call this function once more: */
+
+          element.removeAttribute("w3-include-html");
+
+          if (cb1) cb1(cb2);
+
+          }
+        }
+      /*
+       * End  On State Change function definition
+       */
+      xhttp.open("GET", file, true);
+      xhttp.send();
+      /* Done processing the file request, exit and let the onreadystatechange function do it's thing */
+      return;
+
+      }
+
+}
+
+/********************************************************************************
+ *
  *  Find any references to other html sources and include them 
  *
  *******************************************************************************/
@@ -162,35 +213,37 @@ function includeHTML(cb) {
   z = document.getElementsByTagName("*");
 
   for (i = 0; i < z.length; i++) {
+
     elmnt = z[i];
-    /*search for elements with a certain atrribute:*/
-    file = elmnt.getAttribute("w3-include-html");
-    if (file) {
-      /* Make an HTTP request using the attribute value as the file name: */
-      xhttp = new XMLHttpRequest();
-      xhttp.onreadystatechange = function() {
-        if (this.readyState == 4) {
-          if (this.status == 200) {
-             elmnt.innerHTML = this.responseText;
-             }
-          if (this.status == 404) {elmnt.innerHTML = "Page not found.";}
-          /* Remove the attribute, and call this function once more: */
-          elmnt.removeAttribute("w3-include-html");
-          includeHTML(cb);
-        }
-      }
-      xhttp.open("GET", file, true);
-      xhttp.send();
-      /* Exit the function: */
-      return;
+
+    hasHTMLtoInclude=elmnt.hasAttribute("w3-include-html");
+
+    if (hasHTMLtoInclude) {
+
+       /*
+        *  pass this routine as the callback to process the next one after 
+        *  this one completes and pass along any callback that was passed on the 
+        *  the initial call to this routine
+        *
+        *  The net result here is that each reference to w3-include-html will 
+        *  be processed sequentially, by way of passing a callback to populateDiv
+        *  back to this function to find the next one, until there are no more.
+        *
+        */
+
+          populateDiv(elmnt,includeHTML,cb);
+
+          return;
+
+       }
+
     }
-  }
 
 /*
  *  Now call the callback if one was passed
  */
 
-if (cb) cb();
+ if (cb) cb();
 
 }
 

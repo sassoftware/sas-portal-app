@@ -1,5 +1,9 @@
 %inc "&portalAppDir./sas/setup.sas";
 
+%if (%symexist(genout)=0) %then %do;
+    %let genout=_webout;
+    %end;
+    
 filename inxml "&filesDir./getPortalTabList.xml";
    
 filename outxml temp;
@@ -25,21 +29,9 @@ filename inxsl "&filesDir./genPortalTabList.xslt";
 
 *filename outHTML temp;
 
-proc xsl in=outxml xsl=inXSL out=_webout;
+proc xsl in=outxml xsl=inXSL out=&genout.;
 run;
 
-/*
- *  Copy it to the stream to return
- */
-/*
-data _null_;
- infile outHTML;
- file _webout;
- input;
- put _infile_;
- run;
-*/
-filename outxml;
 filename inxml;
 filename inxsl;
-*filename outHTML;
+filename outxml;

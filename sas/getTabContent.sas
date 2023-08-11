@@ -4,6 +4,10 @@ filename inxml "&filesDir./getPortalContent.xml";
    
 filename outxml temp;
 
+%if (%symexist(genout)=0) %then %do;
+    %let genout=_webout;
+    %end;
+    
 /*
  *  Get the Portal page info
  */
@@ -21,7 +25,7 @@ filename inxml;
 
 filename inxsl "&filesDir./genPortalTabContent.xslt";
 
-proc xsl in=outxml xsl=inXSL out=_webout;
+proc xsl in=outxml xsl=inXSL out=&genout.;
 run;
 
 filename outxml;
