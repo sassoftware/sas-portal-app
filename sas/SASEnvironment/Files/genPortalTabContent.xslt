@@ -128,7 +128,7 @@
    	        <tr>
 	        <td class="portletEntry" valign="top">
 			<iframe style="overflow: auto;width: 100%" frameborder="0" >
-	        <xsl:attribute name="src"><xsl:value-of select="$displayURI"/></xsl:attribute>
+	        <xsl:attribute name="data-src"><xsl:value-of select="$displayURI"/></xsl:attribute>
 			<xsl:if test="'$iframeHeight' != '' and $iframeHeight != 0">
                     <xsl:attribute name="height"><xsl:value-of select="$iframeHeight"/></xsl:attribute>
 			</xsl:if>
@@ -167,7 +167,7 @@
 			
 			<xsl:variable name="stpURI"><xsl:text>/SASStoredProcess/do?_program=</xsl:text><xsl:value-of select="$stpProgram"/></xsl:variable>
 			<iframe style="overflow: auto;width: 100%" frameborder="0" >
-            <xsl:attribute name="src"><xsl:value-of select="$stpURI"/></xsl:attribute>
+            <xsl:attribute name="data-src"><xsl:value-of select="$stpURI"/></xsl:attribute>
 
 			<xsl:choose>
 			<xsl:when test="$stpPortletHeight != '' and $stpPortletHeight != 0">
@@ -210,7 +210,7 @@
 
 			<!--
 			<iframe style="overflow: auto;width: 100%" frameborder="0" >
-            <xsl:attribute name="src"><xsl:value-of select="$wrsURI"/></xsl:attribute>
+            <xsl:attribute name="data-src"><xsl:value-of select="$wrsURI"/></xsl:attribute>
             </iframe>
 			-->
 			

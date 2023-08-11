@@ -358,11 +358,14 @@ function showTab(evt, tabName) {
     // Declare all variables
     var i, tabcontent, tablinks;
 
-    // Get all elements with class="tabcontent" and hide them
+    // All of the div sections for each tab are marked with a class of tabcontent
+    // Get all of those with class="tabcontent" and hide them
+
     tabcontent = document.getElementsByClassName("tabcontent");
     for (i = 0; i < tabcontent.length; i++) {
 	tabcontent[i].className = tabcontent[i].className.replace(" active", "");
     }
+
     // Get all elements representing portal tabs and unselect them
     // NOTE: I tried to optimize this to only change info on the one that had the selected class
     //       but because the collection is dynamic, as soon as I modified the class value that
@@ -377,9 +380,30 @@ function showTab(evt, tabName) {
 
     }
 
+    /*
+     * When the page was first generated, any portlets that should have a src tag, were created with a "data-src"
+     * so that they would not be called at that time (with the intent that they would be called when the tab was
+     * selected).
+     * Now that the tab has been selected, we need to change that attribute to src on all items in this div
+     *  so that it will populate
+     */
+
+    tabDiv=document.getElementById(tabName);
+    matches = tabDiv.querySelectorAll("*[data-src]");
+
+    /*
+     *  Set the src field and remove the data-src attribute so we don't generate it again on subsequent
+     *  visits to this tab.
+     */
+
+    matches.forEach((match) => {
+       match.setAttribute('src',match.getAttribute('data-src'));
+       match.removeAttribute('data-src');
+       });
+
     // Show the current tab, and add an "active" class to the button that opened the tab
 
-    document.getElementById(tabName).className += " active";
+    tabDiv.className += " active";
 
     // Change the class settings on the selected object to change the styles applied
     tabButton=evt.currentTarget;

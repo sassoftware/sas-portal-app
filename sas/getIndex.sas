@@ -9,15 +9,31 @@
 %let pagestrt=&filesDir./index.html.start.snippet;
 
 /*
+ *  Retrieve the portal metadata
+ */
+
+filename inxml "&filesDir./getPortalContent.xml";
+   
+filename outxml temp;
+
+proc metadata in=inxml out=outxml;
+run;
+
+filename inxml;
+
+/*
  *  Generate the tab list
  */
 
 filename tablist temp;
 %let tablist=%sysfunc(pathname(tablist));
 
-%let genout=tablist;
-%inc "&sasDir./getTabs.sas" / source2; 
-%symdel genout;
+filename inxsl "&filesDir./genPortalTabList.xslt";
+
+proc xsl in=outxml xsl=inXSL out=tablist;
+run;
+
+filename inxsl;
 
 /*
  *  Get the fixed html content after the generated tabs list content, but before the tab content
@@ -32,9 +48,27 @@ filename tablist temp;
 filename tabs temp;
 %let tabs=%sysfunc(pathname(tabs));
 
-%let genout=tabs;
-%inc "&sasDir./getTabContent.sas" / source2; 
-%symdel genout;
+filename inxsl "&filesDir./genPortalTabContent.xslt";
+
+/*
+ *  Should we include the wrapper "pages" div tag around generated content?
+ */
+
+proc xsl in=outxml xsl=inXSL out=tabs;
+
+   %if (%symexist(excludePagesDiv)=0) %then %do;
+    parameter "includePagesDiv"="1";
+    %end;
+
+run;
+
+filename inxsl;
+
+/*
+ *  Done with metadata
+ */
+
+filename outxml;
 
 /*
  *  Put the files together and do any necessary text substitution
@@ -45,7 +79,7 @@ filename snippets ("&pagestrt.","&tablist.","&pageend.","&tabs.") encoding="utf-
 /*
  *  TODO:  Try to avoid doing a lot of text substitution as that operation can be expensive
  *         as the content grows.   Where possible, pass values into the xsl as parameters so that
- *         the values are correct and replaced during html generation!
+ *         the values are correct and replaced during html generation.
  */
 
 data _null_;
