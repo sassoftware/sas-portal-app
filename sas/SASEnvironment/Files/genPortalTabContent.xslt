@@ -1,6 +1,10 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 <xsl:output method="html"/>
 
+<!--  Should we include a wrapper div tag around the generated tab content divs? -->
+
+<xsl:param name="includePagesDiv"></xsl:param>
+
 <!-- the default template if nothing else matches -->
 
 <xsl:template match="*">
@@ -402,10 +406,25 @@
 </xsl:template>
 
 <xsl:template match="/">
-   <!-- Create the tab content area -->
-   <xsl:apply-templates select="//PSPortalPage"/>
+
+   <xsl:choose>
+
+   <xsl:when test="$includePagesDiv != ''">
+
+     <div id="pages">
+       <!-- Create the tab content area -->
+       <xsl:apply-templates select="//PSPortalPage"/>
+     </div>
+
+   </xsl:when>
+
+   <xsl:otherwise>
+       <!-- Create the tab content only -->
+       <xsl:apply-templates select="//PSPortalPage"/>
+   </xsl:otherwise>
+
+   </xsl:choose>
 
 </xsl:template>
-
 
 </xsl:stylesheet>
