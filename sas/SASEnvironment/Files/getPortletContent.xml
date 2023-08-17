@@ -1,19 +1,12 @@
  <GetMetadata>
  <Metadata>
- <PSPortalPage Id="$TYPEID">
- </PSPortalPage>
+ <PSPortlet Id="${TYPEID}">
+ </PSPortlet>
  </Metadata>
  <NS>SAS</NS>
  <Flags>20</Flags>
  <Options>
                      <Templates>
-                        <PSPortalPage Id="" Name="" Type="" NumberOfColumns="" NumberOfRows="" PreferredHeight="" PreferredWidth="">
-                            <LayoutComponents/>
-                            <Extensions/>
-                        </PSPortalPage>
-                        <PSColumnLayoutComponent Id="" Name="" NumberOfPortlets="" ColumnWidth="">
-                           <Portlets/>
-                        </PSColumnLayoutComponent>
                         <PSPortlet Id="" Name="" portletType="">
                            <Groups/>
                            <PropertySets/>

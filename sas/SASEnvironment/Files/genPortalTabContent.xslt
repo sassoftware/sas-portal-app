@@ -3,7 +3,8 @@
 
 <!--  Should we include a wrapper div tag around the generated tab content divs? -->
 
-<xsl:param name="includePagesDiv"></xsl:param>
+<xsl:param name="includePagesDiv">1</xsl:param>
+<xsl:param name="appLocEncoded"></xsl:param>
 
 <!-- the default template if nothing else matches -->
 
@@ -311,12 +312,38 @@
 		<xsl:otherwise>
 
 		   <!-- Non-placeholder portlets -->
+           <xsl:variable name="portletType" select="@portletType"/>
+		   <xsl:variable name="portletId" select="@Id"/>
 
 		   <table cellpadding="2" cellspacing="0" width="100%" class="portletTableBorder">
+		   <tr>
    			<th align="left" class="tableHeader portletTableHeader">
 	   			<xsl:value-of select="$portletName"/>
    			</th>
+			<th align="right" class="portletTableHeaderRight">
+	   				<table cellpadding="0" cellspacing="0" border="0">
+                        <tbody>
+							<tr>
+                                <td nowrap="" valign="middle"><i><font size="1"> </font></i></td>
+                                <td></td>
+                                <td nowrap="" valign="middle">
+								<img src="images/PortletPipe.gif" alt="" width="1" height="15" valign="middle" border="0"/>
+								</td>
+								<td nowrap="" valign="middle">
+								<!--
+								<xsl:variable name="editLink" select="concat('/SASStoredProcess/do?_program=',$appLocEncoded,'services%2FeditPortletContents&amp;id=',$portletId,'&amp;portletType=',$portletType)"/>
+                                                                -->
+								<xsl:variable name="editLink" select="concat('editPortletContents.html?id=',$portletId,'&amp;portletType=',$portletType)"/>
 
+										<a target="_self" onclick="editPortlet"><xsl:attribute name="href"><xsl:value-of select="$editLink"/></xsl:attribute>
+                                        <img src="images/PortletNote.gif" valign="middle" border="0" alt="Edit Content" title="Edit Content"/>
+                                        </a>
+								</td>
+							</tr>
+                        </tbody>
+					</table>
+            </th>
+            </tr>
 			<xsl:choose>
 
 		  		<xsl:when test="@portletType='Collection'">

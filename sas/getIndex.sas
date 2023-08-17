@@ -31,6 +31,8 @@ filename tablist temp;
 filename inxsl "&filesDir./genPortalTabList.xslt";
 
 proc xsl in=outxml xsl=inXSL out=tablist;
+   parameter "appLocEncoded"="&appLocEncoded.";
+
 run;
 
 filename inxsl;
@@ -50,15 +52,19 @@ filename tabs temp;
 
 filename inxsl "&filesDir./genPortalTabContent.xslt";
 
-/*
- *  Should we include the wrapper "pages" div tag around generated content?
- */
 
 proc xsl in=outxml xsl=inXSL out=tabs;
 
+   parameter "appLocEncoded"="&appLocEncoded.";
+
+	/*
+	 *  Should we include the wrapper "pages" div tag around generated content?
+	 */
+/*    
    %if (%symexist(excludePagesDiv)=0) %then %do;
     parameter "includePagesDiv"="1";
     %end;
+*/
 
 run;
 

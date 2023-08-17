@@ -141,7 +141,22 @@ function updateSTPReference() {
         const existingDataDivReference=dataDiv.getAttribute('w3-include-html')
         const stpLocation=sasjsAppLoc+'/services/';
 
-        const newDataDivReference=existingDataDivReference.replace("${APPLOC}",encodeURI(stpLocation));
+        newDataDivReference=existingDataDivReference.replace("${APPLOC}",encodeURI(stpLocation));
+
+        // Get any parameters passed to this page and forward them on to the stp
+        // NOTE: need to remove the leading ? since we will be adding this to a url that already has parameters
+
+        const queryString = window.location.search.replace('?','');
+
+
+        if (newDataDivReference.includes('?')) {
+           newDataDivReference=newDataDivReference.concat('&',queryString);
+           }
+
+        else {
+           newDataDivReference=newDataDivReference.concat('?',queryString);
+           }
+
         dataDiv.setAttribute('w3-include-html',newDataDivReference);
 
 }
@@ -255,14 +270,18 @@ function includeHTML(cb) {
  *******************************************************************************/
 function afterGeneration() {
 
+  /*
+   *  This set of functions is used with different types of pages.
+   *  Some, will have tabs and one of them marked "default-tab".  If we find that,
+   *  select it.
+   *  All pages have a "data-container" that needs to be populated and displayed.
+   */
+
   defaultTab=document.getElementById("default-tab");
 
   if (defaultTab) {
       defaultTab.click();
       }
-  else {
-     console.log('No default tab found?');
-     }
 
   /*
    *  Inject any styles that may have been generated as part of the html generation
