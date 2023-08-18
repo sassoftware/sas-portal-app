@@ -1,13 +1,13 @@
  <GetMetadata>
  <Metadata>
- <PSPortlet Id="${TYPEID}">
+ <PSPortlet Id="${TYPEID}" PortletType="" Name="">
  </PSPortlet>
  </Metadata>
  <NS>SAS</NS>
  <Flags>20</Flags>
  <Options>
                      <Templates>
-                        <PSPortlet Id="" Name="" portletType="">
+                        <PSPortlet Id="" Name="" PortletType="">
                            <Groups/>
                            <PropertySets/>
                         </PSPortlet>

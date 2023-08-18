@@ -6,7 +6,7 @@
  *  Retrieve the portlet metadata
  */
 
-filename inxml "&filesDir./getPortletContent.xml";
+filename inxml "&filesDir./portlet/getPortletContent.xml";
 
 filename request temp;
 
@@ -52,9 +52,10 @@ filename request;
 filename common temp;
 %let common=%sysfunc(pathname(common));
 
-filename inxsl "&filesDir./genEditPortletContent.xslt";
+filename inxsl "&filesDir./portlet/genEditPortletContent.xslt";
 
 proc xsl in=outxml xsl=inXSL out=common;
+   parameter "appLocEncoded"="&appLocEncoded.";
 run;
 
 filename inxsl;
@@ -67,7 +68,7 @@ filename inxsl;
  *  Start the details section
  */
 
-%let pagestrt=&filesDir./editportlet.html.start.snippet;
+%let pagestrt=&filesDir./portlet/editportlet.html.start.snippet;
 
 filename details temp;
 %let details=%sysfunc(pathname(details));
@@ -83,36 +84,17 @@ filename details temp;
 
 %macro genPortletDetails;
 
-%if ( "&portletType"="Collection") %then %do;
+/*
+ *  See if we have a stylesheet for this type of porlet
+ */
+%let editPortletProcessor=&filesDir./portlet/editportlet.%lowcase(&portletType.).sas;
 
-    %portletNotSupported;
+%if (%sysfunc(fileexist(&editPortletProcessor.))) %then %do;
+
+    %inc "&editPortletProcessor.";
+   
+    %end;
     
-%end;
-%else %if ( "&portletType"="Bookmarks") %then %do;
-
-    %portletNotSupported;
-
-%end;
-%else %if ( "&portletType"="DisplayURL") %then %do;
-
-    %portletNotSupported;
-
-%end;
-%else %if ( "&portletType"="SASStoredProcess") %then %do;
-
-    %portletNotSupported;
-
-%end;
-%else %if ( "&portletType"="SASReportPortlet") %then %do;
-
-    %portletNotSupported;
-
-%end;
-%else %if ( "&portletType"="Report") %then %do;
-
-    %portletNotSupported;
-
-%end;
 %else %do;
 
     %portletNotSupported;
@@ -127,7 +109,7 @@ filename details temp;
  *  End the details section
  */
 
-%let pageend=&filesDir./editportlet.html.end.snippet;
+%let pageend=&filesDir./portlet/editportlet.html.end.snippet;
 
 /*
  *  Put the files together and do any necessary text substitution
@@ -148,3 +130,6 @@ filename snippets;
 filename details;
 
 filename common;
+
+filename outxml;
+

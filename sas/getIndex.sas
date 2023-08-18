@@ -6,13 +6,13 @@
  *  Get the fixed html content before the generated tabs list content
  */
 
-%let pagestrt=&filesDir./index.html.start.snippet;
+%let pagestrt=&filesDir./portal/index.html.start.snippet;
 
 /*
  *  Retrieve the portal metadata
  */
 
-filename inxml "&filesDir./getPortalContent.xml";
+filename inxml "&filesDir./portal/getPortalContent.xml";
    
 filename outxml temp;
 
@@ -28,7 +28,7 @@ filename inxml;
 filename tablist temp;
 %let tablist=%sysfunc(pathname(tablist));
 
-filename inxsl "&filesDir./genPortalTabList.xslt";
+filename inxsl "&filesDir./portal/genPortalTabList.xslt";
 
 proc xsl in=outxml xsl=inXSL out=tablist;
    parameter "appLocEncoded"="&appLocEncoded.";
@@ -41,7 +41,7 @@ filename inxsl;
  *  Get the fixed html content after the generated tabs list content, but before the tab content
  */
 
-%let pageend=&filesDir./index.html.end.snippet;
+%let pageend=&filesDir./portal/index.html.end.snippet;
 
 /*
  *  Generate the tab content
@@ -50,7 +50,7 @@ filename inxsl;
 filename tabs temp;
 %let tabs=%sysfunc(pathname(tabs));
 
-filename inxsl "&filesDir./genPortalTabContent.xslt";
+filename inxsl "&filesDir./portal/genPortalTabContent.xslt";
 
 
 proc xsl in=outxml xsl=inXSL out=tabs;
