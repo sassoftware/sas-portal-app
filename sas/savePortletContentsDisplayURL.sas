@@ -1,4 +1,3 @@
-%stpbegin;
 
 /*  Save the changes made on the edit Portlet Content page for the Display URL portlet */
 
@@ -93,16 +92,8 @@ filename updtrsp;
 /*
  *  Send back to the browser to go back
  */
-/*
 data _null_;
   file _webout;
   put "<script>history.go(-2)</script>";
 run;
-*/
-/*
-proc printto print=_webout;
-run;
-*/
-proc print data=sashelp.vmacro; run;
 
-%stpend;

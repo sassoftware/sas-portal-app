@@ -3,12 +3,6 @@
 %inc "&portalAppDir./sas/setup.sas";
 
 /*
- *  Get the fixed html content before the generated tabs list content
- */
-
-%let pagestrt=&filesDir./portal/index.html.start.snippet;
-
-/*
  *  Retrieve the portal metadata
  */
 
@@ -22,88 +16,27 @@ run;
 filename inxml;
 
 /*
- *  Generate the tab list
+ *  Generate the main page
  */
 
-filename tablist temp;
-%let tablist=%sysfunc(pathname(tablist));
+filename inxsl "&filesDir./portal/genPortalMain.xslt" encoding='utf-8';
 
-filename inxsl "&filesDir./portal/genPortalTabList.xslt";
-
-proc xsl in=outxml xsl=inXSL out=tablist;
-   parameter "appLocEncoded"="&appLocEncoded.";
+proc xsl in=outxml xsl=inXSL out=_webout;
+   parameter "appLocEncoded"="&appLocEncoded."
+             "sastheme"="&sastheme."
+             "globalMenuBar_skipMenuBar"="&globalMenuBar_skipMenuBar."
+             "portalCustomizationMenu"="&portalCustomizationMenu."
+             "portalCustomizationMenuTitle"="&portalCustomizationMenuTitle."
+             "portalOptionsMenu"="&portalOptionsMenu."
+             "portalOptionsMenuTitle"="&portalOptionsMenuTitle."
+             "portalSearchMenu"="&portalSearchMenu."
+             "portalSearchMenuTitle"="&portalSearchMenuTitle"
+             "portalLogoffMenu"="&portalLogoffMenu."
+             "portalLogoffMenuTitle"="&portalLogoffMenuTitle."
+             "portalHelpMenu"="&portalHelpMenu."
+             "portalHelpMenuTitle"="&portalHelpMenuTitle."
+             "pageTabs_skipTabMenuTitle"="&pageTabs_skipTabMenuTitle."
+             "portletEditContent"="&portletEditContent."
+       ;
 
 run;
-
-filename inxsl;
-
-/*
- *  Get the fixed html content after the generated tabs list content, but before the tab content
- */
-
-%let pageend=&filesDir./portal/index.html.end.snippet;
-
-/*
- *  Generate the tab content
- */
-
-filename tabs temp;
-%let tabs=%sysfunc(pathname(tabs));
-
-filename inxsl "&filesDir./portal/genPortalTabContent.xslt";
-
-
-proc xsl in=outxml xsl=inXSL out=tabs;
-
-   parameter "appLocEncoded"="&appLocEncoded.";
-
-	/*
-	 *  Should we include the wrapper "pages" div tag around generated content?
-	 */
-/*    
-   %if (%symexist(excludePagesDiv)=0) %then %do;
-    parameter "includePagesDiv"="1";
-    %end;
-*/
-
-run;
-
-filename inxsl;
-
-/*
- *  Done with metadata
- */
-
-filename outxml;
-
-/*
- *  Put the files together and do any necessary text substitution
- */
-
-filename snippets ("&pagestrt.","&tablist.","&pageend.","&tabs.") encoding="utf-8";
-
-/*
- *  TODO:  Try to avoid doing a lot of text substitution as that operation can be expensive
- *         as the content grows.   Where possible, pass values into the xsl as parameters so that
- *         the values are correct and replaced during html generation.
- */
-
-data _null_;
- infile snippets;
- file _webout;
- input;
- put _infile_;
- *length out $1024;
- /*
-  *   Replace the location placeholder with the metadata folder where the application was installed
-  */
- *out=transtrn(_infile_,trim(left('${APPLOC}')),trim(left("&appLocEncoded.")));
- *put out;
- 
- run;
-
-filename snippets;
-
-filename tabs;
-filename tablist;
- 

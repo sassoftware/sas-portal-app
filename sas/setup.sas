@@ -38,6 +38,38 @@
 
 		%let appLocEncoded=%sysfunc(URLencode(&apploc./));
 
+                %if (%SYMEXIST(sastheme)=0) %then %do;
+
+                    /*
+                     *  If a Default Theme was not set in the usermods file, set it now.
+                     */
+                    %global sastheme;
+                    %let sastheme=SASTheme_default;
+                    %end;
+
+                /*
+                 *  Load the appropriate localizations
+                 */
+                %let localizationDir=&filesDir./localization;
+                %let englishStrings=&localizationDir./portalstrings_en_US.sas;
+
+                %inc "&englishStrings.";
+
+
+                %if (%symexist(_userlocale)) %then %do;
+                    %let localeStrings=&localizationDir./portalstrings_&_userlocale..sas;
+                    
+                    %if (%sysfunc(fileexist(&localeStrings.))) %then %do;
+                        %inc "&localeStrings.";
+                        %end;
+                    %else %do;
+
+                        %put User locale, &_userlocale., localization file does not exist.;
+
+                        %end;
+
+                    %end;
+
 		/*
 		 *  Set an indicator that this setup program has already been done
 		 */

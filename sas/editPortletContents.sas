@@ -55,7 +55,11 @@ filename common temp;
 filename inxsl "&filesDir./portlet/genEditPortletContent.xslt";
 
 proc xsl in=outxml xsl=inXSL out=common;
-   parameter "appLocEncoded"="&appLocEncoded.";
+   parameter "appLocEncoded"="&appLocEncoded."
+             "sastheme"="&sastheme."
+
+             "portletEditContentTitle"="&portletEditContentTitle."
+             ;
 run;
 
 filename inxsl;
@@ -77,7 +81,7 @@ filename details temp;
 
    data _null_;
      file details;
-     put "<p><b>Portlet type, &portletType., not supported.</b></p>";
+     put "<p><b>&portletEditNotSupported.</b></p>";
      run;
 
 %mend;

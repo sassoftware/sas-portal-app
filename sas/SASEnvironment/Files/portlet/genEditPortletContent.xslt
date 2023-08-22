@@ -1,10 +1,15 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 <xsl:output method="html"/>
 
+<xsl:param name="appLocEncoded"></xsl:param>
+<xsl:param name="sastheme">SASTheme_default</xsl:param>
+
+<xsl:param name="portletEditContentTitle">Edit Portlet Content</xsl:param>
+
 <xsl:template match="/">
 
   <!-- pass back the theme to use -->
-<div id="sastheme" style="display: none">SASTheme_default</div>
+<div id="sastheme" style="display: none"><xsl:value-of select="$sastheme"/></div>
 
   <xsl:apply-templates select="GetMetadata/Metadata/PSPortlet"/>
 
@@ -13,7 +18,7 @@
 <xsl:template match="PSPortlet">
 
 <!-- Banner -->
-<div id="banner" style="background-image:url(/SASTheme_default/themes/default/images/BannerBackground.gif)" class="banner_container">
+<div id="banner" class="banner_container"><xsl:attribute name="style">background-image:url(/<xsl:value-of select="$sastheme"/>/themes/default/images/BannerBackground.gif</xsl:attribute>
     <div class="banner_utilitybar_overlay">&#160;</div>
     <table class="banner_utilitybar" cellpadding="0" cellspacing="0" width="100%">
       <tbody><tr valign="top">
@@ -35,7 +40,7 @@
     </table>
     <table cellpadding="0" cellspacing="0" width="100%">
       <tbody><tr>
-        <td nowrap="" id="bantitle" class="banner_title">Edit Portlet Content</td>
+        <td nowrap="" id="bantitle" class="banner_title"><xsl:value-of select="$portletEditContentTitle"/></td>
         <td id="banbullet" class="banner_bullet">•</td>
         <td nowrap="" id="bantitle2" class="banner_secondaryTitle"><xsl:value-of select="@Name"/></td>
         <td align="right" id="banlogo" class="banner_logo" width="100%"><img src="logo.gif" width="62" height="24" border="0" alt=""/></td>

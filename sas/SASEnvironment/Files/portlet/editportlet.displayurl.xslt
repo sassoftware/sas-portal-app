@@ -2,6 +2,12 @@
 
 <xsl:param name="appLocEncoded"/>
 
+<xsl:param name="saveButton">Save</xsl:param>
+<xsl:param name="cancelButton">Cancel</xsl:param>
+
+<xsl:param name="portletEditDisplayURLUrl">URL</xsl:param>
+<xsl:param name="portletEditDisplayURLHeight">Content Height</xsl:param>
+
 <xsl:template match="/">
 
 <xsl:variable name="portletId" select="GetMetadata/Metadata/PSPortlet/@Id"/>
@@ -33,7 +39,7 @@
         <table border="0">
          <tbody><tr>
           <td nowrap="">
-            URL:
+            <xsl:value-of select="$portletEditDisplayURLUrl"/>:
           </td>
           <td>&#160;</td>
           <td class="celljustifyleft" nowrap="">
@@ -46,7 +52,7 @@
          </tr><tr></tr>
          <tr>
           <td nowrap="">
-            Content Height:
+            <xsl:value-of select="$portletEditDisplayURLHeight"/>:
           </td>
           <td>&#160;</td>
           <td class="celljustifyleft" nowrap="">
@@ -70,10 +76,10 @@
             &#160;
             </td>
             <td>
-                    <input class="button" type="submit" value="Save" name="submit"/>
+                    <input class="button" type="submit" name="submit"><xsl:attribute name="value"><xsl:value-of select="$saveButton"/></xsl:attribute></input>
             </td>
             <td>
-                    <input class="button" type="button" value="Cancel" name="cancel" onclick="history.back()"/>
+                    <input class="button" type="button" name="cancel" onclick="history.back()"><xsl:attribute name="value"><xsl:value-of select="$cancelButton"/></xsl:attribute></input>
             </td>
             <td width="100%">
             &#160;

@@ -53,6 +53,7 @@ Other goals of this implementation are:
     - Select a SAS Application Server Context to run the stored process
         - NOTE: The stored process server definition that is chosen must have sufficient capacity to support the scale of the number of users that you expect to use the application.
         - It may be desirable to create a new SAS Application Server Context for running this application, this will allow you to control access, scale and configuration separate from other uses.
+        - **NOTE:** If your users will be running their browsers in languages that contain characters outside of the latin1 character set, you will need to make sure the Stored Process Server is running with an encoding of UTF-8.
     - Map the Source Directory to the sas directory in this repo.
 - Modify the appserver_autoexec_usermods.sas file of the SAS Application Server context selected on import to add the following lines:
 <pre>%let portalAppDir=this repo directory;</pre>
