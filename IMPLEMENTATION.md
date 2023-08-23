@@ -2,7 +2,7 @@
 
 This page is intended to capture any thoughts about the implementation, what the options are/were and what the thought process was behind the implementation choices made.  Some of this is just a place to capture the concepts so they don't get lost or forgotten.
 
-# Overall design
+## Overall design
 
 The overall design is:
 
@@ -17,14 +17,14 @@ This design was chosen for the following reasons:
 - Well known interfaces to metadata (proc metadata) and html generation (xsl) in the SAS language
 - Well known processes for scaling SAS Stored Processes to meet demand
 
-# What runs where?
+## What runs where?
 
 It was decided to have very little content in the html page initially deployed to the web server.  This was done for the following reasons:
 
 - the content will need to be customized that is returned to the user (ex. localization, stored process location, server location, SAS Theme to use, etc.).   This is far easier on the Server side.
 - simplify updates: when making updates the goal would be that only the SAS code and accompanying files would need to be updated, while the web server content should stay the same (for at most changes).
 
-# How does the generation work?
+## How does the generation work?
 
 There is/was a question about how much should be generated at a single call to the SAS Stored Process.  For example:
 
@@ -34,7 +34,7 @@ There is/was a question about how much should be generated at a single call to t
 
 For example, say that there are 4 pages (tabs) on the portal display.  Each tab has a series of portlets defined to them.  Some of those, like the SAS Stored Process Portlet or URL display portlet, also have URLs that are processed and the results displayed within that portlet.
 
-Eventually, #3 was selected as the current implementation.  This was chosen for the following reasons:
+Eventually, ##3 was selected as the current implementation.  This was chosen for the following reasons:
 
 - from initial testing, each call to a stored process takes at a minimum 100ms (regardless of content returned).  Thus, multiple calls to get the portal content will increase the response times.
 - It is expected that there will not be many tabs (ex. less than 10) on a portal display, and within each of them, there will not be many portlets (ex. less than 10).  It is also expected that for portlets that contain lists (ex. Collection portlet), the list will not be excessive (less than 50 items in the list).   Through experimentation, it was noticed that the metadata calls to retrieve this level of information and render it as html was less than 100ms.  Not that decreasing the size of the metadata request or the html generation that was performed, did not significantly decrease the time.
@@ -45,7 +45,7 @@ Thus it seemed most efficient to:
 - on initial page reference, generate the tab list and the list of portlet content for all tabs
 - delay the rendering of SAS Stored Process or URL Display portlet content till the owning tab was selected.
 
-# Content localization
+## Content localization
 
 The text fields that are rendered in the html need to be in the locale of the client end user.  Thus, during the html generation, the correct values, in the correct locale, need to be included.
 
@@ -58,9 +58,38 @@ This will be done in the backend SAS code.  Depending on what is being generated
 
 The first option, text substitution could cover both scenarios.  However, text substitution in this case is expensive because the amount of text to not translate far outweighs the text that will be translated, thus searching for text substition strings will process a lot of text that will never be translated.  However, in the case of a stylesheet, the value will be inserted exactly where it needs to be with no searching.
 
+After experimentation, all situations have been converted to using xslt parameter substitution to avoid searching and replacing.
+
 There are currently 2 thoughts on how to manage the content that needs to be localized.
 
 - Use of sasmsgl function which is specifically designed to handle localized strings.  The localized strings are kept in a data set and indexed by a key and a locale setting.  The benefit of this approach is that it is smart enough to use the English translation if no translation is found for that particular key or locale.   The potential downside is the amount of time it will take to look up multiple values (the impact of this is still to be measured).
 - Use of macro variables, loaded from a file that is locale specific.  Other than loading the file containing the macro variable definitions for that language, this should have little performance impact.   To provide the "default to English" capability of localization, we would load the English locale version first, followed by the correct one for this localization (and thus overriding the English versions for keys that exist in both).
 
-Which one to be used is still being determined.
+After experimentation, it was decided to implement the macro variable approach.  The concern was the amount of time it would take to look up each value in the sasmsgl approach.
+
+If we need to change this approach, the good news is that it is all handled in the SAS code (and accompanying xslt style sheets) on the backend.
+
+## Editing Portal Layout
+
+There has been a request to allow the user to edit the layout of their portal pages.  Will have to research how much work this will be.
+
+## Editing Portlet Content
+
+There has been a request to allow the user to edit content.  This will require "property" pages for each type of portlet.
+
+The approach will be to have a property sheet per portlet type (generated according to the rules listed above in the Generation section) and then a "save" stored process which will take the content of the form and apply it.
+
+There are some easy ones, like the Display URL portlet, that only takes limited properties.   There are others that take lists which will be more difficult, but should be do-able.  There are some, like SAS Stored Process and Report, portlets that allow for navigation of the SAS Folder tree to select a stored process or report.  This will be more difficult and the first pass will simply just allow the user to enter the path to the report or stored process as a text string.
+
+The editing has to handle 2 cases:
+
+1. The case where all the properties already exist on the portlet definition
+2. The case where some/all of the properties have not already been defined.
+
+Number 2 is more difficult as it will require creating content from scratch.
+
+## New Users
+
+It looks to me like when a New User first enters the existing SAS ID Portal, a copy of a portal template is made for that user.  This has to be researched and some form of implementation done.   Note that because the entire page is being generated now on entry to the URL, we can do this population at that point of no information exists for that user.
+
+

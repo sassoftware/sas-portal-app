@@ -189,7 +189,7 @@ The SAS Information Delivery Portal currently supports these categories of objec
 | Portlet | SAS Report | 1 | tbd | no | no | no |
 | Portlet | SAS Stored Process | available | tbd | no | no | no |
 | Portlet | Shared Alerts | no | no | no | no | no |
-| Portlet | URL Display Portlet | available | tbd | no | no | no |
+| Portlet | URL Display Portlet | available | tbd | no | no | available |
 | Portlet | WebDav Content | no | no | no | no | no |
 | Portlet | WebDav Graph | no | no | no | no | no |
 | Portlet | WebDav Navigator | no | no | no | no | no |
