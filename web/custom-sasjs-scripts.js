@@ -331,16 +331,17 @@ function injectStyles() {
      */
 
     const theme = document.getElementById('sastheme').innerHTML;
-
+    // Get the theme path
+    const themePath = theme.substring(theme.indexOf("_") + 1);
          var headTag = document.getElementsByTagName('head')[0]
          const linkforSASComponentsCSSfile = document.createElement("link");
-         linkforSASComponentsCSSfile.href = '/'+theme+'/themes/default/styles/sasComponents_FF_5.css'
+         linkforSASComponentsCSSfile.href = '/'+theme+'/themes/'+themePath+'/styles/sasComponents_FF_5.css'
          linkforSASComponentsCSSfile.type = 'text/css'
          linkforSASComponentsCSSfile.rel = 'stylesheet'
          headTag.appendChild(linkforSASComponentsCSSfile);
 
          const linkforSASStyleCSSfile = document.createElement("link");
-         linkforSASStyleCSSfile.href = '/'+theme+'/themes/default/styles/sasStyle.css'
+         linkforSASStyleCSSfile.href = '/'+theme+'/themes/'+themePath+'/styles/sasStyle.css'
          linkforSASStyleCSSfile.type = 'text/css'
          linkforSASStyleCSSfile.rel = 'stylesheet'
          headTag.appendChild(linkforSASStyleCSSfile);
