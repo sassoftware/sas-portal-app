@@ -3,6 +3,7 @@
 
 <xsl:param name="appLocEncoded"></xsl:param>
 <xsl:param name="sastheme">SASTheme_default</xsl:param>
+<xsl:variable name="sasthemePath"><xsl:value-of select="substring-after($sastheme,'_')"/></xsl:variable>
 
 <xsl:param name="portletEditContentTitle">Edit Portlet Content</xsl:param>
 
@@ -18,7 +19,7 @@
 <xsl:template match="PSPortlet">
 
 <!-- Banner -->
-<div id="banner" class="banner_container"><xsl:attribute name="style">background-image:url(/<xsl:value-of select="$sastheme"/>/themes/default/images/BannerBackground.gif</xsl:attribute>
+<div id="banner" class="banner_container"><xsl:attribute name="style">background-image:url(/<xsl:value-of select="$sastheme"/>/themes/<xsl:value-of select="$sasthemePath"/>/images/BannerBackground.gif</xsl:attribute>
     <div class="banner_utilitybar_overlay">&#160;</div>
     <table class="banner_utilitybar" cellpadding="0" cellspacing="0" width="100%">
       <tbody><tr valign="top">

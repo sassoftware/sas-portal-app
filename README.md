@@ -58,8 +58,8 @@ Other goals of this implementation are:
 - Modify the appserver_autoexec_usermods.sas file of the SAS Application Server context selected on import to add the following lines:
 <pre>%let portalAppDir=this repo directory;</pre>
 where you will replace ''this repo directory'' with the directory that you did the git clone to create.
-<pre>%let appLoc=the folder where the application package was installed to</pre>
-where you will replace ''the folder where the application package was installed to'' with the folder path, ex. /System/Applications/SAS Portal App.  **NOTE:** This path must match the value specified on the web server install for sasjsAppLoc!
+<pre>%let appLoc=/System/Applications/SAS Portal App;</pre>
+where you will replace '/System/Applications/SAS Portal App' (which is the default) with the SAS Metadata folder path that you installed the package contents to.  **NOTE:** This path must match the value specified on the web server install for sasjsAppLoc!
 
 - **NOTE:** If your stored process server instances are already running, you will need to restart them to pick up the appserver_autoexec_usermods.sas updates.
 

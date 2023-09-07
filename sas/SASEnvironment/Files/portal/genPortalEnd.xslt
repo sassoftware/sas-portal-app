@@ -2,6 +2,7 @@
 <xsl:output method="html"/>
 
 <xsl:param name="sastheme">SASTheme_default</xsl:param>
+<xsl:variable name="sasthemePath"><xsl:value-of select="substring-after($sastheme,'_')"/></xsl:variable>
 
 <!-- Strings to be localized -->
 
