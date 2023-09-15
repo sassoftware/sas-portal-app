@@ -12,12 +12,25 @@
 %if (%symexist(setupLoaded)=0) %then %do;
 	%macro setupPortalGen;
 
+proc printto log="/tmp/setup.log";
+run;
+
 		/*
 		 *  If the user has specified overrides, include them now.
 		 */
-		%let userSetup=&SYSINCLUDEFILEDIR./setup_usermods.sas;
+                %global sasDir sasenvDir filesDir jobsDir stepsDir macroDir;
 
-		%if %sysfunc(fileexist(&userSetup.)) %then %do;  
+                %let sasDir=&portalAppDir./sas;
+                %let sasenvDir=&sasDir./SASEnvironment;
+                %let filesDir=&sasenvDir./Files;
+                %let jobsDir=&sasenvDir./SASCode/Jobs;
+                %let stepsDir=&sasenvDir./SASCode/Steps;
+                %let macroDir=&sasenvDir./SASMacro;
+
+		%let userSetup=&SASDir./setup_usermods.sas;
+
+		%if %sysfunc(fileexist(&userSetup.)) %then %do; 
+%put loading user setup file, &userSetup;
 		  %inc "&userSetup.";
 		  %end;
 
@@ -39,14 +52,17 @@
 		%let appLocEncoded=%sysfunc(URLencode(&apploc./));
 
                 %if (%SYMEXIST(sastheme)=0) %then %do;
-
+%put sastheme definition doest not exist, defining it now.;
                     /*
                      *  If a Default Theme was not set in the usermods file, set it now.
                      */
                     %global sastheme;
                     %let sastheme=SASTheme_default;
                     %end;
-
+%put sastheme=&sastheme.;
+                    
+proc printto log=log;
+run;
                 /*
                  *  Load the appropriate localizations
                  */
@@ -69,6 +85,12 @@
                         %end;
 
                     %end;
+
+                /*
+                 *  Add any autocall macros
+                 */
+
+                options insert=(sasautos="&macroDir.");
 
 		/*
 		 *  Set an indicator that this setup program has already been done

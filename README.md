@@ -113,6 +113,22 @@ The following legend is used for each of the tables below.
 |  <number>      | See the numbered item in the notes following that table |
 
 
+### Custom Themes support
+
+It is understood that many customers have created a custom theme and used this with the SAS Information Delivery Portal.  
+
+For reference, here is the SAS Documentationg page that describes defining and deploying a new theme: https://go.documentation.sas.com/doc/en/bicdc/9.4/bimtag/p1i3y59kfgz9ygn1ft7ykjjt120x.htm.
+
+Here are the capabilities of the custom theme support and their roadmap.
+
+
+| Activity | Method | Support |
+| ------ | ------ |
+|  Change colors  |  Change existing key value | yes  |
+|  Change graphics | Replacing existing file | yes   |
+|  Change graphics | Change File attribute in VTL image entry | no   |
+|  Change Theme Templates |  Edit template files | no   |
+
 ### Toolbar Support
 
 The existing SAS Information Delivery Portal has the following capabilities in the toolbar. 

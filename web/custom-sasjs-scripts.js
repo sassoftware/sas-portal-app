@@ -334,17 +334,30 @@ function injectStyles() {
     // Get the theme path
     const themePath = theme.substring(theme.indexOf("_") + 1);
          var headTag = document.getElementsByTagName('head')[0]
-         const linkforSASComponentsCSSfile = document.createElement("link");
-         linkforSASComponentsCSSfile.href = '/'+theme+'/themes/'+themePath+'/styles/sasComponents_FF_5.css'
-         linkforSASComponentsCSSfile.type = 'text/css'
-         linkforSASComponentsCSSfile.rel = 'stylesheet'
-         headTag.appendChild(linkforSASComponentsCSSfile);
 
          const linkforSASStyleCSSfile = document.createElement("link");
          linkforSASStyleCSSfile.href = '/'+theme+'/themes/'+themePath+'/styles/sasStyle.css'
          linkforSASStyleCSSfile.type = 'text/css'
          linkforSASStyleCSSfile.rel = 'stylesheet'
          headTag.appendChild(linkforSASStyleCSSfile);
+
+         const linkforSASComponentsCSSfile = document.createElement("link");
+         linkforSASComponentsCSSfile.href = '/'+theme+'/themes/'+themePath+'/styles/sasComponents_FF_5.css'
+         linkforSASComponentsCSSfile.type = 'text/css'
+         linkforSASComponentsCSSfile.rel = 'stylesheet'
+         headTag.appendChild(linkforSASComponentsCSSfile);
+
+         const linkforPortalStyleCSSfile = document.createElement("link");
+         linkforPortalStyleCSSfile.href = '/'+theme+'/themes/'+themePath+'/styles/Portal.css'
+         linkforPortalStyleCSSfile.type = 'text/css'
+         linkforPortalStyleCSSfile.rel = 'stylesheet'
+         headTag.appendChild(linkforPortalStyleCSSfile);
+
+         const linkforCustomStyleCSSfile = document.createElement("link");
+         linkforCustomStyleCSSfile.href = '/'+theme+'/themes/'+themePath+'/styles/custom.css'
+         linkforCustomStyleCSSfile.type = 'text/css'
+         linkforCustomStyleCSSfile.rel = 'stylesheet'
+         headTag.appendChild(linkforCustomStyleCSSfile);
 
 }
 

@@ -44,7 +44,7 @@
         <td nowrap="" id="bantitle" class="banner_title"><xsl:value-of select="$portletEditContentTitle"/></td>
         <td id="banbullet" class="banner_bullet">•</td>
         <td nowrap="" id="bantitle2" class="banner_secondaryTitle"><xsl:value-of select="@Name"/></td>
-        <td align="right" id="banlogo" class="banner_logo" width="100%"><img src="logo.gif" width="62" height="24" border="0" alt=""/></td>
+        <td align="right" id="banlogo" class="banner_logo" width="100%"><img width="62" height="24" border="0" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sastheme"/>/themes/<xsl:value-of select="$sasthemePath"/>/images/logo.gif</xsl:attribute></img></td>
         <td class="banner_logoPadding">&#160;</td>
       </tr>
     </tbody>

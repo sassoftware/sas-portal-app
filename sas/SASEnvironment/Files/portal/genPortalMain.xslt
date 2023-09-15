@@ -36,6 +36,8 @@
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
 
 <xsl:template match="/" name="main">
+
+<xsl:message>genPortalMain: using SAS Theme: <xsl:value-of select="$sastheme"/></xsl:message>
  
 <!-- pass back the theme to use -->
 
@@ -50,6 +52,10 @@
     <div id="banner" class="banner_container"><xsl:attribute name="style">background-image:url(/<xsl:value-of select="$sastheme"/>/themes/<xsl:value-of select="$sasthemePath"/>/images/BannerBackground.gif</xsl:attribute>
 
          <xsl:call-template name="Banner"/>
+
+		<a name="skipBanner"></a>
+		<!-- Page Menus -->
+		<a href="pageTabs_skipTabMenu"><xsl:attribute name="title"><xsl:value-of select="pageTabs_skipTabMenuTitle"/></xsl:attribute></a> 
 
          <div id="tabs">
 
@@ -178,7 +184,9 @@
 					</tbody>
          			</table>
 			</span>
+                        <a name="globalMenuBar_skipMenuBar"></a> 
 			</td>
+                        <td width="1%">&#160;</td>
 			</tr>
 		</tbody>
 		</table>
@@ -195,9 +203,6 @@
 			</tr>
 			</tbody>
 			</table>
-		<a name="skipBanner"></a>
-		<!-- Page Menus -->
-		<a href="pageTabs_skipTabMenu"><xsl:attribute name="title"><xsl:value-of select="pageTabs_skipTabMenuTitle"/></xsl:attribute></a> 
 
 </xsl:template>
 
@@ -216,7 +221,7 @@
 
    <xsl:for-each select="GetMetadataObjects/Objects/Group/Members/PSPortalPage">
 
-           <td  class="BannerTabMenuTabCell portalBannerTabMenuTabCell" style="vertical-align: bottom">
+           <td  class="buttonContainer BannerTabMenuTabCell portalBannerTabMenuTabCell" style="vertical-align: bottom">
                 <button class="tab-button BannerTabButtonCenter" style="border-bottom: none">
                       <xsl:attribute name="onclick">showTab(event, '<xsl:value-of select="@Id"/>')</xsl:attribute>
                       <xsl:if test="position() = 1">
@@ -569,16 +574,16 @@
                                 <td nowrap="" valign="middle"><i><font size="1"> </font></i></td>
                                 <td></td>
                                 <td nowrap="" valign="middle">
-								<img src="images/PortletPipe.gif" alt="" width="1" height="15" valign="middle" border="0"/>
+								<img alt="" width="1" height="15" valign="middle" border="0"><xsl:attribute name="src">/<xsl:value-of select="$sastheme"/>/themes/<xsl:value-of select="$sasthemePath"/>/images/PortletPipe.gif</xsl:attribute></img>
 								</td>
 								<td nowrap="" valign="middle">
 								<!--
 								<xsl:variable name="editLink" select="concat('/SASStoredProcess/do?_program=',$appLocEncoded,'services%2FeditPortletContents&amp;id=',$portletId,'&amp;portletType=',$portletType)"/>
                                                                 -->
-								<xsl:variable name="editLink" select="concat('editPortletContents.html?id=',$portletId,'&amp;portletType=',$portletType)"/>
+								<xsl:variable name="editLink" select="concat('editPortletContents.html?id=',$portletId,'&amp;portletType=',$portletType,'&amp;v=3')"/>
 
 										<a target="_self" onclick="editPortlet"><xsl:attribute name="href"><xsl:value-of select="$editLink"/></xsl:attribute>
-                                        <img src="images/PortletNote.gif" valign="middle" border="0"><xsl:attribute name="alt"><xsl:value-of select="$portletEditContent"/></xsl:attribute><xsl:attribute name="title"><xsl:value-of select="$portletEditContent"/></xsl:attribute></img>
+                                        <img valign="middle" border="0"><xsl:attribute name="src">/<xsl:value-of select="$sastheme"/>/themes/<xsl:value-of select="$sasthemePath"/>/images/PortletNote.gif</xsl:attribute><xsl:attribute name="alt"><xsl:value-of select="$portletEditContent"/></xsl:attribute><xsl:attribute name="title"><xsl:value-of select="$portletEditContent"/></xsl:attribute></img>
                                         </a>
 								</td>
 							</tr>
