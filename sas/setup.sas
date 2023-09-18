@@ -52,7 +52,7 @@
                      *  If a Default Theme was not set in the usermods file, set it now.
                      */
                     %global sastheme;
-                    %let sastheme=SASTheme_default;
+                    %let sastheme=default;
                     %end;
                 /*
                  *  Load the appropriate localizations

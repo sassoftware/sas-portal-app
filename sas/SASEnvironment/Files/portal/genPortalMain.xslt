@@ -2,8 +2,9 @@
 
 <xsl:output method="html" encoding="UTF-8"/>
 
-<xsl:param name="sastheme">SASTheme_default</xsl:param>
-<xsl:variable name="sasthemePath"><xsl:value-of select="substring-after($sastheme,'_')"/></xsl:variable>
+<xsl:param name="sastheme">default</xsl:param>
+<xsl:variable name="sasthemeContextRoot">SASTheme_<xsl:value-of select="$sastheme"/></xsl:variable>
+
 <xsl:param name="appLocEncoded"></xsl:param>
 
 <!-- Strings to be localized -->
@@ -49,7 +50,7 @@
     <td valign="top">
     <a href="#skipBanner" title="Skip banner" tabindex="1"></a>
     <!-- Banner -->
-    <div id="banner" class="banner_container"><xsl:attribute name="style">background-image:url(/<xsl:value-of select="$sastheme"/>/themes/<xsl:value-of select="$sasthemePath"/>/images/BannerBackground.gif</xsl:attribute>
+    <div id="banner" class="banner_container"><xsl:attribute name="style">background-image:url(/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/BannerBackground.gif</xsl:attribute>
 
          <xsl:call-template name="Banner"/>
 
@@ -104,56 +105,56 @@
 				<tbody>
 				<tr>
 					<td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
-                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sastheme"/>/themes/<xsl:value-of select="$sasthemePath"/>/images/spacer.gif</xsl:attribute></img>
+                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
 						<!--  Comment out Customize toolbar for now
 						<a id="globalMenuBar_0_anchor" href="#"><xsl:attribute name="title"><xsl:value-of select="$portalCustomizationMenuTitle"/></xsl:attribute>
                                                 <span><xsl:value-of select="$portalCustomizationMenu"/></span>
-						<img class="SimpleMenuBarSubMenuIndicator SimpleMenuBarSubMenuIndicator_Banner_GlobalMenu_Look" src="/$sastheme/themes/<xsl:value-of select="$sasthemePath"/>/images/MenuDownArrowBanner.gif" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sastheme"/>/themes/<xsl:value-of select="$sasthemePath"/>/images/MenuDownArrowBanner.gif</xsl:attribute></img>
+						<img class="SimpleMenuBarSubMenuIndicator SimpleMenuBarSubMenuIndicator_Banner_GlobalMenu_Look" src="/$sastheme/themes/<xsl:value-of select="$sastheme"/>/images/MenuDownArrowBanner.gif" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/MenuDownArrowBanner.gif</xsl:attribute></img>
                                                 </a>
                                                 -->
                                                 <!-- placeholder span, remove if customize uncommented -->
                                                 <span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span>
-                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sastheme"/>/themes/<xsl:value-of select="$sasthemePath"/>/images/spacer.gif</xsl:attribute></img>
+                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
 					</td>
 					<td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
-                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sastheme"/>/themes/<xsl:value-of select="$sasthemePath"/>/images/spacer.gif</xsl:attribute></img>
+                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
 						<span class="SimpleMenuBarSeparator SimpleMenuBarSeparator_Banner_GlobalMenu_Look">|</span>
-                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sastheme"/>/themes/<xsl:value-of select="$sasthemePath"/>/images/spacer.gif</xsl:attribute></img>
+                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
 					</td>
 					<td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
-                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sastheme"/>/themes/<xsl:value-of select="$sasthemePath"/>/images/spacer.gif</xsl:attribute></img>
+                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
                                                 <!-- Comment out Options toolbar 
 						<a id="globalMenuBar_2_anchor" href="#"><xsl:attribute name="title"><xsl:value-of select="$portalOptionsMenuTitle"/></xsl:attribute>
 						<span>l:value-of select="$portalOptionsMenuTitle"/>/span>
-						<img class="SimpleMenuBarSubMenuIndicator SimpleMenuBarSubMenuIndicator_Banner_GlobalMenu_Look" src="/$sastheme/themes/<xsl:value-of select="$sasthemePath"/>/images/MenuDownArrowBanner.gif" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sastheme"/>/themes/<xsl:value-of select="$sasthemePath"/>/images/MenuDownArrowBanner.gif</xsl:attribute></img>
+						<img class="SimpleMenuBarSubMenuIndicator SimpleMenuBarSubMenuIndicator_Banner_GlobalMenu_Look" src="/$sastheme/themes/<xsl:value-of select="$sastheme"/>/images/MenuDownArrowBanner.gif" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/MenuDownArrowBanner.gif</xsl:attribute></img>
 
                                                 -->
                                                 <!-- placeholder span, remove if Options uncommened -->
                                                 <span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span>
-                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sastheme"/>/themes/<xsl:value-of select="$sasthemePath"/>/images/spacer.gif</xsl:attribute></img>
+                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
 					</td>
 					<td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
-                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sastheme"/>/themes/<xsl:value-of select="$sasthemePath"/>/images/spacer.gif</xsl:attribute></img>
+                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
 						<span class="SimpleMenuBarSeparator SimpleMenuBarSeparator_Banner_GlobalMenu_Look">|</span>
-                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sastheme"/>/themes/<xsl:value-of select="$sasthemePath"/>/images/spacer.gif</xsl:attribute></img>
+                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
 					</td>
 					<td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
-                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sastheme"/>/themes/<xsl:value-of select="$sasthemePath"/>/images/spacer.gif</xsl:attribute></img>
+                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
                                                 <!-- Comment out search menu
 						<a id="globalMenuBar_4_anchor" href="#"><xsl:attribute name="title"><xsl:value-of select="$portalSearchMenuTitle"/></xsl:attribute>
 						<span><xsl:value-of select="$portalSearchMenu"/></span></a>
                                                 -->
                                                 <!-- span placeholder, remove if Search uncommented -->
                                                 <span>&#160;&#160;&#160;&#160;&#160;&#160;</span>
-                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sastheme"/>/themes/<xsl:value-of select="$sasthemePath"/>/images/spacer.gif</xsl:attribute></img>
+                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
 					</td>
 					<td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
-                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sastheme"/>/themes/<xsl:value-of select="$sasthemePath"/>/images/spacer.gif</xsl:attribute></img>
+                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
 						<span class="SimpleMenuBarSeparator SimpleMenuBarSeparator_Banner_GlobalMenu_Look">|</span>
-                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sastheme"/>/themes/<xsl:value-of select="$sasthemePath"/>/images/spacer.gif</xsl:attribute></img>
+                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
 					</td>
 					<td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
-                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sastheme"/>/themes/<xsl:value-of select="$sasthemePath"/>/images/spacer.gif</xsl:attribute></img>
+                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
                                                 <!--  Comment out log off menu item
 						<a id="globalMenuBar_6_anchor" href="#"><xsl:attribute name="title"><xsl:value-of select="$portalLogoffMenuTitle"/></xsl:attribute>
 						<span><xsl:value-of select="$portalLogoffMenu"/></span></a>
@@ -161,24 +162,24 @@
 
                                                 <!-- span placeholder, remove if Log Off menu uncommented -->
                                                 <span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span>
-                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sastheme"/>/themes/<xsl:value-of select="$sasthemePath"/>/images/spacer.gif</xsl:attribute></img>
+                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
 					</td>
 					<td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
-                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sastheme"/>/themes/<xsl:value-of select="$sasthemePath"/>/images/spacer.gif</xsl:attribute></img>
+                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
 						<span class="SimpleMenuBarSeparator SimpleMenuBarSeparator_Banner_GlobalMenu_Look">|</span>
-                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sastheme"/>/themes/<xsl:value-of select="$sasthemePath"/>/images/spacer.gif</xsl:attribute></img>
+                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
 					</td>
 					<td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
-                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sastheme"/>/themes/<xsl:value-of select="$sasthemePath"/>/images/spacer.gif</xsl:attribute></img>
+                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
                                                 <!-- Comment out help menu item 
 						<a id="globalMenuBar_8_anchor" href="#"><xsl:attribute name="title"><xsl:value-of select="$portalHelpMenuTitle"/></xsl:attribute>
 						<span><xsl:value-of select="$portalHelpMenu"/></span>
-						<img class="SimpleMenuBarSubMenuIndicator SimpleMenuBarSubMenuIndicator_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sastheme"/>/themes/<xsl:value-of select="$sasthemePath"/>/images/MenuDownArrowBanner.gif</xsl:attribute></img>
+						<img class="SimpleMenuBarSubMenuIndicator SimpleMenuBarSubMenuIndicator_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/MenuDownArrowBanner.gif</xsl:attribute></img>
 						</a>
                                                 -->
                                                 <!-- span placeholder, remove if Help menu item uncommented -->
                                                 <span>&#160;&#160;&#160;&#160;&#160;&#160;</span>
-						<img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sastheme"/>/themes/<xsl:value-of select="$sasthemePath"/>/images/spacer.gif</xsl:attribute></img>
+						<img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
 	         			</td>
 		         		</tr>
 					</tbody>
@@ -197,7 +198,7 @@
 			<td nowrap="" id="bantitle" class="banner_title"><xsl:value-of select="$portalTitle"/></td>
 			<td id="banbullet" class="banner_bullet"></td>
 			<td nowrap="" id="bantitle2" class="banner_secondaryTitle"></td>
-			<td align="right" id="banlogo" class="banner_logo" width="100%"><img width="62" height="24" border="0" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sastheme"/>/themes/<xsl:value-of select="$sasthemePath"/>/images/logo.gif</xsl:attribute></img>
+			<td align="right" id="banlogo" class="banner_logo" width="100%"><img width="62" height="24" border="0" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/logo.gif</xsl:attribute></img>
                         </td>
 			<td class="banner_logoPadding">&#160;</td>
 			</tr>
@@ -574,7 +575,7 @@
                                 <td nowrap="" valign="middle"><i><font size="1"> </font></i></td>
                                 <td></td>
                                 <td nowrap="" valign="middle">
-								<img alt="" width="1" height="15" valign="middle" border="0"><xsl:attribute name="src">/<xsl:value-of select="$sastheme"/>/themes/<xsl:value-of select="$sasthemePath"/>/images/PortletPipe.gif</xsl:attribute></img>
+								<img alt="" width="1" height="15" valign="middle" border="0"><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/PortletPipe.gif</xsl:attribute></img>
 								</td>
 								<td nowrap="" valign="middle">
 								<!--
@@ -583,7 +584,7 @@
 								<xsl:variable name="editLink" select="concat('editPortletContents.html?id=',$portletId,'&amp;portletType=',$portletType,'&amp;v=3')"/>
 
 										<a target="_self" onclick="editPortlet"><xsl:attribute name="href"><xsl:value-of select="$editLink"/></xsl:attribute>
-                                        <img valign="middle" border="0"><xsl:attribute name="src">/<xsl:value-of select="$sastheme"/>/themes/<xsl:value-of select="$sasthemePath"/>/images/PortletNote.gif</xsl:attribute><xsl:attribute name="alt"><xsl:value-of select="$portletEditContent"/></xsl:attribute><xsl:attribute name="title"><xsl:value-of select="$portletEditContent"/></xsl:attribute></img>
+                                        <img valign="middle" border="0"><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/PortletNote.gif</xsl:attribute><xsl:attribute name="alt"><xsl:value-of select="$portletEditContent"/></xsl:attribute><xsl:attribute name="title"><xsl:value-of select="$portletEditContent"/></xsl:attribute></img>
                                         </a>
 								</td>
 							</tr>

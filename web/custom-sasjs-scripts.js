@@ -332,29 +332,29 @@ function injectStyles() {
 
     const theme = document.getElementById('sastheme').innerHTML;
     // Get the theme path
-    const themePath = theme.substring(theme.indexOf("_") + 1);
+    const themeContextRoot = 'SASTheme_'+theme;
          var headTag = document.getElementsByTagName('head')[0]
 
          const linkforSASStyleCSSfile = document.createElement("link");
-         linkforSASStyleCSSfile.href = '/'+theme+'/themes/'+themePath+'/styles/sasStyle.css'
+         linkforSASStyleCSSfile.href = '/'+themeContextRoot+'/themes/'+theme+'/styles/sasStyle.css'
          linkforSASStyleCSSfile.type = 'text/css'
          linkforSASStyleCSSfile.rel = 'stylesheet'
          headTag.appendChild(linkforSASStyleCSSfile);
 
          const linkforSASComponentsCSSfile = document.createElement("link");
-         linkforSASComponentsCSSfile.href = '/'+theme+'/themes/'+themePath+'/styles/sasComponents_FF_5.css'
+         linkforSASComponentsCSSfile.href = '/'+themeContextRoot+'/themes/'+theme+'/styles/sasComponents_FF_5.css'
          linkforSASComponentsCSSfile.type = 'text/css'
          linkforSASComponentsCSSfile.rel = 'stylesheet'
          headTag.appendChild(linkforSASComponentsCSSfile);
 
          const linkforPortalStyleCSSfile = document.createElement("link");
-         linkforPortalStyleCSSfile.href = '/'+theme+'/themes/'+themePath+'/styles/Portal.css'
+         linkforPortalStyleCSSfile.href = '/'+themeContextRoot+'/themes/'+theme+'/styles/Portal.css'
          linkforPortalStyleCSSfile.type = 'text/css'
          linkforPortalStyleCSSfile.rel = 'stylesheet'
          headTag.appendChild(linkforPortalStyleCSSfile);
 
          const linkforCustomStyleCSSfile = document.createElement("link");
-         linkforCustomStyleCSSfile.href = '/'+theme+'/themes/'+themePath+'/styles/custom.css'
+         linkforCustomStyleCSSfile.href = '/'+themeContextRoot+'/themes/'+theme+'/styles/custom.css'
          linkforCustomStyleCSSfile.type = 'text/css'
          linkforCustomStyleCSSfile.rel = 'stylesheet'
          headTag.appendChild(linkforCustomStyleCSSfile);

@@ -1,8 +1,8 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 <xsl:output method="html"/>
 
-<xsl:param name="sastheme">SASTheme_default</xsl:param>
-<xsl:variable name="sasthemePath"><xsl:value-of select="substring-after($sastheme,'_')"/></xsl:variable>
+<xsl:param name="sastheme">default</xsl:param>
+<xsl:variable name="sasthemeContextRoot">SASTheme_<xsl:value-of select="$sastheme"/></xsl:variable>
 
 <!-- Strings to be localized -->
 
