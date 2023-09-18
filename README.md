@@ -123,7 +123,7 @@ Here are the capabilities of the custom theme support and their roadmap.
 
 
 | Activity | Method | Support |
-| ------ | ------ |
+| ------ | ------ | ------ |
 |  Change colors  |  Change existing key value | yes  |
 |  Change graphics | Replacing existing file | yes   |
 |  Change graphics | Change File attribute in VTL image entry | no   |
