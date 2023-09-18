@@ -60,6 +60,13 @@ Other goals of this implementation are:
 where you will replace ''this repo directory'' with the directory that you did the git clone to create.
 <pre>%let appLoc=/System/Applications/SAS Portal App;</pre>
 where you will replace '/System/Applications/SAS Portal App' (which is the default) with the SAS Metadata folder path that you installed the package contents to.  **NOTE:** This path must match the value specified on the web server install for sasjsAppLoc!
+- (optional) Define any variables needed on a per stored process execution
+  - copy the file sas/setup_usermods.sas.template as sas/setup_usermods.sas
+  - add any SAS code necessary to set the variables needed.  For example, to change the SAS theme that will be used, add the following code:
+    <pre>
+    %global sastheme;
+    %let sastheme=SASTheme_mycompany;
+   </pre>
 
 - **NOTE:** If your stored process server instances are already running, you will need to restart them to pick up the appserver_autoexec_usermods.sas updates.
 
