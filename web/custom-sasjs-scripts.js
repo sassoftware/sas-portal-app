@@ -277,9 +277,15 @@ function afterGeneration() {
    *  All pages have a "data-container" that needs to be populated and displayed.
    */
 
-  defaultTab=document.getElementById("default-tab");
+  defaultTabs=document.getElementsByClassName("default-tab");
 
-  if (defaultTab) {
+  
+  if (defaultTabs) {
+
+      // Should only be 1 
+
+      defaultTab=defaultTabs[0];
+
       defaultTab.click();
       }
 
@@ -399,19 +405,43 @@ function showTab(evt, tabName) {
 	tabcontent[i].className = tabcontent[i].className.replace(" active", "");
     }
 
-    // Get all elements representing portal tabs and unselect them
-    // NOTE: I tried to optimize this to only change info on the one that had the selected class
-    //       but because the collection is dynamic, as soon as I modified the class value that
-    //       was used for searching, the length of the collection changed.
+    // Find the cell that is currently active, ie. the table cell that has the active tab in it
 
-    tablinks = document.getElementsByClassName("tab-button");
+    selectedCell=document.querySelector(".BannerTabMenuActiveTabCell");
 
-    numActiveTabs=tablinks.length;
+    /*  Each button container has:
+        - an image for the left side of the tab
+        - a button that has a background image for the center part of the tab
+        - an image for the right side of the tab
 
-    for (i = 0; i < tablinks.length; i++) {
-	tablinks[i].className = tablinks[i].className.replace("BannerTabButtonActive", "BannerTabButtonCenter");
+        All of these have to be changed when changing from active to inactive
 
-    }
+     */
+
+    for (const child of selectedCell.getElementsByTagName('img')) {
+         imgSrc=child.getAttribute('src');
+         child.setAttribute('src',imgSrc.replace('Active',''));
+
+        }
+
+    for (const child of selectedCell.getElementsByTagName('td')) {
+         tdClass=child.getAttribute('class');
+         child.setAttribute('class',tdClass.replace('Active',''));
+
+         /*
+          *  If it has a style attribute, then change the background image also
+          */
+
+         tdStyle=child.getAttribute('style');
+         if (tdStyle) {
+
+            child.setAttribute('style',tdStyle.replace('Active',''));
+
+            
+            }
+        }
+
+    selectedCell.setAttribute('class','BannerTabMenuTabCell');
 
     /*
      * When the page was first generated, any portlets that should have a src tag, were created with a "data-src"
@@ -422,26 +452,69 @@ function showTab(evt, tabName) {
      */
 
     tabDiv=document.getElementById(tabName);
-    matches = tabDiv.querySelectorAll("*[data-src]");
 
-    /*
-     *  Set the src field and remove the data-src attribute so we don't generate it again on subsequent
-     *  visits to this tab.
-     */
+    if (tabDiv) {
 
-    matches.forEach((match) => {
-       match.setAttribute('src',match.getAttribute('data-src'));
-       match.removeAttribute('data-src');
-       });
+	    matches = tabDiv.querySelectorAll("*[data-src]");
+
+	    /*
+	     *  Set the src field and remove the data-src attribute so we don't generate it again on subsequent
+	     *  visits to this tab.
+	     */
+	    if (matches) {
+
+	    matches.forEach((match) => {
+	       match.setAttribute('src',match.getAttribute('data-src'));
+	       match.removeAttribute('data-src');
+	       });
+
+	    }
+       }
 
     // Show the current tab, and add an "active" class to the button that opened the tab
 
     tabDiv.className += " active";
 
     // Change the class settings on the selected object to change the styles applied
+    // The onclick method is on the table that contains the selected tab!
+
     tabButton=evt.currentTarget;
 
-    tabButton.className = tabButton.className.replace("BannerTabButtonCenter", "BannerTabButtonActive");
+    //  The parent of the selected item is the table td entry that contains the button container
+    //  we need to make sure this is updated so we can determine which tab is selected later if it's switched
+
+    tabButton.parentElement.setAttribute('class','BannerTabMenuActiveTabCell');
+
+      /*  Each button container has:
+          - an image for the left side of the tab
+          - a button that has a background image for the center part of the tab
+          - an image for the right side of the tab
+
+          All of these have to be changed when changing from inactive to active
+
+       */
+
+      for (const child of tabButton.getElementsByTagName('img')) {
+           imgSrc=child.getAttribute('src');
+           child.setAttribute('src',imgSrc.replace('.gif','Active.gif'));
+
+          }
+
+      for (const child of tabButton.getElementsByTagName('td')) {
+           tdClass=child.getAttribute('class');
+           child.setAttribute('class',tdClass.replace('BannerTabButton','BannerTabButtonActive'));
+
+           /*
+            *  If it has a style attribute, then change the background image also
+            */
+
+           tdStyle=child.getAttribute('style');
+           if (tdStyle) {
+
+              child.setAttribute('style',tdStyle.replace('.gif','Active.gif'));
+
+              }
+          }
 
 }
 

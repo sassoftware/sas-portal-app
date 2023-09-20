@@ -222,14 +222,126 @@
 
    <xsl:for-each select="GetMetadataObjects/Objects/Group/Members/PSPortalPage">
 
-           <td  class="buttonContainer BannerTabMenuTabCell portalBannerTabMenuTabCell" style="vertical-align: bottom">
-                <button class="tab-button BannerTabButtonCenter" style="border-bottom: none">
-                      <xsl:attribute name="onclick">showTab(event, '<xsl:value-of select="@Id"/>')</xsl:attribute>
-                      <xsl:if test="position() = 1">
-				           <xsl:attribute name="id">default-tab</xsl:attribute>
-      				  </xsl:if>
-                <span><xsl:value-of select="@Name"/></span></button>
-           </td>
+        <xsl:variable name="tabNumberId">page_<xsl:value-of select="position() - 1"/></xsl:variable>
+
+        <td><xsl:attribute name="id"><xsl:value-of select="$tabNumberId"/>_TabCell</xsl:attribute>
+            <xsl:choose>
+            <xsl:when test="position() = 1">
+               <xsl:attribute name="class">BannerTabMenuActiveTabCell</xsl:attribute>
+            </xsl:when>
+            <xsl:otherwise>
+               <xsl:attribute name="class">BannerTabMenuTabCell</xsl:attribute>
+            </xsl:otherwise>
+            </xsl:choose>
+
+                <table border="0" cellspacing="0" cellpadding="0">
+                       <xsl:attribute name="id"><xsl:value-of select="$tabNumberId"/></xsl:attribute><xsl:attribute name="onclick">showTab(event, '<xsl:value-of select="@Id"/>')</xsl:attribute>
+                       <!-- Mark the first tab to display so that the javascript can find it and display it -->
+                       <xsl:choose>
+
+                         <xsl:when test="position() = 1">
+                             <xsl:attribute name="class">buttonContainer default-tab</xsl:attribute>
+                         </xsl:when>
+                         <xsl:otherwise>
+                             <xsl:attribute name="class">buttonContainer</xsl:attribute>
+                         </xsl:otherwise>
+                       </xsl:choose>
+
+                <tbody>
+                        <tr>
+
+                                  <!--  This is a complicated way of doing tabs, but it is done this way so that existing SAS Themes will still properly render -->
+
+                                  <!--  The left part of the tab -->
+
+                                  <td valign="top" align="left">
+                                      <xsl:attribute name="id"><xsl:value-of select="$tabNumberId"/>_l</xsl:attribute>
+                                      <xsl:choose>
+
+                                        <xsl:when test="position() = 1">
+                                            <xsl:attribute name="class">BannerTabButtonLeftActive</xsl:attribute>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:attribute name="class">BannerTabButtonLeft</xsl:attribute>
+                                        </xsl:otherwise>
+                                      </xsl:choose>
+
+                                        <img border="0">
+                                             <xsl:attribute name="id"><xsl:value-of select="$tabNumberId"/>_l_img</xsl:attribute>
+
+                                              <xsl:choose>
+
+						<xsl:when test="position() = 1">
+                                                    <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/BannerTabButtonLeftActive.gif</xsl:attribute>
+						</xsl:when>
+						<xsl:otherwise>
+                                                    <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/BannerTabButtonLeft.gif</xsl:attribute>
+						</xsl:otherwise>
+					      </xsl:choose>
+
+                                        </img>
+                                  </td>
+
+                                  <!-- The center part of the tab -->
+
+                                  <td nowrap="nowrap" align="center">
+
+                                      <xsl:attribute name="id"><xsl:value-of select="$tabNumberId"/>_c</xsl:attribute>
+
+                                      <xsl:choose>
+                                      <xsl:when test="position() = 1">
+                                            <xsl:attribute name="class">BannerTabButtonCenterActive</xsl:attribute>
+                                            <xsl:attribute name="style">background-image: url(&quot;/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/BannerTabButtonCenterActive.gif&quot;);</xsl:attribute>
+                                      </xsl:when>
+                                      <xsl:otherwise>
+                                            <xsl:attribute name="class">BannerTabButtonCenter</xsl:attribute>
+                                            <xsl:attribute name="style">background-image: url(&quot;/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/BannerTabButtonCenter.gif&quot;);</xsl:attribute>
+                                      </xsl:otherwise>
+                                      </xsl:choose>
+
+                                     <button  type="button" style="background-color: transparent;border-style: none;">
+                                           <xsl:attribute name="id"><xsl:value-of select="$tabNumberId"/>_button</xsl:attribute>
+                                            <xsl:attribute name="title"><xsl:value-of select="@Name"/></xsl:attribute>
+
+                                            <span>
+                                                <xsl:attribute name="id"><xsl:value-of select="$tabNumberId"/>_label</xsl:attribute>
+                                                <xsl:value-of select="@Name"/>
+                                            </span>
+                                    </button>
+                                  </td>
+
+                                  <!-- the right part of the tab -->
+
+                                  <td valign="top" align="right">
+                                      <xsl:attribute name="id"><xsl:value-of select="$tabNumberId"/>_r</xsl:attribute>
+                                      <xsl:choose>
+
+                                        <xsl:when test="position() = 1">
+                                            <xsl:attribute name="class">BannerTabButtonRightActive</xsl:attribute>
+                                        </xsl:when>
+                                        <xsl:otherwise>
+                                            <xsl:attribute name="class">BannerTabButtonRight</xsl:attribute>
+                                        </xsl:otherwise>
+                                      </xsl:choose>
+                                     <img alt="" border="0">
+                                             <xsl:attribute name="id"><xsl:value-of select="$tabNumberId"/>_r_img</xsl:attribute>
+                                              <xsl:choose>
+                                                <xsl:when test="position() = 1">
+                                                    <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/BannerTabButtonRightActive.gif</xsl:attribute>
+                                                </xsl:when>
+                                                <xsl:otherwise>
+                                                    <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/BannerTabButtonRight.gif</xsl:attribute>
+                                                </xsl:otherwise>
+                                              </xsl:choose>
+
+                                        </img>
+
+                                  </td>
+
+                        </tr>
+                </tbody>
+                </table>
+        </td>
 
    </xsl:for-each>
    
@@ -237,7 +349,7 @@
    
    </tbody>
    </table>
- 
+
 </xsl:template>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -    
