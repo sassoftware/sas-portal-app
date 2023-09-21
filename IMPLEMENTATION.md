@@ -47,7 +47,8 @@ Thus it seemed most efficient to:
 
 ## Metadata Layout
 
-Most of the effort in the generation process is interacting with the metadata in the SAS Metadata Server and thus understanding the metadata model and how information is stored is critically important.  There are diagrams included in the Powerpoint [ here | implementationDiagrams.pptx ].
+Most of the effort in the generation process is interacting with the metadata in the SAS Metadata Server and thus understanding the metadata model and how information is stored is critically important.  There are diagrams included in the Powerpoint [here](implementationDiagrams.pptx).
+
 ## Content localization
 
 The text fields that are rendered in the html need to be in the locale of the client end user.  Thus, during the html generation, the correct values, in the correct locale, need to be included.
