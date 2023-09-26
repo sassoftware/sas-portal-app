@@ -693,7 +693,7 @@
 								<!--
 								<xsl:variable name="editLink" select="concat('/SASStoredProcess/do?_program=',$appLocEncoded,'services%2FeditPortletContents&amp;id=',$portletId,'&amp;portletType=',$portletType)"/>
                                                                 -->
-								<xsl:variable name="editLink" select="concat('editPortletContents.html?id=',$portletId,'&amp;portletType=',$portletType,'&amp;v=3')"/>
+								<xsl:variable name="editLink" select="concat('editPortletContents.html?id=',$portletId,'&amp;portletType=',$portletType,'&amp;v=5')"/>
 
 										<a target="_self" onclick="editPortlet"><xsl:attribute name="href"><xsl:value-of select="$editLink"/></xsl:attribute>
                                         <img valign="middle" border="0"><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/PortletNote.gif</xsl:attribute><xsl:attribute name="alt"><xsl:value-of select="$portletEditContent"/></xsl:attribute><xsl:attribute name="title"><xsl:value-of select="$portletEditContent"/></xsl:attribute></img>

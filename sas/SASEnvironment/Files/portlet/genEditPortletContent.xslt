@@ -11,7 +11,7 @@
 <xsl:template match="/">
 
   <!-- pass back the theme to use -->
-<div id="sastheme" style="display: none"><xsl:value-of select="$sasthemeContextRoot"/></div>
+<div id="sastheme" style="display: none"><xsl:value-of select="$sastheme"/></div>
 
   <xsl:apply-templates select="GetMetadata/Metadata/PSPortlet"/>
 

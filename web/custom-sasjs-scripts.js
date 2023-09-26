@@ -279,14 +279,18 @@ function afterGeneration() {
 
   defaultTabs=document.getElementsByClassName("default-tab");
 
-  
   if (defaultTabs) {
 
       // Should only be 1 
 
       defaultTab=defaultTabs[0];
 
-      defaultTab.click();
+      if (defaultTab) {
+
+         defaultTab.click();
+
+         }
+
       }
 
   /*
