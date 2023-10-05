@@ -221,6 +221,8 @@
    <tr>
 
    <xsl:for-each select="GetMetadataObjects/Objects/Group/Members/PSPortalPage">
+        <xsl:sort select="Extensions/Extension[@Name='PageRank']/@Value" data-type="number"/>
+        <xsl:sort select="@MetadataCreated" data-type="number"/>
 
         <xsl:variable name="tabNumberId">page_<xsl:value-of select="position() - 1"/></xsl:variable>
 

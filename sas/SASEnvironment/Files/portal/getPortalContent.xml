@@ -1,15 +1,22 @@
+
 <GetMetadataObjects>
    				<ReposId>$METAREPOSITORY</ReposId>
    				<Type>Group</Type>
    				<ns>SAS</ns>
-   				<Flags>404</Flags>
+                                 <!-- 256 = GetMetadata
+                                      128 = XMLSelect
+                                       16 = Include subtypes
+                                        4 =  Template
+                                 67108864 = No timestamp format (used so you can sort the objects by timestamp)
+                                 -->
+   				<Flags>67109268</Flags>
    				<Options>
                      <XMLSelect search="@Name='DESKTOP_PORTALPAGES_GROUP' "/>
                      <Templates>
                         <Group>
                            <Members/>
                         </Group>
-                        <PSPortalPage Id="" Name="" Type="" NumberOfColumns="" NumberOfRows="" PreferredHeight="" PreferredWidth="">
+                        <PSPortalPage Id="" Name="" Type="" NumberOfColumns="" NumberOfRows="" PreferredHeight="" PreferredWidth="" MetadataCreated="">
                             <LayoutComponents/>
                             <Extensions/>
                         </PSPortalPage>

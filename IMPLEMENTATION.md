@@ -49,6 +49,40 @@ Thus it seemed most efficient to:
 
 Most of the effort in the generation process is interacting with the metadata in the SAS Metadata Server and thus understanding the metadata model and how information is stored is critically important.  There are diagrams included in the Powerpoint [here](implementationDiagrams.pptx).
 
+## XSL Usage
+
+XSL (Extensible Stylesheet Language) is used extensively in this implementation.  The 2 main usages are:
+
+1. Generating HTML from a metadata xml response
+2. Generating Metadata Requests (xml output)
+
+This is done by creating an xsl stylesheet (a file ending in xslt) and applying that stylesheet to an input XML file via PROC XSL.  Unfortunately, error handling in PRC XSL is not straightforward:
+
+- if an xsl stylesheet syntax error occurs, proc xsl returns no indication and doesn't create an output file
+- if the stylesheet determines that some piece of information it needs is not set, there is no way to pass back a return code 
+- the proc does not set a return code based on the success or failure of running the stylesheet.
+
+Thus, this usage has to adopt the following conventions:
+
+- if the output xml from proc xsl does not exist after proc execution, assume that a syntax error has occurred.
+- If not a syntax error, always generate an output xml file:
+  - If the stylesheet processing determines a piece of needed information is missing, generate an XML comment starting with ERROR: in the output xml (other xml may also exist in the output file)
+  - If the stylesheet determines there is nothing to do, generate the xml file with just a comment indicating this fact
+  - Otherwise, the generated xml is assumed to be complete and correct.
+
+The existence of the output xml will be verified and that it contains no ERROR: lines in it.  If the file exists and no ERRORS, return a 0 return code.
+
+There is a macro, checkXSLrc, that is used to do this validation and should be called after any proc xsl call.  
+
+Unfortunately, this does add some overhead (ie. the parsing of the resulting xml file), but in most cases the xml or html is not that large that overhead should be substantial.   If such a case arises where the performance overhead is too much, then either:
+
+- don't call the checkXSLrc macro and assume it will always work
+- the xsl should use the <xsl:message terminate="yes"> option to not generate any output (and thus will be quicker to check the result)
+
+For the case where the stylesheet determines that no further processing should be done, and an output file with only in a comment in it is generated, the caller of proc xsl will need to manually perform more checks to see if this is the case, ie. checkxslrc just returns a zero return code, it is up to the coder to determine if the output file indicates there is additional valid content in the output file.
+
+Note that when an XSL error occurs, proc xsl does not return the error messages from the xsl processor.   However, these messages can be found.  On my test systems, the default location is /tmp/sasjava.xxxxx.log, where xxxxx is some generated value.  This file will contain the error messages from the embedded java xsl processor and is critical to diagnose xsl errors.
+
 ## Content localization
 
 The text fields that are rendered in the html need to be in the locale of the client end user.  Thus, during the html generation, the correct values, in the correct locale, need to be included.
