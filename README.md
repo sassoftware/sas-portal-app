@@ -242,12 +242,19 @@ SAS Information Delivery Portal currently supports these layouts.
 
 ### Content Sharing
 
-Content sharing allows a content administrator to create content that can be shared with a group of users.
+Content sharing allows a content administrator to create content that can be shared with a group of users. 
 
-| Content Type | Support |
-| ------ | ------ | 
-| Pages  | yes |
-| Page Templates | tbd |
+For more details on the type of content that can be surfaced and shared through the portal, see https://go.documentation.sas.com/doc/en/bicdc/9.4/biwaag/ag_pages_about.htm.
+
+| Content Type | Subtype | Create | Synchronize | Remove |
+| ------ | ------ | ------ | ------ | ------ |
+| Pages  | Available | yes | yes | tbd |
+| Pages  | Persistent | yes | yes | tbd |
+| Pages  | Default | yes | yes | tbd |
+| Page Templates | N/A | tbd | tbd | tbd |
+
+Synchronize here refers to the concept of determining that there is a new shared content for a user and adding that content to the user's portal view.
+
 
 ## Contributing
 
