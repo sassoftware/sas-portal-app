@@ -210,9 +210,9 @@ The SAS Information Delivery Portal currently supports these categories of objec
 | Portlet | SAS Diagnostics | no | no | no | no | no |
 | Portlet | SAS Navigator | tbd | no | no | no | no |
 | Portlet | SAS Report | 1 | tbd | no | no | no |
-| Portlet | SAS Stored Process | available | tbd | no | no | no |
+| Portlet | SAS Stored Process | available | tbd | tbd | tbd | tbd |
 | Portlet | Shared Alerts | no | no | no | no | no |
-| Portlet | URL Display Portlet | available | tbd | no | no | available |
+| Portlet | URL Display Portlet | available | tbd | tbd | tbd | available |
 | Portlet | WebDav Content | no | no | no | no | no |
 | Portlet | WebDav Graph | no | no | no | no | no |
 | Portlet | WebDav Navigator | no | no | no | no | no |
@@ -239,6 +239,15 @@ SAS Information Delivery Portal currently supports these layouts.
 | By Grid       |  3    | 100% | yes | tbd |
 | By Grid       |  3    | Custom | yes | tbd |
 
+
+### Content Sharing
+
+Content sharing allows a content administrator to create content that can be shared with a group of users.
+
+| Content Type | Support |
+| ------ | ------ | 
+| Pages  | yes |
+| Page Templates | tbd |
 
 ## Contributing
 
