@@ -38,8 +38,6 @@
 
 <xsl:template match="/" name="main">
 
-<xsl:message>genPortalMain: using SAS Theme: <xsl:value-of select="$sastheme"/></xsl:message>
- 
 <!-- pass back the theme to use -->
 
 <div id="sastheme" style="display: none"><xsl:value-of select="$sastheme"/></div>
@@ -209,6 +207,106 @@
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  This section of the templates is for generating a tab
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+<xsl:template name="buildTab">
+  <xsl:param name="tabId"/>
+  <xsl:param name="tabName"/>
+  <xsl:param name="tabPosition"/>
+
+					  <!--  This is a complicated way of doing tabs, but it is done this way so that existing SAS Themes will still properly render -->
+
+					  <!--  The left part of the tab -->
+
+					  <td valign="top" align="left">
+					      <xsl:attribute name="id"><xsl:value-of select="$tabId"/>_l</xsl:attribute>
+					      <xsl:choose>
+
+						<xsl:when test="$tabPosition = 1">
+						    <xsl:attribute name="class">BannerTabButtonLeftActive</xsl:attribute>
+						</xsl:when>
+						<xsl:otherwise>
+						    <xsl:attribute name="class">BannerTabButtonLeft</xsl:attribute>
+						</xsl:otherwise>
+					      </xsl:choose>
+
+						<img border="0">
+						     <xsl:attribute name="id"><xsl:value-of select="$tabId"/>_l_img</xsl:attribute>
+
+						      <xsl:choose>
+
+							<xsl:when test="tabPosition = 1">
+							    <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/BannerTabButtonLeftActive.gif</xsl:attribute>
+							</xsl:when>
+							<xsl:otherwise>
+							    <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/BannerTabButtonLeft.gif</xsl:attribute>
+							</xsl:otherwise>
+						      </xsl:choose>
+
+						</img>
+					  </td>
+
+					  <!-- The center part of the tab -->
+
+					  <td nowrap="nowrap" align="center">
+
+					      <xsl:attribute name="id"><xsl:value-of select="$tabId"/>_c</xsl:attribute>
+
+					      <xsl:choose>
+					      <xsl:when test="tabPosition = 1">
+						    <xsl:attribute name="class">BannerTabButtonCenterActive</xsl:attribute>
+						    <xsl:attribute name="style">background-image: url(&quot;/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/BannerTabButtonCenterActive.gif&quot;);</xsl:attribute>
+					      </xsl:when>
+					      <xsl:otherwise>
+						    <xsl:attribute name="class">BannerTabButtonCenter</xsl:attribute>
+						    <xsl:attribute name="style">background-image: url(&quot;/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/BannerTabButtonCenter.gif&quot;);</xsl:attribute>
+					      </xsl:otherwise>
+					      </xsl:choose>
+
+					     <button  type="button" style="background-color: transparent;border-style: none;">
+						   <xsl:attribute name="id"><xsl:value-of select="$tabId"/>_button</xsl:attribute>
+						    <xsl:attribute name="title"><xsl:value-of select="$tabName"/></xsl:attribute>
+
+						    <span>
+							<xsl:attribute name="id"><xsl:value-of select="$tabId"/>_label</xsl:attribute>
+							<xsl:value-of select="$tabName"/>
+						    </span>
+					    </button>
+					  </td>
+
+					  <!-- the right part of the tab -->
+
+					  <td valign="top" align="right">
+					      <xsl:attribute name="id"><xsl:value-of select="$tabId"/>_r</xsl:attribute>
+					      <xsl:choose>
+
+						<xsl:when test="tabPosition = 1">
+						    <xsl:attribute name="class">BannerTabButtonRightActive</xsl:attribute>
+						</xsl:when>
+						<xsl:otherwise>
+						    <xsl:attribute name="class">BannerTabButtonRight</xsl:attribute>
+						</xsl:otherwise>
+					      </xsl:choose>
+					     <img alt="" border="0">
+						     <xsl:attribute name="id"><xsl:value-of select="$tabId"/>_r_img</xsl:attribute>
+						      <xsl:choose>
+							<xsl:when test="tabPosition = 1">
+							    <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/BannerTabButtonRightActive.gif</xsl:attribute>
+							</xsl:when>
+							<xsl:otherwise>
+							    <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/BannerTabButtonRight.gif</xsl:attribute>
+							</xsl:otherwise>
+						      </xsl:choose>
+
+						</img>
+
+					  </td>
+
+</xsl:template>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   This section of the templates is for generating the list of tabs.
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
@@ -220,133 +318,88 @@
    <tbody>
    <tr>
 
-   <xsl:for-each select="GetMetadataObjects/Objects/Group/Members/PSPortalPage">
-        <xsl:sort select="Extensions/Extension[@Name='PageRank']/@Value" data-type="number"/>
-        <xsl:sort select="@MetadataCreated" data-type="number"/>
+   <!--  Its possible that the user portal information has not been initialized or they don't have any pages, make sure
+         to handle that gracefully.
+   -->
 
-        <xsl:variable name="tabNumberId">page_<xsl:value-of select="position() - 1"/></xsl:variable>
+   <xsl:variable name="numTabs"><xsl:value-of select="count(GetMetadataObjects/Objects/Group/Members/PSPortalPage)"/></xsl:variable>
 
-        <td><xsl:attribute name="id"><xsl:value-of select="$tabNumberId"/>_TabCell</xsl:attribute>
-            <xsl:choose>
-            <xsl:when test="position() = 1">
-               <xsl:attribute name="class">BannerTabMenuActiveTabCell</xsl:attribute>
-            </xsl:when>
-            <xsl:otherwise>
-               <xsl:attribute name="class">BannerTabMenuTabCell</xsl:attribute>
-            </xsl:otherwise>
-            </xsl:choose>
+   <xsl:choose>
 
-                <table border="0" cellspacing="0" cellpadding="0">
-                       <xsl:attribute name="id"><xsl:value-of select="$tabNumberId"/></xsl:attribute><xsl:attribute name="onclick">showTab(event, '<xsl:value-of select="@Id"/>')</xsl:attribute>
-                       <!-- Mark the first tab to display so that the javascript can find it and display it -->
-                       <xsl:choose>
+     <xsl:when test="$numTabs=0">
+          <!-- Build a dummy tab so that something displays -->
+          <xsl:variable name="dummyTabName">ERROR</xsl:variable>
 
-                         <xsl:when test="position() = 1">
-                             <xsl:attribute name="class">buttonContainer default-tab</xsl:attribute>
-                         </xsl:when>
-                         <xsl:otherwise>
-                             <xsl:attribute name="class">buttonContainer</xsl:attribute>
-                         </xsl:otherwise>
-                       </xsl:choose>
+          <xsl:variable name="dummyTabId">0</xsl:variable>
+          <xsl:variable name="dummyContentId">content_<xsl:value-of select="$dummyTabId"/></xsl:variable>
 
+          <td id="0_TabCell" class="BannerTabMenuActiveTabCell">
+
+              <table border="0" cellspacing="0" cellpadding="0" id="0" class="buttonContainer default-tab"><xsl:attribute name="onclick">showTab(event, '<xsl:value-of select="$dummyContentId"/>')</xsl:attribute>
                 <tbody>
-                        <tr>
-
-                                  <!--  This is a complicated way of doing tabs, but it is done this way so that existing SAS Themes will still properly render -->
-
-                                  <!--  The left part of the tab -->
-
-                                  <td valign="top" align="left">
-                                      <xsl:attribute name="id"><xsl:value-of select="$tabNumberId"/>_l</xsl:attribute>
-                                      <xsl:choose>
-
-                                        <xsl:when test="position() = 1">
-                                            <xsl:attribute name="class">BannerTabButtonLeftActive</xsl:attribute>
-                                        </xsl:when>
-                                        <xsl:otherwise>
-                                            <xsl:attribute name="class">BannerTabButtonLeft</xsl:attribute>
-                                        </xsl:otherwise>
-                                      </xsl:choose>
-
-                                        <img border="0">
-                                             <xsl:attribute name="id"><xsl:value-of select="$tabNumberId"/>_l_img</xsl:attribute>
-
-                                              <xsl:choose>
-
-						<xsl:when test="position() = 1">
-                                                    <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/BannerTabButtonLeftActive.gif</xsl:attribute>
-						</xsl:when>
-						<xsl:otherwise>
-                                                    <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/BannerTabButtonLeft.gif</xsl:attribute>
-						</xsl:otherwise>
-					      </xsl:choose>
-
-                                        </img>
-                                  </td>
-
-                                  <!-- The center part of the tab -->
-
-                                  <td nowrap="nowrap" align="center">
-
-                                      <xsl:attribute name="id"><xsl:value-of select="$tabNumberId"/>_c</xsl:attribute>
-
-                                      <xsl:choose>
-                                      <xsl:when test="position() = 1">
-                                            <xsl:attribute name="class">BannerTabButtonCenterActive</xsl:attribute>
-                                            <xsl:attribute name="style">background-image: url(&quot;/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/BannerTabButtonCenterActive.gif&quot;);</xsl:attribute>
-                                      </xsl:when>
-                                      <xsl:otherwise>
-                                            <xsl:attribute name="class">BannerTabButtonCenter</xsl:attribute>
-                                            <xsl:attribute name="style">background-image: url(&quot;/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/BannerTabButtonCenter.gif&quot;);</xsl:attribute>
-                                      </xsl:otherwise>
-                                      </xsl:choose>
-
-                                     <button  type="button" style="background-color: transparent;border-style: none;">
-                                           <xsl:attribute name="id"><xsl:value-of select="$tabNumberId"/>_button</xsl:attribute>
-                                            <xsl:attribute name="title"><xsl:value-of select="@Name"/></xsl:attribute>
-
-                                            <span>
-                                                <xsl:attribute name="id"><xsl:value-of select="$tabNumberId"/>_label</xsl:attribute>
-                                                <xsl:value-of select="@Name"/>
-                                            </span>
-                                    </button>
-                                  </td>
-
-                                  <!-- the right part of the tab -->
-
-                                  <td valign="top" align="right">
-                                      <xsl:attribute name="id"><xsl:value-of select="$tabNumberId"/>_r</xsl:attribute>
-                                      <xsl:choose>
-
-                                        <xsl:when test="position() = 1">
-                                            <xsl:attribute name="class">BannerTabButtonRightActive</xsl:attribute>
-                                        </xsl:when>
-                                        <xsl:otherwise>
-                                            <xsl:attribute name="class">BannerTabButtonRight</xsl:attribute>
-                                        </xsl:otherwise>
-                                      </xsl:choose>
-                                     <img alt="" border="0">
-                                             <xsl:attribute name="id"><xsl:value-of select="$tabNumberId"/>_r_img</xsl:attribute>
-                                              <xsl:choose>
-                                                <xsl:when test="position() = 1">
-                                                    <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/BannerTabButtonRightActive.gif</xsl:attribute>
-                                                </xsl:when>
-                                                <xsl:otherwise>
-                                                    <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/BannerTabButtonRight.gif</xsl:attribute>
-                                                </xsl:otherwise>
-                                              </xsl:choose>
-
-                                        </img>
-
-                                  </td>
-
-                        </tr>
+                   <tr>
+                                   <xsl:call-template name="buildTab">
+                                      <xsl:with-param name="tabId"><xsl:value-of select="$dummyTabId"/></xsl:with-param>
+                                      <xsl:with-param name="tabName"><xsl:value-of select="$dummyTabName"/></xsl:with-param>
+                                      <xsl:with-param name="tabPosition"><xsl:value-of select="1"/></xsl:with-param>
+                                   </xsl:call-template>
+                   </tr>
                 </tbody>
-                </table>
-        </td>
+              </table>
+          </td>
 
-   </xsl:for-each>
+     </xsl:when>
+
+     <xsl:otherwise>
    
+	   <xsl:for-each select="GetMetadataObjects/Objects/Group/Members/PSPortalPage">
+		<xsl:sort select="Extensions/Extension[@Name='PageRank']/@Value" data-type="number"/>
+		<xsl:sort select="@MetadataCreated" data-type="number"/>
+
+		<xsl:variable name="tabNumberId">page_<xsl:value-of select="position() - 1"/></xsl:variable>
+
+		<td><xsl:attribute name="id"><xsl:value-of select="$tabNumberId"/>_TabCell</xsl:attribute>
+		    <xsl:choose>
+		    <xsl:when test="position() = 1">
+		       <xsl:attribute name="class">BannerTabMenuActiveTabCell</xsl:attribute>
+		    </xsl:when>
+		    <xsl:otherwise>
+		       <xsl:attribute name="class">BannerTabMenuTabCell</xsl:attribute>
+		    </xsl:otherwise>
+		    </xsl:choose>
+
+			<table border="0" cellspacing="0" cellpadding="0">
+			       <xsl:attribute name="id"><xsl:value-of select="$tabNumberId"/></xsl:attribute><xsl:attribute name="onclick">showTab(event, '<xsl:value-of select="@Id"/>')</xsl:attribute>
+			       <!-- Mark the first tab to display so that the javascript can find it and display it -->
+			       <xsl:choose>
+
+				 <xsl:when test="position() = 1">
+				     <xsl:attribute name="class">buttonContainer default-tab</xsl:attribute>
+				 </xsl:when>
+				 <xsl:otherwise>
+				     <xsl:attribute name="class">buttonContainer</xsl:attribute>
+				 </xsl:otherwise>
+			       </xsl:choose>
+
+			<tbody>
+				<tr>
+                                   <xsl:call-template name="buildTab">
+                                      <xsl:with-param name="tabId"><xsl:value-of select="$tabNumberId"/></xsl:with-param>
+                                      <xsl:with-param name="tabName"><xsl:value-of select="@Name"/></xsl:with-param>
+                                      <xsl:with-param name="tabPosition"><xsl:value-of select="position()"/></xsl:with-param>
+                                   </xsl:call-template>
+
+				</tr>
+			</tbody>
+			</table>
+		</td>
+
+	   </xsl:for-each>
+  
+        </xsl:otherwise>
+
+        </xsl:choose>
+ 
    </tr>
    
    </tbody>
@@ -362,8 +415,22 @@
 
 <xsl:template name="genTabContent">
 
+     
      <div id="pages">
-       <xsl:apply-templates select="GetMetadataObjects/Objects/Group/Members/PSPortalPage"/>
+
+       <xsl:variable name="numTabs"><xsl:value-of select="count(GetMetadataObjects/Objects/Group/Members/PSPortalPage)"/></xsl:variable>
+
+       <xsl:choose>
+         <xsl:when test="$numTabs=0">
+            <xsl:call-template name="buildErrorPage"/>
+         </xsl:when>
+
+         <xsl:otherwise>
+           <xsl:apply-templates select="GetMetadataObjects/Objects/Group/Members/PSPortalPage"/>
+         </xsl:otherwise>
+
+       </xsl:choose>
+
      </div>
 
 </xsl:template>
@@ -373,6 +440,17 @@
 <xsl:template match="*">
 
 <p>hit default template</p>
+
+</xsl:template>
+
+<xsl:template name="PortalPageLink">
+
+<!-- TODO: Figure out how to link to another portal page, select the tab and show the page content 
+     Something like this is needed to be added to the line below...
+     <xsl:attribute name="href">#<xsl:value-of select="@Id"/></xsl:attribute>
+-->
+
+<a><xsl:attribute name="href"></xsl:attribute><xsl:value-of select="@Name"/></a>
 
 </xsl:template>
 
@@ -425,7 +503,19 @@
 	             <xsl:if test="position() > 1">
 	             <tr>
 	             <td class="portletEntry" valign="top">
-	             <xsl:apply-templates  select="."/>
+
+                     <!-- The user can make a bookmark to Portal Page.  If we just apply the templates
+                          to the current entry, it will try to create a new page div in the output html.
+                          In this case, we simply want to make a link to the right tab for this referenced portal page.
+                     -->
+                     <xsl:choose>
+                         <xsl:when test="name(.)='PSPortalPage'">
+                            <xsl:call-template name="PortalPageLink"/>
+                         </xsl:when>
+                         <xsl:otherwise>
+         	             <xsl:apply-templates  select="."/>
+                         </xsl:otherwise>
+                     </xsl:choose>
 	             </td>
 	             </tr>
 	             </xsl:if>
@@ -650,6 +740,17 @@
 
 </xsl:template>
 
+<xsl:template name="buildPlaceholderPortlet">
+
+  <xsl:param name="portletName"/>
+  <!-- Placeholder porlets seem to be put in place to occupy the space in the layout -->
+  <!-- So that the formatting comes out correctly, need to build the table but hide it-->
+  <table cellpadding="2" cellspacing="0" width="100%" style="border:none">
+         <th align="left" style="border:none;background:transparent;color:transparent"><xsl:value-of select="$portletName"/></th>
+         <xsl:call-template name="emptyPortlet"/>
+  </table>
+</xsl:template>
+
 <xsl:template match="PSPortlet">
 
    <xsl:variable select="@Name" name="portletName"/>
@@ -660,15 +761,10 @@
    <xsl:choose>     
 
 	   <xsl:when test="@Name = 'PlaceHolder'">
-	    <!-- Placeholder porlets seem to be put in place to occupy the space in the layout -->
-	    <!-- So that the formatting comes out correctly, need to build the table but hide it-->
+		    <xsl:call-template name="buildPlaceholderPortlet">
 
-		   <table cellpadding="2" cellspacing="0" width="100%" style="border:none">
-   			<th align="left" style="border:none;background:transparent;color:transparent">
-	   			<xsl:value-of select="$portletName"/>
-   			</th>
-    		<xsl:call-template name="emptyPortlet"/>
-			</table>
+		       <xsl:with-param name="portletName"><xsl:value-of select="$portletName"/></xsl:with-param>
+		    </xsl:call-template>
 
 		</xsl:when>
 		<xsl:otherwise>
@@ -792,6 +888,27 @@
 	   </table>
 	   
 	   </div>
+</xsl:template>
+
+<!-- Build an ERROR Page -->
+
+<xsl:template name="buildErrorPage">
+
+           <div class="tabcontent" id="content_0">
+           <!-- table cellpadding="2" cellspacing="0" width="100%" class="portletTableBorder" -->
+           <table cellpadding="2" cellspacing="0" width="100%">
+
+                <tr valign="top">
+                <td width="100%">
+
+                   <b>No Portal content exists for this user.</b>
+
+                </td>
+                </tr>
+
+           </table>
+
+           </div>
 </xsl:template>
 
 </xsl:stylesheet>
