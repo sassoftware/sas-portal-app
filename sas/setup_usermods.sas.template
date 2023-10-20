@@ -5,6 +5,6 @@
  *        global scope, ie. %global xxxx; where xxxx is the macro variable name.
  *        For example, to change the default SAS theme to use, add the following code:
  *         %global sastheme;
- *         %let sastheme=SASTheme_mycompany;
+ *         %let sastheme=mycompany;
  */
  
