@@ -439,7 +439,7 @@
 
 <xsl:template match="*">
 
-<p>hit default template</p>
+<p>hit default template, for object <xsl:value-of select="name(.)"/>:<xsl:value-of select="@Id"/></p>
 
 </xsl:template>
 
@@ -458,6 +458,24 @@
 
 <a><xsl:attribute name="href"><xsl:value-of select="@URI"/></xsl:attribute><xsl:value-of select="@Name"/></a>
   
+</xsl:template>
+
+<!-- Template to handle a reference to a stored process (typically in bookmarks) -->
+
+<xsl:template match="ClassifierMap[@TransformRole='StoredProcess']">
+
+   <xsl:variable name="stpProgram">
+                <xsl:for-each select="Trees//Tree">
+                        <xsl:sort select="position()" order="descending"/>
+                        <xsl:text>/</xsl:text><xsl:value-of select="@Name"/>
+                </xsl:for-each>
+                <xsl:text>/</xsl:text><xsl:value-of select="@Name"/>
+   </xsl:variable>
+
+   <xsl:variable name="stpURI"><xsl:text>/SASStoredProcess/do?_program=</xsl:text><xsl:value-of select="$stpProgram"/></xsl:variable>
+
+   <a><xsl:attribute name="href"><xsl:value-of select="$stpURI"/></xsl:attribute><xsl:value-of select="@Name"/></a>
+
 </xsl:template>
 
 <!-- Template to handle a reference to a Report (typically in bookmarks)-->
