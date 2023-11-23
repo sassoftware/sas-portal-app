@@ -47,28 +47,89 @@ Other goals of this implementation are:
 
 ### SAS Stored Processes
 
-- As a SAS Administrator, import the packages/sas-portal-app-services.spk file either through SAS Management Console or through the CLI.
+#### SAS Stored Process Metadata
+
+As a SAS Administrator, import the packages/sas-portal-app-services.spk file either through SAS Management Console or through the CLI.
   - By default, the package will be installed into /System/Applications/SAS Portal App
   - When importing:
     - Select a SAS Application Server Context to run the stored process
         - NOTE: The stored process server definition that is chosen must have sufficient capacity to support the scale of the number of users that you expect to use the application.
         - It may be desirable to create a new SAS Application Server Context for running this application, this will allow you to control access, scale and configuration separate from other uses.
         - **NOTE:** If your users will be running their browsers in languages that contain characters outside of the latin1 character set, you will need to make sure the Stored Process Server is running with an encoding of UTF-8.
-    - Map the Source Directory to the sas directory in this repo.
-- Modify the appserver_autoexec_usermods.sas file of the SAS Application Server context selected on import to add the following lines:
-<pre>%let portalAppDir=this repo directory;</pre>
-where you will replace ''this repo directory'' with the directory that you did the git clone to create.
-<pre>%let appLoc=/System/Applications/SAS Portal App;</pre>
-where you will replace '/System/Applications/SAS Portal App' (which is the default) with the SAS Metadata folder path that you installed the package contents to.  **NOTE:** This path must match the value specified on the web server install for sasjsAppLoc!
-- (optional) Define any variables needed on a per stored process execution
-  - copy the file sas/setup_usermods.sas.template as sas/setup_usermods.sas
-  - add any SAS code necessary to set the variables needed.  For example, to change the SAS theme that will be used to one called "mycompanytheme", add the following code:
+    - When mapping the source code directory, create a new Source Directory that maps to the relative path in the input package.
+#### Server Context File System Directory
+
+In the SAS Application Server Context file system directory that is related to the Server context selected in the mapping step:
+  - cd to the directory, ex:
+<pre>
+    cd /opt/sas/SASConfig/Lev1/SASPortalContext
+</pre>
+  - Make the contents of this repo directory available to this server context by either:
+    - Create a symlink, SASPortalApp, to the repo directory, for example:
+<pre>
+    ln -s /Data/sas-portal-app SASPortalApp
+</pre>
+    - Copy the repo directory to this directory
+<pre>
+    cp -r /Data/sas-portal-app/ SASPortalApp
+</pre>
+    - **NOTE:** Regardless of which process is followed, the directory in the server context directory **MUST** be called **SASPortalApp**!
+
+  - Modify the appserver_autoexec_usermods.sas file
+<pre>%inc "SASPortalApp/sas/autoexec.sas";</pre>
+
+- **NOTE:** If your stored process server instances are already running, you will need to restart them to pick up the appserver_autoexec_usermods.sas updates.
+
+## Additional Configuration Customization (Optional)
+
+There may need to be, or a desire to, customize the configuration.  The following scope of customizations can be implemented:
+
+- specific changes to a SAS Application Server Context
+  - Copy the file sas/SASPortalApp_autoexec_usermods.sas.template as SASPortalApp_autoexec_usermods.sas in the root directory of your Server Context, ex.
+<pre>
+  cd /opt/sas/SASConfig/Lev1/SASPortalContext
+  cp SASPortalApp/sas/SASPortalApp_autoexec_usermods.sas.template SASPortalApp_autoexec_usermods.sas
+</pre>
+- changes that are common to all SAS Application Server Contexts that link to this repo directory
+  - Copy the file sas/autoexec_usermods.sas.template as sas/autoexec_usermods.sas in the repo directory.
+<pre>
+  cd /Data/sas-portal-app/sas
+  cp autoexec_usermods.sas.template autoexec_usermods.sas
+</pre>
+
+- changes that are run on each stored process request/execution.
+  - Copy the file sas/request_setup_usermods.sas.template as sas/request_setup_usermods.sas in the repo directory.
+<pre>
+  cd /Data/sas-portal-app/sas
+  cp request_setup_usermods.sas.template request_setup_usermods.sas
+</pre>
+  - **WARNING:** putting customizations into the request level setup can adversely impact response times so it should be done with caution.
+
+### Example Customizations
+
+#### Using a different Metadata Location for the imported Stored Processes
+
+- If for some reason you need to change the location that the Stored Processes were imported into metadata (default=/System/Applications/SAS Portal App), you will need to make the following changes:
+  - Set the appLoc location for the stored processes in one of the locations defined above. Example:
+<pre>%let appLoc=/System/My Applications/SAS Portal App;</pre>
+    The file chosen to be updated will be dependent on the required scope to which this change should apply to.
+  - **NOTE:** If this value is changed, the corresponding change must be made in the web server install for sasjsAppLoc!
+
+- **NOTE:** If your stored process server instances are already running, and you make changes to either SASPortalApp_autoexec_usermods.sas or autoexec_usermods.sas, you will need to restart the server instances to pick up the changes.
+
+#### Set a different default Theme
+
+- One can force the use of a specific SAS Theme by setting the sastheme macro variable for the SAS Stored Processes.
+
+  - For example, to change the SAS theme that will be used to one called "mycompanytheme", add the following code:
     <pre>
     %global sastheme;
     %let sastheme=mycompanytheme;
    </pre>
 
-- **NOTE:** If your stored process server instances are already running, you will need to restart them to pick up the appserver_autoexec_usermods.sas updates.
+   to one of the files listed above.
+
+- **NOTE:** If your stored process server instances are already running, and you make changes to either SASPortalApp_autoexec_usermods.sas or autoexec_usermods.sas, you will need to restart the server instances to pick up the changes.
 
 ### Web Application
 
@@ -100,6 +161,20 @@ If you are not already logged in to your SAS Environment, you should be redirect
 
 Use the Issues section of this repo to check for existing known issues, as well as to report new issues.
 
+## Feature Flags
+
+As potentially breaking or significant new features that may need additional field validation is required before turning them on by default, the feature will be enabled via setting a Feature Flag. A Feature Flag is set by setting a SAS Macro variable in one of the autoexec or request_setup customization points described above.  If the macro variable exists at all, ie. %symexist(variable) returns 1, then it is assumed to be turned on.
+
+Features initially protected by a Feature Flag are either:
+- intended to be turned on by default in a future release 
+- OR to be dropped completely
+based on user feedback.  
+
+| Feature Description | Feature Flag | Introduced | Final Disposition | Date of Final Disposition |
+| ------ | ------ | ------ | ------ | ------ |
+| [Initialize New User](IMPLEMENTATION.md#New User)  |  INITNEWUSER | 15NOV2023  | | |
+| Sync shared content  |  SYNCUSER | 15NOV2023  | | |
+ 
 ## Roadmap
 
 The intent for this application is to provide a level of functionality that was included in SAS Information Delivery Portal.  However, it is never going to be intended to be a full replacement.

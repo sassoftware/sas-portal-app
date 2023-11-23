@@ -1,0 +1,21 @@
+<GetMetadataObjects>                                                            
+	       <ReposId>$METAREPOSITORY</ReposId>              
+	       <Type>Tree</Type>                               
+	       <ns>SAS</ns>                                    
+	       <!-- 256 = GetMetadata
+		    128 = XMLSelect
+		      4 =  Template
+	       -->
+	       <Flags>388</Flags>                              
+	       <Options>                                       
+                      <XMLSelect search="@Name='PUBLIC Permissions Tree'"/>
+                      <Templates>                                                                                                    
+                         <Tree Id="" Name="" TreeType="">
+                           <Members search="Prototype[Extensions/Extension[@Name='isAutodeploy' and @Value='true']"/> 
+                         </Tree>                                                                                                     
+                         <Prototype Id="" Name="" Desc="" MetadataType="">                                                                                       <Extensions/>
+                         </Prototype>
+                         <Extension Id="" Name="" Desc="" Value=""/>
+                      </Templates>                                                                                                   
+                 </Options>                                                                                                          
+ </GetMetadataObjects>

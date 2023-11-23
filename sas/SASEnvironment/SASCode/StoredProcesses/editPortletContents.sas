@@ -1,6 +1,6 @@
 /*  Generate the Edit Portlet Content page */
 
-%inc "&portalAppDir./sas/setup.sas";
+%inc "&sasDir./request_setup.sas";
 
 /*
  *  Retrieve the portlet metadata
@@ -57,9 +57,8 @@ filename inxsl "&filesDir./portlet/genEditPortletContent.xslt";
 proc xsl in=outxml xsl=inXSL out=common;
    parameter "appLocEncoded"="&appLocEncoded."
              "sastheme"="&sastheme."
-
-             "portletEditContentTitle"="&portletEditContentTitle."
-             ;
+             "localizationFile"="&localizationFile."           
+  ;
 run;
 
 filename inxsl;
@@ -77,34 +76,20 @@ filename inxsl;
 filename details temp;
 %let details=%sysfunc(pathname(details));
 
-%macro portletNotSupported;
-
-   data _null_;
-     file details;
-     put "<p><b>&portletEditNotSupported.</b></p>";
-     run;
-
-%mend;
-
 %macro genPortletDetails;
 
 /*
  *  See if we have a stylesheet for this type of porlet
  */
-%let editPortletProcessor=&filesDir./portlet/editportlet.%lowcase(&portletType.).sas;
+%let editPortletProcessor=&stepsDir./portlet/editportlet.%lowcase(&portletType.).sas;
 
-%if (%sysfunc(fileexist(&editPortletProcessor.))) %then %do;
+%if (%sysfunc(fileexist(&editPortletProcessor.))=0) %then %do;
 
-    %inc "&editPortletProcessor.";
-   
+    %let editPortletProcessor=&stepsDir./portlet/editportlet.unsupported.sas;
     %end;
-    
-%else %do;
 
-    %portletNotSupported;
+%inc "&editPortletProcessor.";
    
-%end;
-
 %mend;
 
 %genPortletDetails;

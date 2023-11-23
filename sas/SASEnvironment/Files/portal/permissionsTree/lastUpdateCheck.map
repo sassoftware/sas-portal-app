@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SXLEMAP version="2.1">
+
+<TABLE name="LastUpdateProperty">
+    <TABLE-PATH syntax="XPath">/GetMetadataObjects/Objects/Person/PropertySets/PropertySet/PropertySets/PropertySet/PropertySets/PropertySet/SetProperties</TABLE-PATH>
+
+    <COLUMN name="PersonName">
+        <PATH syntax="XPath">/GetMetadataObjects/Objects/Person/@Name</PATH>
+        <TYPE>character</TYPE>
+        <DATATYPE>string</DATATYPE>
+        <LENGTH>200</LENGTH>
+    </COLUMN>
+
+    <COLUMN name="Id">
+        <PATH syntax="XPath">/GetMetadataObjects/Objects/Person/PropertySets/PropertySet/PropertySets/PropertySet/PropertySets/PropertySet/SetProperties/Property/@Id</PATH>
+        <TYPE>character</TYPE>
+        <DATATYPE>string</DATATYPE>
+        <LENGTH>17</LENGTH>
+    </COLUMN>
+
+    <COLUMN name="Name">
+        <PATH syntax="XPath">/GetMetadataObjects/Objects/Person/PropertySets/PropertySet/PropertySets/PropertySet/PropertySets/PropertySet/SetProperties/Property/@Name</PATH>
+        <TYPE>character</TYPE>
+        <DATATYPE>string</DATATYPE>
+        <LENGTH>200</LENGTH>
+    </COLUMN>
+
+    <COLUMN name="Value">
+        <PATH syntax="XPath">/GetMetadataObjects/Objects/Person/PropertySets/PropertySet/PropertySets/PropertySet/PropertySets/PropertySet/SetProperties/Property/@DefaultValue</PATH>
+        <TYPE>character</TYPE>
+        <DATATYPE>string</DATATYPE>
+        <LENGTH>17</LENGTH>
+    </COLUMN>
+
+</TABLE>
+</SXLEMAP>
+

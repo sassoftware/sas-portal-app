@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+  <string key="portalTitle">SAS &#174; Portal</string>
+
+  <string key="globalMenuBar_skipMenuBar">メニューバーをスキップ</string>
+  <string key="portalCustomizationMenu">カスタマイズ</string>
+  <string key="portalCustomizationMenuTitle">選択すると、ポータルのカスタマイズ用のメニューが表示されます</string>
+  <string key="portalOptionsMenu">オプション</string>
+  <string key="portalOptionsMenuTitle">選択すると、オプション メニューが表示されます。</string>
+  <string key="portalSearchMenu">検索</string>
+  <string key="portalSearchMenuTitle">選択すると、ポータルの検索ページに移動します。</string>
+  <string key="portalLogoffMenu">ログオフ</string>
+  <string key="portalLogoffMenuTitle">ログオフ</string>
+  <string key="portalHelpMenu">ヘル</string>
+  <string key="portalHelpMenuTitle">選択するとヘルプメニューが表示されます。</string>
+  <string key="pageTabs_skipTabMenuTitle">タブメニューをスキップ</string>
+ 
+  <!-- 
+       Portlet Content Editor menu
+  -->
+  <string key="portletEditContent">コンテンツの編集</string>
+  <string key="portletEditContentTitle">ポートレットコンテンツの編集</string>
+  <string key="portletEditNotSupported">このタイプのポートレットの編集はサポートされていません。</string>
+ 
+  <!-- 
+       Portlet Content Editing
+  -->
+  <string key="saveButton">保存</string>
+  <string key="cancelButton">キャンセル</string>
+  <!-- 
+       Display URL Portlet Content Editing
+  -->
+
+  <string key="portletEditDisplayURLUrl">URL</string>
+  <string key="portletEditDisplayURLHeight">コンテンツの高さ</string>
+  
+</resources>

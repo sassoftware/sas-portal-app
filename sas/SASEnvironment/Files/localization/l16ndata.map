@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SXLEMAP version="2.1">
+
+<TABLE name="strings">
+    <TABLE-PATH syntax="XPath">/resources/string</TABLE-PATH>
+
+    <COLUMN name="key">
+        <PATH syntax="XPath">/resources/string/@key</PATH>
+        <TYPE>character</TYPE>
+        <DATATYPE>string</DATATYPE>
+        <LENGTH>30</LENGTH>
+    </COLUMN>
+
+    <COLUMN name="value">
+        <PATH syntax="XPath">/resources/string</PATH>
+        <TYPE>character</TYPE>
+        <DATATYPE>string</DATATYPE>
+        <LENGTH>1024</LENGTH>
+    </COLUMN>
+
+</TABLE>
+<TABLE name="preferences">
+    <TABLE-PATH syntax="XPath">/resources/preference</TABLE-PATH>
+
+    <COLUMN name="key">
+        <PATH syntax="XPath">/resources/preference/@key</PATH>
+        <TYPE>character</TYPE>
+        <DATATYPE>string</DATATYPE>
+        <LENGTH>30</LENGTH>
+    </COLUMN>
+
+    <COLUMN name="value">
+        <PATH syntax="XPath">/resources/preference</PATH>
+        <TYPE>character</TYPE>
+        <DATATYPE>string</DATATYPE>
+        <LENGTH>1024</LENGTH>
+    </COLUMN>
+
+</TABLE>
+</SXLEMAP>

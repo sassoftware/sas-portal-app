@@ -6,7 +6,18 @@
 <xsl:param name="sastheme">default</xsl:param>
 <xsl:variable name="sasthemeContextRoot">SASTheme_<xsl:value-of select="$sastheme"/></xsl:variable>
 
-<xsl:param name="portletEditContentTitle">Edit Portlet Content</xsl:param>
+<xsl:param name="locale" select="en_us"/>
+
+<xsl:variable name="localizationDir">SASPortalApp/sas/SASEnvironment/Files/localization</xsl:variable>
+
+<xsl:param name="localizationFile"><xsl:value-of select="$localizationDir"/>/resources_en.xml</xsl:param>
+
+<!-- load the appropriate localizations -->
+
+<xsl:variable name="localeXml" select="document($localizationFile)/*"/>
+
+<!-- Strings to be localized -->
+<xsl:variable name="portletEditContentTitle" select="$localeXml/string[@key='portletEditContentTitle']/text()"/>
 
 <xsl:template match="/">
 

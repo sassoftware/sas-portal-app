@@ -9,7 +9,7 @@
  *
  */
 
-%inc "&portalAppDir./sas/setup.sas";
+%inc "&sasDir./request_setup.sas";
 
 /*
  *  Get the current values

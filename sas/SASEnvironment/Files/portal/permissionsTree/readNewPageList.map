@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SXLEMAP version="2.1">
+
+<!-- purposely not reading very much from the returned xml so that it is as quick as it can be -->
+
+<TABLE name="newpages">
+    <TABLE-PATH syntax="XPath">/GetMetadataObjects/Objects/Extension</TABLE-PATH>
+
+    <COLUMN name="Id">
+        <PATH syntax="XPath">/GetMetadataObjects/Objects/Extension/@Id</PATH>
+        <TYPE>character</TYPE>
+        <DATATYPE>string</DATATYPE>
+        <LENGTH>17</LENGTH>
+    </COLUMN>
+
+</TABLE>
+</SXLEMAP>
+

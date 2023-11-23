@@ -2,11 +2,20 @@
 
 <xsl:param name="appLocEncoded"/>
 
-<xsl:param name="saveButton">Save</xsl:param>
-<xsl:param name="cancelButton">Cancel</xsl:param>
+<xsl:variable name="localizationDir">SASPortalApp/sas/SASEnvironment/Files/localization</xsl:variable>
 
-<xsl:param name="portletEditDisplayURLUrl">URL</xsl:param>
-<xsl:param name="portletEditDisplayURLHeight">Content Height</xsl:param>
+<xsl:param name="localizationFile"><xsl:value-of select="$localizationDir"/>/resources_en.xml</xsl:param>
+
+<!-- load the appropriate localizations -->
+
+<xsl:variable name="localeXml" select="document($localizationFile)/*"/>
+
+<!-- Strings to be localized -->
+<xsl:variable name="saveButton" select="$localeXml/string[@key='saveButton']/text()"/>
+<xsl:variable name="cancelButton" select="$localeXml/string[@key='cancelButton']/text()"/>
+<xsl:variable name="portletEditDisplayURLHeight" select="$localeXml/string[@key='portletEditDisplayURLHeight']/text()"/>
+
+<xsl:variable name="portletEditDisplayURLUrl" select="$localeXml/string[@key='portletEditDisplayURLUrl']/text()"/>
 
 <xsl:template match="/">
 

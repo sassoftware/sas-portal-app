@@ -1,0 +1,13 @@
+/*
+ *  Put any variable overrides that are unique to this linkage to the repo directory
+ *  in this file, rename it as SASPortalApp_autoexec_usermods.sas and place it in the root
+ *  directory of your server context.
+ */
+
+/*  NOTE: If you are setting any macro variables here, make sure to define them as
+ *        global scope, ie. %global xxxx; where xxxx is the macro variable name.
+ *        For example, to change the default SAS theme to use, add the following code:
+ *         %global sastheme;
+ *         %let sastheme=mycompany;
+ */
+ 

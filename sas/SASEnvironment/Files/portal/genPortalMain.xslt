@@ -2,33 +2,42 @@
 
 <xsl:output method="html" encoding="UTF-8"/>
 
+<xsl:param name="locale" select="en_us"/>
+
+<xsl:variable name="localizationDir">SASPortalApp/sas/SASEnvironment/Files/localization</xsl:variable>
+
+<xsl:param name="localizationFile"><xsl:value-of select="$localizationDir"/>/resources_en.xml</xsl:param>
+
 <xsl:param name="sastheme">default</xsl:param>
 <xsl:variable name="sasthemeContextRoot">SASTheme_<xsl:value-of select="$sastheme"/></xsl:variable>
 
 <xsl:param name="appLocEncoded"></xsl:param>
 
+<!-- load the appropriate localizations -->
+
+<xsl:variable name="localeXml" select="document($localizationFile)/*"/>
+
 <!-- Strings to be localized -->
+<xsl:variable name="portalTitle" select="$localeXml/string[@key='portalTitle']/text()"/>
 
-<xsl:param name="portalTitle">SAS &#174; Portal</xsl:param>
+<xsl:variable name="globalMenuBar_skipMenuBar" select="$localeXml/string[@key='globalMenuBar_skipMenuBar']/text()"/>
+<xsl:variable name="portalCustomizationMenu" select="$localeXml/string[@key='portalCustomizationMenu']/text()"/>
+<xsl:variable name="portalCustomizationMenuTitle" select="$localeXml/string[@key='portalCustomizationMenuTitle']/text()"/>
+<xsl:variable name="portalOptionsMenu" select="$localeXml/string[@key='portalOptionsMenu']/text()"/>
+<xsl:variable name="portalOptionsMenuTitle" select="$localeXml/string[@key='portalOptionsMenuTitle']/text()"/>
 
-<xsl:param name="globalMenuBar_skipMenuBar">Skip Menu Bar</xsl:param>
-<xsl:param name="portalCustomizationMenu">Customize</xsl:param>
-<xsl:param name="portalCustomizationMenuTitle">Select to display the menu for portal customization</xsl:param>
-<xsl:param name="portalOptionsMenu">Options</xsl:param>
-<xsl:param name="portalOptionsMenuTitle">Select to display the options menu.</xsl:param>
+<xsl:variable name="portalSearchMenu" select="$localeXml/string[@key='portalSearchMenu']/text()"/>
+<xsl:variable name="portalSearchMenuTitle" select="$localeXml/string[@key='portalSearchMenuTitle']/text()"/>
 
-<xsl:param name="portalSearchMenu">Search</xsl:param>
-<xsl:param name="portalSearchMenuTitle">Select to go to the portal search page.</xsl:param>
+<xsl:variable name="portalLogoffMenu" select="$localeXml/string[@key='portalLogoffMenu']/text()"/>
+<xsl:variable name="portalLogoffMenuTitle" select="$localeXml/string[@key='portalLogoffMenuTitle']/text()"/>
 
-<xsl:param name="portalLogoffMenu">Logoff</xsl:param>
-<xsl:param name="portalLogoffMenuTitle">Log Off</xsl:param>
+<xsl:variable name="portalHelpMenu" select="$localeXml/string[@key='portalHelpMenu']/text()"/>
+<xsl:variable name="portalHelpMenuTitle" select="$localeXml/string[@key='portalHelpMenuTitle']/text()"/>
 
-<xsl:param name="portalHelpMenu">Help</xsl:param>
-<xsl:param name="portalHelpMenuTitle">Select to display the help menu.</xsl:param>
+<xsl:variable name="pageTabs_skipTabMenuTitle" select="$localeXml/string[@key='pageTabs_skipTabMenuTitle']/text()"/>
 
-<xsl:param name="pageTabs_skipTabMenuTitle">Skip Tab Menu</xsl:param>
-
-<xsl:param name="portletEditContent">Edit Content</xsl:param>
+<xsl:variable name="portletEditContent" select="$localeXml/string[@key='portletEditContent']/text()"/>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -153,10 +162,8 @@
 					</td>
 					<td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
                                                 <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
-                                                <!--  Comment out log off menu item
-						<a id="globalMenuBar_6_anchor" href="#"><xsl:attribute name="title"><xsl:value-of select="$portalLogoffMenuTitle"/></xsl:attribute>
+						<a id="globalMenuBar_6_anchor" href="/SASLogon/logout"><xsl:attribute name="title"><xsl:value-of select="$portalLogoffMenuTitle"/></xsl:attribute>
 						<span><xsl:value-of select="$portalLogoffMenu"/></span></a>
-                                                -->
 
                                                 <!-- span placeholder, remove if Log Off menu uncommented -->
                                                 <span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span>

@@ -1,0 +1,11 @@
+/*
+ *  Put any variable overrides that you want shared across all linkages to this directory
+ *  in this file and rename it as autoexec_usermods.sas
+ */
+/*  NOTE: If you are setting any macro variables here, make sure to define them as
+ *        global scope, ie. %global xxxx; where xxxx is the macro variable name.
+ *        For example, to change the default SAS theme to use, add the following code:
+ *         %global sastheme;
+ *         %let sastheme=mycompany;
+ */
+ 
