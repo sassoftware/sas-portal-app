@@ -239,7 +239,7 @@
        </xsl:variable>
 
        <PSColumnLayoutComponent Name="COLUMNLAYOUTCOMPONENT">
-           <xsl:attribute name="ColumnWidth"><xsl:value-of select="columWidth"/></xsl:attribute>
+           <xsl:attribute name="ColumnWidth"><xsl:value-of select="columnWidth"/></xsl:attribute>
            <xsl:attribute name="NumberOfPortlets"><xsl:value-of select="count(Members/Group)"/></xsl:attribute>
              
          <Portlets>
