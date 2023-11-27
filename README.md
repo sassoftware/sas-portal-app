@@ -66,13 +66,9 @@ In the SAS Application Server Context file system directory that is related to t
 </pre>
   - Make the contents of this repo directory available to this server context by either:
     - Create a symlink, SASPortalApp, to the repo directory, for example:
-<pre>
-    ln -s /Data/sas-portal-app SASPortalApp
-</pre>
+<pre> ln -s /Data/sas-portal-app SASPortalApp </pre>
     - Copy the repo directory to this directory
-<pre>
-    cp -r /Data/sas-portal-app/ SASPortalApp
-</pre>
+<pre> cp -r /Data/sas-portal-app/ SASPortalApp </pre>
     - **NOTE:** Regardless of which process is followed, the directory in the server context directory **MUST** be called **SASPortalApp**!
 
   - Modify the appserver_autoexec_usermods.sas file
