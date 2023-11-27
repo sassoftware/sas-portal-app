@@ -107,7 +107,7 @@ There may need to be, or a desire to, customize the configuration.  The followin
 
 - If for some reason you need to change the location that the Stored Processes were imported into metadata (default=/System/Applications/SAS Portal App), you will need to make the following changes:
   - Set the appLoc location for the stored processes in one of the locations defined above. Example:
-<pre>%let appLoc=/System/My Applications/SAS Portal App;</pre>
+    - <pre>%let appLoc=/System/My Applications/SAS Portal App;</pre>
     The file chosen to be updated will be dependent on the required scope to which this change should apply to.
   - **NOTE:** If this value is changed, the corresponding change must be made in the web server install for sasjsAppLoc!
 
@@ -168,8 +168,8 @@ based on user feedback.
 
 | Feature Description | Feature Flag | Introduced | Final Disposition | Date of Final Disposition |
 | ------ | ------ | ------ | ------ | ------ |
-| [Initialize New User](IMPLEMENTATION.md#New User)  |  INITNEWUSER | 15NOV2023  | | |
-| Sync shared content  |  SYNCUSER | 15NOV2023  | | |
+| [Initialize New User](IMPLEMENTATION.md#new-users)  |  INITNEWUSER | 15NOV2023  | | |
+| [Sync shared content](IMPLEMENTATION.md#synchronizing-shared-content-with-users)  |  SYNCUSER | 15NOV2023  | | |
  
 ## Roadmap
 
