@@ -155,7 +155,7 @@ When a user is new to using the portal, ie. the user has never gone to the web a
 
 **NOTE:**  In the Information Delivery Portal product, this content area intialization was done automatically on first user logon.  However, this has changed with this new implementation.
 
-As an administrator, you must run the macro %createPortalUser, specifying the new portal user to create, before they can use the portal.  There is sample code on how to do this in the [createPortalUser sample](sas/SASEnvironment/SASCode/Samples/createPortaluser.sas).
+As an administrator, you must run the macro %createPortalUser, specifying the new portal user to create, before they can use the portal.  There is sample code on how to do this in the [createPortalUser sample](sas/SASEnvironment/SASCode/Samples/createPortalUser.sas).
 
 This code can be executed as a batch job, as a stored process, or as a triggered job.  Regardless of how it is executed, it must be run as a user that has Write permissions to the SAS Portal Permissions tree.
 
@@ -164,17 +164,17 @@ This code can be executed as a batch job, as a stored process, or as a triggered
 #### New User Initialization
 
 There are 2 steps to onboarding a new user to be able to use the portal.
-1. Create the user's portal content area, described above under [Defining new portal users](#Defining_new_portal_users)
+1. Create the user's portal content area, described above under [Defining new portal users](#defining-new-portal-users)
 2. Initializing their portal content area with content
 
 Initializing their portal content area with content is executed when the user first logs into the portal.  
-**NOTE:** Currently, this functionality is controlled by the feature flag, INITNEWUSER. See [Feature Flags](#Feature_Flags) for more information on how to set this flag while it is being developed.
+**NOTE:** Currently, this functionality is controlled by the feature flag, INITNEWUSER. See [Feature Flags](#feature-flags) for more information on how to set this flag while it is being developed.
 
 ### Creating Shared Content
 
 One of the primary portal features is for a portal content administrator to create content that is meant to be share with a group of users.  Each time the user logs in to the portal, there is a check performed to see if new content has been created to be shared with this user.
 
-**NOTE:** Currently, this functionality is controlled by the feature flag, SYNCUSER. See [Feature Flags](#Feature_Flags) for more information on how to set this flag while it is being developed.
+**NOTE:** Currently, this functionality is controlled by the feature flag, SYNCUSER. See [Feature Flags](#feature-flags) for more information on how to set this flag while it is being developed.
 
 ## Usage
 
