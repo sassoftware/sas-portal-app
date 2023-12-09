@@ -33,5 +33,13 @@
 
   <string key="portletEditDisplayURLUrl">URL</string>
   <string key="portletEditDisplayURLHeight">Inhaltshöhe</string>
+
+  <!--
+       Errors
+  -->
+  <string key="noUserPermissionTree">Der Administrator hat Ihren Portalinhaltsbereich nicht initialisiert. Bitte wenden Sie sich an den Administrator</string>
+  <string key="noNewUserInit">Der Administrator hat die Self-Service-Benutzerinitialisierung nicht aktiviert. Bitte wenden Sie sich an den Administrator</string>
+  <string key="genericError">Es ist ein unbekannter Fehler aufgetreten. Bitte wenden Sie sich an den Administrator</string>
+  <string key="ErrorLabel">FEHLER</string>
   
 </resources>

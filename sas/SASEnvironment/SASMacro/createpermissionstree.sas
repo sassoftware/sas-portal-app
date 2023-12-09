@@ -10,20 +10,20 @@
 
 %macro createPermissionsTree(identityType=,identityName=,tree=,rc=);
 
-%let createPermissionsTreeRC=0;
+%let _cptRC=0;
 
 %if ("&identityType" ne "group" and "&identityType" ne "user") %then %do;
     %put ERROR: Invalid identityType, &identityType., passed, must be either group or user;
-    %let createPermissionsTreeRC=-1;
+    %let _cptRC=-1;
     %end;
 %if ("&identityName" = "") %then %do;
 
     %put ERROR: IdentityName is required to be non-missing.;
-    %let createPermissionsTreeRC=-1;
+    %let _cptRC=-1;
     
     %end;
 
-%if (&createPermissionsTreeRC. = 0) %then %do;
+%if (&_cptRC. = 0) %then %do;
 	
 	%if ("&tree"="") %then %do;
 	    %let tree=&identityName. Permissions Tree;
@@ -58,7 +58,7 @@
 		 *  Substitute in the details of this request
 		 */
 		
-		%let reposname=%sysfunc(getoption(METAREPOSITORY));
+		%let reposname=%sysfunc(dequote(%sysfunc(getoption(METAREPOSITORY))));
 		
 		proc xsl in=_cptrout out=_cptixml xsl=_cpttxsl;
 		  parameter "identityType"="&identityType." "identityName"="&identityName." "reposName"="&reposName.";
@@ -108,7 +108,7 @@
 			    %end;
 			%else %do;
 			   %put ERROR: AddMetadata for Permissions Tree skipped.;
-			   %let createPermissionsTreeRC=&xslrc.;
+			   %let _cptRC=&xslrc.;
 			   
 			   %end;
 	
@@ -118,7 +118,7 @@
 	        %end;
         %else %do;
         
-		   %let createPermissionsTreeRC=&getxslrc.;
+		   %let _cptRC=&getxslrc.;
         
             %end;
             
@@ -135,7 +135,7 @@
 
     %global &rc.;
     
-    %let &rc.=&createPermissionsTreeRC.;
+    %let &rc.=&_cptRC.;
     
     %end;     
 %mend;

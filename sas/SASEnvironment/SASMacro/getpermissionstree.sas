@@ -54,7 +54,7 @@
 		            ;
 		run;
 		
-		%showFormattedXML(_gptgreq,Metadata Query to get Permissions Tree &treeName.);
+		%showFormattedXML(_gptgreq,Metadata Query to get Permissions Tree &tree.);
 			
 		proc metadata in=_gptgreq out=&outfile.;
 		run;

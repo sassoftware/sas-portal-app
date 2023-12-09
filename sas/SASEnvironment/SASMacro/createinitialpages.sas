@@ -13,8 +13,7 @@
     %end;
 %else %do;
 
-    %let metaRepository=%sysfunc(getoption(METAREPOSITORY));
-    
+    %let reposname=%sysfunc(dequote(%sysfunc(getoption(METAREPOSITORY))));    
     /*
      *  Get the repository information to feed into the next requests.
      */
@@ -36,7 +35,7 @@
     
     proc xsl in=_cipget out=_cipgreq xsl=_cipgxsl;
        parameter "treeName"="&tree."
-                 "reposName"="&metaRepository"
+                 "reposName"="&reposname"
                  "publicTreeName"="&publicTreeName."
                  ;
     run;
@@ -119,7 +118,6 @@
 		    
 		    proc xsl in=_cipgrsp out=_cipapgs xsl=_cipuxsl;
 		       parameter "treeName"="&tree."
-	                     "metaRepository"="&metaRepository"
 	                     "function"="standardpages"
 	                 ;
 	

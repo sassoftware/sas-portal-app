@@ -31,42 +31,56 @@
 	    %createUserProfile(name=&name.,rc=cupRC);
 	    
 	    %if (&cupRC.=0) %then %do;
-		    
+
 			/*
-			 *  Copy the standard portlets
+			 *  Create the User Desktop Information
 			 */
 			
-			%createInitialPortlets(tree=&portalPermissionsTree.,rc=cipRC);
+			%createInitialDesktop(tree=&portalPermissionsTree.,user=&name.,rc=cidRC);
 	
-	        %if (&cipRC.=0) %then %do;
-				
+	        %if (&cidRC.=0) %then %do;
+		    
 				/*
-				 *  Create the Initial Pages
+				 *  Copy the standard portlets
 				 */
-				%createInitialPages(tree=&portalPermissionsTree.,rc=cipaRC);
-				%if (&cipaRC.=0) %then %do;
 				
-					/*
-					 *  Sync any group shared pages
-					 */
+				%createInitialPortlets(tree=&portalPermissionsTree.,rc=cipRC);
+		
+		        %if (&cipRC.=0) %then %do;
 					
-	                %syncUserGroupContent(name=&name.,rc=syncUserGroupContentRC);
-	
-					%let _ipurc=&syncuserGroupContentRC.;
-									    
-				    %end;
-				%else %do;
-	
-				    %let _ipurc=&cipaRC.;
-				
-	                %end;			
-				%end;
+					/*
+					 *  Create the Initial Pages
+					 */
+					%createInitialPages(tree=&portalPermissionsTree.,rc=cipaRC);
+					%if (&cipaRC.=0) %then %do;
+					
+						/*
+						 *  Sync any group shared pages
+						 */
+						
+		                %syncUserGroupContent(name=&name.,rc=syncUserGroupContentRC);
+		
+						%let _ipurc=&syncuserGroupContentRC.;
+										    
+					    %end;
+					%else %do;
+		
+					    %let _ipurc=&cipaRC.;
+					
+		                %end;			
+					%end;
+			    %else %do;
+			    
+			        %let _ipurc=&cipRC.;
+			        
+			        %end;
+                %end;
 		    %else %do;
 		    
-		        %let _ipurc=&cipRC.;
+		        %let _ipurc=&cidRC.;
 		        
 		        %end;
-				
+                
 			%end;
 	    %else %do;
 	    

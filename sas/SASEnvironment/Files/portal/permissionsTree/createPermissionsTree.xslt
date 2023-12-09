@@ -29,6 +29,7 @@
     <xsl:variable name="identityGroupAdminId" select="Multiple_Requests/GetMetadataObjects/Objects/IdentityGroup/AccessControls/Identities/Identity/@Id"/>
     <xsl:variable name="identityGroupAdminName" select="Multiple_Requests/GetMetadataObjects/Objects/IdentityGroup/AccessControls/Identities/Identity/@Name"/>
     <xsl:variable name="personName" select="Multiple_Requests/GetMetadataObjects/Objects/Person/@Name"/>
+
     <xsl:variable name="personId" select="Multiple_Requests/GetMetadataObjects/Objects/Person/@Id"/>
     <xsl:variable name="portalACTId" select="Multiple_Requests/GetMetadataObjects/Objects/AccessControlTemplate[@Name='Portal ACT']/@Id"/>
     <xsl:if test="not($portalACTId)">
@@ -109,9 +110,9 @@
 
           </xsl:when>
           <xsl:when test="$personId != ''">
-              <xsl:call-template name="createUserContent">
 
-              </xsl:call-template>
+              <xsl:comment>User Content will be added by the user initialization step</xsl:comment>
+
           </xsl:when>
           <xsl:otherwise>
                <message>ERROR:Identity not found for creating addMetadata request for Permissions tree</message>
@@ -264,8 +265,6 @@
 <xsl:template name="createGroupContent">
   <xsl:param name="identityGroupName"/>
 
-  <xsl:message>Creating group content</xsl:message>
-
   <PropertySets>
       <PropertySet Name="ModifiedByProductPropertySet" SetRole="ModifiedByProductPropertySet"/>
   </PropertySets>
@@ -302,73 +301,6 @@
      </Tree>
 
   </SubTrees>
-
-</xsl:template>
-
-<!-- - - - - - - - - - - - - - - -
-
-  Create Content specific to a User tree
-
-- - - - - - -->
-
-<xsl:template name="createUserContent">
-
-<xsl:message>Creating user content</xsl:message>
-
-<xsl:variable name="profilePortalPagesId" select="Multiple_Requests/GetMetadataObjects/Objects/Person/PropertySets/PropertySet[@SetRole='Profile/global']/PropertySets/PropertySet[@SetRole='Profile/SAS']/PropertySets/PropertySet[@SetRole='Profile/Portal']/SetProperties/Property[@PropertyName='PortalPages']/@Id"/>
-<xsl:variable name="profilePortalPagesName" select="Multiple_Requests/GetMetadataObjects/Objects/Person/PropertySets/PropertySet[@SetRole='Profile/global']/PropertySets/PropertySet[@SetRole='Profile/SAS']/PropertySets/PropertySet[@SetRole='Profile/Portal']/SetProperties/Property[@PropertyName='PortalPages']/@Name"/>
-
-<xsl:if test="not($profilePortalPagesId)">
-   <message>ERROR: Profile PortalPages property not found, is the user profile initialized?</message>
-</xsl:if>
-
-<xsl:variable name="profilePortalHistoryId" select="Multiple_Requests/GetMetadataObjects/Objects/Person/PropertySets/PropertySet[@SetRole='Profile/global']/PropertySets/PropertySet[@SetRole='Profile/SAS']/PropertySets/PropertySet[@SetRole='Profile/Portal']/SetProperties/Property[@PropertyName='PortalHistoryPages']/@Id"/>
-<xsl:variable name="profilePortalHistoryName" select="Multiple_Requests/GetMetadataObjects/Objects/Person/PropertySets/PropertySet[@SetRole='Profile/global']/PropertySets/PropertySet[@SetRole='Profile/SAS']/PropertySets/PropertySet[@SetRole='Profile/Portal']/SetProperties/Property[@PropertyName='PortalHistoryPages']/@Name"/>
-
-<xsl:if test="not($profilePortalPagesId)">
-   <message>ERROR: Profile PortalHistoryPages property not found, is the user profile initialized?</message>
-</xsl:if>
-           <Members>
-                <Group Name="DESKTOP_PORTALPAGES_GROUP" Desc="Portal Pages">
-                      <!--  Associate this group with the user's profile information -->
-                      <Properties>
-                          <Property>
-                              <xsl:attribute name="ObjRef"><xsl:value-of select="$profilePortalPagesId"/></xsl:attribute>
-                              <xsl:attribute name="Name"><xsl:value-of select="$profilePortalPagesName"/></xsl:attribute>
-                          </Property>
-                      </Properties>
-
-                </Group>
-
-                <Group Name="DESKTOP_PAGEHISTORY_GROUP" Desc="Page History">
-
-                      <!--  Associate this group with the user's profile information -->
-                       <Properties>
-                          <Property>
-                              <xsl:attribute name="ObjRef"><xsl:value-of select="$profilePortalHistoryId"/></xsl:attribute>
-                              <xsl:attribute name="Name"><xsl:value-of select="$profilePortalHistoryName"/></xsl:attribute>
-                          </Property>
-                       </Properties>
-
-                </Group>
-
-          </Members>
-
-          <xsl:call-template name="initializeUserPages"/>
-
-</xsl:template>
-
-<!-- - - - - - - - - - - - - - - -
-
-  Initialize the users pages and portlets
-
-- - - - - - -->
-
-<xsl:template name="initializeUserPages">
-
-   <!-- When a user is initially created, a set of pages and portlets are created in their permissions tree, this routine will do that -->
-
-   <xsl:message>Initializing User Pages and Portlets</xsl:message>
 
 </xsl:template>
 

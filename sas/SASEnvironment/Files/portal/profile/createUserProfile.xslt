@@ -158,7 +158,7 @@
  
       <xsl:message>buildProfiles: Global Profile, <xsl:value-of select="$globalProfileId"/>, found.</xsl:message>
 
-      <xsl:variable name="sasProfileId" select="PropertySets/PropertySet[@SetRole,'Profile/global']/PropertySets/PropertSet[@SetRole,'Profile/SAS']/@Id"/>
+      <xsl:variable name="sasProfileId" select="PropertySets/PropertySet[@SetRole,'Profile/global']/PropertySets/PropertySet[@SetRole,'Profile/SAS']/@Id"/>
 
       <xsl:choose>
 
@@ -182,7 +182,7 @@
 
 		    <xsl:message>buildProfiles: SAS Profile, <xsl:value-of select="$sasProfileId"/>, found.</xsl:message>
 
-	            <xsl:variable name="portalProfileId" select="PropertySets/PropertySet[@SetRole,'Profile/global']/PropertySets/PropertSet[@SetRole,'Profile/SAS']/PropertySets/PropertSet[@SetRole,'Profile/portal']/@Id"/>
+	            <xsl:variable name="portalProfileId" select="PropertySets/PropertySet[@SetRole,'Profile/global']/PropertySets/PropertySet[@SetRole,'Profile/SAS']/PropertySets/PropertySet[@SetRole,'Profile/portal']/@Id"/>
 
 
 		    <xsl:if test="not($portalProfileId)">

@@ -1,15 +1,15 @@
 /*
- *  This macro will initialize the portal permissions tree for the passed group
+ *  This macro will initialize the portal information for the passed group
  *  Parameters:
- *    name = the name of the group to create the permission tree for
+ *    name = the name of the group to create the portal information for
  */
 
-%macro initGroupPermissionsTree(name=,rc=);
+%macro createPortalGroup(name=,rc=);
 
-%let _igp=-1;
+%let _cgp=-1;
 
 %if ("&name"="") %then %do;
-    %put ERROR: Group name must be passed to initialize the permission tree information.;
+    %put ERROR: Group name must be passed to initialize the portal information.;
     %end;
 %else %do;
 
@@ -21,12 +21,12 @@
 
     %if (&cptRC.=0) %then %do;
 				
-				%let _igp=0;
+				%let _cgp=0;
 			
 			%end;
 	    %else %do;
 	    
-	        %let _igp=&cptRC.;
+	        %let _cgp=&cptRC.;
 	        
 	        %end;
 		
@@ -36,7 +36,7 @@
 
 %if ("&rc." ne "") %then %do;
    %global &rc.;
-   %let &rc.=&_igp;
+   %let &rc.=&_cgp;
    %end;
 
 %mend;

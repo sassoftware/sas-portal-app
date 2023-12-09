@@ -254,7 +254,7 @@ filename _succrsp;
 	 *  NOTE: Metadata server wants timestamps in text format, so make sure to pass the correct macro variables.
 	 */
 	
-	%let reposname=%sysfunc(getoption(METAREPOSITORY));
+        %let reposname=%sysfunc(dequote(%sysfunc(getoption(METAREPOSITORY))));
 	%let treename=&name. Permissions Tree;
 	proc xsl in=_sucrrsp xsl=_sucgxsl out=_sucgreq;
 	  parameter "startDT"="&startdt."

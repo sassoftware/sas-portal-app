@@ -34,5 +34,13 @@
 
   <string key="portletEditDisplayURLUrl">URL</string>
   <string key="portletEditDisplayURLHeight">コンテンツの高さ</string>
+
+  <!--
+       Errors
+  -->
+  <string key="noUserPermissionTree">管理者がポータル コンテンツ領域を初期化していません。管理者に問い合わせてください。</string>
+  <string key="noNewUserInit">管理者はセルフサービス ユーザーの初期化を有効にしていません。管理者に問い合わせてください。</string>
+  <string key="genericError">不明なエラーが発生しました。管理者に連絡してください</string>
+  <string key="ErrorLabel">エラー</string>
   
 </resources>

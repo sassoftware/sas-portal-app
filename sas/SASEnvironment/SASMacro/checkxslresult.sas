@@ -72,7 +72,7 @@
 	%if (&quiet.=0) %then %do;
     	%if (%length(msg)>0) %then %do;
 		    %put --------------------------------------------------;
-		    %put &msg.;
+		    %put checkXSLresult: &msg.;
 		    %put --------------------------------------------------;
 	    %end;
 	    %end;

@@ -24,9 +24,21 @@
     
 %if (&_cpuRC. = 0) %then %do;
 	
+	/*
+	 *  What we really want to know is if the portal content has been initialized or not, as quickly as possible.
+	 *  While here we could distinguish betwen the Permissions tree existing and whether the content exists in the tree,
+	 *  what we care about at this point is if there is any content, so just check that.
+	 */
+	
+	/* The order of the query here is important, it should be faster to find a tree with a specific name and
+	 * then seeing if it has the main portal group. 
+	 */
+	
 	%let tree=&name. Permissions Tree;
-	    
-	%objectExists(type=Tree,name=&tree.,existsvar=&exists.);
+	
+    %let filter=*[@Name=%str(%')&tree.%str(%')][Members/Group[@Name=%str(%')DESKTOP_PORTALPAGES_GROUP%str(%')]];
+	
+ 	 %objectExists(type=Tree,existsvar=&exists.,filter=&filter.);
          
      %let _cpuRC=0;
 	

@@ -1,15 +1,15 @@
 /*
- *  This macro will initialize the portal permissions tree for the passed user
+ *  This macro will create the portal permissions tree for the passed user
  *  Parameters:
  *    name = the person name of the user to create the permission tree for
  */
 
-%macro initUserPermissionsTree(name=,rc=);
+%macro createPortalUser(name=,rc=);
 
-%let _iupRC=-1;
+%let _cpuRC=-1;
 
 %if ("&name"="") %then %do;
-    %put ERROR: User name must be passed to initialize the permission tree information.;
+    %put ERROR: User name must be passed to initialize the portal information for a user.;
     %end;
 %else %do;
 
@@ -21,12 +21,12 @@
 
     %if (&cptRC.=0) %then %do;
 				
-        %let _iupRC=0;
+        %let _cpuRC=0;
 			
 	    %end;
 	%else %do;
 	    
-	    %let _iupRC=&cptRC.;
+	    %let _cpuRC=&cptRC.;
 	        
 	    %end;
 		
@@ -34,7 +34,7 @@
 
 %if ("&rc." ne "") %then %do;
    %global &rc.;
-   %let &rc.=&_iupRC;
+   %let &rc.=&_cpuRC;
    %end;
 
 %mend;

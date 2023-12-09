@@ -22,15 +22,6 @@
         %let macroDir=&sasenvDir./SASMacro;
 
         /*
-         *  Load the default localization (English)
-         */
-
-        %let localizationDir=&filesDir./localization;
-        %let englishStrings=&localizationDir./portalstrings_en_US.sas;
-
-        %inc "&englishStrings.";
-
-        /*
          *  Add any autocall macros
          */
 

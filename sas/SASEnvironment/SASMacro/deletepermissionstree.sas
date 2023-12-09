@@ -4,8 +4,6 @@
 
     tree= the name of the permissions tree.
     
-    TODO: Have to add logic to iterate down the tree and delete all of its members!
-    
 */
 
 %macro deletePermissionsTree(tree=,rc=);

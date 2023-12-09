@@ -34,4 +34,12 @@
   <string key="portletEditDisplayURLUrl">URL</string>
   <string key="portletEditDisplayURLHeight">Content Height</string>
   
+  <!-- 
+       Errors
+  -->
+  <string key="noUserPermissionTree">The administrator has not initialized your portal content area, please contact the administrator</string>
+  <string key="noNewUserInit">The administrator has not enabled self-service user initialization, please contact the administrator</string>
+  <string key="genericError">An unknown error has occurred, please contact the administrator</string>
+  <string key="ErrorLabel">ERROR</string>
+
 </resources>
