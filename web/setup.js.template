@@ -21,3 +21,16 @@ var sasjsDebug="false";
 
 // var sasjsUseComputeApi='';
 // var sasjsContextName=""
+
+/*
+ *  Allow overrides of custom css and java script
+ *
+ *  CSSOverrides=file name containing any css overrides, ex.
+ *     var CSSOverrides='custom_usermods.css'
+ *  JSOverrides=file name containing any javascript overrides, ex.
+ *     var JSOverrides='custom_usermods.js'
+ */
+
+var CSSOverrides='';
+var JSOverrides='';
+

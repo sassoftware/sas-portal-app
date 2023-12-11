@@ -9,6 +9,16 @@ let sasjs
 
 window.onload = function () {
 
+  /*
+   *  Inject any javascript overrides
+   */
+
+  if (!JSOverrides == '') {
+
+     loadLatestScript(JSOverrides,1,'append');
+
+     }
+
   sasjs = new SASjs.default({
     serverUrl: window.sasjsServerUrl ?? undefined,
     appLoc: window.sasjsAppLoc ?? '',
@@ -368,6 +378,25 @@ function injectStyles() {
          linkforCustomStyleCSSfile.type = 'text/css'
          linkforCustomStyleCSSfile.rel = 'stylesheet'
          headTag.appendChild(linkforCustomStyleCSSfile);
+
+         const linkforLocalCSSfile = document.createElement("link");
+         linkforLocalCSSfile.href = 'thisStyle.css'
+         linkforLocalCSSfile.type = 'text/css'
+         linkforLocalCSSfile.rel = 'stylesheet'
+         headTag.appendChild(linkforLocalCSSfile);
+
+         //  See if the admin has defined some custom css overrides
+
+         if (!CSSOverrides=='') {
+             const linkforOverridesCSSfile = document.createElement("link");
+             //  Include a unique id so that the latest version is always
+             // picked up
+             var uid = (new Date().getTime()).toString(36);
+             linkforOverridesCSSfile.href = CSSOverrides+'?v='+uid
+             linkforOverridesCSSfile.type = 'text/css'
+             linkforOverridesCSSfile.rel = 'stylesheet'
+             headTag.appendChild(linkforOverridesCSSfile);
+         }
 
 }
 

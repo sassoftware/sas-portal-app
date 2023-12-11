@@ -76,9 +76,28 @@ In the SAS Application Server Context file system directory that is related to t
 
 - **NOTE:** If your stored process server instances are already running, you will need to restart them to pick up the appserver_autoexec_usermods.sas updates.
 
+### Web Application
+
+**NOTE:** There is currently an assumption built into the references to SASStoredProcess web application in this application that it can be reached via the same root url (ie. host:port) as this application is deployed to.
+
+#### Deploy Application
+
+Getting the application on to your web server can be done by copying files to your web server.
+
+- under the htdocs directory of your web server, create a new directory, ex. SASPortalApp
+- copy the contents of the web directory of the git repo into this directory
+  <pre>cp -r this repo directory/web/* SASPortalApp</pre>
+- copy the file setup.js.template as setup.js in your directory under htdocs
+- verify the information defined in that file
+  - sasjsAppLoc = If you have chosen to import the package into a different location than the default of _/System/Applications/SAS Portal App_, then you will need to modify the path in sasjsAppLoc
+
 ## Additional Configuration Customization (Optional)
 
-There may need to be, or a desire to, customize the configuration.  The following scope of customizations can be implemented:
+There may need to be, or a desire to, customize the configuration.  These may include server side or web server side customizations.
+
+### Server Side Customizations
+
+The following scope of customizations can be implemented on the SAS Application Server side:
 
 - specific changes to a SAS Application Server Context
   - Copy the file sas/SASPortalApp_autoexec_usermods.sas.template as SASPortalApp_autoexec_usermods.sas in the root directory of your Server Context, ex.
@@ -101,9 +120,9 @@ There may need to be, or a desire to, customize the configuration.  The followin
 </pre>
   - **WARNING:** putting customizations into the request level setup can adversely impact response times so it should be done with caution.
 
-### Example Customizations
+#### Example Customizations
 
-#### Using a different Metadata Location for the imported Stored Processes
+##### Using a different Metadata Location for the imported Stored Processes
 
 - If for some reason you need to change the location that the Stored Processes were imported into metadata (default=/System/Applications/SAS Portal App), you will need to make the following changes:
   - Set the appLoc location for the stored processes in one of the locations defined above. Example:
@@ -113,7 +132,7 @@ There may need to be, or a desire to, customize the configuration.  The followin
 
 - **NOTE:** If your stored process server instances are already running, and you make changes to either SASPortalApp_autoexec_usermods.sas or autoexec_usermods.sas, you will need to restart the server instances to pick up the changes.
 
-#### Set a different default Theme
+##### Set a different default Theme
 
 - One can force the use of a specific SAS Theme by setting the sastheme macro variable for the SAS Stored Processes.
 
@@ -127,23 +146,22 @@ There may need to be, or a desire to, customize the configuration.  The followin
 
 - **NOTE:** If your stored process server instances are already running, and you make changes to either SASPortalApp_autoexec_usermods.sas or autoexec_usermods.sas, you will need to restart the server instances to pick up the changes.
 
-### Web Application
+### Web Server Side customizations
 
-**NOTE:** There is currently an assumption built into the references to SASStoredProcess web application in this application that it can be reached via the same root url (ie. host:port) as this application is deployed to.
+The following scope of customizations can be implemented on the web application side:
 
-#### Deploy Application
+- Changes to the styles used to render the pages:
+  - To make these types of changes:
+    - edit the setup.js file and set the CSSOverrides variable to the location and name of your CSS file, ex.css_usermods.cs
+    - create the file referenced in the CSSOverrides variable and define your CSS values to modify
+- Changes to processing
+  - To make these types of changes:
+    - edit the setup.js file and set the JSOverrides variable to the location and name of your javascript file, ex. javascript_usermods.js
+    - create the file referenced in the JSOverrides variable and define your javascript settings/functions
 
-Getting the application on to your web server can be done by copying files to your web server.
+#### Example Customizations
 
-- under the htdocs directory of your web server, create a new directory, ex. SASPortalApp
-- copy the contents of the web directory of the git repo into this directory
-  <pre>cp -r this repo directory/web/* SASPortalApp</pre>
-
-##### Verify the path to the Portal application and services
-
-- copy the file setup.js.template as setup.js in your directory under htdocs
-- verify the information defined in that file
-  - sasjsAppLoc = If you have chosen to import the package into a different location than the default of _/System/Applications/SAS Portal App_, then you will need to modify the path in sasjsAppLoc
+TODO...
 
 ## Administration
 
