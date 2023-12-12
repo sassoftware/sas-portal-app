@@ -338,13 +338,17 @@
 
     	<xsl:when test="$displayURI != ''">
    	        <tr>
-	        <td class="portletEntry" valign="top">
+	        <td class="portletEntry" valign="top" colspan="2">
 			<iframe style="overflow: auto;width: 100%" frameborder="0" >
 	        <xsl:attribute name="data-src"><xsl:value-of select="$displayURI"/></xsl:attribute>
-			<xsl:if test="'$iframeHeight' != '' and $iframeHeight != 0">
+                        <xsl:choose>
+			<xsl:when test="'$iframeHeight' != '' and $iframeHeight != 0">
                     <xsl:attribute name="height"><xsl:value-of select="$iframeHeight"/></xsl:attribute>
-			</xsl:if>
-
+			</xsl:when> 
+                        <xsl:otherwise>
+                            <xsl:attribute name="onload">resizeIframe(this)</xsl:attribute>
+                        </xsl:otherwise>
+                        </xsl:choose>
 			</iframe>
 	        </td>
 	        </tr>
@@ -370,7 +374,7 @@
    <xsl:choose>
      <xsl:when test="$stpSBIPURI != ''">
          <tr>
-	        <td class="portletEntry" valign="top">
+	        <td class="portletEntry" valign="top" colspan="2">
 			
 			<xsl:variable name="stpProgram"><xsl:value-of select="encode-for-uri(substring-after($stpSBIPURI,'SBIP://METASERVER'))"/></xsl:variable>
 			<!-- NOTE: Can't figure out how to pass an & in the value of an attribute, thus not including the _action parameter for now
@@ -387,8 +391,7 @@
             </xsl:when>
 
 			<xsl:otherwise>
-			    <!-- set a default height -->
-                 <xsl:attribute name="height">100</xsl:attribute>
+                          <xsl:attribute name="onload">resizeIframe(this)</xsl:attribute>
 			</xsl:otherwise>
 			</xsl:choose>
 
@@ -411,7 +414,7 @@
   <xsl:param name = "reportSBIPURI" />
 
          <tr>
-	        <td class="portletEntry" valign="top">
+	        <td class="portletEntry" valign="top" colspan="2">
 			
 			<xsl:variable name="wrsProgram"><xsl:value-of select="encode-for-uri($reportSBIPURI)"/></xsl:variable>
 			<xsl:variable name="wrsPath"><xsl:value-of select="substring-after($reportSBIPURI,'SBIP://METASERVER')"/></xsl:variable>
