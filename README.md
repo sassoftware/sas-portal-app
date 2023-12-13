@@ -187,12 +187,15 @@ There are 2 processes that can be implemented to create the user's portal conten
 1. A Batch process that creates the portal content area for all registered metadata users
 2. A process that only creates the portal content area based on attempt to use the portal
 
-While #1 is the most straightforward, and may be the best user experience, it has a significant downside. This might result in a significant amount of metadata to be created for users that will never log in to the Portal, thus having the potential to impact response times for actual portal users. Thus, this approach would only be appropriate for very small environments, or where the vast majority of users defined to the system will be Portal users.
+While #1 is the most straightforward, and may be the best user experience, it may have a significant downside if care is not taken. This might result in a significant amount of metadata being created for users that will never log in to the Portal, thus having the potential to impact response times for actual portal users. Thus, this approach would only be appropriate in the following situations:
+
+1.Very small environments
+2.Environments where the vast majority of users defined to the system will be Portal users
+3.Environments where a concrete list of users can be defined
 
 ##### Batch Creation of user's portal content area
 
-
-While discouraged from being used in large environments (***large*** being defined as an environment where there are many more users defined to the system than will be using the portal), the portal content areas can be initialized in a batch mode for all users defined.
+As noted above, batch creation of the users' portal content areas can have a significant negative impact on the system if care is not taken.  However, when appropriate, the portal content areas can be initialized in a batch mode.
 
 See the [Batch User Portal Area Creation Sample](sas/SASEnvironment/SASCode/Samples/managePortalUsers/create-portal-user-area-batch/README.md).
 
