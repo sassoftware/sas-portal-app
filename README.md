@@ -189,9 +189,9 @@ There are 2 processes that can be implemented to create the user's portal conten
 
 While #1 is the most straightforward, and may be the best user experience, it may have a significant downside if care is not taken. This might result in a significant amount of metadata being created for users that will never log in to the Portal, thus having the potential to impact response times for actual portal users. Thus, this approach would only be appropriate in the following situations:
 
-1.Very small environments
-2.Environments where the vast majority of users defined to the system will be Portal users
-3.Environments where a concrete list of users can be defined
+- Very small environments (ie. a small number of users)
+- Environments where the vast majority of users defined to the system will be Portal users
+- Environments where a concrete list of users can be defined
 
 ##### Batch Creation of user's portal content area
 
