@@ -180,7 +180,7 @@ To change this behavior, the administrator can implement the 'create portal user
 - create the user (although this has some security requirements to be careful with)
 - place a request for user registration to be fulfilled by a batch or triggered process
 
-There are a few sample implementations of this exit in the [Samples](sas/SASEnvironment/Samples/managePortalUsers/create-portal-user-area-plugins/README.md) directory.
+There are a few sample implementations of this exit in the [Samples](sas/SASEnvironment/SASCode/Samples/managePortalUsers/create-portal-user-area-plugins/README.md) directory.
  
 **NOTE:** It is discouraged to run this code for all users as part of the user import process to populate the list of users in metadata. This might result in a significant amount of metadata to be created for users that will never log in to the Portal, thus having the potential to impact response times for actual portal users.
 
