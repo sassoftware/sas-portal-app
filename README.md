@@ -167,13 +167,38 @@ TODO...
 
 There are several different aspects of administration that is required to successfully manage this functionality long term.
 
-### Defining new portal users
+### Onboarding new users
 
-By default, only users who have previously logged into the existing SAS Information Delivery Portal will  be able to use this new functionality completely.
+By default, only users who have previously logged into the existing SAS Information Delivery Portal will be able to use this Portal implementation.
 
-When a user is new to using the "new" portal, ie. the user has never gone to the web application and logged in, they will initially get an error message stating that the administrator has not initialized their portal content area.
+If a user had never logged into the existing SAS Information Delivery Portal, they will initially get an error message stating that the administrator has not created their portal content area.
 
-**NOTE:**  In the SAS Information Delivery Portal product, this content area intialization was done automatically on first user logon.  However, this has changed with this new implementation.
+There are 2 steps to onboarding a new user to be able to use this Portal Application.
+
+1. [Create the user's portal content area](#create-the-users-portal-content-area)
+2. [Initialize the user's portal content area with content](#initialize-the-users-portal-content-area)
+
+**NOTE:**  In the SAS Information Delivery Portal product, this content area creation and intialization was done automatically on first user logon.  Thus, this process is a change from existing SAS Information Delivery administration processes.
+
+#### Create the user's portal content area
+
+There are 2 processes that can be implemented to create the user's portal content area:
+
+1. A Batch process that creates the portal content area for all registered metadata users
+2. A process that only creates the portal content area based on attempt to use the portal
+
+While #1 is the most straightforward, and may be the best user experience, it has a significant downside. This might result in a significant amount of metadata to be created for users that will never log in to the Portal, thus having the potential to impact response times for actual portal users. Thus, this approach would only be appropriate for very small environments, or where the vast majority of users defined to the system will be Portal users.
+
+##### Batch Creation of user's portal content area
+
+
+While discouraged from being used in large environments (***large*** being defined as an environment where there are many more users defined to the system than will be using the portal), the portal content areas can be initialized in a batch mode for all users defined.
+
+See the [Batch User Portal Area Creation Sample](sas/SASEnvironment/SASCode/Samples/managePortalUsers/create-portal-user-area-batch/README.md).
+
+##### On-Demand Creation of user's portal content area
+
+As mentioned above, when a user is new they will initially get an error message stating that the administrator has not initialized their portal content area.
 
 To change this behavior, the administrator can implement the 'create portal user area' user exit.  In this user exit, the following can be implemented:
 
@@ -182,20 +207,15 @@ To change this behavior, the administrator can implement the 'create portal user
 
 There are a few sample implementations of this exit in the [Samples](sas/SASEnvironment/SASCode/Samples/managePortalUsers/create-portal-user-area-plugins/README.md) directory.
  
-**NOTE:** It is discouraged to run this code for all users as part of the user import process to populate the list of users in metadata. This might result in a significant amount of metadata to be created for users that will never log in to the Portal, thus having the potential to impact response times for actual portal users.
+#### Initialize the users' portal content area
 
-#### New User Initialization
-
-There are 2 steps to onboarding a new user to be able to use the portal.
-1. Create the user's portal content area, described above under [Defining new portal users](#defining-new-portal-users)
-2. Initializing their portal content area with content
-
-Initializing their portal content area with content is executed when the user first logs into the portal.  
+Initializing their portal content area with content is executed when the user first logs into the portal and their portal content area has been created.  This will create an initial set of content for the user, based on previously defined templated content.
+ 
 **NOTE:** Currently, this functionality is controlled by the feature flag, INITNEWUSER. See [Feature Flags](#feature-flags) for more information on how to set this flag while it is being developed.
 
 ### Creating Shared Content
 
-One of the primary portal features is for a portal content administrator to create content that is meant to be share with a group of users.  Each time the user logs in to the portal, there is a check performed to see if new content has been created to be shared with this user.
+One of the primary portal features is for a portal content administrator to create content that is meant to be shared with a group of users.  Each time the user logs in to the portal, there is a check performed to see if new content has been created to be shared with this user and if new content exists, the user's portal content area will be synchronized with this new shared content.
 
 **NOTE:** Currently, this functionality is controlled by the feature flag, SYNCUSER. See [Feature Flags](#feature-flags) for more information on how to set this flag while it is being developed.
 
