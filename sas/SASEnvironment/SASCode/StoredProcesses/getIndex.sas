@@ -40,6 +40,44 @@
 	    
 	    %objectExists(type=Tree,name=&portalPermissionsTree.,existsvar=_cptTreeExists);
 
+        /*
+         *  There may be different ways for the admin to handle the fact that the user's
+         *  permissions tree doesn't exist.
+         *
+         *  Allow the user to provide a customization script that can perform site
+         *  specific processing here.  The script has the following behaviors:
+         *   - is passed the macro variable _cptTreeExists set to 0.  If they were able
+         *  to create the tree and want processing to continue, they should set this value
+         *  to 1 before returning.
+         *   - if they are unable to create the tree, they should not modify the _cptTreeExists
+         *  macro variable (ie. return it as 0).  They also have the ability to customize
+         *  the message that is sent back to the end user by setting the macro variable
+         *  _cptTreeErrorMessage to the text they want returned.
+         *  - the typical meta variables are set the admin can use in this script, for example:
+         *    - metauser = the user id of the connecting client
+         *    - metaperson = the person name of the connecting client
+         *
+         *  The InitPortalAreaProgram macro variable needs to be set to the location of the
+         *  sas program to execute.  The location is relative to the root of the Server Context
+         *  that is executing this program.  
+         *
+         */
+        %let _cptTreeErrorMessage=;
+        
+        %if (&_cptTreeExists. = 0) %then %do;
+        
+            %if (%symexist(CreatePortalUserAreaProgram)) %then %do;
+ 
+                %if ("&CreatePortalUserAreaProgram." ne "") %then %do;
+                
+                     %inc "&CreatePortalUserAreaProgram.";
+                     
+                     %end;
+                     
+                %end;
+                
+            %end;
+        
      	%if (&_cptTreeExists. = 1) %then %do;
 	
 	        /*  The user portal content does not exist, should we initialize or not?
@@ -146,6 +184,9 @@
 	             "sastheme"="&sastheme."
                      "localizationFile"="&localizationFile."
                      "errorCode"="&checkUserPortalContentRC."
+                %if ("&_cptTreeErrorMessage." ne "") %then %do;
+                    "errorMessage"="&_cptTreeErrorMessage."
+                    %end;
 	       ;
    run;
    
@@ -162,4 +203,5 @@
 %inc "&sasDir./request_setup.sas";
 
 %genPortalMain(user=&_metaperson.);
+
 

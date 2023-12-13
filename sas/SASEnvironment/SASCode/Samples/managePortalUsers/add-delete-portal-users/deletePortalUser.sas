@@ -1,4 +1,8 @@
-options metauser="admin user" metapass="admin pw";
+/*
+ *  This program must be run as an admin user who has permissions
+ *  to delete portal content areas, ie. Permission Trees, and
+ *  can see those that exist.
+ */
 
 %inc "&sasDir./request_setup.sas";
 

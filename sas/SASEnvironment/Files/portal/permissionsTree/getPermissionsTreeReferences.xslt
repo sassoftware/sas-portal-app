@@ -108,23 +108,10 @@
                                         <ns>SAS</ns>
                                         <!--
                                              128 = XMLSelect
-                                             256 = GetMetadata
-                                               4 = Templates
                                         -->
-                                        <Flags>388</Flags>
+                                        <Flags>128</Flags>
                                         <Options>
                                         <XMLSelect><xsl:attribute name="search">@Name='<xsl:value-of select="$identityName"/>'</xsl:attribute></XMLSelect>
-                                        <Templates>
-                                           <Person Id="" Name="">
-                                             <!-- Need to retrieve the user's profile information -->
-                                             <PropertySets search="PropertySet[@setRole='Profile/global']"/>
-                                           </Person>
-                                           <PropertySet Id="" Name="" SetRole="">
-                                             <PropertySets/>
-                                             <SetProperties/>
-                                           </PropertySet>
-                                           <Property Id="" Name="" PropertyName="" DefaultValue=""/>
-                                        </Templates>
                                         </Options>
                  </GetMetadataObjects>
 

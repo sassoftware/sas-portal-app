@@ -14,6 +14,10 @@
 <xsl:param name="appLocEncoded"></xsl:param>
 <xsl:param name="errorCode"/>
 
+<!-- The caller can supply their own message to send to the user -->
+
+<xsl:param name="errorMessage"/>
+
 <!-- load the appropriate localizations -->
 
 <xsl:variable name="localeXml" select="document($localizationFile)/*"/>
@@ -105,8 +109,6 @@
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
 <xsl:template name="genErrorPage">
 
-<xsl:message>in genErrorPage</xsl:message>
-
 <div id="pages">
 
            <div class="tabcontent" id="content_0">
@@ -116,9 +118,13 @@
                 <tr valign="top">
                 <td width="100%">
 
-                   <xsl:variable name="errorMessage">
+                   <xsl:variable name="errorMessageToSend">
 
                    <xsl:choose>
+                     <xsl:when test="$errorMessage ne ''">
+                       <xsl:value-of select="$errorMessage"/>
+                     </xsl:when>
+ 
                      <xsl:when test="$errorCode=-1001">
                        <xsl:value-of select="$localeXml/string[@key='noUserPermissionTree']/text()"/>
                        </xsl:when>
@@ -133,7 +139,7 @@
 
                    </xsl:variable>
 
-                   <b><xsl:value-of select="$errorMessage"/></b>
+                   <b><xsl:value-of select="$errorMessageToSend"/></b>
                 </td>
                 </tr>
 
