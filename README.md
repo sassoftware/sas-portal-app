@@ -169,14 +169,19 @@ There are several different aspects of administration that is required to succes
 
 ### Defining new portal users
 
-When a user is new to using the portal, ie. the user has never gone to the web application and logged in, they will initially get an error message stating that the administrator has not initialized their portal content area.
+By default, only users who have previously logged into the existing SAS Information Delivery Portal will  be able to use this new functionality completely.
 
-**NOTE:**  In the Information Delivery Portal product, this content area intialization was done automatically on first user logon.  However, this has changed with this new implementation.
+When a user is new to using the "new" portal, ie. the user has never gone to the web application and logged in, they will initially get an error message stating that the administrator has not initialized their portal content area.
 
-As an administrator, you must run the macro %createPortalUser, specifying the new portal user to create, before they can use the portal.  There is sample code on how to do this in the [createPortalUser sample](sas/SASEnvironment/SASCode/Samples/createPortalUser.sas).
+**NOTE:**  In the SAS Information Delivery Portal product, this content area intialization was done automatically on first user logon.  However, this has changed with this new implementation.
 
-This code can be executed as a batch job, as a stored process, or as a triggered job.  Regardless of how it is executed, it must be run as a user that has Write permissions to the SAS Portal Permissions tree.
+To change this behavior, the administrator can implement the 'create portal user area' user exit.  In this user exit, the following can be implemented:
 
+- create the user (although this has some security requirements to be careful with)
+- place a request for user registration to be fulfilled by a batch or triggered process
+
+There are a few sample implementations of this exit in the [Samples](sas/SASEnvironment/Samples/managePortalUsers/create-portal-user-area-plugins/README.md) directory.
+ 
 **NOTE:** It is discouraged to run this code for all users as part of the user import process to populate the list of users in metadata. This might result in a significant amount of metadata to be created for users that will never log in to the Portal, thus having the potential to impact response times for actual portal users.
 
 #### New User Initialization
