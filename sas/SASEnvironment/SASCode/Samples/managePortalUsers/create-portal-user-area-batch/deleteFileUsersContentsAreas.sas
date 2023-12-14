@@ -9,7 +9,9 @@
  *        - can read existing subtrees under the SAS Portal Application Tree tree (to avoid creating duplicate information)
  */
 
-%let peopleFile=Data/people.txt;
+%if (%symexist(peopleFile)=0) %then %do;
+   %let peopleFile=Data/people.txt;
+   %end;
 
 /*
  *  Build up the program statements to register these users for later execution.
@@ -17,34 +19,43 @@
 
 filename tmpcode temp encoding="utf-8";
 
+filename people "&peopleFile." encoding="utf-8";
 data _null_;
 
-  infile peopleFile encoding="utf-8";
+  infile people truncover;
   
   length name $256;
-  input name $;
+  input name $256.;
 putlog name=;
   
   file tmpcode;
   length codeline $ 1024;
 
   if _n_=1 then do;
-     codeline='%macro registerPortalUsers;';
+     codeline='%macro deletePortalUsers;';
      put codeline;
      end;
      
   codeline=cats('%put Processing User:',name,';');
   put codeline;
-  codeline=cats('%createPortalUser(name=',name,',rc=createPortalUserRC);');
+  codeline=cats('%deletePortalUser(name=',name,',rc=deletePortalUserRC);');
   put codeline;
-  codeline=cats('%put createPortalUser returned return code=',"&createPortalUserRC.",';');
+  put '%if (&deletePortalUserRC. = 0) %then %do;';
+  put '%let messageLevel=NOTE;';
+  put '%end;';
+  put '%else %do;';
+  put '%let messageLevel=ERROR;';
+  put '%end;';
+  
+  codeline=cats('%put &messageLevel.: deletePortalUser(',name,') returned return code=&deletePortalUserRC.;');
   put codeline;
+  
      
 run;
 data _null_;  
   file tmpcode mod;
   put '%mend;';
-  put '%registerPortalUsers;';
+  put '%deletePortalUsers;';
 run;
 
 /* 
