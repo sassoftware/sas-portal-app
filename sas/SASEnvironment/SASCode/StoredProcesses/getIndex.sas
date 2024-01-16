@@ -202,6 +202,5 @@
 
 %inc "&sasDir./request_setup.sas";
 
-%genPortalMain(user=&_metaperson.);
-
+%genPortalMain(user=%bquote(&_metaperson.));
 
