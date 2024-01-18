@@ -111,9 +111,85 @@ After experimentation, it was decided to implement the xml file approach.  This 
 
 If we need to change this approach, the good news is that it is all handled in the SAS code (and accompanying xslt style sheets) on the backend.
 
-## Editing Portal Layout
+## Modifying Portal Content
 
-There has been a request to allow the user to edit the layout of their portal pages.  Will have to research how much work this will be.
+There has been a request to allow the user to modify Portal content such as Add, Edit and Remove Pages.
+
+In the SAS Information Delivery portal, this is done using the Customize menu. The menu selections on the Customize menu change based on what tab is selected and what the users permissions are.
+
+### Who can modify what?
+
+#### Rules
+
+- An Admin User is defined as user that has has write permissions to the identity group and explicit write permissions to the Group Permission tree
+- A User can be Admin User on multiple Groups
+- An admin user on 1 group, can be a standard user on others
+- A user’s ability to modify a page is dependent on their role as it relates to the selected page:
+
+<table style="border: 1px solid black;border-collapse: collapse;">
+  <tr style="border: 1px solid black;">
+    <th rowspan="2" style="border: 1px solid black;">Page Type</th>
+    <th colspan="3" style="border: 1px solid black;">Standard User</th>
+    <th colspan="3" style="border: 1px solid black;">Content Admin User*</th>
+  <tr>
+  <tr>
+    <td style="border: 1px solid black;"></td>
+    <td style="border: 1px solid black;">Add</td>
+    <td style="border: 1px solid black;">Edit</td>
+    <td style="border: 1px solid black;">Remove</td>
+    <td style="border: 1px solid black;">Add</td>
+    <td style="border: 1px solid black;">Edit</td>
+    <td style="border: 1px solid black;">Remove</td>
+  </tr>
+    <tr>
+      <td style="border: 1px solid black;">Home Page</td>
+      <td style="border: 1px solid black;">No</td>
+      <td style="border: 1px solid black;">Yes</td>
+      <td style="border: 1px solid black;">No</td>
+      <td style="border: 1px solid black;">No</td>
+      <td style="border: 1px solid black;">Yes</td>
+      <td style="border: 1px solid black;">No</td>
+  </tr>
+      <tr>
+        <td style="border: 1px solid black;">User Page</td>
+        <td style="border: 1px solid black;">Yes</td>
+        <td style="border: 1px solid black;">Yes</td>
+        <td style="border: 1px solid black;">Yes</td>
+        <td style="border: 1px solid black;">Yes</td>
+        <td style="border: 1px solid black;">Yes</td>
+        <td style="border: 1px solid black;">Yes</td>
+    </tr>
+      <tr>
+        <td style="border: 1px solid black;">Shared Default Page</td>
+        <td style="border: 1px solid black;">No</td>
+        <td style="border: 1px solid black;">No</td>
+        <td style="border: 1px solid black;">Yes</td>
+        <td style="border: 1px solid black;">Yes</td>
+        <td style="border: 1px solid black;">Yes</td>
+        <td style="border: 1px solid black;">Yes</td>
+    </tr>
+          <tr>
+	        <td style="border: 1px solid black;">Shared Available Page</td>
+	        <td style="border: 1px solid black;">Yes**</td>
+	        <td style="border: 1px solid black;">No</td>
+	        <td style="border: 1px solid black;">Yes</td>
+	        <td style="border: 1px solid black;">Yes</td>
+	        <td style="border: 1px solid black;">Yes</td>
+	        <td style="border: 1px solid black;">Yes</td>
+    </tr>
+              <tr>
+		        <td style="border: 1px solid black;">Shared Persistent Page</td>
+		        <td style="border: 1px solid black;">No</td>
+		        <td style="border: 1px solid black;">No</td>
+		        <td style="border: 1px solid black;">No</td>
+		        <td style="border: 1px solid black;">Yes</td>
+		        <td style="border: 1px solid black;">Yes</td>
+		        <td style="border: 1px solid black;">Yes</td>
+    </tr>
+</table>
+
+* These abilities apply to pages in groups that this person is an admin of.  For pages in a group where the user is not an admin user, their capabilities follow the Standard User capabilities.
+** A standard user can select to Add a page to their view that the content administrator has made available to them as an "Available" type of shared page, but can not create a new Shared Available Page to share with others.
 
 ## Editing Portlet Content
 
@@ -121,6 +197,7 @@ There has been a request to allow the user to edit content.  This will require "
 
 The approach will be to have a property sheet per portlet type (generated according to the rules listed above in the Generation section) and then a "save" stored process which will take the content of the form and apply it.
 
+## Content Modification
 There are some easy ones, like the Display URL portlet, that only takes limited properties.   There are others that take lists which will be more difficult, but should be do-able.  There are some, like SAS Stored Process and Report, portlets that allow for navigation of the SAS Folder tree to select a stored process or report.  This will be more difficult and the first pass will simply just allow the user to enter the path to the report or stored process as a text string.
 
 The editing has to handle 2 cases:
