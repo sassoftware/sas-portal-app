@@ -130,7 +130,7 @@ In the SAS Information Delivery portal, this is done using the Customize menu. T
   <tr style="border: 1px solid black;">
     <th rowspan="2" style="border: 1px solid black;">Page Type</th>
     <th colspan="3" style="border: 1px solid black;">Standard User</th>
-    <th colspan="3" style="border: 1px solid black;">Content Admin User*</th>
+    <th colspan="3" style="border: 1px solid black;">Content Admin User<sup>1</sup></th>
   <tr>
   <tr>
     <td style="border: 1px solid black;"></td>
@@ -170,7 +170,7 @@ In the SAS Information Delivery portal, this is done using the Customize menu. T
     </tr>
           <tr>
 	        <td style="border: 1px solid black;">Shared Available Page</td>
-	        <td style="border: 1px solid black;">Yes**</td>
+	        <td style="border: 1px solid black;">Yes<sup>2</sup></td>
 	        <td style="border: 1px solid black;">No</td>
 	        <td style="border: 1px solid black;">Yes</td>
 	        <td style="border: 1px solid black;">Yes</td>
@@ -188,8 +188,11 @@ In the SAS Information Delivery portal, this is done using the Customize menu. T
     </tr>
 </table>
 
-* These abilities apply to pages in groups that this person is an admin of.  For pages in a group where the user is not an admin user, their capabilities follow the Standard User capabilities.
-** A standard user can select to Add a page to their view that the content administrator has made available to them as an "Available" type of shared page, but can not create a new Shared Available Page to share with others.
+Legend:
+
+<sup>1</sup> These abilities apply to pages in groups that this person is an admin of.  For pages in a group where the user is not an admin user, their capabilities follow the Standard User capabilities.
+
+<sup>2</sup> A standard user can select to Add a page to their view that the content administrator has made available to them as an "Available" type of shared page, but can not create a new Shared Available Page to share with others.
 
 ## Editing Portlet Content
 
