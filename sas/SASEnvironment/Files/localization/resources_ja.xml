@@ -123,6 +123,13 @@
   <string key="portletItemRemoveTitle">ポートレット項目の削除</string>
   <string key="portletRemoveNotSupported">このタイプのアイテムの削除はサポートされていません。</string>
 
+  <!-- PSPortalPage Remove
+    -->
+
+  <string key="portletRemovePagePersonal">このページを私の個人ポータルから削除してください。</string>
+  <string key="portletRemovePagePermanent">このページを削除して完全に削除します。</string>
+  <string key="portletRemovePagePortlets">ページに含まれる次のポートレットを削除します。</string>
+
   <!--
        Errors
   -->

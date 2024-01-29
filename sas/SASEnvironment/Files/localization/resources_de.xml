@@ -123,6 +123,13 @@
   <string key="portletItemRemoveTitle">Portlet-Element entfernen</string>
   <string key="portletRemoveNotSupported">Das Entfernen dieses Elementtyps wird nicht unterstützt.</string>
 
+  <!-- PSPortalPage Remove
+    -->
+
+  <string key="portletRemovePagePersonal">Diese Seite aus meinem persönlichen Portal entfernen.</string>
+  <string key="portletRemovePagePermanent">Entfernen Sie diese Seite und löschen Sie sie endgültig.</string>
+  <string key="portletRemovePagePortlets">Löschen Sie die folgenden Portlets, die auf der Seite enthalten sind.</string>
+
   <!--
        Errors
   -->
