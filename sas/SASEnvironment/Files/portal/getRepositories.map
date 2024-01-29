@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SXLEMAP version="2.1">
+
+<!-- purposely not reading very much from the returned xml so that it is as quick as it can be -->
+
+<TABLE name="repos">
+    <TABLE-PATH syntax="XPath">/GetRepositories/Repositories/Repository</TABLE-PATH>
+
+    <COLUMN name="Id">
+        <PATH syntax="XPath">/GetRepositories/Repositories/Repository/@Id</PATH>
+        <TYPE>character</TYPE>
+        <DATATYPE>string</DATATYPE>
+        <LENGTH>17</LENGTH>
+    </COLUMN>
+    <COLUMN name="Name">
+        <PATH syntax="XPath">/GetRepositories/Repositories/Repository/@Name</PATH>
+        <TYPE>character</TYPE>
+        <DATATYPE>string</DATATYPE>
+        <LENGTH>200</LENGTH>
+    </COLUMN>
+</TABLE>
+</SXLEMAP>

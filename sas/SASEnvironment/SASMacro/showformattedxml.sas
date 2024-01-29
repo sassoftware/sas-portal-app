@@ -1,7 +1,6 @@
-%macro showFormattedXML(xmlToFormat,header,out=);
+%macro showFormattedXML(xmlToFormat,header,out=,force=);
 
-%if (%symexist(SHOWXML)) %then %do;
-
+%if ((%symexist(SHOWXML)) or ("&force." ne "")) %then %do;
 
 	%if ( "&xmlToFormat."="") %then %do;
 	

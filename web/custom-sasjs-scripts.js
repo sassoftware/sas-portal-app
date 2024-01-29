@@ -43,6 +43,7 @@ window.onload = function () {
     .catch((err) => {
       console.error(err)
     })
+
 }
 
 /********************************************************************************
@@ -198,6 +199,22 @@ function populateDiv(element, cb1, cb2) {
         if (this.readyState == 4) {
           if (this.status == 200) {
              element.innerHTML = this.responseText;
+             /*
+              *  Execute any scripts that may be in the generated text
+              *  Scripts in dynamically generted content aren't parsed and executed
+              *  Thus here we need to explicitly find all of the script elements and
+              *  add them as children (which will cause the execution).
+              *  NOTE: experimented with several ways of doing this, this is the only
+              *  way I found that would both execute them AND make the contents of the
+              *  scripts available to other scripts.
+              */
+             element.querySelectorAll('script').forEach(function(node) {
+                script = document.createElement('script');
+                script.innerHTML=node.innerText;
+                element.appendChild(script);
+
+                });
+
              }
           if (this.status == 404) {
              element.innerHTML = "Page not found.";

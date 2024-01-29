@@ -26,23 +26,29 @@
  *  Parameters:
  *    xml = a fileref that should contain the output of the xsl process
  *    rc  = a macro variable name that should be set to the return code
+ *         -1 = if the search parameter was passed, indicates that the file exists but it doesn't contain the search string
  *          0 = success
- *         otherwise = failure
+ *         >0 = failure
  *    msg = any informative message text to make diagnostics easier.
+ *    search = a string that should be in the response.  If the file exists and this string is not found, a -1 rc is returned.
  */
-%macro checkXSLresult(xml=,rc=,msg=,quiet=0);
+%macro checkXSLresult(xml=,rc=,msg=,quiet=0,search=);
 
 %macro issueResultMessage;
 
        %if (&quiet.=0) %then %do;
 
 	       endloc=find(_infile_,'</message>',stringloc);
-	       
-	       msglength=endloc-stringloc;
-	       
-	       length message $200;
-	       
-	       message=substr(_infile_,stringloc,msglength);
+
+	       length message $1024;
+               if (endloc>0) then do;	       
+	          msglength=endloc-stringloc;
+	          message=substr(_infile_,stringloc,msglength);
+	          end;
+               else do;
+                  /*  Message was longer than we could check, just include the rest of the line */ 
+	          message=substr(_infile_,stringloc);
+                  end;
 	
 	       put message;           
 
@@ -78,8 +84,19 @@
 	    %end;
 	    
 	data _null_;
-	  infile &xml.;
+	  infile &xml. end=last;
 	  input;
+
+          %if ("&search" ne "") %then %do;
+              if (_n_=1) then do;
+
+                 found=0;
+                 retain found;
+                 drop found;
+
+                 end;
+
+              %end;
 	     
 	  stringloc=find(_infile_,'ERROR:');
 	  if (stringloc>0) then do;
@@ -95,6 +112,34 @@
 	       stop;
 	       
 	      end;
+
+          %if ("&search" ne "") %then %do;
+
+          else do;
+              stringloc=find(_infile_,"&search.");
+              if (stringloc=0) then do;
+
+                 found=-1;
+
+                 end;
+              else do;
+                 found=0;
+                 end;
+
+              end;
+
+              %end;
+
+          %if ("&search" ne "") %then %do;
+
+          if (last) then do;
+
+             call symputx('_cxrSearchFound',found);
+
+             end;
+
+              %end;
+          
 	run;
 	
 	/*
@@ -102,8 +147,15 @@
 	 */
 	
 	%if (&&&rc.=1) %then %do;
-	
-	    %let &rc.=0;
+
+            %if ("&search" ne "") %then %do;
+
+                %let &rc=&_cxrSearchFound.;
+ 
+                %end;	
+            %else %do;
+                %let &rc.=0;
+                %end;
 	
 	    %end;
 	

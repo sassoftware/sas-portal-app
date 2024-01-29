@@ -2,10 +2,21 @@
 <resources>
 
   <string key="portalTitle">SAS &#174; Portal</string>
-
   <string key="globalMenuBar_skipMenuBar">メニューバーをスキップ</string>
   <string key="portalCustomizationMenu">カスタマイズ</string>
   <string key="portalCustomizationMenuTitle">選択すると、ポータルのカスタマイズ用のメニューが表示されます</string>
+  <string key="portalCustomizationMenuEditPage">ページの編集</string>
+  <string key="portalCustomizationMenuEditPageTitle">ページの編集</string>
+  <string key="portalCustomizationMenuEditPageContent">ページコンテンツの編集</string>
+  <string key="portalCustomizationMenuEditPageContentTitle">ページコンテンツの編集</string>
+  <string key="portalCustomizationMenuEditPageProperties">ページのプロパティを編集する</string>
+  <string key="portalCustomizationMenuEditPagePropertiesTitle">ページのプロパティを編集する</string>
+  <string key="portalCustomizationMenuArrangeTabs">ページタブの配置</string>
+  <string key="portalCustomizationMenuArrangeTabsTitle">ページタブの配置</string>
+  <string key="portalCustomizationMenuAddPage">ページを追加</string>
+  <string key="portalCustomizationMenuAddPageTitle">ページを追加</string>
+  <string key="portalCustomizationMenuRemovePage">ページを削除</string>
+  <string key="portalCustomizationMenuRemovePageTitle">ページを削除</string>
   <string key="portalOptionsMenu">オプション</string>
   <string key="portalOptionsMenuTitle">選択すると、オプション メニューが表示されます。</string>
   <string key="portalSearchMenu">検索</string>
@@ -15,6 +26,8 @@
   <string key="portalHelpMenu">ヘル</string>
   <string key="portalHelpMenuTitle">選択するとヘルプメニューが表示されます。</string>
   <string key="pageTabs_skipTabMenuTitle">タブメニューをスキップ</string>
+
+  <string key="portalAdminHeader">* コンテンツ管理者 *</string>
  
   <!-- 
        Portlet Content Editor menu
@@ -27,7 +40,29 @@
        Portlet Content Editing
   -->
   <string key="saveButton">保存</string>
+  <string key="okButton">わかりました</string>
   <string key="cancelButton">キャンセル</string>
+  <string key="doneButton">終わり</string>
+  <string key="moveUpButton">上に移動</string>
+  <string key="moveDownButton">下に移動</string>
+  <string key="addButton">追加</string>
+  <string key="addItemsButton">追加...</string>
+  <string key="deleteButton">消去</string>
+  <string key="editButton">編集</string>
+  <string key="removeButton">取り除く</string>
+
+  <!-- Common fields
+    -->
+
+  <string key="portletEditItemName">名前</string>
+  <string key="portletEditItemNameRequired">エラー: 名前フィールドは必須です。</string>
+  <string key="portletEditItemDescription">説明</string>
+  <string key="portletEditItemURL">URL</string>
+  <string key="portletEditItemURLRequired">エラー: URL フィールドは必須です。</string>
+  <string key="portletEditItemKeywords">キーワード</string>
+
+  <string key="portletEditItemRequiredField">必須フィールド</string>
+
   <!-- 
        Display URL Portlet Content Editing
   -->
@@ -36,11 +71,67 @@
   <string key="portletEditDisplayURLHeight">コンテンツの高さ</string>
 
   <!--
+       Collection Portlet Content Editing
+  -->
+  <string key="portletEditCollectionShowDescriptionLabel">説明を表示</string>
+  <string key="portletEditCollectionShowLocationLabel">場所を表示</string>
+  <string key="portletEditCollectionSortLabel">チャネル内のパッケージを作成日で並べ替えます。</string>
+  <string key="portletEditCollectionSortUsePreferencesLabel">環境設定を使用する</string>
+  <string key="portletEditCollectionSortAscendingLabel">上昇</string>
+  <string key="portletEditCollectionSortDescendingLabel">降順</string>
+  <string key="portletEditCollectionItemsLabel">アイテム:</string>
+
+  <string key="portletCollectionItemTypeLinkLabel">リンク</string>
+  <string key="portletCollectionItemTypeApplicationLabel">応用</string>
+
+  <string key="portletEditCollectionConfirmMessage">これにより、ポータルからアイテムが削除されますが、完全に削除されるわけではありません。 続けたいですか？</string>
+  <string key="portletEditCollectionTooManySelected">編集する項目を 1 つだけ選択してください。</string>
+  <string key="portletEditCollectionNoneSelected">編集する項目を選択してください。</string>
+  <string key="portletEditCollectionNotEditable">この項目は編集できません</string>
+  <string key="portletEditCollectionHasChangedMessage">このページに変更を加えました。 続行すると、これらの変更は失われます。 続行して変更内容を失いますか?</string>
+
+  <!-- Portal Page Editing -->
+
+  <string key="portletEditPageRank">ページランク</string>
+  <string key="portletEditPageRankTitle">ページは、最低ランクから最高ランクまでのランク順に並べられます。</string>
+
+  <string key="portletEditPageLocation">場所（グループ）</string>
+  <string key="portletEditPageLocationTitle">場所（グループ）</string>
+
+  <string key="portletEditPageShareType">シェアタイプ</string>
+  <string key="portletEditPageShareTypeNotShared">共有されていません</string>
+  <string key="portletEditPageShareTypeAvailable">利用可能</string>
+  <string key="portletEditPageShareTypeDefault">デフォルト</string>
+  <string key="portletEditPageShareTypePersistent">持続的</string>
+
+  <!--
+       Portlet Item Editor menu
+  -->
+  <string key="portletItemEdit">項目の編集</string>
+  <string key="portletItemEditTitle">ポートレット項目の編集</string>
+  <string key="portletItemEditNotSupported">このタイプの項目の編集はサポートされていません。</string>
+
+  <!-- Portlet Item Add
+    -->
+  <string key="portletItemAdd">アイテムの追加</string>
+  <string key="portletItemAddTitle">ポートレット項目の追加</string>
+  <string key="portletAddNotSupported">このタイプの項目の追加はサポートされていません。</string>
+
+  <!-- Portlet Item Remove
+    -->
+  <string key="portletItemRemove">アイテムの削除</string>
+  <string key="portletItemRemoveTitle">ポートレット項目の削除</string>
+  <string key="portletRemoveNotSupported">このタイプのアイテムの削除はサポートされていません。</string>
+
+  <!--
        Errors
   -->
   <string key="noUserPermissionTree">管理者がポータル コンテンツ領域を初期化していません。管理者に問い合わせてください。</string>
   <string key="noNewUserInit">管理者はセルフサービス ユーザーの初期化を有効にしていません。管理者に問い合わせてください。</string>
   <string key="genericError">不明なエラーが発生しました。管理者に連絡してください</string>
   <string key="ErrorLabel">エラー</string>
-  
+
+  <string key="metadataGenerationFailed">メタデータ クエリの生成に失敗しました。</string>
+  <string key="pageGenerationFailed">ページの生成に失敗しました。</string>
+
 </resources>

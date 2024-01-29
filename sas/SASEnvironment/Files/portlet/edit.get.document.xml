@@ -1,0 +1,11 @@
+ <GetMetadata>
+ <Metadata>
+ <Document Id="${TYPEID}" Name="" Desc="" URIType="" URI="" TextRole="" TextType="">
+ </Document>
+ </Metadata>
+ <NS>SAS</NS>
+ <Flags>0</Flags>
+ <Options>
+                </Options>
+</GetMetadata>
+

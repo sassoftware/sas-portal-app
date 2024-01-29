@@ -21,13 +21,18 @@
 
 <xsl:variable name="portletId" select="GetMetadata/Metadata/PSPortlet/@Id"/>
 <xsl:variable name="portletType" select="GetMetadata/Metadata/PSPortlet/@PortletType"/>
+<xsl:variable name="parentTreeId" select="GetMetadata/Metadata/PSPortlet/Trees/Tree/@Id"/>
 
 <xsl:variable name="portletHeight" select="GetMetadata/Metadata/PSPortlet/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='sas_DisplayURL_Height']/@DefaultValue"/>
 <xsl:variable name="portletURL" select="GetMetadata/Metadata/PSPortlet/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='sas_DisplayURL_DisplayURL']/@DefaultValue"/>
 
-<xsl:variable name="saveLink" select="concat('/SASStoredProcess/do?_program=',$appLocEncoded,'services/savePortletContentsDisplayURL&amp;id=',$portletId,'&amp;portletType=',$portletType)"/>
+<xsl:variable name="saveLink" select="concat('/SASStoredProcess/do?_program=',$appLocEncoded,'services/updateItem&amp;id=',$portletId,'&amp;portletType=',$portletType,'&amp;type=PSPortlet')"/>
 
 <form method="post"><xsl:attribute name="action"><xsl:value-of select="$saveLink"/></xsl:attribute>
+
+    <xsl:if test="$parentTreeId">
+       <input type="hidden" name="parentTreeId"><xsl:attribute name="value"><xsl:value-of select="$parentTreeId"/></xsl:attribute></input>
+    </xsl:if>
 
 <xsl:variable name="portletHeight" select="GetMetadata/Metadata/PSPortlet/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='sas_DisplayURL_Height']/@DefaultValue"/>
 <xsl:variable name="portletURL" select="GetMetadata/Metadata/PSPortlet/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='sas_DisplayURL_DisplayURL']/@DefaultValue"/>

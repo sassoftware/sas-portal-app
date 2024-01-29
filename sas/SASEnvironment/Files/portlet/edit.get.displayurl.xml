@@ -1,0 +1,34 @@
+ <GetMetadata>
+ <Metadata>
+ <PSPortlet Id="${TYPEID}" PortletType="" Name="">
+ </PSPortlet>
+ </Metadata>
+ <NS>SAS</NS>
+ <Flags>20</Flags>
+ <Options>
+                     <Templates>
+                        <PSPortlet Id="" Name="" PortletType="">
+                           <Groups/>
+                           <PropertySets/>
+                           <Trees/>
+                        </PSPortlet>
+                        <Group>
+                           <Members/>
+                        </Group>
+                        <PropertySet Id="" Name="">
+                          <SetProperties/>
+                          <PropertySets/>
+                        </PropertySet>
+                        <Property Id="" Name="" SQLType="" DefaultValue=""/>
+                        <Extension Id="" Name="" Value=""/>
+                        <Document Id="" Name="" URIType="" URI="" TextRole="" TextType=""/>
+                        <Transformation Id="" Name="" TransformRole="">
+                           <Trees/>
+                        </Transformation>
+                        <Tree Id="" Name="">
+                          <ParentTree/>
+                        </Tree>
+                     </Templates>
+                </Options>
+</GetMetadata>
+

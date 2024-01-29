@@ -5,6 +5,18 @@
   <string key="globalMenuBar_skipMenuBar">Skip Menu Bar</string>
   <string key="portalCustomizationMenu">Customize</string>
   <string key="portalCustomizationMenuTitle">Select to display the menu for portal customization</string>
+  <string key="portalCustomizationMenuEditPage">Edit Page</string>
+  <string key="portalCustomizationMenuEditPageTitle">Edit Page</string>
+  <string key="portalCustomizationMenuEditPageContent">Edit Page Content</string>
+  <string key="portalCustomizationMenuEditPageContentTitle">Edit Page Content</string>
+  <string key="portalCustomizationMenuEditPageProperties">Edit Page Properties</string>
+  <string key="portalCustomizationMenuEditPagePropertiesTitle">Edit Page Properties</string>
+  <string key="portalCustomizationMenuArrangeTabs">Arrange Page Tabs</string>
+  <string key="portalCustomizationMenuArrangeTabsTitle">Arrange Page Tabs</string>
+  <string key="portalCustomizationMenuAddPage">Add Page</string>
+  <string key="portalCustomizationMenuAddPageTitle">Add Page</string>
+  <string key="portalCustomizationMenuRemovePage">Remove Page</string>
+  <string key="portalCustomizationMenuRemovePageTitle">Remove Page</string>
   <string key="portalOptionsMenu">Options</string>
   <string key="portalOptionsMenuTitle">Select to display the options menu.</string>
   <string key="portalSearchMenu">Search</string>
@@ -14,6 +26,8 @@
   <string key="portalHelpMenu">Help</string>
   <string key="portalHelpMenuTitle">Select to display the help menu.</string>
   <string key="pageTabs_skipTabMenuTitle">Skip Tab Menu</string>
+
+  <string key="portalAdminHeader">* Content Administrator *</string>
  
   <!-- 
        Portlet Content Editor menu
@@ -26,14 +40,96 @@
        Portlet Content Editing
   -->
   <string key="saveButton">Save</string>
+  <string key="okButton">OK</string>
   <string key="cancelButton">Cancel</string>
+  <string key="doneButton">Done</string>
+  <string key="moveUpButton">Move Up</string>
+  <string key="moveDownButton">Move Down</string>
+  <string key="addButton">Add</string>
+  <string key="addItemsButton">Add Items...</string>
+  <string key="deleteButton">Delete</string>
+  <string key="editButton">Edit</string>
+  <string key="removeButton">Remove</string>
+
+  <!-- Common fields 
+    -->
+
+  <string key="portletEditItemName">Name</string>
+  <string key="portletEditItemNameRequired">ERROR: Name field is required.</string>
+  <string key="portletEditItemDescription">Description</string>
+  <string key="portletEditItemURL">URL</string>
+  <string key="portletEditItemURLRequired">ERROR: URL field is required.</string>
+  <string key="portletEditItemKeywords">Keywords</string>
+
+  <string key="portletEditItemRequiredField">Required Field</string>
+
   <!-- 
        Display URL Portlet Content Editing
   -->
 
   <string key="portletEditDisplayURLUrl">URL</string>
   <string key="portletEditDisplayURLHeight">Content Height</string>
-  
+
+  <!-- 
+       Collection Portlet Content Editing
+  --> 
+  <string key="portletEditCollectionShowDescriptionLabel">Show Description</string>
+  <string key="portletEditCollectionShowLocationLabel">Show Location</string>
+  <string key="portletEditCollectionSortLabel">Sort packages in a channel by their creation date:</string> 
+  <string key="portletEditCollectionSortUsePreferencesLabel">Use preferences setting</string> 
+  <string key="portletEditCollectionSortAscendingLabel">Ascending</string> 
+  <string key="portletEditCollectionSortDescendingLabel">Descending</string> 
+  <string key="portletEditCollectionItemsLabel">Items:</string> 
+
+  <string key="portletCollectionItemTypeLinkLabel">Link</string> 
+  <string key="portletCollectionItemTypeApplicationLabel">Application</string> 
+
+  <string key="portletEditCollectionConfirmMessage">This will remove the item from your portal, but not delete it permanently. Do you want to continue?</string>
+  <string key="portletEditCollectionTooManySelected">Please select only one item to edit.</string> 
+  <string key="portletEditCollectionNoneSelected">Please select an item to edit.</string>
+  <string key="portletEditCollectionNotEditable">This item is not editable</string>
+  <string key="portletEditCollectionHasChangedMessage">You have made changes to this page.  These changes will be lost if you proceed.  Do you wish to proceed and lose your changes?</string>
+
+  <!-- Portal Page Editing -->
+
+  <string key="portletEditPageRank">Page Rank</string>
+  <string key="portletEditPageRankTitle">Pages are ordered by rank from lowest to highest.</string>
+
+  <string key="portletEditPageLocation">Location (group)</string>
+  <string key="portletEditPageLocationTitle">Location (group)</string>
+
+  <string key="portletEditPageShareType">Share type</string>
+  <string key="portletEditPageShareTypeNotShared">Not Shared</string>
+  <string key="portletEditPageShareTypeAvailable">Available</string>
+  <string key="portletEditPageShareTypeDefault">Default</string>
+  <string key="portletEditPageShareTypePersistent">Persistent</string>
+
+  <!--
+       Portlet Item Editor menu
+  -->
+  <string key="portletItemEdit">Edit Item</string>
+  <string key="portletItemEditTitle">Edit Portlet Item</string>
+  <string key="portletItemEditNotSupported">Editing of this type of item is not supported.</string>
+
+  <!-- Portlet Item Add
+    -->
+  <string key="portletItemAdd">Add Item</string>
+  <string key="portletItemAddTitle">Add Portlet Item</string>
+  <string key="portletAddNotSupported">Adding this type of item is not supported.</string>
+
+  <!-- Portlet Item Remove
+    -->
+  <string key="portletItemRemove">Remove Item</string>
+  <string key="portletItemRemoveTitle">Remove Portlet Item</string>
+  <string key="portletRemoveNotSupported">Removing this type of item is not supported.</string>
+
+  <!-- PSPortalPage Remove
+    -->
+
+  <string key="portletRemovePagePersonal">Remove this page from my personal portal.</string>
+  <string key="portletRemovePagePermanent">Remove and permanently delete this page.</string>
+  <string key="portletRemovePagePortlets">Delete the following portlets that are contained on the page.</string>
+
   <!-- 
        Errors
   -->
@@ -41,5 +137,8 @@
   <string key="noNewUserInit">The administrator has not enabled self-service user initialization, please contact the administrator</string>
   <string key="genericError">An unknown error has occurred, please contact the administrator</string>
   <string key="ErrorLabel">ERROR</string>
+
+  <string key="metadataGenerationFailed">The generation of the metadata query failed.</string>
+  <string key="pageGenerationFailed">The generation of the page failed.</string>
 
 </resources>

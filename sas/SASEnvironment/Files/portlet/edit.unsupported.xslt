@@ -12,7 +12,7 @@
 
 <!-- Strings to be localized -->
 <xsl:variable name="cancelButton" select="$localeXml/string[@key='cancelButton']/text()"/>
-<xsl:variable name="portletEditNotSupported" select="$localeXml/string[@key='portletEditNotSupported']/text()"/>
+<xsl:variable name="portletItemEditNotSupported" select="$localeXml/string[@key='portletItemEditNotSupported']/text()"/>
 
 <xsl:template match="/">
 
@@ -20,7 +20,7 @@
 <tbody>
 <tr>
 <td>
-<p><xsl:value-of select="$portletEditNotSupported"/></p>
+<p><xsl:value-of select="$portletItemEditNotSupported"/></p>
 
 <table border="0" width="100%" cellspacing="0" cellpadding="6">
 

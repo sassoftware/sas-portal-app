@@ -1,6 +1,9 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 <xsl:output method="html"/>
 
+<!-- Input xml format is the add parameter format, see the buildAddParameters sas macro
+  -->
+
 <xsl:param name="appLocEncoded"></xsl:param>
 
 <xsl:param name="sastheme">default</xsl:param>
@@ -17,18 +20,27 @@
 <xsl:variable name="localeXml" select="document($localizationFile)/*"/>
 
 <!-- Strings to be localized -->
-<xsl:variable name="portletEditContentTitle" select="$localeXml/string[@key='portletEditContentTitle']/text()"/>
-
+<xsl:variable name="portletItemAddTitle" select="$localeXml/string[@key='portletItemAddTitle']/text()"/>
 <xsl:template match="/">
+
+  <xsl:variable name="itemType" select="Mod_Request/NewMetadata/Type"/>
 
   <!-- pass back the theme to use -->
 <div id="sastheme" style="display: none"><xsl:value-of select="$sastheme"/></div>
 
-  <xsl:apply-templates select="GetMetadata/Metadata/PSPortlet"/>
+   <xsl:variable name="portletAddTitle" select="$localeXml/string[@key='portletItemAddTitle']/text()"/>
+   <xsl:call-template name="genBanner">
+
+      <xsl:with-param name="itemName"><xsl:value-of select="$itemType"/></xsl:with-param>
+      <xsl:with-param name="addTitle"><xsl:value-of select="$portletAddTitle"/></xsl:with-param>
+
+   </xsl:call-template>
 
 </xsl:template>
 
-<xsl:template match="PSPortlet">
+<xsl:template name="genBanner">
+<xsl:param name="itemName"/>
+<xsl:param name="addTitle"/>
 
 <!-- Banner -->
 <div id="banner" class="banner_container"><xsl:attribute name="style">background-image:url(/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/BannerBackground.gif</xsl:attribute>
@@ -53,9 +65,9 @@
     </table>
     <table cellpadding="0" cellspacing="0" width="100%">
       <tbody><tr>
-        <td nowrap="" id="bantitle" class="banner_title"><xsl:value-of select="$portletEditContentTitle"/></td>
+        <td nowrap="" id="bantitle" class="banner_title"><xsl:value-of select="$addTitle"/></td>
         <td id="banbullet" class="banner_bullet">•</td>
-        <td nowrap="" id="bantitle2" class="banner_secondaryTitle"><xsl:value-of select="@Name"/></td>
+        <td nowrap="" id="bantitle2" class="banner_secondaryTitle"><xsl:value-of select="$itemName"/></td>
         <td align="right" id="banlogo" class="banner_logo" width="100%"><img width="62" height="24" border="0" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/logo.gif</xsl:attribute></img></td>
         <td class="banner_logoPadding">&#160;</td>
       </tr>

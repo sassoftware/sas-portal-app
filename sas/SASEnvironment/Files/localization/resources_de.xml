@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-  <string key="portalTitle">SAS &#174; Portal</string>
 
+  <string key="portalTitle">SAS &#174; Portal</string>
   <string key="globalMenuBar_skipMenuBar">Menüleiste überspringen</string>
   <string key="portalCustomizationMenu">Anpassen</string>
   <string key="portalCustomizationMenuTitle">Wählen Sie diese Option, um das Menü zur Portalanpassung anzuzeigen.</string>
+  <string key="portalCustomizationMenuEditPage">Seite bearbeiten</string>
+  <string key="portalCustomizationMenuEditPageTitle">Seite bearbeiten</string>
+  <string key="portalCustomizationMenuEditPageContent">Seiteninhalt bearbeiten</string>
+  <string key="portalCustomizationMenuEditPageContentTitle">Seiteninhalt bearbeiten</string>
+  <string key="portalCustomizationMenuEditPageProperties">Bearbeiten Sie die Seiteneigenschaften</string>
+  <string key="portalCustomizationMenuEditPagePropertiesTitle">Bearbeiten Sie die Seiteneigenschaften</string>
+  <string key="portalCustomizationMenuArrangeTabs">Ordnen Sie Seitenregisterkarten an</string>
+  <string key="portalCustomizationMenuArrangeTabsTitle">Ordnen Sie Seitenregisterkarten an</string>
+  <string key="portalCustomizationMenuAddPage">Seite hinzufügen</string>
+  <string key="portalCustomizationMenuAddPageTitle">Seite hinzufügen</string>
+  <string key="portalCustomizationMenuRemovePage">Seite entfernen</string>
+  <string key="portalCustomizationMenuRemovePageTitle">Seite entfernen</string>
   <string key="portalOptionsMenu">Optionen</string>
   <string key="portalOptionsMenuTitle">Wählen Sie diese Option, um das Optionsmenü anzuzeigen.</string>
   <string key="portalSearchMenu">Suchen</string>
@@ -14,6 +26,8 @@
   <string key="portalHelpMenu">Helfen</string>
   <string key="portalHelpMenuTitle">Wählen Sie diese Option, um das Hilfemenü anzuzeigen.</string>
   <string key="pageTabs_skipTabMenuTitle">Tab-Menü überspringen</string>
+
+  <string key="portalAdminHeader">* Inhaltsadministrator *<string>
  
   <!-- 
        Portlet Content Editor menu
@@ -21,18 +35,93 @@
   <string key="portletEditContent">Inhalte bearbeiten</string>
   <string key="portletEditContentTitle">Bearbeiten Sie den Portlet-Inhalt</string>
   <string key="portletEditNotSupported">Das Bearbeiten dieses Portlettyps wird nicht unterstützt.</string>
- 
-  <!-- 
+
+ <!--
        Portlet Content Editing
   -->
   <string key="saveButton">Speichern</string>
+  <string key="okButton">OK</string>
   <string key="cancelButton">Stornieren</string>
-  <!-- 
+  <string key="doneButton">Erledigt</string>
+  <string key="moveUpButton">Nach oben bewegen</string>
+  <string key="moveDownButton">Sich abwärts bewegen</string>
+  <string key="addButton">Hinzufügen</string>
+  <string key="addItemsButton">Hinzufügen...</string>
+  <string key="deleteButton">Löschen</string>
+  <string key="editButton">Bearbeiten</string>
+  <string key="removeButton">Entfernen</string>
+
+  <!-- Common fields
+    -->
+
+  <string key="portletEditItemName">Name</string>
+  <string key="portletEditItemNameRequired">FEHLER: Das Namensfeld ist erforderlich.</string>
+  <string key="portletEditItemDescription">Beschreibung</string>
+  <string key="portletEditItemURL">URL</string>
+  <string key="portletEditItemURLRequired">FEHLER: URL-Feld ist erforderlich.</string>
+  <string key="portletEditItemKeywords">Schlüsselwörter</string>
+
+  <string key="portletEditItemRequiredField">Pflichtfeld</string>
+
+  <!--
        Display URL Portlet Content Editing
   -->
 
   <string key="portletEditDisplayURLUrl">URL</string>
   <string key="portletEditDisplayURLHeight">Inhaltshöhe</string>
+
+  <!--
+       Collection Portlet Content Editing
+  -->
+  <string key="portletEditCollectionShowDescriptionLabel">Beschreibung anzeigen</string>
+  <string key="portletEditCollectionShowLocationLabel">Standort anzeigen</string>
+  <string key="portletEditCollectionSortLabel">Sortieren Sie Pakete in einem Kanal nach ihrem Erstellungsdatum:</string>
+  <string key="portletEditCollectionSortUsePreferencesLabel">Verwenden Sie die Einstellung „Einstellungen“.</string>
+  <string key="portletEditCollectionSortAscendingLabel">Aufsteigend</string>
+  <string key="portletEditCollectionSortDescendingLabel">Absteigend</string>
+  <string key="portletEditCollectionItemsLabel">Artikel:</string>
+
+  <string key="portletCollectionItemTypeLinkLabel">Verknüpfung</string>
+  <string key="portletCollectionItemTypeApplicationLabel">Anwendung</string>
+
+  <string key="portletEditCollectionConfirmMessage">Dadurch wird das Element aus Ihrem Portal entfernt, aber nicht dauerhaft gelöscht. Möchtest du fortfahren?</string>
+  <string key="portletEditCollectionTooManySelected">Please select only one item to edit.</string>
+  <string key="portletEditCollectionNoneSelected">Bitte wählen Sie nur ein Element zum Bearbeiten aus.</string>
+  <string key="portletEditCollectionNotEditable">Dieses Element kann nicht bearbeitet werden</string>
+  <string key="portletEditCollectionHasChangedMessage">Sie haben Änderungen an dieser Seite vorgenommen. Diese Änderungen gehen verloren, wenn Sie fortfahren. Möchten Sie fortfahren und Ihre Änderungen verlieren?</string>
+
+  <!-- Portal Page Editing -->
+
+  <string key="portletEditPageRank">Seitenrang</string>
+  <string key="portletEditPageRankTitle">Die Seiten sind nach Rang vom niedrigsten zum höchsten sortiert.</string>
+
+  <string key="portletEditPageLocation">Standort (Gruppe)</string>
+  <string key="portletEditPageLocationTitle">Standort (Gruppe)</string>
+
+  <string key="portletEditPageShareType">Freigabetyp</string>
+  <string key="portletEditPageShareTypeNotShared">Nicht geteilt</string>
+  <string key="portletEditPageShareTypeAvailable">Verfügbar</string>
+  <string key="portletEditPageShareTypeDefault">Standard</string>
+  <string key="portletEditPageShareTypePersistent">Hartnäckig</string>
+
+  <!--
+       Portlet Item Editor menu
+  -->
+  <string key="portletItemEdit">Element bearbeiten</string>
+  <string key="portletItemEditTitle">Portlet-Element bearbeiten</string>
+  <string key="portletItemEditNotSupported">Das Bearbeiten dieses Elementtyps wird nicht unterstützt.</string>
+
+  <!-- Portlet Item Add
+    -->
+  <string key="portletItemAdd">Artikel hinzufügen</string>
+  <string key="portletItemAddTitle">Portlet-Element hinzufügen</string>
+  <string key="portletAddNotSupported">Das Hinzufügen dieses Elementtyps wird nicht unterstützt.</string>
+
+  <!-- Portlet Item Remove
+    -->
+  <string key="portletItemRemove">Gegenstand entfernen</string>
+  <string key="portletItemRemoveTitle">Portlet-Element entfernen</string>
+  <string key="portletRemoveNotSupported">Das Entfernen dieses Elementtyps wird nicht unterstützt.</string>
 
   <!--
        Errors
@@ -41,5 +130,8 @@
   <string key="noNewUserInit">Der Administrator hat die Self-Service-Benutzerinitialisierung nicht aktiviert. Bitte wenden Sie sich an den Administrator</string>
   <string key="genericError">Es ist ein unbekannter Fehler aufgetreten. Bitte wenden Sie sich an den Administrator</string>
   <string key="ErrorLabel">FEHLER</string>
-  
+ 
+  <string key="metadataGenerationFailed">Die Generierung der Metadatenabfrage ist fehlgeschlagen.</string>
+  <string key="pageGenerationFailed">Die Generierung der Seite ist fehlgeschlagen.</string>
+ 
 </resources>

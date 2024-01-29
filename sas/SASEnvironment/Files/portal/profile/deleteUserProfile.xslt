@@ -11,7 +11,6 @@
 
 <xsl:template match="Property">
 
-<xsl:message>Processing <xsl:value-of select="name(.)"/>, name=<xsl:value-of select="@Name"/></xsl:message>
       <Property>
             <xsl:attribute name="Id"><xsl:value-of select="@Id"/></xsl:attribute>
             <xsl:attribute name="Name"><xsl:value-of select="@Name"/></xsl:attribute>
@@ -23,21 +22,16 @@
 
 <xsl:template match="PropertyType">
 
-<xsl:message>Processing <xsl:value-of select="name(.)"/>, name=<xsl:value-of select="@Name"/></xsl:message>
       <PropertyType>
             <xsl:attribute name="Id"><xsl:value-of select="@Id"/></xsl:attribute>
             <xsl:attribute name="Name"><xsl:value-of select="@Name"/></xsl:attribute>
       </PropertyType>
 
-<xsl:message><xsl:value-of select="name(.)"/>: Ending</xsl:message>
 </xsl:template>
 
 <xsl:template match="PropertySet">
 
-<xsl:message>Processing <xsl:value-of select="name(.)"/>, name=<xsl:value-of select="@Name"/></xsl:message>
-
    <xsl:apply-templates select="SetProperties/Property"/>
-<xsl:message>PropertySet: after processing properties for this property set</xsl:message>
 
    <PropertySet>
        <xsl:attribute name="Id"><xsl:value-of select="@Id"/></xsl:attribute>
@@ -45,7 +39,6 @@
        <xsl:attribute name="Name"><xsl:value-of select="@Name"/></xsl:attribute>
    </PropertySet>
 
-<xsl:message><xsl:value-of select="name(.)"/>: Ending</xsl:message>
 </xsl:template>
 
 <xsl:template match="Person">
@@ -53,11 +46,7 @@
 	<xsl:variable name="userId" select="@Id"/>
 	<xsl:variable name="userName" select="@Name"/>
 
-<xsl:message>Checking profile information for person, Id=<xsl:value-of select="$userId"/>, Name=<xsl:value-of select="$userName"/></xsl:message>
-
 	<xsl:variable name="profileCount" select="count(//PropertySet[contains(@SetRole,'Profile/')])"/>
-
-	<xsl:message>number of profiles found=<xsl:value-of select="$profileCount"/></xsl:message>
 
 	<!--  Only generate the delete request if the profiles exist -->
 
@@ -99,8 +88,6 @@
 </xsl:template>
 
 <xsl:template match="*">
-
-<xsl:message>Wound up in the default template handler, object type=<xsl:value-of select="name(.)"/>, name=<xsl:value-of select="@Name"/></xsl:message>
 
 </xsl:template>
 

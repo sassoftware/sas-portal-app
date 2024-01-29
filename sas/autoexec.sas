@@ -28,6 +28,19 @@
         options insert=(sasautos="&macroDir.");
 
         /*
+         *  Turn on any feature flags that are now the default
+         *  We do this before the overrides so that if you want to turn
+         *  off a feature flag, you can do that via %symdel(featureflag) in the
+         *  overrides.
+         */
+
+         %global INITNEWUSER;
+         %let INITNEWUSER=1;
+
+         %global SYNCUSER;
+         %let SYNCUSER=1;
+
+        /*
          *  Include any overrides the admin may have defined.
          *  1) those that are shared across all usage/linkage to the repo directory
          *  2) those that are unique to a usage/linkage to the repo directory

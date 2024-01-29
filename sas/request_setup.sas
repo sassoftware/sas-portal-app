@@ -28,7 +28,7 @@
        /* Find the correct localization files to use */
       
        %getLocalization;
-       
+
        /*
         *  Set an indicator that this setup program has already been done
         */

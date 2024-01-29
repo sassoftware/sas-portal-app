@@ -5,6 +5,8 @@
 <!-- includeTabs = should this template include an area to generate tabs? 
                    1 = call the genTabList template (must be defined in the including file
                    0 = (default) do not call genTabList template
+     userRole = the role of the user in the banner, blank value is normal (and default)
+                can be set to the content administrator title.
 -->
 
 <!-- The following variables must be set by the including file -->
@@ -19,6 +21,19 @@
 <xsl:variable name="globalMenuBar_skipMenuBar" select="$localeXml/string[@key='globalMenuBar_skipMenuBar']/text()"/>
 <xsl:variable name="portalCustomizationMenu" select="$localeXml/string[@key='portalCustomizationMenu']/text()"/>
 <xsl:variable name="portalCustomizationMenuTitle" select="$localeXml/string[@key='portalCustomizationMenuTitle']/text()"/>
+<xsl:variable name="portalCustomizationMenuEditPage" select="$localeXml/string[@key='portalCustomizationMenuEditPage']/text()"/>
+<xsl:variable name="portalCustomizationMenuEditPageTitle" select="$localeXml/string[@key='portalCustomizationMenuEditPageTitle']/text()"/>
+<xsl:variable name="portalCustomizationMenuEditPageContent" select="$localeXml/string[@key='portalCustomizationMenuEditPageContent']/text()"/>
+<xsl:variable name="portalCustomizationMenuEditPageContentTitle" select="$localeXml/string[@key='portalCustomizationMenuEditPageContentTitle']/text()"/>
+<xsl:variable name="portalCustomizationMenuEditPageProperties" select="$localeXml/string[@key='portalCustomizationMenuEditPageProperties']/text()"/>
+<xsl:variable name="portalCustomizationMenuEditPagePropertiesTitle" select="$localeXml/string[@key='portalCustomizationMenuEditPagePropertiesTitle']/text()"/>
+<xsl:variable name="portalCustomizationMenuArrangeTabs" select="$localeXml/string[@key='portalCustomizationMenuArrangeTabs']/text()"/>
+<xsl:variable name="portalCustomizationMenuArrangeTabsTitle" select="$localeXml/string[@key='portalCustomizationMenuArrangeTabsTitle']/text()"/>
+<xsl:variable name="portalCustomizationMenuAddPage" select="$localeXml/string[@key='portalCustomizationMenuAddPage']/text()"/>
+<xsl:variable name="portalCustomizationMenuAddPageTitle" select="$localeXml/string[@key='portalCustomizationMenuAddPageTitle']/text()"/>
+<xsl:variable name="portalCustomizationMenuRemovePage" select="$localeXml/string[@key='portalCustomizationMenuRemovePage']/text()"/>
+<xsl:variable name="portalCustomizationMenuRemovePageTitle" select="$localeXml/string[@key='portalCustomizationMenuRemovePageTitle']/text()"/>
+
 <xsl:variable name="portalOptionsMenu" select="$localeXml/string[@key='portalOptionsMenu']/text()"/>
 <xsl:variable name="portalOptionsMenuTitle" select="$localeXml/string[@key='portalOptionsMenuTitle']/text()"/>
 
@@ -132,6 +147,65 @@
 
 </xsl:template>
 
+<xsl:template name="BannerScripts">
+
+  <script>
+       
+       /*
+        *  We need to know when to hide submenus
+        */
+
+       window.addEventListener('click',function(event) {
+
+        /*
+         * if not in a menu or submenu associated with the element prefix id, make sure the submenu is hidden
+         */
+
+        var elementPrefixId="globalMenuBar_0";
+
+
+        if(!(event.target.closest("[id^="+elementPrefixId))){
+
+            var submenu = document.getElementById(elementPrefixId+'_SubMenu_Container');
+            if (submenu) {
+               submenu.style.display='None';
+               }
+else {
+  }
+           }
+        }, false);
+
+ 
+      /* When the user clicks on the button, toggle between hiding and showing the dropdown content */
+
+      function dropDownClicked(elementPrefixId) {
+
+        // Get the position to place it
+
+        var rect = document.getElementById(elementPrefixId+"_anchor").getBoundingClientRect();
+
+        var submenu = document.getElementById(elementPrefixId+'_SubMenu_Container');
+
+        submenu.style.top = (rect.bottom+window.scrollY)+'px';
+        submenu.style.left = (rect.left+window.scrollX)+'px';
+
+        // Call the page specific function to enable/disable items in the menu
+        setupSubmenu(elementPrefixId);
+
+        submenu.style.display='Block';
+
+      }
+
+      function dropDownCleared(elementPrefixId) {
+           var submenu = document.getElementById(elementPrefixId+'_SubMenu_Container');
+         //  submenu.style.display='None';
+
+        }
+
+  </script>
+
+</xsl:template>
+
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Generate the banner section of the page 
@@ -140,124 +214,300 @@
 
 <xsl:template name="Banner">
 
-		<div class="banner_utilitybar_overlay">&#160;</div>
-		<table class="banner_utilitybar" cellpadding="0" cellspacing="0" width="100%">
-		<tbody>
-			<tr valign="top">
-			<td class="banner_utilitybar_navigation" width="40%" align="left">
-				&#160;   </td>
-			<td class="banner_userrole" nowrap="" align="center" width="20%"> </td>
-			<td width="40%" align="right" valign="top">
-				<a href="#globalMenuBar_skipMenuBar"><xsl:attribute name="title"><xsl:value-of select="$globalMenuBar_skipMenuBar"/></xsl:attribute></a>
-	
-         			<span class="SimpleMenuBar SimpleMenuBar_Banner_GlobalMenu_Look" id="globalMenuBar">
-				<table cellpadding="4" cellspacing="1">
-				<tbody>
-				<tr>
-					<td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
-                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
-						<!--  Comment out Customize toolbar for now
-						<a id="globalMenuBar_0_anchor" href="#"><xsl:attribute name="title"><xsl:value-of select="$portalCustomizationMenuTitle"/></xsl:attribute>
-                                                <span><xsl:value-of select="$portalCustomizationMenu"/></span>
-						<img class="SimpleMenuBarSubMenuIndicator SimpleMenuBarSubMenuIndicator_Banner_GlobalMenu_Look" src="/$sastheme/themes/<xsl:value-of select="$sastheme"/>/images/MenuDownArrowBanner.gif" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/MenuDownArrowBanner.gif</xsl:attribute></img>
-                                                </a>
-                                                -->
-                                                <!-- placeholder span, remove if customize uncommented -->
-                                                <span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span>
-                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
-					</td>
-					<td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
-                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
-						<span class="SimpleMenuBarSeparator SimpleMenuBarSeparator_Banner_GlobalMenu_Look">|</span>
-                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
-					</td>
-					<td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
-                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
-                                                <!-- Comment out Options toolbar 
-						<a id="globalMenuBar_2_anchor" href="#"><xsl:attribute name="title"><xsl:value-of select="$portalOptionsMenuTitle"/></xsl:attribute>
-						<span>l:value-of select="$portalOptionsMenuTitle"/>/span>
-						<img class="SimpleMenuBarSubMenuIndicator SimpleMenuBarSubMenuIndicator_Banner_GlobalMenu_Look" src="/$sastheme/themes/<xsl:value-of select="$sastheme"/>/images/MenuDownArrowBanner.gif" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/MenuDownArrowBanner.gif</xsl:attribute></img>
+<xsl:param name="userRole"/>
 
-                                                -->
-                                                <!-- placeholder span, remove if Options uncommened -->
-                                                <span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span>
-                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
-					</td>
-					<td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
-                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
-						<span class="SimpleMenuBarSeparator SimpleMenuBarSeparator_Banner_GlobalMenu_Look">|</span>
-                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
-					</td>
-					<td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
-                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
-                                                <!-- Comment out search menu
-						<a id="globalMenuBar_4_anchor" href="#"><xsl:attribute name="title"><xsl:value-of select="$portalSearchMenuTitle"/></xsl:attribute>
-						<span><xsl:value-of select="$portalSearchMenu"/></span></a>
-                                                -->
-                                                <!-- span placeholder, remove if Search uncommented -->
-                                                <span>&#160;&#160;&#160;&#160;&#160;&#160;</span>
-                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
-					</td>
-					<td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
-                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
-						<span class="SimpleMenuBarSeparator SimpleMenuBarSeparator_Banner_GlobalMenu_Look">|</span>
-                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
-					</td>
-					<td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
-                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
-						<a id="globalMenuBar_6_anchor" href="/SASLogon/logout"><xsl:attribute name="title"><xsl:value-of select="$portalLogoffMenuTitle"/></xsl:attribute>
-						<span><xsl:value-of select="$portalLogoffMenu"/></span></a>
+ <!-- Include the scripts needed for the menu navigation -->
 
-                                                <!-- span placeholder, remove if Log Off menu uncommented -->
-                                                <span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span>
-                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
-					</td>
-					<td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
-                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
-						<span class="SimpleMenuBarSeparator SimpleMenuBarSeparator_Banner_GlobalMenu_Look">|</span>
-                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
-					</td>
-					<td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
-                                                <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
-                                                <!-- Comment out help menu item 
-						<a id="globalMenuBar_8_anchor" href="#"><xsl:attribute name="title"><xsl:value-of select="$portalHelpMenuTitle"/></xsl:attribute>
-						<span><xsl:value-of select="$portalHelpMenu"/></span>
-						<img class="SimpleMenuBarSubMenuIndicator SimpleMenuBarSubMenuIndicator_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/MenuDownArrowBanner.gif</xsl:attribute></img>
-						</a>
-                                                -->
-                                                <!-- span placeholder, remove if Help menu item uncommented -->
-                                                <span>&#160;&#160;&#160;&#160;&#160;&#160;</span>
-						<img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
-	         			</td>
-		         		</tr>
-					</tbody>
-         			</table>
-			</span>
-                        <a name="globalMenuBar_skipMenuBar"></a> 
-			</td>
-                        <td width="1%">&#160;</td>
-			</tr>
-		</tbody>
-		</table>
+ <xsl:call-template name="BannerScripts"/>
 
-		<table cellpadding="0" cellspacing="0" width="100%">
-			<tbody>
-						<tr>
-			<td nowrap="" id="bantitle" class="banner_title"><xsl:value-of select="$portalTitle"/></td>
-			<td id="banbullet" class="banner_bullet"></td>
-			<td nowrap="" id="bantitle2" class="banner_secondaryTitle"></td>
-			<td align="right" id="banlogo" class="banner_logo" width="100%"><img width="62" height="24" border="0" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/logo.gif</xsl:attribute></img>
-                        </td>
-			<td class="banner_logoPadding">&#160;</td>
-			</tr>
-			</tbody>
-			</table>
+ <div class="banner_utilitybar_overlay">&#160;</div>
+ <table class="banner_utilitybar" cellpadding="0" cellspacing="0" width="100%">
+ <tbody>
+     <tr valign="top">
+         <td class="banner_utilitybar_navigation" width="40%" align="left">
+                 &#160;   </td>
+         <td class="banner_userrole" nowrap="" align="center" width="20%"> <xsl:value-of select="$userRole"/></td>
+         <td width="40%" align="right" valign="top">
+             <a href="#globalMenuBar_skipMenuBar"><xsl:attribute name="title"><xsl:value-of select="$globalMenuBar_skipMenuBar"/></xsl:attribute></a>
+
+                 <span class="SimpleMenuBar SimpleMenuBar_Banner_GlobalMenu_Look" id="globalMenuBar">
+                 <table cellpadding="4" cellspacing="1">
+                 <tbody>
+                 <tr>
+                     <!-- Customize Menu Item -->
+
+                     <td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
+                         <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
+
+                         <a id="globalMenuBar_0_anchor" href="#" onclick="dropDownClicked('globalMenuBar_0')"><xsl:attribute name="title"><xsl:value-of select="$portalCustomizationMenuTitle"/></xsl:attribute>
+                         <span><xsl:value-of select="$portalCustomizationMenu"/></span>
+                         <img class="SimpleMenuBarSubMenuIndicator SimpleMenuBarSubMenuIndicator_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/MenuDownArrowBanner.gif</xsl:attribute></img>
+                         </a>
+
+                         <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
+                     </td>
+
+                     <!-- Spacer -->
+
+                     <td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
+                             <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
+                             <span class="SimpleMenuBarSeparator SimpleMenuBarSeparator_Banner_GlobalMenu_Look">|</span>
+                             <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
+                     </td>
+                     
+                     <!-- Options menu item -->
+
+                     <td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
+                         <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
+                         <!-- Comment out Options toolbar 
+                         <a id="globalMenuBar_2_anchor" href="#"><xsl:attribute name="title"><xsl:value-of select="$portalOptionsMenuTitle"/></xsl:attribute>
+                         <span>l:value-of select="$portalOptionsMenuTitle"/>/span>
+                         <img class="SimpleMenuBarSubMenuIndicator SimpleMenuBarSubMenuIndicator_Banner_GlobalMenu_Look" src="/$sastheme/themes/<xsl:value-of select="$sastheme"/>/images/MenuDownArrowBanner.gif" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/MenuDownArrowBanner.gif</xsl:attribute></img>
+
+                         -->
+                         <!-- placeholder span, remove if Options uncommened -->
+                         <span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;</span>
+                         <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
+                     </td>
+             
+                     <!-- Spacer -->
+
+                     <td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
+                         <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
+                         <span class="SimpleMenuBarSeparator SimpleMenuBarSeparator_Banner_GlobalMenu_Look">|</span>
+                         <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
+                     </td>
+       
+                     <!-- Search Menu Item -->
+
+                     <td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
+                         <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
+                         <!-- Comment out search menu
+                         <a id="globalMenuBar_4_anchor" href="#"><xsl:attribute name="title"><xsl:value-of select="$portalSearchMenuTitle"/></xsl:attribute>
+                         <span><xsl:value-of select="$portalSearchMenu"/></span></a>
+                         -->
+                         <!-- span placeholder, remove if Search uncommented -->
+                         <span>&#160;&#160;&#160;&#160;&#160;&#160;</span>
+                         <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
+                     </td>
+
+                     <!-- Spacer -->
+
+                     <td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
+                         <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
+                         <span class="SimpleMenuBarSeparator SimpleMenuBarSeparator_Banner_GlobalMenu_Look">|</span>
+                         <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
+                     </td>
+
+                     <!-- Logoff Menu Item -->
+
+                     <td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
+                         <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
+                         <a id="globalMenuBar_6_anchor" href="/SASLogon/logout"><xsl:attribute name="title"><xsl:value-of select="$portalLogoffMenuTitle"/></xsl:attribute>
+                         <span><xsl:value-of select="$portalLogoffMenu"/></span></a>
+
+                         <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
+                     </td>
+
+                     <!-- Spacer -->
+
+                     <td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
+                             <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
+                             <span class="SimpleMenuBarSeparator SimpleMenuBarSeparator_Banner_GlobalMenu_Look">|</span>
+                             <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
+                     </td>
+
+                     <!-- Help Menu Item -->
+
+                     <td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
+                             <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
+                             <!-- Comment out help menu item 
+                             <a id="globalMenuBar_8_anchor" href="#"><xsl:attribute name="title"><xsl:value-of select="$portalHelpMenuTitle"/></xsl:attribute>
+                             <span><xsl:value-of select="$portalHelpMenu"/></span>
+                             <img class="SimpleMenuBarSubMenuIndicator SimpleMenuBarSubMenuIndicator_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/MenuDownArrowBanner.gif</xsl:attribute></img>
+                             </a>
+                             -->
+                             <!-- span placeholder, remove if Help menu item uncommented -->
+                             <span>&#160;&#160;&#160;&#160;&#160;&#160;</span>
+                             <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
+                     </td>
+                 </tr>
+                 </tbody>
+             </table>
+         </span>
+         <a name="globalMenuBar_skipMenuBar"></a> 
+         </td>
+         <td width="1%">&#160;</td>
+         </tr>
+ </tbody>
+ </table>
+
+ <table cellpadding="0" cellspacing="0" width="100%">
+         <tbody>
+                                 <tr>
+         <td nowrap="" id="bantitle" class="banner_title"><xsl:value-of select="$portalTitle"/></td>
+         <td id="banbullet" class="banner_bullet"></td>
+         <td nowrap="" id="bantitle2" class="banner_secondaryTitle"></td>
+         <td align="right" id="banlogo" class="banner_logo" width="100%"><img width="62" height="24" border="0" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/logo.gif</xsl:attribute></img>
+         </td>
+         <td class="banner_logoPadding">&#160;</td>
+         </tr>
+         </tbody>
+         </table>
+
+
+  <xsl:call-template name="genSubmenus"/>
+
+</xsl:template>
+
+<xsl:template name="genSubmenus">
+
+<!-- 
+    These routines must be provided by the including script because they need to refer to
+   information about what is selected in the context of that script
+ -->
+
+<xsl:variable name="editPageContentLink">editItem('PSPortalPage','contents');</xsl:variable>
+<xsl:variable name="editPagePropertiesLink">editItem('PSPortalPage','properties')</xsl:variable>
+<xsl:variable name="arrangeTabsLink">editItem('Portal')</xsl:variable>
+<xsl:variable name="addPageLink">addItem('PSPortalPage');</xsl:variable>
+<xsl:variable name="removePageLink">removeItem('PSPortalPage');</xsl:variable>
+
+<span id="globalMenuBar_0_SubMenu_Container" class="PopupMenu" style="display: none; left: 961px; top: 16px;" >
+
+    <table border="0" cellspacing="0" cellpadding="0">
+        <tbody>
+            <tr>
+                <td nowrap="">
+                    <div id="globalMenuBar_0_SubMenu_0" class="PopupMenuItem">
+                        <a id="globalMenuBar_0_SubMenu_0_anchor" hidefocus="true" tabindex="-1" role="link">
+                            <xsl:attribute name="title"><xsl:value-of select="$portalCustomizationMenuEditPageContent"/></xsl:attribute>
+                            <xsl:attribute name="onclick"><xsl:value-of select="$editPageContentLink"/></xsl:attribute> 
+                            <!-- We will be disabling this on and off, so save the original value -->
+                            <xsl:attribute name="saveonclick"><xsl:value-of select="$editPageContentLink"/></xsl:attribute>
+                            <img class="PopupMenuItemIcon" alt="">
+                               <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/Edit.gif</xsl:attribute>
+                            </img>
+                            <img class="PopupMenuPreItemLabelSpacer" alt="">
+                               <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute>
+                            </img>
+                            <span><xsl:value-of select="$portalCustomizationMenuEditPageContentTitle"/></span>
+                            <img class="PopupMenuPostItemLabelSpacer" alt="">
+                               <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute>
+                            </img>
+                            <img class="PopupMenuCascadingMenuIndicator" alt="" style="top: 4px;">
+                               <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute>
+                            </img>
+                        </a>
+                    </div>
+
+                    <div id="globalMenuBar_0_SubMenu_1" class="PopupMenuItem">
+                        <a id="globalMenuBar_0_SubMenu_1_anchor" hidefocus="true" tabindex="-1">
+                            <xsl:attribute name="title"><xsl:value-of select="$portalCustomizationMenuEditPageProperties"/></xsl:attribute>
+                            <xsl:attribute name="onclick"><xsl:value-of select="$editPagePropertiesLink"/></xsl:attribute>
+                            <xsl:attribute name="saveonclick"><xsl:value-of select="$editPageContentLink"/></xsl:attribute>
+                            <img class="PopupMenuItemIcon" alt="">
+                               <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/Edit.gif</xsl:attribute>
+                            </img>
+                            <img class="PopupMenuPreItemLabelSpacer" alt="">
+                               <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute>
+                            </img>
+                            <span><xsl:value-of select="$portalCustomizationMenuEditPagePropertiesTitle"/></span>
+                            <img class="PopupMenuPostItemLabelSpacer" alt="">
+                               <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute>
+                            </img>
+                            <img class="PopupMenuCascadingMenuIndicator" alt="" style="top: 21px;">
+                               <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute>
+                            </img>
+<!-- If we ever convert this back to a cascading menu, here is the correct image to use.
+                            <img class="PopupMenuCascadingMenuIndicator" alt="" style="top: 4px;">
+                               <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/MenuRightArrow.gif</xsl:attribute>
+                            </img>
+-->
+                        </a>
+                    </div>
+
+                    <div id="globalMenuBar_0_SubMenu_2" class="PopupMenuItem">
+                        <a id="globalMenuBar_0_SubMenu_2_anchor" hidefocus="true" tabindex="-1"> 
+                            <xsl:attribute name="title"><xsl:value-of select="$portalCustomizationMenuArrangeTabsTitle"/></xsl:attribute> 
+                            <xsl:attribute name="onclick"><xsl:value-of select="$arrangeTabsLink"/></xsl:attribute>
+                            <xsl:attribute name="saveonclick"><xsl:value-of select="$arrangeTabsLink"/></xsl:attribute>
+                            <img class="PopupMenuItemIcon" alt="">
+                               <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute>
+                            </img>
+                            <img class="PopupMenuPreItemLabelSpacer" alt="">
+                               <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute>
+                            </img>
+                            <span><xsl:value-of select="$portalCustomizationMenuArrangeTabsTitle"/></span>
+                            <img class="PopupMenuPostItemLabelSpacer" alt="">
+                               <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute>
+                            </img>
+                            <img class="PopupMenuCascadingMenuIndicator" alt="" style="top: 4px;">
+                               <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute>
+                            </img>
+                        </a>
+                    </div>
+
+                    <div id="globalMenuBar_0_SubMenu_3" class="PopupMenuItem">
+                        <a id="globalMenuBar_0_SubMenu_3_anchor" hidefocus="true" tabindex="-1" href="#">
+                            <xsl:attribute name="title"><xsl:value-of select="$portalCustomizationMenuAddPageTitle"/></xsl:attribute> 
+                            <xsl:attribute name="onclick"><xsl:value-of select="$addPageLink"/></xsl:attribute>
+                            <xsl:attribute name="saveonclick"><xsl:value-of select="$addPageLink"/></xsl:attribute>
+
+                            <img class="PopupMenuItemIcon">
+
+                               <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/DocumentNew.gif</xsl:attribute>
+                               <xsl:attribute name="alt"><xsl:value-of select="$portalCustomizationMenuAddPage"/></xsl:attribute>
+                            </img>
+			    <img class="PopupMenuPreItemLabelSpacer" alt="">
+                               <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute>
+                            </img>
+                            <span><xsl:value-of select="$portalCustomizationMenuAddPageTitle"/></span>
+
+                            <img class="PopupMenuPostItemLabelSpacer" alt="">
+                               <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute>
+                            </img>
+                            <img class="PopupMenuCascadingMenuIndicator" alt="" style="top: 37px;">
+                               <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute>
+                            </img>
+
+                        </a>
+                    </div>
+                    <div id="globalMenuBar_0_SubMenu_4" class="PopupMenuItemDisabled">
+                        <a id="globalMenuBar_0_SubMenu_4_anchor" hidefocus="true" tabindex="-1">
+                            <xsl:attribute name="title"><xsl:value-of select="$portalCustomizationMenuRemovePageTitle"/></xsl:attribute>
+                            <xsl:attribute name="onclick"><xsl:value-of select="$removePageLink"/></xsl:attribute>
+                            <xsl:attribute name="saveonclick"><xsl:value-of select="$removePageLink"/></xsl:attribute>
+                            <img class="PopupMenuItemIcon">
+
+                               <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/DeleteDisabled.gif</xsl:attribute>
+                               <xsl:attribute name="alt"><xsl:value-of select="$portalCustomizationMenuRemovePage"/></xsl:attribute>
+                            </img>
+                            <img class="PopupMenuPreItemLabelSpacer" alt="">
+                               <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute>
+                            </img>
+                            <span><xsl:value-of select="$portalCustomizationMenuRemovePageTitle"/></span>
+
+                            <img class="PopupMenuPostItemLabelSpacer" alt="">
+                               <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute>
+                            </img>
+                            <img class="PopupMenuCascadingMenuIndicator" alt="" style="top: 54px;">
+                               <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute>
+                            </img>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</span>
 
 </xsl:template>
 
 <xsl:template name="genBanner">
 
 <xsl:param name="includeTabs">0</xsl:param>
+<xsl:param name="userRole"/>
 
 <table width="100%" cellpadding="0" cellspacing="0">
 <tbody>
@@ -267,7 +517,9 @@
     <!-- Banner -->
     <div id="banner" class="banner_container"><xsl:attribute name="style">background-image:url(/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/BannerBackground.gif</xsl:attribute>
 
-         <xsl:call-template name="Banner"/>
+         <xsl:call-template name="Banner">
+           <xsl:with-param name="userRole"><xsl:value-of select="$userRole"/></xsl:with-param>
+         </xsl:call-template>
 
                 <a name="skipBanner"></a>
                 <!-- Page Menus -->

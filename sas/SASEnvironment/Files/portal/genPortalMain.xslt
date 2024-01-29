@@ -21,11 +21,22 @@
 <xsl:variable name="pageTabs_skipTabMenuTitle" select="$localeXml/string[@key='pageTabs_skipTabMenuTitle']/text()"/>
 
 <xsl:variable name="portletEditContent" select="$localeXml/string[@key='portletEditContent']/text()"/>
+<xsl:variable name="portalAdminHeader" select="$localeXml/string[@key='portalAdminHeader']/text()"/>
 
 <!-- include shared files -->
 
 <xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portal/genPortalBanner.xslt"/>
 
+<!-- Define the lookup table of writeable trees -->
+<xsl:key name="treeKey" match="Tree" use="@Id"/>
+<!-- it doesnt say this anywhere in the xsl key doc, but the objects to use for the lookup table
+     must be under a shared root object.  Thus, here we can only go to the AccessControlEntries
+     level.  Fortunately, the only trees listed under here are the ones we want in our lookup table
+  -->
+<xsl:variable name="treeLookup" select="/Multiple_Requests/GetMetadataObjects[1]/Objects/Person/AccessControlEntries"/>
+<!-- Get the same set of nodes in a a variable --> 
+<xsl:variable name="writeableTrees" select="/Multiple_Requests/GetMetadataObjects[1]/Objects/Person/AccessControlEntries/AccessControlEntry/Objects/Tree"/>
+ 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   The main entry point
@@ -36,14 +47,246 @@
 
 <!-- pass back the theme to use -->
 
+<xsl:call-template name="thisPageScripts"/>
+
 <div id="sastheme" style="display: none"><xsl:value-of select="$sastheme"/></div>
 
+<xsl:variable name="userRole">
+<xsl:choose>
+<xsl:when test="not(count($writeableTrees)='1')"><xsl:value-of select="$portalAdminHeader"/></xsl:when>
+<xsl:otherwise></xsl:otherwise>
+</xsl:choose>
+</xsl:variable>
 <xsl:call-template name="genBanner">
-  <xsl:with-param name="includeTabs">1</xsl:with-param>
+  <xsl:with-param name="includeTabs">1</xsl:with-param> 
+  <xsl:with-param name="userRole"><xsl:value-of select="$userRole"/></xsl:with-param>
 </xsl:call-template>
 
 <xsl:call-template name="genTabContent"/>
     
+</xsl:template>
+
+<xsl:template name="addTabMap">
+
+  <!-- the portal page object must be the current node when this template is called! -->
+
+  <xsl:variable name="tabId" select="@Id"/>
+  <xsl:variable name="tabName" select="@Name"/>
+
+  <!-- Calculate whether this page can be edited based on the permissions on the parent tree -->
+  <xsl:variable name="permissionsTree" select="Trees//Tree[@TreeType=' Permissions Tree' or @TreeType='Permissions Tree'][1]"/>
+  <xsl:variable name="permissionsTreeId" select="$permissionsTree/@Id"/>
+  <xsl:variable name="permissionsTreeKey" select="key('treeKey',$permissionsTreeId,$treeLookup)/@Name"/>
+
+  <xsl:variable name="isWriteable">
+    <xsl:choose>
+      <xsl:when test="$permissionsTreeKey">1</xsl:when>
+      <xsl:otherwise>0</xsl:otherwise>
+    </xsl:choose>
+  </xsl:variable>
+
+  <script>
+
+    var tabId='<xsl:value-of select="$tabId"/>';
+    tabs.set(tabId,new Object());
+    var tabObject=tabs.get(tabId);
+    tabObject.name='<xsl:value-of select="$tabName"/>';
+
+    <xsl:choose>
+      <!-- TODO: I don't see another way of finding out whether the page is a Home Page or not,
+           but is the name of the page localized?
+      -->
+      <xsl:when test="$tabName='Home'">
+         tabObject.canEdit=true;
+         tabObject.canRemove=false;
+      </xsl:when>
+      <xsl:otherwise>
+         <xsl:choose>
+            <xsl:when test="$isWriteable=1">
+             tabObject.canEdit=true;
+             tabObject.canRemove=true;
+            </xsl:when>
+            <xsl:otherwise> 
+             tabObject.canEdit=false;
+             <!-- For shared pages, the user can remove from their view any
+                  shared pages that don't have the Available or Default setting on the page
+             -->
+             <xsl:choose>
+               <xsl:when test="Extensions/Extension[@Name='SharedPageAvailable'] or Extensions/Extension[@Name='SharedPageDefault']">
+                   tabObject.canRemove=true;
+               </xsl:when>
+               <xsl:otherwise>
+                   tabObject.canRemove=false;
+               </xsl:otherwise>
+             </xsl:choose>
+            </xsl:otherwise>
+         </xsl:choose>
+      </xsl:otherwise>
+    </xsl:choose>
+
+  </script>
+
+</xsl:template>
+
+<xsl:template name="thisPageScripts">
+
+<script>
+
+   var tabs=new Map();
+
+   function setupSubmenu(submenu) {
+
+      /*
+       * This function is called by genPortalBanner generated submenus when
+       * a submenu is to be displayed.
+       */
+
+       /*
+        *  Get currently selected Page
+        */
+       var tabDiv = document.getElementsByClassName("tabcontent active")[0];
+
+       var pageId=tabDiv.id;
+
+       /*
+        *  Lookup the values from the map for the selected page
+        */
+
+       var tab=tabs.get(pageId);
+
+       var canEdit=tab.canEdit;
+       var canRemove=tab.canRemove;
+
+       var editPageContent=document.getElementById(submenu+"_SubMenu_0");
+       var editPageContentLink=document.getElementById(submenu+"_SubMenu_0_anchor");
+       var editPageProperties=document.getElementById(submenu+"_SubMenu_1");
+       var editPagePropertiesLink=document.getElementById(submenu+"_SubMenu_1_anchor");
+       var removePage=document.getElementById(submenu+"_SubMenu_4");
+       var removePageLink=document.getElementById(submenu+"_SubMenu_4_anchor");
+
+       var existingEditOnclick=editPageContentLink.getAttribute('onclick');
+
+       if (canEdit) {
+          editPageContent.className="PopupMenuItem";
+          editPageProperties.className="PopupMenuItem";
+
+          /*
+           *  If we don't have an href now, then we moved it on a previous
+           *  click.  Put it back.  If there, just continue
+           *  NOTE: there shouldn't be a situation where the 2 edit page links 
+           *  have different 'edit-able', so just check one.
+           */
+
+          if (!existingEditOnclick) {
+             editPageContentLink.setAttribute('onclick',editPageContentLink.getAttribute('saveonclick'));
+             editPagePropertiesLink.setAttribute('onclick',editPagePropertiesLink.getAttribute('saveonclick'));
+             } 
+
+          }
+       else {
+          editPageContent.className="PopupMenuItemDisabled";
+          editPageProperties.className="PopupMenuItemDisabled";
+          if (existingEditOnclick) {
+             editPageContentLink.removeAttribute('onclick');
+             editPagePropertiesLink.removeAttribute('onclick');
+             }
+          }
+       existingRemoveOnclick=removePageLink.getAttribute('onclick');
+       if (canRemove) {
+          removePage.className="PopupMenuItem";
+          if (!existingRemoveOnclick) {
+             removePageLink.setAttribute('onclick',removePageLink.getAttribute('saveonclick'));
+             }
+          }
+       else {
+          removePage.className="PopupMenuItemDisabled";
+          if (existingRemoveOnclick) {
+             removePageLink.removeAttribute('onclick');
+             }
+          }
+           
+   }
+
+
+   function editItem(itemType,details) {
+
+   /*
+    *  Get currently selected Page
+    */
+   var tabDiv = document.getElementsByClassName("tabcontent active")[0];
+
+   var pageId=tabDiv.id;
+
+   if (details == 'properties') {
+      var pageType=itemType+'-properties';
+      }
+   else {
+      var pageType=itemType;
+      }
+
+   var editURL='editItem.html?type='+pageType+'<xsl:text disable-output-escaping="yes">&amp;</xsl:text>id='+pageId;
+
+   /*
+    *  Hide menu
+    */
+
+   var elementPrefixId="globalMenuBar_0";
+   dropDownCleared(elementPrefixId);
+
+   location.href=editURL;
+ 
+   }
+
+   function addItem(itemType) {
+
+   var pageType='PSPortalPage';
+
+   /*
+    * TODO: Have to set the related item info so we know where
+    * to create the page.
+    * OR is it available in permissionsTreeId?
+    */
+
+   var permissionsTreeId="";
+
+   var addURL='addItem.html?type='+pageType+'<xsl:text disable-output-escaping="yes">&amp;</xsl:text>permissionsTreeId='+permissionsTreeId;
+
+   /*
+    *  Hide menu
+    */
+
+   var elementPrefixId="globalMenuBar_0";
+   dropDownCleared(elementPrefixId);
+
+   location.href=addURL;
+
+   }
+
+   function removeItem(itemType) {
+   var pageType='PSPortalPage';
+
+   /*
+    *  Get currently selected Page
+    */
+   var tabDiv = document.getElementsByClassName("tabcontent active")[0];
+
+   var pageId=tabDiv.id;
+
+   var removeURL='removeItem.html?type='+pageType+'<xsl:text disable-output-escaping="yes">&amp;</xsl:text>id='+pageId;
+
+   /*
+    *  Hide menu
+    */
+
+   var elementPrefixId="globalMenuBar_0";
+   dropDownCleared(elementPrefixId);
+
+   location.href=removeURL;
+
+   }
+
+
+</script>
 </xsl:template>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -63,7 +306,7 @@
          to handle that gracefully.
    -->
 
-   <xsl:variable name="numTabs"><xsl:value-of select="count(GetMetadataObjects/Objects/Group/Members/PSPortalPage)"/></xsl:variable>
+   <xsl:variable name="numTabs"><xsl:value-of select="count(Multiple_Requests/GetMetadataObjects/Objects/Group/Members/PSPortalPage)"/></xsl:variable>
 
    <xsl:choose>
 
@@ -93,7 +336,7 @@
 
      <xsl:otherwise>
    
-	   <xsl:for-each select="GetMetadataObjects/Objects/Group/Members/PSPortalPage">
+	   <xsl:for-each select="Multiple_Requests/GetMetadataObjects/Objects/Group/Members/PSPortalPage">
 		<xsl:sort select="Extensions/Extension[@Name='PageRank']/@Value" data-type="number"/>
 		<xsl:sort select="@MetadataCreated" data-type="number"/>
 
@@ -159,7 +402,7 @@
      
      <div id="pages">
 
-       <xsl:variable name="numTabs"><xsl:value-of select="count(GetMetadataObjects/Objects/Group/Members/PSPortalPage)"/></xsl:variable>
+       <xsl:variable name="numTabs"><xsl:value-of select="count(Multiple_Requests/GetMetadataObjects/Objects/Group/Members/PSPortalPage)"/></xsl:variable>
 
        <xsl:choose>
          <xsl:when test="$numTabs=0">
@@ -167,7 +410,7 @@
          </xsl:when>
 
          <xsl:otherwise>
-           <xsl:apply-templates select="GetMetadataObjects/Objects/Group/Members/PSPortalPage"/>
+           <xsl:apply-templates select="Multiple_Requests/GetMetadataObjects/Objects/Group/Members/PSPortalPage"/>
          </xsl:otherwise>
 
        </xsl:choose>
@@ -550,12 +793,9 @@
 								<img alt="" width="1" height="15" valign="middle" border="0"><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/PortletPipe.gif</xsl:attribute></img>
 								</td>
 								<td nowrap="" valign="middle">
-								<!--
-								<xsl:variable name="editLink" select="concat('/SASStoredProcess/do?_program=',$appLocEncoded,'services%2FeditPortletContents&amp;id=',$portletId,'&amp;portletType=',$portletType)"/>
-                                                                -->
-								<xsl:variable name="editLink" select="concat('editPortletContents.html?id=',$portletId,'&amp;portletType=',$portletType,'&amp;v=5')"/>
+								<xsl:variable name="editLink" select="concat('editItem.html?Id=',$portletId,'&amp;portletType=',$portletType,'&amp;Type=PSPortlet','&amp;v=5')"/>
 
-										<a target="_self" onclick="editPortlet"><xsl:attribute name="href"><xsl:value-of select="$editLink"/></xsl:attribute>
+										<a target="_self"><xsl:attribute name="href"><xsl:value-of select="$editLink"/></xsl:attribute>
                                         <img valign="middle" border="0"><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/PortletNote.gif</xsl:attribute><xsl:attribute name="alt"><xsl:value-of select="$portletEditContent"/></xsl:attribute><xsl:attribute name="title"><xsl:value-of select="$portletEditContent"/></xsl:attribute></img>
                                         </a>
 								</td>
@@ -611,7 +851,11 @@
 <xsl:template match="PSPortalPage">
 
 	   <div class="tabcontent"><xsl:attribute name="id"><xsl:value-of select="@Id"/></xsl:attribute>
-	   
+	 
+           <!-- Add it to our metadata about the tabs -->
+ 
+           <xsl:call-template name="addTabMap"/>
+ 
 	   <!--  Get what type of layout it has, 1, 2 or 3 columns -->
 	   
 	   <xsl:variable name="numColumns">

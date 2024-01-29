@@ -141,16 +141,37 @@
 	 *
 	 */
 
-	filename inxml "&filesDir./portal/getPortalContent.xml";
+        %getRepoInfo;
+
+        %showFormattedXML(repoxml,Repository Information);
+
+        /*
+         *  getRepoInfo sets the repoxml fileref and the reposName variable
+         */
+
+	filename inxsl "&filesDir./portal/getPortalContent.xslt";
 	   
+	filename getreq temp;
+
+        proc xsl in=repoxml out=getreq xsl=inxsl;
+           parameter "reposName"="&reposName."
+                     "userName"="&_metaperson."
+                     "userId"="&_metauser.";
+                     ;
+        run;
+
+        filename inxsl;
+
+        %showFormattedXML(getreq,getPortalContent request);
+
 	filename outxml temp;
 	
-	proc metadata in=inxml out=outxml;
+	proc metadata in=getreq out=outxml;
 	run;
 	
-	filename inxml;
+	filename getreq;
 
-    %showFormattedXML(outxml,getPortalContent response);
+        %showFormattedXML(outxml,getPortalContent response);
     
 	/*
 	 *  Generate the main page
@@ -202,5 +223,9 @@
 
 %inc "&sasDir./request_setup.sas";
 
+%setupPortalDebug(getIndex);
+
 %genPortalMain(user=%bquote(&_metaperson.));
+
+%cleanupPortalDebug;
 

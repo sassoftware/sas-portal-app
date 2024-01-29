@@ -15,13 +15,9 @@
    <xsl:param name="parentPropertySetId"/>
    <xsl:param name="userId"/>
 
-   <xsl:message>buildProfile: profileType=<xsl:value-of select="$profileType"/>,user=<xsl:value-of select="$userId"/></xsl:message>
-
    <xsl:choose>
 
      <xsl:when test="$profileType='global'">
-
-        <xsl:message>buildProfile: Building Global profile information for profileType=<xsl:value-of select="$profileType"/></xsl:message>
 
         <!-- Create the metadata content for this profile -->
 
@@ -46,9 +42,6 @@
      </xsl:when>
 
      <xsl:when test="$profileType='SAS'">
-
-        <xsl:message>buildProfile: Building SAS profile information for profileType=<xsl:value-of select="$profileType"/></xsl:message>
-        <xsl:message>buildProfile: Building SAS profile information with parentPropertySetId=<xsl:value-of select="$parentPropertySetId"/></xsl:message>
 
         <!-- Create the metadata content for this profile -->
 
@@ -75,10 +68,6 @@
      </xsl:when>
 
      <xsl:when test="$profileType='portal'">
-
-        <xsl:message>buildProfile: Building Portal profile information for profileType=<xsl:value-of select="$profileType"/></xsl:message>
-
-        <xsl:message>buildProfile: Building SAS profile information with parentPropertySetId=<xsl:value-of select="$parentPropertySetId"/></xsl:message>
 
         <!-- Create the metadata content for this profile -->
 
@@ -129,19 +118,13 @@
 
   <xsl:param name="userId"/>
 
-  <xsl:message>buildProfiles: start</xsl:message>
-
   <!-- Figure out how many of the profiles we need to create -->
 
   <xsl:variable name="globalProfileId" select="PropertySets/PropertySet[@SetRole,'Profile/global']/@Id"/>
 
-  <xsl:message>buildProfiles: globalProfileId=<xsl:value-of select="$globalProfileId"/></xsl:message>
-  
   <xsl:choose>
 
     <xsl:when test="not($globalProfileId)">
-
-      <xsl:message>buildProfiles: No Global Profile found</xsl:message>
 
       <xsl:call-template name="buildProfile">
 
@@ -156,15 +139,11 @@
 
       <!-- Global Profile exists, see if we need to create the SAS profile -->
  
-      <xsl:message>buildProfiles: Global Profile, <xsl:value-of select="$globalProfileId"/>, found.</xsl:message>
-
       <xsl:variable name="sasProfileId" select="PropertySets/PropertySet[@SetRole,'Profile/global']/PropertySets/PropertySet[@SetRole,'Profile/SAS']/@Id"/>
 
       <xsl:choose>
 
 	    <xsl:when test="not($sasProfileId)">
-
-	      <xsl:message>buildProfiles: No SAS Profile found</xsl:message>
 
 	      <xsl:call-template name="buildProfile">
 
@@ -180,14 +159,10 @@
 
                     <!-- SAS Profile exists, see if we need to create the portal profile -->
 
-		    <xsl:message>buildProfiles: SAS Profile, <xsl:value-of select="$sasProfileId"/>, found.</xsl:message>
-
 	            <xsl:variable name="portalProfileId" select="PropertySets/PropertySet[@SetRole,'Profile/global']/PropertySets/PropertySet[@SetRole,'Profile/SAS']/PropertySets/PropertySet[@SetRole,'Profile/portal']/@Id"/>
 
 
 		    <xsl:if test="not($portalProfileId)">
-
-			      <xsl:message>buildProfiles: No portal Profile found</xsl:message>
 
 			      <xsl:call-template name="buildProfile">
 
@@ -216,14 +191,9 @@
 	<xsl:variable name="userId" select="@Id"/>
 	<xsl:variable name="userName" select="@Name"/>
 
-<xsl:message>Checking profile information for person, Id=<xsl:value-of select="$userId"/>, Name=<xsl:value-of select="$userName"/></xsl:message>
 	<xsl:variable name="profileCount" select="count(//PropertySets/PropertySet[contains(@SetRole,'Profile/')])"/>
 
-	<xsl:message>number of profiles found=<xsl:value-of select="$profileCount"/></xsl:message>
-
 	<xsl:variable name="userGlobalProfileId" select="GetMetadataObjects/Objects/Person/PropertySets/PropertySet/@Id"/>
-
-	<xsl:message>User global Profile=<xsl:value-of select="$userGlobalProfileId"/></xsl:message>
 
 	<!--  Only generate the add request if the profile doesn't exist (ie. wasn't found in the response) -->
 
@@ -233,7 +203,6 @@
 
 	<xsl:when test="$profileCount &lt; 3">
 
-	        <xsl:message>Less than 3 profiles found,<xsl:value-of select="$profileCount"/></xsl:message>
 		<AddMetadata>
 
 		<Metadata>
@@ -254,7 +223,6 @@
 
          	</xsl:when>
          <xsl:otherwise>
-                <xsl:message>Number of profiles found: <xsl:value-of select="$profileCount"/></xsl:message>
                 <!-- The XSL processor won't allow an xml file to be generated that only has a comment or a 
                      processing instruction in it :-( 
                      Thus, we have to generate a fictitous element so that the parser doesn't complain

@@ -7,5 +7,48 @@
  *        For example, to change the default SAS theme to use, add the following code:
  *         %global sastheme;
  *         %let sastheme=mycompany;
+ *
+ *  Common things to do here:
+ *
+ *    Turn on debugging
+ *        When problems arise, sometimes it is hard to figure out what happened, since we
+ *        try to hide the processing from the end user.
+ *        However, you can turn on debugging on the server side.  When you turn this on, the following
+ *        happens:
+ *           - the sas log is routed to a file named /tmp/debug_<userid>_<entrypoint>_sas.log
+ *             where <userid> is the userid submitting the request and <entrypoint> is which
+ *             stored process is being executed.
+ *
+ *        To turn on debugging, set the portaldebug macro variable. The allowable values are:
+ *           macro variable exists = turn on debugging 
+ *           1 = all users, all entry points
+ *           userid list = a list of 1 or more userids, blank separated, that you want to 
+ *           capture the debug information
+ *
+ *        By default, the log will be created in the StoredProcessServer/Logs directory of the
+ *        running application server context.  This can be changed by setting the portaldebugdir
+ *        macro variable to the directory in which the logs should be created.
+ *
+ *        Samples:
+ *          Turn on for all users:
+ *            %global portaldebug;
+ *            %let portaldebug=1;
+ *
+ *          Turn on for just fred and barney:
+ *            %global portaldebug;
+ *            %let portaldebug=fred barney;
+ *
+ *          Turn on for betty and wilma and use an alternate logs directory:
+ *            %global portaldebug;
+ *            %let portaldebug=betty wilma;
+ *            %let portaldebugdir=/tmp;
+ *
+ *        NOTE: There can only be 1 setting active at any time for these variables.
+ *
+ *        NOTE: As the debugging content can be large, this will slow down performance.  Thus,
+ *              it is recommended to set the portaldebug variable to just those userids that are
+ *              experiencing issues or that you want to do diagnostics for.
+ *
+ *        
  */
  
