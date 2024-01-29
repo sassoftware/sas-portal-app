@@ -170,8 +170,8 @@
             if (submenu) {
                submenu.style.display='None';
                }
-else {
-  }
+             else {
+               }
            }
         }, false);
 
@@ -186,14 +186,15 @@ else {
 
         var submenu = document.getElementById(elementPrefixId+'_SubMenu_Container');
 
-        submenu.style.top = (rect.bottom+window.scrollY)+'px';
-        submenu.style.left = (rect.left+window.scrollX)+'px';
+        submenu.style.top = (rect.bottom+window.pageYOffset)+'px';
+        submenu.style.left = (rect.left+window.pageXOffset)+'px';
 
         // Call the page specific function to enable/disable items in the menu
         setupSubmenu(elementPrefixId);
 
         submenu.style.display='Block';
 
+        
       }
 
       function dropDownCleared(elementPrefixId) {
@@ -239,7 +240,7 @@ else {
                      <td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
                          <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
 
-                         <a id="globalMenuBar_0_anchor" href="#" onclick="dropDownClicked('globalMenuBar_0')"><xsl:attribute name="title"><xsl:value-of select="$portalCustomizationMenuTitle"/></xsl:attribute>
+                         <a id="globalMenuBar_0_anchor" href="#!" onclick="dropDownClicked('globalMenuBar_0')"><xsl:attribute name="title"><xsl:value-of select="$portalCustomizationMenuTitle"/></xsl:attribute>
                          <span><xsl:value-of select="$portalCustomizationMenu"/></span>
                          <img class="SimpleMenuBarSubMenuIndicator SimpleMenuBarSubMenuIndicator_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/MenuDownArrowBanner.gif</xsl:attribute></img>
                          </a>
