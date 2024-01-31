@@ -5,11 +5,11 @@
          *   For each item that is to be deleted, there should be the following routines:
          *    -  (optional) a getter, that will retrieve any existing metadata that may be required
          *       to have available when generating the DeleteMetadata Request.
-         *       The name of the file must be in the form &filesDir./portlet/delete.get.<itemtype>.xslt
+         *       The name of the file must be in the form &filesDir./portlet/delete.<itemtype>.get.xslt
          *       NOTE: This file is optional and processing will continue if not found!
          *    -  (optional) a parameter handler (that looks at the incoming requests and prepares the "new" metadata format.
          *       NOTE: This is a .sas file that has data step code snippets in it.
-         *       The name of the file must be in the form &stepsDir./portlet/delete.parameters.<itemtype>.sas
+         *       The name of the file must be in the form &stepsDir./portlet/delete.<itemtype>.parameters.sas
          *    -  a processor (which generates the metadata delete to delete the metadata). 
          *       NOTE: This is an xslt file.
          *       The name of the file must be in the form &filesDir./portlet/delete.<itemtype>.xslt
@@ -24,9 +24,9 @@
             %let searchType=&type.;
             %end;
 
-        %let deleteItemGetter=&filesDir./portlet/delete.get.%lowcase(&searchType.).xslt;
+        %let deleteItemGetter=&filesDir./portlet/delete.%lowcase(&searchType.).get.xslt;
 
-        %let deleteItemParameterHandler=&stepsDir./portlet/delete.parameters.%lowcase(&searchType.).sas;
+        %let deleteItemParameterHandler=&stepsDir./portlet/delete.%lowcase(&searchType.).parameters.sas;
         %let deleteItemProcessor=&filesDir./portlet/delete.%lowcase(&searchType.).xslt;
 
         %let _ciRC=0;
@@ -126,16 +126,17 @@
 
                     filename getrsp;
 
+                    %showFormattedXML(newxml,Generated parameters passed to delete routine);
+
                     %end;
 
                 filename remxsl "&deleteItemProcessor.";
 
                 /*
-                 *  Since some creation of objects may also need to update existing objects
-                 *  we use an action=update (ie. check for UpdateMetadata) so that with one call
-                 *  we can do both.
+                 *  Generate and execute the metadata modification
                  */
-                %genModification(modxsl=remxsl,newxml=newxml,action=update,rc=genModRC);
+
+                %genModification(modxsl=remxsl,newxml=newxml,action=delete,rc=genModRC);
 
                 %let _ciRC=&genModRC.;
 

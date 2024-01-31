@@ -5,7 +5,7 @@
          *   For each item that the remove page needs to  be generated for, there should be the following routines:
          *    -  a getter (optional)(which retrieves any metadata that is needed to generate the page).
          *       NOTE: This is an xslt file.
-         *       The name of the file must be in the form &filesDir./portlet/add.get.<itemtype>.xslt
+         *       The name of the file must be in the form &filesDir./portlet/add.<itemtype>.get.xslt
          *    -  a generator (which generates the page content). 
          *       NOTE: This is an xslt file.
          *       The name of the file must be in the form &filesDir./portlet/remove.<itemtype>.xslt
@@ -46,7 +46,7 @@
                filename newxml temp;
                %buildModParameters(newxml);
 
-               %let removeItemGetter=&filesDir./portlet/remove.get.%lowcase(&searchType.).xslt;
+               %let removeItemGetter=&filesDir./portlet/remove.%lowcase(&searchType.).get.xslt;
                %if (%sysfunc(fileexist(&removeItemGetter.)) ne 0) %then %do;
 
                    filename _aiget "&removeItemGetter.";

@@ -119,9 +119,12 @@
 
   <!-- Portlet Item Remove
     -->
+  <string key="portletRemove">取り除く</string>
   <string key="portletItemRemove">アイテムの削除</string>
   <string key="portletItemRemoveTitle">ポートレット項目の削除</string>
   <string key="portletRemoveNotSupported">このタイプのアイテムの削除はサポートされていません。</string>
+  <string key="portletRemovePortlet">このポートレットをページから削除します。</string>
+  <string key="portletRemovePortletPermanent">このポートレットをシステムから削除して完全に削除します。</string>
 
   <!-- PSPortalPage Remove
     -->

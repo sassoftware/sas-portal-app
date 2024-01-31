@@ -72,6 +72,7 @@
          <PSPortlet Id="" Name="" portletType="">
             <Groups/>
             <PropertySets/>
+            <Trees/>
          </PSPortlet>
          <PropertySet Id="" Name="">
            <SetProperties/>

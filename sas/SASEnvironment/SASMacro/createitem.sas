@@ -5,11 +5,11 @@
          *   For each item that is to be saved, there should be the following routines:
          *    -  (optional) a getter, that will retrieve any existing metadata that may be required
          *       to have available when generating the AddMetadata Request.
-         *       The name of the file must be in the form &filesDir./portlet/create.get.<itemtype>.xslt
+         *       The name of the file must be in the form &filesDir./portlet/create.<itemtype>.get.xslt
          *       NOTE: This file is optional and processing will continue if not found!
          *    -  a parameter handler (that looks at the incoming requests and prepares the "new" metadata format.
          *       NOTE: This is a .sas file that has data step code snippets in it.
-         *       The name of the file must be in the form &stepsDir./portlet/create.parameters.<itemtype>.sas
+         *       The name of the file must be in the form &stepsDir./portlet/create.<itemtype>.parameters.sas
          *    -  a processor (which generates the metadata create to save the metadata). 
          *       NOTE: This is an xslt file.
          *       The name of the file must be in the form &filesDir./portlet/create.<itemtype>.xslt
@@ -24,9 +24,9 @@
             %let searchType=&type.;
             %end;
 
-        %let createItemGetter=&filesDir./portlet/create.get.%lowcase(&searchType.).xslt;
+        %let createItemGetter=&filesDir./portlet/create.%lowcase(&searchType.).get.xslt;
 
-        %let createItemParameterHandler=&stepsDir./portlet/create.parameters.%lowcase(&searchType.).sas;
+        %let createItemParameterHandler=&stepsDir./portlet/create.%lowcase(&searchType.).parameters.sas;
 
         %let createItemProcessor=&filesDir./portlet/create.%lowcase(&searchType.).xslt;
 

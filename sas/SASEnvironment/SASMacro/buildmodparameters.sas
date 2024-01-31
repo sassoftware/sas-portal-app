@@ -69,6 +69,10 @@
                   put "<Id>&Id.</Id>";
                   %end;
 
+              %if (%symexist(portletType)) %then %do;
+                  put "<PortletType>&portletType.</PortletType>";
+                  %end;
+
               /*
                * If the related object information was passed, pass that along
                * so it can be included in any parameters that this page may call.

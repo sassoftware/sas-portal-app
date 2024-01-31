@@ -216,6 +216,7 @@
 <xsl:template name="Banner">
 
 <xsl:param name="userRole"/>
+<xsl:param name="userName"/>
 
  <!-- Include the scripts needed for the menu navigation -->
 
@@ -305,7 +306,7 @@
                      <td style="white-space: nowrap;" class="SimpleMenuBarItem SimpleMenuBarItem_Banner_GlobalMenu_Look">
                          <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
                          <a id="globalMenuBar_6_anchor" href="/SASLogon/logout"><xsl:attribute name="title"><xsl:value-of select="$portalLogoffMenuTitle"/></xsl:attribute>
-                         <span><xsl:value-of select="$portalLogoffMenu"/></span></a>
+                         <span><xsl:value-of select="$portalLogoffMenuTitle"/><xsl:text>&#160;</xsl:text><xsl:value-of select="$userName"/></span></a>
 
                          <img class="SimpleMenuBarItemSpacer SimpleMenuBarItemSpacer_Banner_GlobalMenu_Look" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute></img>
                      </td>
@@ -509,6 +510,7 @@
 
 <xsl:param name="includeTabs">0</xsl:param>
 <xsl:param name="userRole"/>
+<xsl:param name="userName"/>
 
 <table width="100%" cellpadding="0" cellspacing="0">
 <tbody>
@@ -520,6 +522,7 @@
 
          <xsl:call-template name="Banner">
            <xsl:with-param name="userRole"><xsl:value-of select="$userRole"/></xsl:with-param>
+           <xsl:with-param name="userName"><xsl:value-of select="$userName"/></xsl:with-param>
          </xsl:call-template>
 
                 <a name="skipBanner"></a>

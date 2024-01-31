@@ -50,7 +50,7 @@
   filename common temp;
   %let common=%sysfunc(pathname(common));
 
-  filename inxsl "&filesDir./portlet/add.gen.xslt";
+  filename inxsl "&filesDir./portlet/add.html.gen.xslt";
 
   proc xsl in=newxml xsl=inXSL out=common;
      parameter "appLocEncoded"="&appLocEncoded."

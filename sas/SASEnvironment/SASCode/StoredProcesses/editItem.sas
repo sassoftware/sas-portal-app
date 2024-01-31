@@ -24,7 +24,7 @@
    %let searchType=&type.;
    %end;
 
-%let editItemGetter=&filesDir./portlet/edit.get.%lowcase(&searchType.).xml;
+%let editItemGetter=&filesDir./portlet/edit.%lowcase(&searchType.).get.xml;
 
 %if (%sysfunc(fileexist(&editItemGetter.))=0) %then %do;
 
@@ -88,7 +88,7 @@
 filename common temp;
 %let common=%sysfunc(pathname(common));
 
-filename inxsl "&filesDir./portlet/edit.gen.xslt";
+filename inxsl "&filesDir./portlet/edit.html.gen.xslt";
 
 proc xsl in=outxml xsl=inXSL out=common;
    parameter "appLocEncoded"="&appLocEncoded."

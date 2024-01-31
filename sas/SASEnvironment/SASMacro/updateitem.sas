@@ -5,11 +5,11 @@
          *   For each item that is to be saved, there should be the following routines:
          *    -  a getter (that gets the existing metadata).
          *       NOTE: This is an xml file containing the metadata xml to get the existing info.
-         *       The name of the file must be in the form &filesDir/portlet/edit.get.<itemtype>.xml.
+         *       The name of the file must be in the form &filesDir/portlet/edit.<itemtype>.get.xml.
          *       NOTE: This should be the same xml used to generate the edit page!
          *    -  a parameter handler (that looks at the incoming requests and prepares the "new" metadata format.
          *       NOTE: This is a .sas file that has data step code snippets in it.
-         *       The name of the file must be in the form &stepsDir./portlet/save.parameters.<itemtype>.sas
+         *       The name of the file must be in the form &stepsDir./portlet/update.<itemtype>.parameters.sas
          *    -  a processor (which generates the metadata update to save the metadata). 
          *       NOTE: This is an xslt file.
          *       The name of the file must be in the form &filesDir./portlet/save.<itemtype>.xslt
@@ -24,9 +24,9 @@
             %let searchType=&type.;
             %end;
 
-        %let updateItemGetter=&filesDir./portlet/edit.get.%lowcase(&searchType.).xml;
+        %let updateItemGetter=&filesDir./portlet/edit.%lowcase(&searchType.).get.xml;
 
-        %let updateItemParameterHandler=&stepsDir./portlet/update.parameters.%lowcase(&searchType.).sas;
+        %let updateItemParameterHandler=&stepsDir./portlet/update.%lowcase(&searchType.).parameters.sas;
 
         %let updateItemProcessor=&filesDir./portlet/update.%lowcase(&searchType.).xslt;
 
