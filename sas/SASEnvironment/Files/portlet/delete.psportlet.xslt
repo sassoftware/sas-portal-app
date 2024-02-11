@@ -5,7 +5,7 @@
 
 <xsl:include href="delete.all.routines.xslt"/>
 
-<!-- portletRemove is the type of removal to do 
+<!-- Removetype is the type of removal to do 
        remove = just remove the portlet from my personal portal space
        delete = remove the portlet from the personal portal space and permanently delete it
 
@@ -18,7 +18,7 @@
 <xsl:template match="/">
 
 
-<xsl:variable name="newPortletRemove"><xsl:value-of select="Mod_Request/NewMetadata/PortletRemove"/></xsl:variable>
+<xsl:variable name="newRemoveType"><xsl:value-of select="lower-case(Mod_Request/NewMetadata/RemoveType)"/></xsl:variable>
 <xsl:variable name="newLayoutComponentId"><xsl:value-of select="Mod_Request/NewMetadata/RelatedId"/></xsl:variable>
 <xsl:variable name="newLayoutComponentType"><xsl:value-of select="Mod_Request/NewMetadata/RelatedType"/></xsl:variable>
 
@@ -29,7 +29,7 @@
 <xsl:variable name="portletName" select="$currentPortletObject/@Name"/>
     <xsl:choose>
 
-      <xsl:when test="$newPortletRemove='remove' or $newPortletRemove=''">
+      <xsl:when test="$newRemoveType='remove' or $newRemoveType=''">
 
        <!-- A remove is actually an updatemetadata request -->
 
@@ -57,7 +57,7 @@
 
       </xsl:when>
 
-      <xsl:when test="$newPortletRemove='delete'">
+      <xsl:when test="$newRemoveType='delete'">
 
        <DeleteMetadata>
 
@@ -75,7 +75,7 @@
      </xsl:when>
 
      <xsl:otherwise>
-       <xsl:comment>ERROR:Invalid portletRemove value passed, <xsl:value-of select="$newPortletRemove"/></xsl:comment>
+       <xsl:comment>ERROR:Invalid RemoveType value passed, <xsl:value-of select="$newRemoveType"/></xsl:comment>
      </xsl:otherwise>
     </xsl:choose>
 

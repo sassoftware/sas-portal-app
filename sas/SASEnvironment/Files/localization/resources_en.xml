@@ -71,6 +71,13 @@
   <string key="portletEditDisplayURLHeight">Content Height</string>
 
   <!-- 
+       SAS Stored Process Portlet Content Editing
+  -->
+
+  <string key="portletEditSASStoredProcessUri">Stored Process Path</string>
+  <string key="portletEditSASStoredProcessHeight">Portlet Height</string>
+
+  <!-- 
        Collection Portlet Content Editing
   --> 
   <string key="portletEditCollectionShowDescriptionLabel">Show Description</string>

@@ -73,7 +73,9 @@
 
     <xsl:variable name="addLink" select="concat('/SASStoredProcess/do?_program=',$appLocEncoded,'services/createItem')"/>
 
-    <form method="post" enctype="application/x-www-form-urlencoded">
+<!--  NOTE: We set up a hidden formResponse iframe to capture the result so that we can either display the results (if debugging) or simply cause a "go back" to happen after the form is submitted (by using the iframe onload function).  The event handler to handle this is in the CommonFormFunctions template -->
+
+    <form method="post" enctype="application/x-www-form-urlencoded" target="formResponse">
         <xsl:attribute name="action"><xsl:value-of select="$addLink"/></xsl:attribute>
 
         <input type="hidden" name="type" value="PSPortalPage"/>
@@ -87,6 +89,30 @@
 
                 </td>
             </tr>
+
+            <tr>
+                <td><img border="0" width="12" alt="">
+                   <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/1x1.gif</xsl:attribute>
+                   </img>
+                </td>
+                <td align="center" valign="center" colspan="6" width="100%">
+                <div id="portal_message"></div>
+                </td>
+                <td><img border="0" width="12" alt="">
+                   <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/1x1.gif</xsl:attribute>
+                   </img>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="6">
+                    <img border="0" height="24" alt="">
+                       <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/1x1.gif</xsl:attribute>
+                    </img>
+
+                </td>
+            </tr>
+
             <tr>
                 <td>
                     <img border="0" width="12" alt="">
@@ -360,6 +386,13 @@
 
         </table>
     </form>
+
+      <!-- This iframe is here to capture the response from submitting the form -->
+      
+      <iframe id="formResponse" name="formResponse" style="display:none">
+      
+      </iframe>
+
 
 </xsl:template>
 

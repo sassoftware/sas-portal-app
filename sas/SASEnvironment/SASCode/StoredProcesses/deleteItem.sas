@@ -16,16 +16,7 @@
 
 %put deleteItemRC=&deleteItemRC.;
 
-/*
- *  Send back to the browser to go back
- */
-%if (&deleteItemRC.=0) %then %do;
-
-    data _null_;
-      file _webout;
-      put "<script>history.go(-2);</script>";
-    run;
-%end;
+%setResponse(&deleteItemRC.);
 
 %cleanupPortalDebug;
 

@@ -1,17 +1,19 @@
 %macro genItems;
 
-  %if (&PORTLETITEMSELECT_COUNT. > 1) %then %do;
+  %if (%symexist(PORTLETITEMSELECT_COUNT)) %then %do;
+      %if (&PORTLETITEMSELECT_COUNT. > 1) %then %do;
 
-      %do i=1 %to &PORTLETITEMSELECT_COUNT;
-          put "<Item>%superq(PORTLETITEMSELECT&i.)</Item>";
+          %do i=1 %to &PORTLETITEMSELECT_COUNT;
+              put "<Item>%superq(PORTLETITEMSELECT&i.)</Item>";
+          %end;
       %end;
-  %end;
-  %else %do;
-      %if (&PORTLETITEMSELECT_COUNT. = 1) %then %do;
+      %else %do;
+          %if (&PORTLETITEMSELECT_COUNT. = 1) %then %do;
 
-          put "<Item>%superq(PORTLETITEMSELECT)</Item>";
+              put "<Item>%superq(PORTLETITEMSELECT)</Item>";
+          %end;
+        %end;
       %end;
-    %end;
 
 %mend;
 

@@ -31,12 +31,29 @@
                %end;
 
            %let debugLog=&debugLogsDir./debug_&_metauser._&entrypoint._&syshostname..log;
+           %let debugLst=&debugLogsDir./debug_&_metauser._&entrypoint._&syshostname..lst;
 
            filename prtllog "&debugLog.";
            proc printto log=prtllog new;
            run;
 
+           filename prtllst "&debugLst.";
+           proc printto print=prtllst new;
+           run;
+
            options mprint mlogic;
+
+           %if (%symexist(showmacros)) %then %do;
+
+               %let debugLst=&debugLogsDir./debug_&_metauser._&entrypoint._&syshostname..lst;
+
+               filename prtllog "&debugLog.";
+               proc printto log=prtllog new;
+               run;
+
+               proc print data=sashelp.vmacro;
+               run;
+               %end;
 
            %if (%symexist(showxml)) %then %do;
                %let saveShowXML=&showxml.;

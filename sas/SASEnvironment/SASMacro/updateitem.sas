@@ -3,10 +3,9 @@
 
         /*
          *   For each item that is to be saved, there should be the following routines:
-         *    -  a getter (that gets the existing metadata).
-         *       NOTE: This is an xml file containing the metadata xml to get the existing info.
-         *       The name of the file must be in the form &filesDir/portlet/edit.<itemtype>.get.xml.
-         *       NOTE: This should be the same xml used to generate the edit page!
+         *    -  a getter (which retrieves any metadata that is needed to update the object).
+         *       NOTE: This is an xslt file.
+         *       The name of the file must be in the form &filesDir./portlet/update.<itemtype>.get.xslt
          *    -  a parameter handler (that looks at the incoming requests and prepares the "new" metadata format.
          *       NOTE: This is a .sas file that has data step code snippets in it.
          *       The name of the file must be in the form &stepsDir./portlet/update.<itemtype>.parameters.sas
@@ -24,7 +23,7 @@
             %let searchType=&type.;
             %end;
 
-        %let updateItemGetter=&filesDir./portlet/edit.%lowcase(&searchType.).get.xml;
+        %let updateItemGetter=&filesDir./portlet/update.%lowcase(&searchType.).get.xslt;
 
         %let updateItemParameterHandler=&stepsDir./portlet/update.%lowcase(&searchType.).parameters.sas;
 
@@ -46,130 +45,58 @@
              %end;
         %else %do;
 
-            filename inxml "&updateItemGetter.";
+             /*
+              *  Make sure we have the metadata info available to include in the parameters
+              */
 
-            filename request temp;
+             %getRepoInfo;
 
-            data _null_;
+             filename newxml temp;
+             %buildModParameters(newxml);
 
-              infile inxml ;
-              file request;
-              input;
+             filename _uiget "&updateItemGetter.";
+             filename _uireq temp;
 
-              length line $400;
-              /*
-               *  Replace the passed id in the metadata request
-               */
-              line=transtrn(_infile_,'${TYPEID}',"&Id.");
-              put line;
-            run;
+             proc xsl in=newxml xsl=_uiget out=_uireq;
+             run;
 
-            /*
-             *  Get the current values
-             */
+             filename _uiget;
+             filename newxml;
 
-            filename outxml temp;
+             filename _uirsp temp;
+             proc metadata in=_uireq out=_uirsp;
+             run;
 
-            proc metadata in=request out=outxml;
-            run;
+             /*
+              * Not the most efficient, but the new xml should be small, so
+              * just recreate it, merging in the retrieved metadata.
+              */
 
-            filename inxml;
-            filename request;
+             filename newxml temp;
 
-            %showFormattedXML(outxml,existing metadata xml);
+             filename updhndlr "&updateItemParameterHandler.";
 
-            /*
-             *  Append the parameters containing the new metadata to existing metadata
-             */
+             %buildModParameters(newxml,updhndlr,merge=_uirsp);
+             filename _uirsp;
+             filename updhndlr;
 
-            filename newxml temp;
+             %showFormattedXML(newxml,generated New Metadata xml);
 
-            data _null_;
-              infile outxml end=last;
-              file newxml;
-              input;
-              if (_n_=1) then do;
-                 put '<Mod_Request>';
-                 end;
-              put _infile_;
+             %if (&_uiRC. = 0) %then %do;
 
-              if (last) then do;
+                 filename updtxsl "&updateItemProcessor.";
 
-                 parameterGenRC=0;
+                 %genModification(modxsl=updtxsl,newxml=newxml,action=update,rc=genUpdateRC);
 
-                 put '<NewMetadata>';
+                 %let _uiRC=&genUpdateRC.;
 
-                 /*
-                  *  Process Some common parameters
-                  */
+                 filename updtxsl;
+                 %end;
+             %else %do;
 
-                 %if (%symexist(type)) %then %do;
-                     put "<Type>&type.</Type>";
-                     %end;
+                 %issueMessage(messageKey=metadataGenerationFailed);
 
-                 /*
-                  * If the related object information was passed, pass that along
-                  * so it can be included in any parameters that this page may call.
-                  */
-
-                 %if (%symexist(relatedId)) %then %do;
-                     put "<RelatedId>&relatedId.</RelatedId>";
-                     %end;
-
-                 %if (%symexist(relatedType)) %then %do;
-                     put "<RelatedType>&relatedType.</RelatedType>";
-                     %end;
-
-                 %if (%symexist(relatedRelationship) ne 0) %then %do;
-                     put "<RelatedRelationship>&relatedRelationship.</RelatedRelationship>";
-                     %end;
-
-                 %if (%symexist(parentTreeId) ne 0) %then %do;
-                     put "<ParentTreeId>&parentTreeId.</ParentTreeId>";
-                     %end;
-
-                 /* NOTE:  The parameter handler can set a return code, parameterGenRC,
-                  *        that indicates a parameter error has occurred.
-                  *        The return codes are:
-                  *            0 = parameters processed successfully.
-                  *            1 = parameters seem valid, but this type of update not supported
-                  *            2 = invalid/missing parameters.  Details in parameterGenMsg.
-                  */
-
-                 %inc "&updateItemParameterHandler." / source2;
-
-                 put "</NewMetadata>";
-                 put "</Mod_Request>";
-
-                 if (parameterGenRC ne 0) then do;
-
-                    call symputx('_uiRC',parameterGenRC);
-                    call symputx('_uiRCMessage',parameterGenMsg);
-
-                    end;
-
-                 end;
-              run;
-
-            filename outxml;
-
-            %showFormattedXML(newxml,generated New Metadata xml);
-
-            %if (&_uiRC. = 0) %then %do;
-
-                filename updtxsl "&updateItemProcessor.";
-
-                %genModification(modxsl=updtxsl,newxml=newxml,action=update,rc=genUpdateRC);
-
-                %let _uiRC=&genUpdateRC.;
-
-                filename updtxsl;
-                %end;
-            %else %do;
-
-                %issueMessage(messageKey=metadataGenerationFailed);
-
-                %end;
+                 %end;
 
             filename newxml;
 

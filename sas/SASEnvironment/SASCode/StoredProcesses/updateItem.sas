@@ -16,15 +16,6 @@
 
 %put updateItemRC=&updateItemRC.;
 
-/*
- *  Send back to the browser to go back
- */
-%if (&updateItemRC.=0) %then %do;
-
-    data _null_;
-      file _webout;
-      put "<script>history.go(-2);</script>";
-    run;
-%end;
+%setResponse(&updateItemRC.);
 
 %cleanupPortalDebug;

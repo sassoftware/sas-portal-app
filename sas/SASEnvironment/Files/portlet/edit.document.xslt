@@ -28,16 +28,19 @@
 
 <xsl:call-template name="commonFormFunctions"/>
 
-<xsl:variable name="objectId" select="GetMetadata/Metadata/Document/@Id"/>
-<xsl:variable name="objectType" select="name(GetMetadata/Metadata/Document)"/>
+<xsl:variable name="objectId" select="Mod_Request/GetMetadata/Metadata/Document/@Id"/>
+<xsl:variable name="objectType" select="name(Mod_Request/GetMetadata/Metadata/Document)"/>
 
-<xsl:variable name="objectName" select="GetMetadata/Metadata/Document/@Name"/>
-<xsl:variable name="objectDesc" select="GetMetadata/Metadata/Document/@Desc"/>
-<xsl:variable name="objectURI" select="GetMetadata/Metadata/Document/@URI"/>
+<xsl:variable name="objectName" select="Mod_Request/GetMetadata/Metadata/Document/@Name"/>
+<xsl:variable name="objectDesc" select="Mod_Request/GetMetadata/Metadata/Document/@Desc"/>
+<xsl:variable name="objectURI" select="Mod_Request/GetMetadata/Metadata/Document/@URI"/>
 
 <xsl:variable name="saveLink" select="concat('/SASStoredProcess/do?_program=',$appLocEncoded,'services/updateItem')"/>
 
-<form method="post"><xsl:attribute name="action"><xsl:value-of select="$saveLink"/></xsl:attribute>
+<!--  NOTE: We set up a hidden formResponse iframe to capture the result so that we can either display the results (if debugging) or simply cause a "go back" to happen after the form is submitted (by using the iframe onload function).  The event handler to handle this is in the CommonFormFunctions template -->
+
+<form method="post" target="formResponse">
+<xsl:attribute name="action"><xsl:value-of select="$saveLink"/></xsl:attribute>
 
     <input type="hidden" name="Id"><xsl:attribute name="value"><xsl:value-of select="$objectId"/></xsl:attribute></input>
     <input type="hidden" name="Type"><xsl:attribute name="value"><xsl:value-of select="$objectType"/></xsl:attribute></input>
@@ -47,10 +50,15 @@
 <tr>
 <td>
 <table border="0" cellpadding="2" cellspacing="0">
-
  <tbody>
   <tr>
   <td colspan="3">&#160;</td>
+ </tr>
+ <tr>
+     <td align="center" valign="center" colspan="3" width="100%">
+     <div id="portal_message"></div>
+     </td>
+
  </tr>
  <tr>
   <td>&#160;</td>
@@ -127,6 +135,12 @@
 </tr>
 </tbody></table>
 </form>
+
+  <!-- This iframe is here to capture the response from submitting the form -->
+  
+  <iframe id="formResponse" name="formResponse" style="display:none">
+  
+  </iframe>
 
 </xsl:template>
 

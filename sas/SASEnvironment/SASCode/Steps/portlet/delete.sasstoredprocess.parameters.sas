@@ -1,4 +1,3 @@
 
-     %if (%symexist(PortletRemove)) %then %do;
-         put "<PortletRemove>&PortletRemove.</PortletRemove>";
-         %end;
+    %inc "&SYSINCLUDEFILEDIR/delete.psportlet.parameters.sas" / source2;
+

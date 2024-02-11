@@ -145,13 +145,5 @@
 <xsl:message>ERROR: in generic psportlet delete template, portlet type=<xsl:value-of select="portletType"/></xsl:message>
 </xsl:template>
 
-<xsl:template match="PSColumnLayoutComponent">
-
-<PSColumnLayoutComponent>
-   <xsl:attribute name="Id"><xsl:value-of select="@Id"/></xsl:attribute>
-</PSColumnLayoutComponent>
-
-</xsl:template>
-
 </xsl:stylesheet>
 

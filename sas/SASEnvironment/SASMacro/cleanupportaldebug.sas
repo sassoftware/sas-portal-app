@@ -2,8 +2,12 @@
 
    %if (%symexist(portaldebug)) %then %do;
 
-           proc printto log=log; run;
+           %if (%sysfunc(fileref(prtllst))<=0) %then %do;
+               proc printto print=print; run;
+               filename prtllst;
+               %end;
 
+           proc printto log=log; run;
            filename prtllog;
 
            options nomprint nomlogic;

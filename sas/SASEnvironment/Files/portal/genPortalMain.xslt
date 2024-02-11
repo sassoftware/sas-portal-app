@@ -139,7 +139,6 @@
    var tabs=new Map();
 
    function setupSubmenu(submenu) {
-
       /*
        * This function is called by genPortalBanner generated submenus when
        * a submenu is to be displayed.
@@ -217,6 +216,7 @@
    /*
     *  Get currently selected Page
     */
+
    var tabDiv = document.getElementsByClassName("tabcontent active")[0];
 
    var pageId=tabDiv.id;
@@ -236,7 +236,6 @@
 
    var elementPrefixId="globalMenuBar_0";
    dropDownCleared(elementPrefixId);
-
    location.href=editURL;
  
    }

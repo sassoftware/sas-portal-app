@@ -51,7 +51,7 @@
 
     <xsl:variable name="addLink" select="concat('/SASStoredProcess/do?_program=',$appLocEncoded,'services/createItem')"/>
 
-   <form name="taskSearchForm" method="post">
+   <form name="taskSearchForm" method="post" target="formResponse">
         <xsl:attribute name="action"><xsl:value-of select="$addLink"/></xsl:attribute>
 
         <input type="hidden" name="Type"><xsl:attribute name="value"><xsl:value-of select="$objectType"/></xsl:attribute></input>
@@ -78,6 +78,28 @@
                     </img>
                 </td>
             </tr>
+
+            <tr>
+                <td><img border="0" width="12" alt="">
+                   <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/1x1.gif</xsl:attribute>
+                   </img>
+                </td>
+                <td align="center" valign="center" colspan="6" width="100%">
+                <div id="portal_message"></div>
+                </td>
+                <td><img border="0" width="12" alt="">
+                   <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/1x1.gif</xsl:attribute>
+                   </img>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <img border="0" height="12" alt="">
+                    <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/1x1.gif</xsl:attribute>
+                    </img>
+                </td>
+            </tr>
+
             <tr>
                 <td>
                      <img border="0" height="12" alt="">
@@ -266,6 +288,12 @@
         </table>
     </form>
 
+<!-- This iframe is here to capture the response from submitting the form -->
+
+<iframe id="formResponse" name="formResponse" style="display:none">
+
+</iframe>
+
 </xsl:template>
 
 <xsl:template name="thisPageScripts">
@@ -273,7 +301,7 @@
 <script>
 
    var hasChanged = false;
-
+   
    /* 
     *  Validate fields in form
     */

@@ -75,7 +75,9 @@
     </xsl:choose>
   </xsl:variable>
 
-<form name="deleteOptionsForm" method="post">
+<!--  NOTE: We set up a hidden formResponse iframe to capture the result so that we can either display the results (if debugging) or simply cause a "go back" to happen after the form is submitted (by using the iframe onload function).  The event handler to handle this is in the CommonFormFunctions template -->
+
+<form name="deleteOptionsForm" method="post" target="formResponse">
     <xsl:attribute name="action"><xsl:value-of select="$removeLink"/></xsl:attribute>
 
     <input type="hidden" name="id">
@@ -89,7 +91,11 @@
                </img>
            </td>
         </tr>
-
+        <tr>
+            <td colspan="4" align="center" valign="center" width="100%">
+             <div id="portal_message"></div>
+            </td>
+        </tr>
         <tr>
             <td><img border="0" width="12" alt="">
                <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/1x1.gif</xsl:attribute>
@@ -330,6 +336,12 @@
 
 </form>
 
+  <!-- This iframe is here to capture the response from submitting the form -->
+  
+  <iframe id="formResponse" name="formResponse" style="display:none">
+  
+  </iframe>
+
 </xsl:template>
 
 <xsl:template name="thisPageScripts">
@@ -345,17 +357,13 @@
 
     var visibility=elementDiv.style.visibility;
     
-console.log('toggleDeleteContainedElementsDiv: visibility'+visibility);
-
     if (visibility=="hidden") {
 
        elementDiv.style.visibility="visible";
-console.log('toggleDeleteContainedElementsDiv: set visible');
        elementDiv.style.display="block";
        }
     else {
        elementDiv.style.visibility="hidden";
-console.log('toggleDeleteContainedElementsDiv: set hidden');
        elementDiv.style.display="none";
        }
     }

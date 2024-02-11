@@ -16,6 +16,7 @@
     <xsl:when test='$passedScope=2'>Persistent</xsl:when>
   </xsl:choose>
 </xsl:variable>
+<xsl:variable name="defaultLayoutType">Column</xsl:variable>
 
 <xsl:variable name="parentTreeId"><xsl:value-of select="Mod_Request/NewMetadata/ParentTreeId"/></xsl:variable>
 
@@ -131,9 +132,13 @@
            <!-- Some default information -->
            <xsl:attribute name="NumberOfColumns">1</xsl:attribute>
            <xsl:attribute name="NumberOfRows">0</xsl:attribute>
-           <xsl:attribute name="Type">Column</xsl:attribute>
+           <xsl:attribute name="Type"><xsl:value-of select="defaultLayoutType"/></xsl:attribute>
 
            <Extensions>
+                <xsl:variable name="newLayoutTypeId"><xsl:value-of select="substring-after($repositoryId,'.')"/>.$newLayoutTypeId</xsl:variable>
+               <Extension Name="LayoutType">
+                     <xsl:attribute name="Id"><xsl:value-of select="$newLayoutTypeId"/></xsl:attribute>
+               </Extension>
                <xsl:if test="$newPageRank">
                   
                   <xsl:variable name="newPageRankId"><xsl:value-of select="substring-after($repositoryId,'.')"/>.$newPageRankObject</xsl:variable>
@@ -193,7 +198,7 @@
 
             <xsl:variable name="newLayoutComponentId"><xsl:value-of select="substring-after($repositoryId,'.')"/>.$newLayoutComponentObject</xsl:variable>
            <LayoutComponents>
-              <PSColumnLayoutComponent Name="COLUMNLAYOUTCOMPONENT" ColumnWidth="0" NumberOfPortlets="0">
+              <PSColumnLayoutComponent Name="COLUMNLAYOUTCOMPONENT" ColumnWidth="0" NumberOfPortlets="0" ColumnWidth="100">
                  <xsl:attribute name="Id"><xsl:value-of select="$newLayoutComponentId"/></xsl:attribute>
 
               </PSColumnLayoutComponent>

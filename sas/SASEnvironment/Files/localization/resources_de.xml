@@ -71,6 +71,13 @@
   <string key="portletEditDisplayURLHeight">Inhaltshöhe</string>
 
   <!--
+       SAS Stored Process Portlet Content Editing
+  -->
+
+  <string key="portletEditSASStoredProcessUri">Gespeicherter Prozesspfad</string>
+  <string key="portletEditSASStoredProcessHeight">Portlet-Höhe</string>
+
+  <!--
        Collection Portlet Content Editing
   -->
   <string key="portletEditCollectionShowDescriptionLabel">Beschreibung anzeigen</string>
@@ -103,6 +110,32 @@
   <string key="portletEditPageShareTypeAvailable">Verfügbar</string>
   <string key="portletEditPageShareTypeDefault">Standard</string>
   <string key="portletEditPageShareTypePersistent">Hartnäckig</string>
+
+  <string key="portletEditPageNumberOfColumns">Anzahl der Spalten:</string>
+  <string key="portletEditPageNumberOfColumns1">1</string>
+  <string key="portletEditPageNumberOfColumns2">2</string>
+  <string key="portletEditPageNumberOfColumns3">3</string>
+  <string key="portletEditPageColumnWidth">Spaltenbreite:</string>
+  <string key="portletEditPageColumnPercent">%</string>
+  <string key="portletEditPagePortletLayout">Portlet-Layout:</string>
+  <string key="portletEditPageLayout">Layout:</string>
+  <string key="portletEditPageLayoutColumn">Nach Spalte</string>
+  <string key="portletEditPageLayoutGrid">Nach Raster</string>
+  <string key="portletEditPageAddPortlets">Portlets hinzufügen...</string>
+
+  <string key="portletEditPageColumn1Heading">Spalte 1:</string>
+  <string key="portletEditPageColumn2Heading">Spalte 2:</string>
+  <string key="portletEditPageColumn3Heading">Spalte 3:</string>
+  <string key="portletEditPageColumnLayoutMoveUp">Nach oben bewegen</string>
+  <string key="portletEditPageColumnLayoutMoveDown">Sich abwärts bewegen</string>
+  <string key="portletEditPageColumnLayoutMoveLeft">Geh nach links</string>
+  <string key="portletEditPageColumnLayoutMoveRight">Nach rechts bewegen</string>
+  <string key="portletEditPageColumnLayoutRemove">Entfernen</string>
+  <string key="portletEditPageDeleteRow">Zeile löschen</string>
+
+  <string key="portletEditPageHasChangedMessage">Sie haben Änderungen an dieser Seite vorgenommen. Diese Änderungen gehen verloren, wenn Sie fortfahren. Möchten Sie fortfahren und Ihre Änderungen verlieren?</string>
+
+  <string key="portletEditPageRemovePortlet">Dadurch wird das Element aus Ihrem Portal entfernt, aber nicht dauerhaft gelöscht. Möchtest du fortfahren?</string>
 
   <!--
        Portlet Item Editor menu

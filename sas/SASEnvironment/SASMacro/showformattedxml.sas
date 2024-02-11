@@ -29,7 +29,9 @@
 			put '</xsl:copy>';
 			put '</xsl:template>';
 			put '<xsl:template match="comment()|processing-instruction()">';
+                        put '&#160;';
 			put '<xsl:copy/>';
+                        put '&#160;';
 			put '</xsl:template>';
 			put '</xsl:stylesheet>';
 		run;

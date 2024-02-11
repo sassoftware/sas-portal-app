@@ -1,193 +1,120 @@
 /*  Generate the Edit Item page */
 
+/*
+ *   For each item that is to be edited there should be a specific generator (which generates
+ *   the page content specific to this type).  If it's not found, then this item type
+ *   is not supported to be edited.
+ *
+ *   The parameters being passed to this routine will be dependent on the
+ *   type of item being saved.
+ *   The only required parameters are:
+ *    id = the id of the object
+ *    type = the type of object
+ *
+ */
+
 %inc "&sasDir./request_setup.sas";
 
 %macro editPortletItem;
 
-/*
- *   For each item that is to be edited, there should be a getter (that gets the existing metadata)
- *   and a generator (which generates the item specific page content).  If either of those are not found, then
- *   this item type is not supported to be edited.
- */
+  /*
+   *  Get the repository information to pass along as part of the metadata context
+   *  that might be needed for the edit generation.
+   */
 
-%let editItemGenerator=;
+  %getRepoInfo;
 
-%if ("%upcase(&type.)"="PSPORTLET") %then %do;
-   %if (%symexist(portlettype)) %then %do;
-      %let searchType=&portletType.;
-      %end;
-   %else %do;   
-      %let searchType=&type.;
-      %end;
-   %end;
-%else %do;
-   %let searchType=&type.;
-   %end;
+  /*
+   *   For each item that is to be edited there should be a specific generator (which generates
+   *   the page content specific to this type).  If it's not found, then this item type
+   *   is not supported to be edited.
+   */
 
-%let editItemGetter=&filesDir./portlet/edit.%lowcase(&searchType.).get.xml;
+  %let editItemGenerator=;
 
-%if (%sysfunc(fileexist(&editItemGetter.))=0) %then %do;
+  /*
+   *  Create some xml to pass the current info into the various routines.
+   */
 
-    %let editItemGenerator=&stepsDir./portlet/edit.unsupported.sas;
+  filename newxml temp;
 
-    /*  Pass a dummy xml file */
+  %buildModParameters(newxml);
 
-    filename outxml temp;
+  /*
+   *  Generate the Common part of the page
+   */
 
-    /*
-     *  Include the standard parameters 
-     */
-    data _null_;
-      file outxml;
-      put '<Mod_Request>';
-      put '<NewMetadata>';
-      put "<Type>&type.</Type>";
-      put "<Id>&id.</Id>";
-      %if (%symexist(portlettype)) %then %do;
-          put "<PortletType>&portletType</PortletType>";
-          %end;
-      put '</NewMetadata>';
-      put '</Mod_Request>';
-    run;
+  filename common temp;
+  %let common=%sysfunc(pathname(common));
 
-    %end;
-%else %do;
+  filename inxsl "&filesDir./portlet/edit.html.gen.xslt";
 
-    filename inxml "&editItemGetter.";
+  proc xsl in=newxml xsl=inXSL out=common;
+     parameter "appLocEncoded"="&appLocEncoded."
+               "sastheme"="&sastheme."
+               "localizationFile"="&localizationFile."           
+    ;
+  run;
 
-    filename request temp;
+  filename inxsl;
 
-    data _null_;
+  /*
+   *  The editItem macro may need to edit edititional information
+   *  to the xml input to the specific, detailed part of the page
+   *  so let the macro rebuild it as needed (and thus we don't
+   *   need this assigned any longer).
+   */
 
-      infile inxml ;
-      file request;
-      input;
+  filename newxml;
 
-      length line $400;
-      /*
-       *  Replace the passed id in the metadata request
-       */
-      line=transtrn(_infile_,'${TYPEID}',"&Id.");
-      put line;
-    run;
+  /*
+   *  Now generate the detailed part based on the type of item being edited
+   */
 
-    filename outxml temp;
+  /*
+   *  Start the details section
+   */
 
-    proc metadata in=request out=outxml;
-    run;
+  %let pagestrt=&filesDir./portlet/edit.html.start.snippet;
 
-    filename inxml;
-    filename request;
+  filename details temp;
+  %let details=%sysfunc(pathname(details));
 
-%end;
+  %editItem(out=details,rc=editItemRC);
 
-/*
- *  Generate the Common part of the page
- */
+  %put editItemRC=&editItemRC.;
 
-filename common temp;
-%let common=%sysfunc(pathname(common));
+  /*
+   *  End the details section
+   */
 
-filename inxsl "&filesDir./portlet/edit.html.gen.xslt";
+  %let pageend=&filesDir./portlet/edit.html.end.snippet;
 
-proc xsl in=outxml xsl=inXSL out=common;
-   parameter "appLocEncoded"="&appLocEncoded."
-             "sastheme"="&sastheme."
-             "localizationFile"="&localizationFile."           
-  ;
-run;
+  /*
+   *  Put the files together and do any necessary text substitution
+   */
 
-filename inxsl;
+  filename snippets ("&common.","&pagestrt.","&details.","&pageend.") encoding="utf-8";
 
-/*
- *  Now generate the detailed part based on the type of item being edited
- */
+  data _null_;
+   infile snippets;
+   file _webout;
+   input;
+   put _infile_;
 
-/*
- *  Start the details section
- */
+   run;
 
-%let pagestrt=&filesDir./portlet/edit.html.start.snippet;
+  filename snippets;
 
-filename details temp;
-%let details=%sysfunc(pathname(details));
+  filename details;
 
-%macro genItemDetails;
-
-/*
- *  See if we have a stylesheet for this type of porlet
- */
-
-%if ("&editItemGenerator." = "") %then %do;
-
-    %if ("%upcase(&type.)"="PSPORTLET") %then %do;
-       %if (%symexist(portlettype)) %then %do;
-          %let searchType=&portletType.;
-          %end;
-       %else %do;
-          %let searchType=&type.;
-          %end;
-       %end;
-    %else %do;
-       %let searchType=&type.;
-       %end;
-
-    %let editItemGenerator=&stepsDir./portlet/edit.%lowcase(&searchType.).sas;
-
-    %if (%sysfunc(fileexist(&editItemGenerator.))=0) %then %do;
-
-        %let editItemGenerator=&stepsDir./portlet/edit.unsupported.sas;
-        %end;
-
-    %end;
-
-%inc "&editItemGenerator.";
-   
-%mend;
-
-%genItemDetails;
-
-/*
- *  End the details section
- */
-
-%let pageend=&filesDir./portlet/edit.html.end.snippet;
-
-/*
- *  Put the files together and do any necessary text substitution
- */
-
-filename snippets ("&common.","&pagestrt.","&details.","&pageend.") encoding="utf-8";
-
-data _null_;
- infile snippets;
- file _webout;
- input;
- put _infile_;
-
- run;
-
-filename snippets;
-
-filename details;
-
-filename common;
-
-filename outxml;
+  filename common;
 
 %mend;
 
 %setupPortalDebug(editItem);
 
-%put Type=&Type.;
-%put Id=&Id.;
-
-%if (%symexist(portlettype)) %then %do;
-    %put portletType=&portletType.;
-    %end;
-
 %editPortletItem;
-
 
 %cleanupPortalDebug;
 

@@ -8,7 +8,8 @@
 <script>
 
     function submitDisableAllForms() {
-        setTimeout("disableAllForms()", 100);
+        // setTimeout("disableAllForms()", 100);
+        // setTimeout("disableAllForms()");
         return true;
     }
 
@@ -50,6 +51,31 @@
 
        return retval;
     }
+
+    /*
+     *  Set up a standard form response handler.  This assumes a few things have also been set up
+     */
+
+    /*  Default depth to return when going back */
+    /*  This can be overridden in the specific xslt files thisPageScripts section */
+
+    backDepth=-1;
+
+    var formResponse = document.getElementById('formResponse');
+
+    if (formResponse) {
+
+       formResponse.addEventListener( "load", function(e) {
+
+        /*
+         *  TODO:  Add logic to display any errors that happened on the form submission to the user by setting the content of portal_message div.
+         */
+
+         history.go(backDepth);
+
+        } );
+
+       }
 
 </script>
 

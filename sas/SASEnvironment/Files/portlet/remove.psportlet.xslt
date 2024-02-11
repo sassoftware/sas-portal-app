@@ -88,7 +88,10 @@
    <xsl:if test="$portletIsWriteable='1'">
    </xsl:if>
 
-<form name="deleteOptionsForm" method="post">
+<!--  NOTE: We set up a hidden formResponse iframe to capture the result so that we can either display the results (if debugging) or simply cause a "go back" to happen after the form is submitted (by using the iframe onload function).  The event handler to handle this is in the CommonFormFunctions template -->
+
+<form name="deleteOptionsForm" method="post" target="formResponse">
+
     <xsl:attribute name="action"><xsl:value-of select="$removeLink"/></xsl:attribute>
 
     <input type="hidden" name="id">
@@ -105,7 +108,11 @@
                </img>
            </td>
         </tr>
-
+        <tr>
+            <td colspan="4" align="center" valign="center" width="100%">
+             <div id="portal_message"></div>
+            </td>
+        </tr>
         <tr>
             <td><img border="0" width="12" alt="">
                <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/1x1.gif</xsl:attribute>
@@ -127,7 +134,7 @@
 
             </td>
             <td class="commonLabel" align="left" valign="center" colspan="2" width="100%">
-                <input type="radio" id="portletremove" name="portletremove" value="remove" checked="checked"/> 
+                <input type="radio" id="portletremove" name="removetype" value="remove" checked="checked"/> 
                 <label for="portletremove"><xsl:value-of select="$portletRemovePortlet"/>
                 </label>
             </td>
@@ -148,8 +155,8 @@
 
                  </td>
                 <td class="commonLabel" align="left" valign="center" colspan="2" width="100%">
-                    <input type="radio" id="portletdelete" name="portletremove" value="delete" />
-                    <label for="pagedelete"><xsl:value-of select="$portletRemovePortletPermanent"/>
+                    <input type="radio" id="portletdelete" name="removetype" value="delete" />
+                    <label for="portletdelete"><xsl:value-of select="$portletRemovePortletPermanent"/>
                     </label>
                 </td>
                 <td><img border="0"  width="12" alt="" >
@@ -215,6 +222,12 @@
 
 </form>
 
+  <!-- This iframe is here to capture the response from submitting the form -->
+  
+  <iframe id="formResponse" name="formResponse" style="display:none">
+  
+  </iframe>
+
 </xsl:template>
 
 <xsl:template name="thisPageScripts">
@@ -230,17 +243,13 @@
 
     var visibility=elementDiv.style.visibility;
     
-console.log('toggleDeleteContainedElementsDiv: visibility'+visibility);
-
     if (visibility=="hidden") {
 
        elementDiv.style.visibility="visible";
-console.log('toggleDeleteContainedElementsDiv: set visible');
        elementDiv.style.display="block";
        }
     else {
        elementDiv.style.visibility="hidden";
-console.log('toggleDeleteContainedElementsDiv: set hidden');
        elementDiv.style.display="none";
        }
     }

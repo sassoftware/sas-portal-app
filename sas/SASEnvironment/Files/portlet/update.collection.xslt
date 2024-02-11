@@ -3,24 +3,58 @@
 
 <xsl:template match="/">
 
+<xsl:variable name="reposId" select="/Mod_Request/NewMetadata/Metareposid"/>
+
 <xsl:variable name="portletId" select="Mod_Request/GetMetadata/Metadata/PSPortlet/@Id"/>
 <xsl:variable name="portletType" select="Mod_Request/GetMetadata/Metadata/PSPortlet/@PortletType"/>
 
-<xsl:variable name="oldShowDescriptionId" select="Mod_Request/GetMetadata/Metadata/PSPortlet/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='show-description']/@Id"/>
-<xsl:variable name="oldShowDescription" select="Mod_Request/GetMetadata/Metadata/PSPortlet/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='show-description']/@DefaultValue"/>
+<!--  For the following properties, when a collection is first created, these properties are not
+      created by default.  Thus, it's possible that when we get here, we actually have to create them.
+      If we determine that to be the case, then create the id in the format that UpdateMetadata expects
+      so that it will create a new object.
+-->
+<xsl:variable name="configPropertySet" select="Mod_Request/GetMetadata/Metadata/PSPortlet/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']"/>
+<xsl:variable name="configPropertySetId" select="$configPropertySet/@Id"/>
+
+<xsl:variable name="configProperties" select="$configPropertySet/SetProperties"/>
+
+<!-- Show Description Property -->
+
+<xsl:variable name="newShowDescriptionId"><xsl:value-of select="substring-after($reposId,'.')"/>.$newShowDescription</xsl:variable>
+<xsl:variable name="oldShowDescriptionId">
+ <xsl:choose>
+   <xsl:when test="$configProperties/Property[@Name='show-description']/@Id">
+      <xsl:value-of select="$configProperties/Property[@Name='show-description']/@Id"/>
+   </xsl:when>
+   <xsl:otherwise>
+    <xsl:value-of select="$newShowDescriptionId"/>
+   </xsl:otherwise>
+  </xsl:choose>
+</xsl:variable>
+<xsl:variable name="oldShowDescription" select="$configProperties/Property[@Name='show-description']/@DefaultValue"/>
 
 <xsl:variable name="newShowDescription">
-
   <xsl:choose>
      <xsl:when test="Mod_Request/NewMetadata/ShowDescription = 1">true</xsl:when>
      <xsl:when test="Mod_Request/NewMetadata/ShowDescription = 0">false</xsl:when>
      <xsl:otherwise><xsl:value-of select="$oldShowDescription"/></xsl:otherwise>
   </xsl:choose>
-
 </xsl:variable>
 
-<xsl:variable name="oldShowLocationId" select="Mod_Request/GetMetadata/Metadata/PSPortlet/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='show-location']/@Id"/>
-<xsl:variable name="oldShowLocation" select="Mod_Request/GetMetadata/Metadata/PSPortlet/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='show-location']/@DefaultValue"/>
+<!-- Show Location Property -->
+
+<xsl:variable name="newShowLocationId"><xsl:value-of select="substring-after($reposId,'.')"/>.$newShowLocation</xsl:variable>
+<xsl:variable name="oldShowLocationId">
+ <xsl:choose>
+   <xsl:when test="$configProperties/Property[@Name='show-location']/@Id">
+      <xsl:value-of select="$configProperties/Property[@Name='show-location']/@Id"/>
+   </xsl:when>
+   <xsl:otherwise>
+    <xsl:value-of select="$newShowLocationId"/>
+   </xsl:otherwise>
+  </xsl:choose>
+</xsl:variable>
+<xsl:variable name="oldShowLocation" select="$configProperties/Property[@Name='show-location']/@DefaultValue"/>
 
 <xsl:variable name="newShowLocation">
 
@@ -32,8 +66,20 @@
 
 </xsl:variable>
 
-<xsl:variable name="oldPackageSortOrderId" select="Mod_Request/GetMetadata/Metadata/PSPortlet/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='ascending-packageSortOrder']/@Id"/>
-<xsl:variable name="oldPackageSortOrder" select="Mod_Request/GetMetadata/Metadata/PSPortlet/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='ascending-packageSortOrder']/@DefaultValue"/>
+<!-- Package Sort Order Property -->
+
+<xsl:variable name="newPackageSortOrderId"><xsl:value-of select="substring-after($reposId,'.')"/>.$newPackageSortOrder</xsl:variable>
+<xsl:variable name="oldPackageSortOrderId">
+ <xsl:choose>
+   <xsl:when test="$configProperties/Property[@Name='ascending-packageSortOrder']/@Id">
+      <xsl:value-of select="$configProperties/Property[@Name='ascending-packageSortOrder']/@Id"/>
+   </xsl:when>
+   <xsl:otherwise>
+    <xsl:value-of select="$newPackageSortOrderId"/>
+   </xsl:otherwise>
+  </xsl:choose>
+</xsl:variable>
+<xsl:variable name="oldPackageSortOrder" select="$configProperties/Property[@Name='ascending-packageSortOrder']/@DefaultValue"/>
 
 <xsl:variable name="newPackageSortOrder">
 
@@ -52,32 +98,80 @@
 
 <xsl:choose>
 
-<xsl:when test="$newShowDescription != $oldShowDescription or $newShowLocation != $oldShowLocation or $newPackageSortOrder != $oldPackageSortOrder or $listChanged = 'true'">
+<xsl:when test="not($newShowDescription=$oldShowDescription) or not($newShowLocation=$oldShowLocation) or not($newPackageSortOrder=$oldPackageSortOrder) or ($listChanged='true')">
 
     <UpdateMetadata>
 
       <Metadata>
 
-        <xsl:if test="$newShowDescription != $oldShowDescription">
+        <xsl:if test="not($newShowDescription=$oldShowDescription)">
 
             <Property>
                <xsl:attribute name="Id"><xsl:value-of select="$oldShowDescriptionId"/></xsl:attribute>
                <xsl:attribute name="DefaultValue"><xsl:value-of select="$newShowDescription"/></xsl:attribute>
+
+               <!-- If the old id is not the same as the new id, then we already had the object, so no further
+                    metadata is required.  If they are the same, then we need to fill in the rest of the information
+                    about this property -->
+
+               <xsl:if test="$oldShowDescriptionId=$newShowDescriptionId">
+                   <xsl:attribute name="Name">show-description</xsl:attribute>
+                   <xsl:attribute name="SQLType">12</xsl:attribute>
+
+                   <AssociatedPropertySet> 
+                      <PropertySet>
+                        <xsl:attribute name="ObjRef"><xsl:value-of select="$configPropertySetId"/></xsl:attribute>
+                      </PropertySet>
+                   </AssociatedPropertySet>
+
+               </xsl:if>
+
             </Property>
         </xsl:if>
 
-        <xsl:if test="$newShowLocation != $oldShowLocation">
+        <xsl:if test="not($newShowLocation=$oldShowLocation)">
 
             <Property>
                <xsl:attribute name="Id"><xsl:value-of select="$oldShowLocationId"/></xsl:attribute>
                <xsl:attribute name="DefaultValue"><xsl:value-of select="$newShowLocation"/></xsl:attribute>
+
+               <!-- If the old id is not the same as the new id, then we already had the object, so no further
+                    metadata is required.  If they are the same, then we need to fill in the rest of the information
+                    about this property -->
+
+               <xsl:if test="$oldShowLocationId=$newShowLocationId">
+                   <xsl:attribute name="Name">show-location</xsl:attribute>
+                   <xsl:attribute name="SQLType">12</xsl:attribute>
+
+                   <AssociatedPropertySet> 
+                      <PropertySet>
+                        <xsl:attribute name="ObjRef"><xsl:value-of select="$configPropertySetId"/></xsl:attribute>
+                      </PropertySet>
+                   </AssociatedPropertySet>
+
+               </xsl:if>
             </Property>
         </xsl:if>
         
-        <xsl:if test="$newPackageSortOrder != $oldPackageSortOrder">
+        <xsl:if test="not($newPackageSortOrder=$oldPackageSortOrder)">
             <Property>
                <xsl:attribute name="Id"><xsl:value-of select="$oldPackageSortOrderId"/></xsl:attribute>
                <xsl:attribute name="DefaultValue"><xsl:value-of select="$newPackageSortOrder"/></xsl:attribute>
+               <!-- If the old id is not the same as the new id, then we already had the object, so no further
+                    metadata is required.  If they are the same, then we need to fill in the rest of the information
+                    about this property -->
+
+               <xsl:if test="$oldPackageSortOrderId=$newPackageSortOrderId">
+                   <xsl:attribute name="Name">ascending-packageSortOrder</xsl:attribute>
+                   <xsl:attribute name="SQLType">12</xsl:attribute>
+
+                   <AssociatedPropertySet> 
+                      <PropertySet>
+                        <xsl:attribute name="ObjRef"><xsl:value-of select="$configPropertySetId"/></xsl:attribute>
+                      </PropertySet>
+                   </AssociatedPropertySet>
+
+               </xsl:if>
             </Property>
         </xsl:if>
 

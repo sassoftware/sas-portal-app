@@ -20,7 +20,6 @@
 <!-- Strings to be localized -->
 
 <xsl:variable name="okButton" select="$localeXml/string[@key='okButton']/text()"/>
-<xsl:variable name="saveButton" select="$localeXml/string[@key='saveButton']/text()"/>
 <xsl:variable name="cancelButton" select="$localeXml/string[@key='cancelButton']/text()"/>
 <xsl:variable name="moveUpButton" select="$localeXml/string[@key='moveUpButton']/text()"/>
 <xsl:variable name="moveDownButton" select="$localeXml/string[@key='moveDownButton']/text()"/>
@@ -42,6 +41,11 @@
 <xsl:variable name="portletEditCollectionNotEditable" select="$localeXml/string[@key='portletEditCollectionNotEditable']/text()"/>
 <xsl:variable name="portletEditCollectionHasChangedMessage" select="$localeXml/string[@key='portletEditCollectionHasChangedMessage']/text()"/>
 
+<!-- Global Variables -->
+<xsl:variable name="parentTreeId" select="Mod_Request/GetMetadata/Metadata/PSPortlet/Trees/Tree/@Id"/>
+
+<xsl:variable name="saveLink" select="concat('/SASStoredProcess/do?_program=',$appLocEncoded,'services/updateItem')"/>
+
 <!-- Re-usable scripts -->
 
 <xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/form.functions.xslt"/>
@@ -52,18 +56,17 @@
 
 <xsl:variable name="itemType">PSPortlet</xsl:variable>
 
-<xsl:variable name="portletId" select="GetMetadata/Metadata/PSPortlet/@Id"/>
-<xsl:variable name="portletType" select="GetMetadata/Metadata/PSPortlet/@PortletType"/>
-<xsl:variable name="parentTreeId" select="GetMetadata/Metadata/PSPortlet/Trees/Tree/@Id"/>
+<xsl:variable name="portletId" select="Mod_Request/GetMetadata/Metadata/PSPortlet/@Id"/>
+<xsl:variable name="portletType" select="Mod_Request/GetMetadata/Metadata/PSPortlet/@PortletType"/>
 
-<xsl:variable name="showDescription" select="GetMetadata/Metadata/PSPortlet/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='show-description']/@DefaultValue"/>
-<xsl:variable name="showLocation" select="GetMetadata/Metadata/PSPortlet/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='show-location']/@DefaultValue"/>
-<xsl:variable name="packageSortOrder" select="GetMetadata/Metadata/PSPortlet/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='ascending-packageSortOrder']/@DefaultValue"/>
+<xsl:variable name="showDescription" select="Mod_Request/GetMetadata/Metadata/PSPortlet/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='show-description']/@DefaultValue"/>
+<xsl:variable name="showLocation" select="Mod_Request/GetMetadata/Metadata/PSPortlet/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='show-location']/@DefaultValue"/>
+<xsl:variable name="packageSortOrder" select="Mod_Request/GetMetadata/Metadata/PSPortlet/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='ascending-packageSortOrder']/@DefaultValue"/>
 
 <xsl:call-template name="commonFormFunctions"/>
 <xsl:call-template name="thisPageScripts"/>
 
-  <xsl:for-each select="GetMetadata/Metadata/PSPortlet/Groups/Group/Members/*">
+  <xsl:for-each select="Mod_Request/GetMetadata/Metadata/PSPortlet/Groups/Group/Members/*">
 
     <xsl:call-template name="addItemList"/>
 
@@ -73,18 +76,19 @@
 
 <!-- Links used in the form -->
 
-<xsl:variable name="saveLink" select="concat('/SASStoredProcess/do?_program=',$appLocEncoded,'services/updateItem')"/>
 <xsl:variable name="addLink">addItem.html</xsl:variable>
+<xsl:variable name="removeLink" select="concat('/SASStoredProcess/do?_program=',$appLocEncoded,'services/deleteItem')"/>
 
 <xsl:variable name="editLink">editItem.html</xsl:variable>
 
 <!-- The form -->
 
-<!--  NOTE: We set up a hidden formResponse iframe to capture the result so that we can either display the results (if debugging) or simply cause a "go back" to happen after the form is submitted (by using the iframe onload function) -->
-<form method="post" onsubmit="selectAllItems('portletItemSelect'); formResponse.frameElement.onload = () => location.href = document.referrer; return true;" target="formResponse"><xsl:attribute name="action"><xsl:value-of select="$saveLink"/></xsl:attribute>
-<!-- 
-<form method="post" onsubmit="selectAllItems('portletItemSelect'); return true;"><xsl:attribute name="action"><xsl:value-of select="$saveLink"/></xsl:attribute>
--->
+<!--  NOTE: We set up a hidden formResponse iframe to capture the result so that we can either display the results (if debugging) or simply cause a "go back" to happen after the form is submitted (by using the iframe onload function).  The event handler to handle this is in the CommonFormFunctions template -->
+
+<form method="post" id="mainForm"
+      onsubmit="selectAllItems('portletItemSelect');" 
+      target="formResponse">
+      <xsl:attribute name="action"><xsl:value-of select="$saveLink"/></xsl:attribute>
 
     <xsl:if test="$parentTreeId">
        <input type="hidden" name="parentTreeId"><xsl:attribute name="value"><xsl:value-of select="$parentTreeId"/></xsl:attribute></input>
@@ -100,14 +104,25 @@
         <tr>
             <td colspan="6"><br/></td>
         </tr>
-
+         <tr>
+             <td align="center" valign="center" colspan="6" width="100%">
+             <div id="portal_message"></div>
+             </td>
+         </tr>
         <tr>
-            <td>&#160;&#160;</td>
-            <td>&#160;&#160;</td>
+            <td colspan="2">&#160;</td>
             <td colspan="4" class="commonLabel" nowrap="nowrap">
                 <input type="checkbox" name="showDescription" onclick="setBooleanHidden('showDescription');hasChanged=true;" id="showDescription">
                   <xsl:choose>
                   <xsl:when test="$showDescription = 'true'">
+                      <xsl:attribute name="checked">checked</xsl:attribute>
+                      <xsl:attribute name="value">on</xsl:attribute>
+                  </xsl:when>
+                  <xsl:when test="not($showDescription)">
+                      <!-- When a new Collection Portlet is created, it doesn't yet have properties, but 
+                           the old ID Portal set these values to true by default, so do the same thing
+                           so when it is saved, the properties get created.
+                      -->
                       <xsl:attribute name="checked">checked</xsl:attribute>
                       <xsl:attribute name="value">on</xsl:attribute>
                   </xsl:when>
@@ -125,12 +140,19 @@
         </tr>
 
         <tr>
-            <td>&#160;&#160;</td>
-            <td>&#160;&#160;</td>
+            <td colspan="2"></td>
             <td colspan="4" class="commonLabel" nowrap="nowrap">
                 <input type="checkbox" name="showLocation" onclick="setBooleanHidden('showLocation');hasChanged=true;" id="showLocation">
                   <xsl:choose>
                   <xsl:when test="$showLocation = 'true'">
+                      <xsl:attribute name="checked">checked</xsl:attribute>
+                      <xsl:attribute name="value">on</xsl:attribute>
+                  </xsl:when>
+                  <xsl:when test="not($showLocation)">
+                      <!-- When a new Collection Portlet is created, it doesn't yet have properties, but 
+                           the old ID Portal set these values to true by default, so do the same thing
+                           so when it is saved, the properties get created.
+                      -->
                       <xsl:attribute name="checked">checked</xsl:attribute>
                       <xsl:attribute name="value">on</xsl:attribute>
                   </xsl:when>
@@ -161,10 +183,14 @@
                 <xsl:value-of select="portletEditCollectionSortLabel"/>
                     <br/>&#160;
                          <input type="radio" name="ascendingPackageSortOrder" value="UsePreferences" onclick="document.getElementById('selectedPackageSortOrder').value='UsePreferences';hasChanged=true;" id="ascendingPackageSortOrderUsePreferences">
-                         <xsl:if test="$packageSortOrder = 'UsePreferences'">
-                              <xsl:attribute name="checked">checked</xsl:attribute>
-                         </xsl:if>
-
+                         <xsl:choose> 
+                             <xsl:when test="$packageSortOrder = 'UsePreferences'">
+                                  <xsl:attribute name="checked">checked</xsl:attribute>
+                             </xsl:when>
+                             <xsl:when test="not($packageSortOrder)">
+                                  <xsl:attribute name="checked">checked</xsl:attribute>
+                             </xsl:when>
+                         </xsl:choose>
                          </input>
                             <xsl:value-of select="$portletEditCollectionSortUsePreferencesLabel"/>
                     <br/>&#160;
@@ -228,7 +254,7 @@
                     <td rowspan="5" valign="top" class="textEntry">
                         <select name="portletItemSelect" multiple="multiple" size="6" onchange="selectionChanged('portletItemSelect');" id="portletItemSelect" style="width: 70mm">
 
-                          <xsl:for-each select="GetMetadata/Metadata/PSPortlet/Groups/Group/Members/*">
+                          <xsl:for-each select="Mod_Request/GetMetadata/Metadata/PSPortlet/Groups/Group/Members/*">
 
                             <xsl:call-template name="addListBox"/>
 
@@ -279,7 +305,7 @@
                 <tr>
                     <td />
                     <td valign="middle">
-                        <a href="#">
+                        <a role="button">
  
                         <xsl:attribute name="onclick">if (displayChangedMessage("<xsl:value-of select="$portletEditCollectionHasChangedMessage"/>")) editItem("Collection","portletItemSelect",'<xsl:value-of select="$editLink"/>',noneSelected,tooMany); else return false;</xsl:attribute>
 
@@ -299,7 +325,9 @@
                 <tr>
                     <td />
                     <td valign="middle">
-                        <a href="#" onclick='removeRow("portletItemSelect", confirmMessage); hasChanged=true; return false;'>
+                        <xsl:variable name="collectionGroupId"><xsl:value-of select="Mod_Request/GetMetadata/Metadata/PSPortlet/Groups/Group[1]/@Id"/></xsl:variable>
+                        <a role="button">
+                           <xsl:attribute name="onclick">if (displayChangedMessage("<xsl:value-of select="$portletEditCollectionHasChangedMessage"/>")) removeItem("portletItemSelect",'<xsl:value-of select="$collectionGroupId"/>','<xsl:value-of select="$removeLink"/>',noneSelected,tooMany); else return false;</xsl:attribute>
                         <img id="removeImg" border="0" 
                             width="12" height="14"
                             style="display:none">
@@ -308,7 +336,7 @@
                             <xsl:attribute name="title"><xsl:value-of select="$removeButton"/></xsl:attribute>
                             <xsl:attribute name="alt"><xsl:value-of select="$removeButton"/></xsl:attribute>
                             </img>
-                            </a>
+                        </a>
                         <img style="display:block" id="removeImgPlaceHolder"
                             width="12" height="14"
                             valign="middle" border="0" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/1x1.gif</xsl:attribute></img></td>
@@ -323,9 +351,9 @@
                     <!--  We want to add an item to the group associated with this portlet, so pass that information
                           along 
                     -->
-                    <xsl:variable name="collectionGroupId"><xsl:value-of select="GetMetadata/Metadata/PSPortlet/Groups/Group[1]/@Id"/></xsl:variable>
+                    <xsl:variable name="collectionGroupId"><xsl:value-of select="Mod_Request/GetMetadata/Metadata/PSPortlet/Groups/Group[1]/@Id"/></xsl:variable>
                     <td valign="top" align="right">
-                        <input class="button" type="submit">
+                        <input class="button" type="button">
                         <xsl:attribute name="onclick">if (displayChangedMessage("<xsl:value-of select="$portletEditCollectionHasChangedMessage"/>")) addItem("Collection",'<xsl:value-of select="$collectionGroupId"/>','<xsl:value-of select="$parentTreeId"/>',"portletItemSelect",'<xsl:value-of select="$addLink"/>'); else return false;</xsl:attribute>
                          <xsl:attribute name="value"><xsl:value-of select="$addItemsButton"/></xsl:attribute>
                          </input>
@@ -355,7 +383,7 @@
                     <xsl:attribute name="value"><xsl:value-of select="$okButton"/></xsl:attribute>
                 </input>
                 &#160;
-                <input class="button" type="button" onclick='submitDisableAllForms(); history.go(backDepth);'>
+                <input class="button" type="button" onclick='submitDisableAllForms(); history.go(-1);'>
                     <xsl:attribute name="value"><xsl:value-of select="$cancelButton"/></xsl:attribute>
                 </input>
  
@@ -372,7 +400,13 @@
 
 <!-- This iframe is here to capture the response from submitting the form -->
 
-<iframe name="formResponse" style="display:none">
+<iframe id="formResponse" name="formResponse" style="display:none">
+
+</iframe>
+
+<!-- This iframe is here to capture the response from removing an item -->
+
+<iframe id="removeResponse" name="removeResponse" style="display:none">
 
 </iframe>
 
@@ -471,6 +505,31 @@
 
     var backDepth=-1;
 
+    function addReloadHandler(iframe) {
+
+         iframe.addEventListener( "load", function(e) {
+
+         /*
+          * Since we removed an item from the list, refresh the screen.
+          */
+         location.reload();
+
+        } );
+
+       }
+
+    /*
+     *  The call to remove an item will target a div called removeResponse.
+     *  When it is populated, refresh the page to pick up the change.
+     */
+
+    var removeResponse = document.getElementsByName('removeResponse')[0];
+    if (removeResponse) {
+
+        addReloadHandler(removeResponse);
+
+        }
+
     /*
      *  This event listener is to catch when the page is returned
      *  to via some sort of "back" navigation.
@@ -495,6 +554,7 @@
         ) {
 
           // Handle page restore.
+
           window.location.reload();
         }
     });
@@ -684,14 +744,80 @@
            }
  
               submitDisableAllForms();
-              backDepth=-2;
               location.href=editUrl;
+
            }
            else
                alert(""+nothingselected);
         }
     }
 
+    //
+    // Sets the correct URL for removing an item.
+    //
+    function removeItem(selectBoxName, groupId, removeUrl, nothingselected, toomanyselected)
+    {
+      var selectBox = document.getElementById(selectBoxName);
+      var i= 0;
+      if (selectBox.options.length <xsl:text disable-output-escaping="yes">&gt;</xsl:text> 0)
+      {
+          for (var j = 0; j <xsl:text disable-output-escaping="yes">&lt;</xsl:text> selectBox.options.length; j++)
+          {
+              if (selectBox.options[j].selected)
+             i++;
+           }
+       }
+
+       if (i <xsl:text disable-output-escaping="yes">&gt;</xsl:text> 1)
+       {
+           alert(""+toomanyselected);
+       }
+       else
+       {
+           srcIndex = selectBox.selectedIndex;
+           if (srcIndex <xsl:text disable-output-escaping="yes">&gt;</xsl:text>= 0)
+           {
+            
+              var selectedValue=selectBox.options[srcIndex].value; 
+              var retValue=confirm(confirmMessage);
+
+              if (retValue) {
+                  pageChanged(false);
+
+                  //
+                  //  The syntax of the item Value is:
+                  //  link type/repository name/item type/item id
+                  //
+                  //  In this case, we just need the item type and item id, so get those now.
+                  //
+                 const keyArray = selectedValue.split("/");
+                 let itemType = keyArray[2];
+                 let itemId = keyArray[3];
+                 removeItemParms="Type=";
+                 removeItemParms=removeItemParms.concat(itemType,'<xsl:text disable-output-escaping="yes">&amp;</xsl:text>id=',itemId,'<xsl:text disable-output-escaping="yes">&amp;</xsl:text>relatedId=',groupId,'<xsl:text disable-output-escaping="yes">&amp;</xsl:text>relatedType=Group','<xsl:text disable-output-escaping="yes">&amp;</xsl:text>parentTreeId=','<xsl:value-of select="$parentTreeId"/>');
+
+                 if (removeUrl.includes('?')) {
+                      removeUrl=removeUrl.concat('<xsl:text disable-output-escaping="yes">&amp;</xsl:text>',removeItemParms);
+                      }
+
+                  else {
+                      removeUrl=removeUrl.concat('?',removeItemParms);
+                      }
+     
+                  submitDisableAllForms();
+                  // backDepth=-2;
+
+                  removeResponse.contentWindow.location.replace(removeUrl);
+              
+                  }
+             else {
+                return retValue;
+                } 
+           }
+           else
+               alert(""+nothingselected);
+        }
+    }
     //
     // Select or values in a select list
     //

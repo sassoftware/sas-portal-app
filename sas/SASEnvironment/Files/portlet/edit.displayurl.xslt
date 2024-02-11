@@ -17,25 +17,35 @@
 
 <xsl:variable name="portletEditDisplayURLUrl" select="$localeXml/string[@key='portletEditDisplayURLUrl']/text()"/>
 
+<!-- Re-usable scripts -->
+
+<xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/form.functions.xslt"/>
+
 <xsl:template match="/">
 
-<xsl:variable name="portletId" select="GetMetadata/Metadata/PSPortlet/@Id"/>
-<xsl:variable name="portletType" select="GetMetadata/Metadata/PSPortlet/@PortletType"/>
-<xsl:variable name="parentTreeId" select="GetMetadata/Metadata/PSPortlet/Trees/Tree/@Id"/>
+<xsl:call-template name="commonFormFunctions"/>
+<xsl:call-template name="thisPageScripts"/>
 
-<xsl:variable name="portletHeight" select="GetMetadata/Metadata/PSPortlet/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='sas_DisplayURL_Height']/@DefaultValue"/>
-<xsl:variable name="portletURL" select="GetMetadata/Metadata/PSPortlet/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='sas_DisplayURL_DisplayURL']/@DefaultValue"/>
+<xsl:variable name="portletId" select="Mod_Request/GetMetadata/Metadata/PSPortlet/@Id"/>
+<xsl:variable name="portletType" select="Mod_Request/GetMetadata/Metadata/PSPortlet/@PortletType"/>
+<xsl:variable name="parentTreeId" select="Mod_Request/GetMetadata/Metadata/PSPortlet/Trees/Tree/@Id"/>
+
+<xsl:variable name="portletHeight" select="Mod_Request/GetMetadata/Metadata/PSPortlet/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='sas_DisplayURL_Height']/@DefaultValue"/>
+<xsl:variable name="portletURL" select="Mod_Request/GetMetadata/Metadata/PSPortlet/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='sas_DisplayURL_DisplayURL']/@DefaultValue"/>
 
 <xsl:variable name="saveLink" select="concat('/SASStoredProcess/do?_program=',$appLocEncoded,'services/updateItem&amp;id=',$portletId,'&amp;portletType=',$portletType,'&amp;type=PSPortlet')"/>
 
-<form method="post"><xsl:attribute name="action"><xsl:value-of select="$saveLink"/></xsl:attribute>
+<!--  NOTE: We set up a hidden formResponse iframe to capture the result so that we can either display the results (if debugging) or simply cause a "go back" to happen after the form is submitted (by using the iframe onload function).  The event handler to handle this is in the CommonFormFunctions template -->
+
+<form method="post" target="formResponse">
+<xsl:attribute name="action"><xsl:value-of select="$saveLink"/></xsl:attribute>
 
     <xsl:if test="$parentTreeId">
        <input type="hidden" name="parentTreeId"><xsl:attribute name="value"><xsl:value-of select="$parentTreeId"/></xsl:attribute></input>
     </xsl:if>
 
-<xsl:variable name="portletHeight" select="GetMetadata/Metadata/PSPortlet/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='sas_DisplayURL_Height']/@DefaultValue"/>
-<xsl:variable name="portletURL" select="GetMetadata/Metadata/PSPortlet/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='sas_DisplayURL_DisplayURL']/@DefaultValue"/>
+<xsl:variable name="portletHeight" select="Mod_Request/GetMetadata/Metadata/PSPortlet/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='sas_DisplayURL_Height']/@DefaultValue"/>
+<xsl:variable name="portletURL" select="Mod_Request/GetMetadata/Metadata/PSPortlet/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='sas_DisplayURL_DisplayURL']/@DefaultValue"/>
 
 <table width="100%" border="0" cellpadding="0" cellspacing="0" class="dataEntryBG">
 <tbody>
@@ -46,6 +56,12 @@
  <tbody>
   <tr>
   <td colspan="3">&#160;</td>
+ </tr>
+
+ <tr>
+     <td align="center" valign="center" colspan="3" width="100%">
+     <div id="portal_message"></div>
+     </td>
  </tr>
  <tr>
   <td>&#160;</td>
@@ -105,6 +121,16 @@
 </tr>
 </tbody></table>
 </form>
+
+<!-- This iframe is here to capture the response from submitting the form -->
+      
+      <iframe id="formResponse" name="formResponse" style="display:none">
+      
+      </iframe>
+
+</xsl:template>
+
+<xsl:template name="thisPageScripts">
 
 </xsl:template>
 

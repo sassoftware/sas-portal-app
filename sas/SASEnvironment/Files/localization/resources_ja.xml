@@ -71,6 +71,13 @@
   <string key="portletEditDisplayURLHeight">コンテンツの高さ</string>
 
   <!--
+       SAS Stored Process Portlet Content Editing
+  -->
+
+  <string key="portletEditSASStoredProcessUri">保存されたプロセス パス</string>
+  <string key="portletEditSASStoredProcessHeight">ポートレットの高さ</string>
+
+  <!--
        Collection Portlet Content Editing
   -->
   <string key="portletEditCollectionShowDescriptionLabel">説明を表示</string>
@@ -103,6 +110,32 @@
   <string key="portletEditPageShareTypeAvailable">利用可能</string>
   <string key="portletEditPageShareTypeDefault">デフォルト</string>
   <string key="portletEditPageShareTypePersistent">持続的</string>
+
+  <string key="portletEditPageNumberOfColumns">列の数：</string>
+  <string key="portletEditPageNumberOfColumns1">1</string>
+  <string key="portletEditPageNumberOfColumns2">2</string>
+  <string key="portletEditPageNumberOfColumns3">3</string>
+  <string key="portletEditPageColumnWidth">列幅：</string>
+  <string key="portletEditPageColumnPercent">%</string>
+  <string key="portletEditPagePortletLayout">ポートレットのレイアウト:</string>
+  <string key="portletEditPageLayout">レイアウト：</string>
+  <string key="portletEditPageLayoutColumn">列ごと</string>
+  <string key="portletEditPageLayoutGrid">グリッドごと</string>
+  <string key="portletEditPageAddPortlets">ポートレットを追加...</string>
+
+  <string key="portletEditPageColumn1Heading">列 1:</string>
+  <string key="portletEditPageColumn2Heading">列 2:</string>
+  <string key="portletEditPageColumn3Heading">列 3:</string>
+  <string key="portletEditPageColumnLayoutMoveUp">上に移動</string>
+  <string key="portletEditPageColumnLayoutMoveDown">下に移動</string>
+  <string key="portletEditPageColumnLayoutMoveLeft">左に移動</string>
+  <string key="portletEditPageColumnLayoutMoveRight">右に動く</string>
+  <string key="portletEditPageColumnLayoutRemove">取り除く</string>
+  <string key="portletEditPageDeleteRow">行の削除</string>
+
+  <string key="portletEditPageHasChangedMessage">このページに変更を加えました。 続行すると、これらの変更は失われます。 続行して変更内容を失いますか?</string>
+
+  <string key="portletEditPageRemovePortlet">これにより、ポータルからアイテムが削除されますが、完全に削除されるわけではありません。 続けたいですか？</string>
 
   <!--
        Portlet Item Editor menu
