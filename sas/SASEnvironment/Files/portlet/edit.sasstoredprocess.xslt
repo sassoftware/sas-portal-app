@@ -39,10 +39,17 @@
 <xsl:variable name="configProperties" select="$configPropertySet/SetProperties"/>
 <xsl:variable name="configPropertySets" select="$configPropertySet/PropertySets"/>
 
-<xsl:variable name="portletHeight" select="$configPropertySets/PropertySet[@Name='portletHeight']/Property[@Name='PreferenceInstanceProperty']/@DefaultValue"/>
-<xsl:variable name="portletURI" select="$configPropertySets/PropertySet[@Name='selectedFolderItem']/Property[@Name='PreferenceInstanceProperty']/@DefaultValue"/>
-<xsl:variable name="portletURIFolder" select="$configPropertySets/PropertySet[@Name='selectedFolder']/Property[@Name='PreferenceInstanceProperty']/@DefaultValue"/>
-<xsl:variable name="portletPrompts" select="$configPropertySets/PropertySet[@Name='promptNames']/Property[@Name='PreferenceInstanceProperty']/@DefaultValue"/>
+<xsl:variable name="portletHeight" select="$configPropertySets/PropertySet[@Name='portletHeight']/SetProperties/Property[@Name='PreferenceInstanceProperty']/@DefaultValue"/>
+
+<!--  The URI we store has the prefix SBIP://METASERVER on it.  No need to force the user to enter that, just have them enter the full path -->
+
+<xsl:variable name="portletURI" select="$configPropertySets/PropertySet[@Name='selectedFolderItem']/SetProperties/Property[@Name='PreferenceInstanceProperty']/@DefaultValue"/>
+<xsl:variable name="portletPath" select="substring-after($portletURI,'SBIP://METASERVER')"/>
+
+<xsl:variable name="portletURIFolder" select="$configPropertySets/PropertySet[@Name='selectedFolder']/SetProperties/Property[@Name='PreferenceInstanceProperty']/@DefaultValue"/>
+<xsl:variable name="portletPathFolder" select="substring-after($portletURIFolder,'SBIP://METASERVER')"/>
+
+<xsl:variable name="portletPrompts" select="$configPropertySets/PropertySet[@Name='promptNames']/SetProperties/Property[@Name='PreferenceInstanceProperty']/@DefaultValue"/>
 
 <xsl:variable name="saveLink" select="concat('/SASStoredProcess/do?_program=',$appLocEncoded,'services/updateItem&amp;id=',$portletId,'&amp;portletType=',$portletType,'&amp;type=PSPortlet')"/>
 
@@ -81,7 +88,7 @@
           </td>
           <td>&#160;</td>
           <td class="celljustifyleft" nowrap="">
-            <input type="text" name="portletURI" size="60"><xsl:attribute name="value"><xsl:value-of select="$portletURI"/></xsl:attribute></input>
+            <input type="text" name="portletPath" size="60"><xsl:attribute name="value"><xsl:value-of select="$portletPath"/></xsl:attribute></input>
           </td>
          </tr>
          <tr>
