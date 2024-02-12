@@ -245,8 +245,8 @@ based on user feedback.
 
 | Feature Description | Feature Flag | Introduced | Final Disposition | Date of Final Disposition |
 | ------ | ------ | ------ | ------ | ------ |
-| [Initialize New User](IMPLEMENTATION.md#new-users)  |  INITNEWUSER | 15NOV2023  | | |
-| [Sync shared content](IMPLEMENTATION.md#synchronizing-shared-content-with-users)  |  SYNCUSER | 15NOV2023  | | |
+| [Initialize New User](IMPLEMENTATION.md#new-users)  |  INITNEWUSER | 15NOV2023  | Included | 01FEB2024 |
+| [Sync shared content](IMPLEMENTATION.md#synchronizing-shared-content-with-users)  |  SYNCUSER | 15NOV2023  | Included | 01FEB2024 |
  
 ## Roadmap
 
