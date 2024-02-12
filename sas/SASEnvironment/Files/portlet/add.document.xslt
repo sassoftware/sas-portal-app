@@ -260,12 +260,7 @@
                     <xsl:attribute name="value"><xsl:value-of select="$saveButton"/></xsl:attribute>
                 </input>
                 &#160;
-<!--
-                <input class="button" type="submit" onclick='if (cancelForm(this, "")) return submitDisableAllForms(); else return false;'>
-                    <xsl:attribute name="value"><xsl:value-of select="$cancelButton"/></xsl:attribute>
-                </input>
--->
-                <input class="button" type="button" onclick='if (submitDisableAllForms()) history.back; else return false;'>
+                <input class="button" type="button" onclick='if (submitDisableAllForms()) return cancelForm(); else return false;'>
                     <xsl:attribute name="value"><xsl:value-of select="$cancelButton"/></xsl:attribute>
                 </input>
                 <!-- TODO: When adding support for multiple, need to remove Add/Cancel and just have Done -->
@@ -300,8 +295,26 @@
 
 <script>
 
+console.log('add page entry');
+
    var hasChanged = false;
-   
+  
+   /*
+    *  Cancel this form
+    */
+   function cancelForm() {
+     // console.log('cancelForm');
+ 
+     // console.log('cancelForm: referrer='+document.referrer);
+     // console.log('cancelForm: backDepth='+backDepth);
+
+     // alert('wait to go back');
+
+     history.go(backDepth);
+
+     return true;
+
+     } 
    /* 
     *  Validate fields in form
     */
