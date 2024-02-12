@@ -300,11 +300,11 @@ The existing SAS Information Delivery Portal has the following capabilities in t
 
 | Content Type | Support |
 | ------ | ------ |
-|  Application      |  tbd      |
-|   Link     |    tbd   |
+|  Application      |  available      |
+|   Link     |    available   |
 |   Syndication Channel      |    no   |
-|   Portlet                  |    tbd  |
-|   Page                     |    tbd  |
+|   Portlet                  |    available  |
+|   Page                     |    available  |
 
 #### Preferences
 
@@ -328,18 +328,18 @@ The existing SAS Information Delivery Portal has the following capabilities in t
 
 | Category | Setting | Support |
 | ------ | ------ | ------ |
-| By Keyword | | no |
-| By Content Type | Application | no |
+| By Keyword | | tbd |
+| By Content Type | Application | tbd |
 | By Content Type | File | no |
 | By Content Type | Link | no |
 | By Content Type | Package | no |
-| By Content Type | Page | no |
+| By Content Type | Page | tbd |
 | By Content Type | PageTemplate | no |
-| By Content Type | Portlet | no |
+| By Content Type | Portlet | tbd |
 | By Content Type | Publication Channel | no |
 | By Content Type | SAS Information Map | no |
-| By Content Type | SAS Report | no |
-| By Content Type | SAS Stored Process | no |
+| By Content Type | SAS Report | tbd |
+| By Content Type | SAS Stored Process | tbd |
 | By Content Type | Syndication Channel | no |
 | Search Results | Results Per Page | no |
 
@@ -349,18 +349,18 @@ The SAS Information Delivery Portal currently supports these categories of objec
 
 | Category | Type | View | Add | Remove | Edit Properties | Edit Content |
 | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
-| Portal Page | All | available | tbd | tbd | tbd | N/A |
-| Portlet | Collection | available | tbd | tbd | tbd | tbd |
-| Portlet | Report Portlet | 1 | tbd | tbd | tbd | tbd |
-| Portlet | Report Portlet Local | 1 | no | no | no | no |
+| Portal Page | All | available | available | available | available | available |
+| Portlet | Collection | available | available | available | available | available |
+| Portlet | Report Portlet | 1 | no | available | tbd | no |
+| Portlet | Report Portlet Local | 1 | available | available | yes | available |
 | Portlet | SAS BI Dashboard | no | no | no | no | no |
 | Portlet | SAS Collections | available | no | no | no | no |
 | Portlet | SAS Diagnostics | no | no | no | no | no |
 | Portlet | SAS Navigator | tbd | no | no | no | no |
 | Portlet | SAS Report | 1 | tbd | no | no | no |
-| Portlet | SAS Stored Process | available | tbd | tbd | tbd | tbd |
+| Portlet | SAS Stored Process | available | available | available | available | available |
 | Portlet | Shared Alerts | no | no | no | no | no |
-| Portlet | URL Display Portlet | available | tbd | tbd | tbd | available |
+| Portlet | URL Display Portlet | available | available | available | available | available |
 | Portlet | WebDav Content | no | no | no | no | no |
 | Portlet | WebDav Graph | no | no | no | no | no |
 | Portlet | WebDav Navigator | no | no | no | no | no |
@@ -374,18 +374,18 @@ SAS Information Delivery Portal currently supports these layouts.
 
 | Layout Mode | # of Columns | Width | View | Edit |
 | ------ | ------ | ------ | ------ | ------ | 
-| By Column       |  1    | 100% | yes | tbd |
-| By Column       |  1    | Custom | yes | tbd |
-| By Column       |  2    | 100% | yes | tbd |
-| By Column       |  2    | Custom | yes | tbd |
-| By Column       |  3    | 100% | yes | tbd |
-| By Column       |  3    | Custom | yes | tbd |
-| By Grid       |  1    | 100% | yes | tbd |
-| By Grid       |  1    | Custom | yes | tbd |
-| By Grid       |  2    | 100% | yes | tbd |
-| By Grid       |  2    | Custom | yes | tbd |
-| By Grid       |  3    | 100% | yes | tbd |
-| By Grid       |  3    | Custom | yes | tbd |
+| By Column       |  1    | 100% | available | available |
+| By Column       |  1    | Custom | available | available |
+| By Column       |  2    | 100% | available | available |
+| By Column       |  2    | Custom | available | available |
+| By Column       |  3    | 100% | available | available |
+| By Column       |  3    | Custom | available | available |
+| By Grid       |  1    | 100% | tbd | tbd |
+| By Grid       |  1    | Custom | tbd | tbd |
+| By Grid       |  2    | 100% | tbd | tbd |
+| By Grid       |  2    | Custom | tbd | tbd |
+| By Grid       |  3    | 100% | tbd | tbd |
+| By Grid       |  3    | Custom | tbd | tbd |
 
 
 ### Content Sharing
@@ -396,9 +396,9 @@ For more details on the type of content that can be surfaced and shared through 
 
 | Content Type | Subtype | Create | Synchronize | Remove |
 | ------ | ------ | ------ | ------ | ------ |
-| Pages  | Available | yes | yes | tbd |
-| Pages  | Persistent | yes | yes | tbd |
-| Pages  | Default | yes | yes | tbd |
+| Pages  | Available | available | available | available |
+| Pages  | Persistent | available | available | available |
+| Pages  | Default | available | available | available |
 | Page Templates | N/A | tbd | tbd | tbd |
 
 Synchronize here refers to the concept of determining that there is a new shared content for a user and adding that content to the user's portal view.
