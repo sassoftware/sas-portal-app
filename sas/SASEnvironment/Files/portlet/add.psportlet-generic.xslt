@@ -27,11 +27,11 @@
 <xsl:variable name="portletEditItemDescription" select="$localeXml/string[@key='portletEditItemDescription']/text()"/>
 <xsl:variable name="portletEditItemKeywords" select="$localeXml/string[@key='portletEditItemKeywords']/text()"/>
 
-<xsl:variable name="portletEditPortletType">Portlet type:</xsl:variable>
-<xsl:variable name="portletEditPortletTypeCollection">Collection Portlet</xsl:variable>
-<xsl:variable name="portletEditPortletTypeReport">Report Portlet</xsl:variable>
-<xsl:variable name="portletEditPortletTypeStoredProcess">SAS Stored Process Portlet</xsl:variable>
-<xsl:variable name="portletEditPortletTypeDisplayURL">URL Display Portlet</xsl:variable>
+<xsl:variable name="portletEditPortletType" select="$localeXml/string[@key='portletEditPortletType']/text()"/>
+<xsl:variable name="portletEditPortletTypeCollection" select="$localeXml/string[@key='portletEditPortletTypeCollection']/text()"/>
+<xsl:variable name="portletEditPortletTypeReport" select="$localeXml/string[@key='portletEditPortletTypeReport']/text()"/>
+<xsl:variable name="portletEditPortletTypeStoredProcess" select="$localeXml/string[@key='portletEditPortletTypeStoredProcess']/text()"/>
+<xsl:variable name="portletEditPortletTypeDisplayURL" select="$localeXml/string[@key='portletEditPortletTypeDisplayURL']/text()"/>
 
 <!-- Re-usable scripts -->
 

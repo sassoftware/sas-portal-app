@@ -429,11 +429,13 @@
                         </a>
                     </div>
 
-                    <div id="globalMenuBar_0_SubMenu_2" class="PopupMenuItem">
+                    <div id="globalMenuBar_0_SubMenu_2" class="PopupMenuItemDisabled"><!-- TODO: When adding support for arranging tabs, set class=PopupMenuItem -->
                         <a id="globalMenuBar_0_SubMenu_2_anchor" hidefocus="true" tabindex="-1"> 
                             <xsl:attribute name="title"><xsl:value-of select="$portalCustomizationMenuArrangeTabsTitle"/></xsl:attribute> 
+                            <!-- TODO: Add support for Arranging tabs 
                             <xsl:attribute name="onclick"><xsl:value-of select="$arrangeTabsLink"/></xsl:attribute>
                             <xsl:attribute name="saveonclick"><xsl:value-of select="$arrangeTabsLink"/></xsl:attribute>
+                            -->
                             <img class="PopupMenuItemIcon" alt="">
                                <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/spacer.gif</xsl:attribute>
                             </img>

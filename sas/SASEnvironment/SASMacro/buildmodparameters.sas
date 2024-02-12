@@ -73,6 +73,14 @@
                   put "<PortletType>&portletType.</PortletType>";
                   %end;
 
+              %if (%symexist(name)) %then %do;
+                  put "<Name>&Name.</Name>";
+                  %end;
+              %if (%symexist(desc)) %then %do;
+                  put "<Desc>&Desc.</Desc>";
+                  %end;
+
+
               /*
                * If the related object information was passed, pass that along
                * so it can be included in any parameters that this page may call.

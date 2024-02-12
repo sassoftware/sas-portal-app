@@ -64,11 +64,28 @@
   <string key="portletEditItemRequiredField">Pflichtfeld</string>
 
   <!--
+       Create Portlet Listing
+   -->
+
+  <string key="portletEditPortletType">Portlet-Typ:</string>
+  <string key="portletEditPortletTypeCollection">Sammlungsportlet</string>
+  <string key="portletEditPortletTypeReport">SAS-Berichtsportlet</string>
+  <string key="portletEditPortletTypeStoredProcess">SAS Stored Process Portlet</string>
+  <string key="portletEditPortletTypeDisplayURL">URL-Anzeige-Portlet</string>
+
+  <!--
        Display URL Portlet Content Editing
   -->
 
   <string key="portletEditDisplayURLUrl">URL</string>
   <string key="portletEditDisplayURLHeight">Inhaltshöhe</string>
+
+  <!--
+       SAS Report Portlet Content Editing
+  -->
+
+  <string key="portletEditSASReportUri">Berichtspfad</string>
+  <string key="portletEditSASReportHeight">Portlet-Höhe</string>
 
   <!--
        SAS Stored Process Portlet Content Editing

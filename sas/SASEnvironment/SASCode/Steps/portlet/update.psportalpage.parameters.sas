@@ -41,6 +41,9 @@
      %if (%symexist(LAYOUTTYPE)) %then %do;
          put "<LayoutType>&LAYOUTTYPE.</LayoutType>";
          %end;
+     %if (%symexist(PageRank)) %then %do;
+         put "<PageRank>&PageRank.</PageRank>";
+         %end;
  
 %mend;
 

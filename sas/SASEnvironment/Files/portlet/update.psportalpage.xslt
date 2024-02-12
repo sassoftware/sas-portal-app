@@ -260,8 +260,7 @@
     </xsl:if>
     <xsl:if test="not($newPageRank=$oldPageRank)">
 
-         <xsl:variable name="oldPageRankId" select="/Mod_Request/GetMetadata/Metadata/PSPortalPage/Extensions/Extension[Name='PageRank']/@Id"/>
-
+         <xsl:variable name="oldPageRankId" select="/Mod_Request/GetMetadata/Metadata/PSPortalPage/Extensions/Extension[@Name='PageRank']/@Id"/>
          <UpdateMetadata>
            <Metadata>
               <Extension>

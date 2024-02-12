@@ -123,7 +123,7 @@
                     <input class="button" type="submit" name="submit"  onclick='return submitDisableAllForms();'><xsl:attribute name="value"><xsl:value-of select="$okButton"/></xsl:attribute></input>
             </td>
             <td>
-                    <input class="button" type="button" name="cancel" onclick='if (submitDisableAllForms()) history.go(-2); else return false;'><xsl:attribute name="value"><xsl:value-of select="$cancelButton"/></xsl:attribute></input>
+                    <input class="button" type="button" name="cancel" onclick='if (submitDisableAllForms()) history.go(-1); else return false;'><xsl:attribute name="value"><xsl:value-of select="$cancelButton"/></xsl:attribute></input>
             </td>
             <td width="100%">
             &#160;
