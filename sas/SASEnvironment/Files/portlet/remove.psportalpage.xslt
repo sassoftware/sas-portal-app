@@ -317,7 +317,7 @@
                     <xsl:attribute name="value"><xsl:value-of select="$okButton"/></xsl:attribute>
                 </input>
                 &#160;
-                <input class="button" type="button" onclick='history.go(-1);' >
+                <input class="button" type="button" onclick='history.go(backDepth);' >
                     <xsl:attribute name="value"><xsl:value-of select="$cancelButton"/></xsl:attribute>
                 </input>
                 </td>
@@ -346,6 +346,8 @@
 
 <xsl:template name="thisPageScripts">
 <script>
+
+    backDepth=-2;
   
     /*
      *  Any script content specific to this page.

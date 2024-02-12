@@ -198,7 +198,7 @@
 
             <xsl:variable name="newLayoutComponentId"><xsl:value-of select="substring-after($repositoryId,'.')"/>.$newLayoutComponentObject</xsl:variable>
            <LayoutComponents>
-              <PSColumnLayoutComponent Name="COLUMNLAYOUTCOMPONENT" ColumnWidth="0" NumberOfPortlets="0" ColumnWidth="100">
+              <PSColumnLayoutComponent Name="COLUMNLAYOUTCOMPONENT" NumberOfPortlets="0" ColumnWidth="100">
                  <xsl:attribute name="Id"><xsl:value-of select="$newLayoutComponentId"/></xsl:attribute>
 
               </PSColumnLayoutComponent>

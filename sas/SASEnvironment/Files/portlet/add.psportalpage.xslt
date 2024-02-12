@@ -402,6 +402,8 @@
 
    var hasChanged = false;
 
+   backDepth=-2;
+
    /* 
     *  Validate fields in form
     */
