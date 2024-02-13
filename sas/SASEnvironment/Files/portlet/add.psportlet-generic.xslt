@@ -33,6 +33,10 @@
 <xsl:variable name="portletEditPortletTypeStoredProcess" select="$localeXml/string[@key='portletEditPortletTypeStoredProcess']/text()"/>
 <xsl:variable name="portletEditPortletTypeDisplayURL" select="$localeXml/string[@key='portletEditPortletTypeDisplayURL']/text()"/>
 
+<xsl:variable name="portletEditPageLocation" select="$localeXml/string[@key='portletEditPageLocation']/text()"/>
+<xsl:variable name="portletEditPageLocationTitle" select="$localeXml/string[@key='portletEditPageLocationTitle']/text()"/>
+<xsl:variable name="portletEditPageShareTypeNotShared" select="$localeXml/string[@key='portletEditPageShareTypeNotShared']/text()"/>
+
 <!-- Re-usable scripts -->
 
 <xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/form.functions.xslt"/>
@@ -49,6 +53,35 @@
     <xsl:variable name="relatedId" select="Mod_Request/NewMetadata/RelatedId"/>
     <xsl:variable name="parentTreeId" select="Mod_Request/NewMetadata/ParentTreeId"/>
 
+    <xsl:variable name="userName" select="Mod_Request/NewMetadata/Metaperson"/>
+
+    <xsl:variable name="numberOfWriteableTrees" select="count(Mod_Request/GetMetadataObjects/Objects/Person/AccessControlEntries//Tree[@TreeType='Permissions Tree' or @TreeType=' Permissions Tree'])"/>
+
+    <xsl:variable name="isContentAdministrator">
+      <xsl:choose>
+         <xsl:when test="not($numberOfWriteableTrees=1)">1</xsl:when>
+         <xsl:otherwise>0</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
+    <!--  The parentTreeId can either be:
+          - the user's root permission tree
+          - a subtree in the hierarchy under the group's root permission tree.
+          When we go to add the portlet, we need to know which root permission tree to add it to, so figure that out now.
+    -->
+    <xsl:variable name="currentParentTree" select="/Mod_Request/GetMetadataObjects/Objects/Person/AccessControlEntries//Tree[@Id=$parentTreeId]"/>
+
+    <xsl:variable name="rootPermissionsTreeId">
+      <xsl:choose>
+         <xsl:when test="$currentParentTree/@TreeType='Permissions Tree' or $currentParentTree/@TreeType=' Permissions Tree'">
+         <xsl:value-of select="$currentParentTree/@Id"/>
+         </xsl:when>
+         <xsl:otherwise>
+         <xsl:value-of select="/Mod_Request/GetMetadataObjects/Objects/Person/AccessControlEntries/AccessControlEntry/Objects/Tree[SubTrees//Tree[@Id=$parentTreeId]]/@Id"/>
+         </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
     <xsl:variable name="addLink" select="concat('/SASStoredProcess/do?_program=',$appLocEncoded,'services/createItem')"/>
 
 <!--  NOTE: We set up a hidden formResponse iframe to capture the result so that we can either display the results (if debugging) or simply cause a "go back" to happen after the form is submitted (by using the iframe onload function).  The event handler to handle this is in the CommonFormFunctions template -->
@@ -59,7 +92,6 @@
 <input type="hidden" name="type"><xsl:attribute name="value">PSPortlet</xsl:attribute></input>
 <input type="hidden" name="relatedId"><xsl:attribute name="value"><xsl:value-of select="$relatedId"/></xsl:attribute></input>
 <input type="hidden" name="relatedType"><xsl:attribute name="value"><xsl:value-of select="$relatedType"/></xsl:attribute></input>
-<input type="hidden" name="parentTreeId"><xsl:attribute name="value"><xsl:value-of select="$parentTreeId"/></xsl:attribute></input>
 
 <!-- table for data entry -->
 	<table cellpadding="0" cellspacing="0" width="100%" class="dataEntryBG" border="0">
@@ -236,6 +268,56 @@
                     </img>
 		</td>
 	    </tr>
+            <tr>
+                <td>
+                    <img border="0" width="12" alt="">
+                     <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/1x1.gif</xsl:attribute>
+                    </img>
+                </td>
+                <td>
+                    <img border="0" alt="">
+                     <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/1x1.gif</xsl:attribute>
+                    </img>
+                </td>
+                <xsl:choose>
+                  <xsl:when test="$isContentAdministrator=1">
+
+                        <td class="commonLabel" nowrap="nowrap">
+                            <label for="parentTreeId"><xsl:value-of select="$portletEditPageLocation"/></label>
+                        &#160;
+			</td>
+                        <td class="textEntry">
+                            <select name="parentTreeId" id="parentTreeId">
+                                <xsl:for-each select="/Mod_Request/GetMetadataObjects/Objects/Person/AccessControlEntries//Tree[@TreeType='Permissions Tree' or @TreeType=' Permissions Tree']">
+                                   <xsl:variable name="optionTreeName" select="@Name"/>
+                                   <xsl:variable name="optionTreeId" select="@Id"/>
+                                   <xsl:variable name="optionTreeNameDisplay">
+                                      <xsl:choose>
+                                         <xsl:when test="starts-with($optionTreeName,$userName)"><xsl:value-of select="$portletEditPageShareTypeNotShared"/></xsl:when>
+                                         <xsl:otherwise><xsl:value-of select="$optionTreeName"/></xsl:otherwise>
+                                      </xsl:choose>
+                                   </xsl:variable>
+                                <option>
+                                <xsl:attribute name="value" select="$optionTreeId"/>
+                                <xsl:if test="$optionTreeId=$rootPermissionsTreeId">
+                                    <xsl:attribute name="selected">selected</xsl:attribute>
+                                </xsl:if>
+                                <xsl:value-of select="$optionTreeNameDisplay"/>
+                                </option>
+                                </xsl:for-each>
+                            </select>
+                        </td>
+                  </xsl:when>
+                  <xsl:otherwise>
+                      <td class="commonLabel" nowrap="nowrap">&#160;
+                      &#160;</td>
+                      <td class="textEntry">
+                         <input type="hidden" name="parentTreeId"><xsl:attribute name="value"><xsl:value-of select="$rootPermissionsTreeId"/></xsl:attribute>
+                         </input>
+                      </td>
+                  </xsl:otherwise>
+                </xsl:choose>
+            </tr>
 	    <!-- add button -->
 	    <tr>
 		<td>
