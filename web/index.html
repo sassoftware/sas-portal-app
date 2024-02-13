@@ -13,7 +13,7 @@
 <!-- Before we execute the stored process, the logic in the onload() function will do text replacement on any ${VARIABLE} references
      in the w3-include-html attribute value! -->
 
-<div id="data-container" style="display: none" w3-include-html="/SASStoredProcess/do?_action=form,properties,execute,nobanner,newwindow&_program=${APPLOC}index">
+<div id="data-container" style="display: none" w3-include-html="/SASStoredProcess/do?_action=execute,nobanner,newwindow&_program=${APPLOC}index">
 
 <!-- Don't display anything on the page until we are logged in, this data-container will be hidden until that happens -->
 
