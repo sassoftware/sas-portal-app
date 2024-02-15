@@ -42,7 +42,7 @@
          </AccessControlEntry>
          <Tree Id="" Name="" TreeType="">
             <!-- This member search should only be filled in for a users tree -->
-            <Members search="Group[@Name='DESKTOP_PORTALPAGES_GROUP' or @Name='DESKTOP_PAGEHISTORY_GROUP'"/>
+            <Members search="Group[@Name='DESKTOP_PORTALPAGES_GROUP' or @Name='DESKTOP_PAGEHISTORY_GROUP']"/>
             <!-- SubTrees will be filled in for Group trees -->
             <SubTrees/>
          </Tree>
