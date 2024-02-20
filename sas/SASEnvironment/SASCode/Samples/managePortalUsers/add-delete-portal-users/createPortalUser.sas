@@ -10,7 +10,7 @@
 
 %let portalUser=Group 4 User 1;
 
-%createPortalUser(name=&portalGroup.,rc=createPortalUserRC);
+%createPortalUser(name=&portalUser.,rc=createPortalUserRC);
 
 %put createPortalUserRC=&createPortalUserRC.;
 

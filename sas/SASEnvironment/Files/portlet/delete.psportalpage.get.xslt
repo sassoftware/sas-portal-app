@@ -46,7 +46,9 @@
             <!-- SubTrees will be filled in for Group trees -->
             <SubTrees/>
          </Tree>
-         <Group Id="" Name=""/>
+         <Group Id="" Name="">
+         </Group>
+         <PSPortalPage Id="" Name=""/>
      </Templates>
   </Options>
  </GetMetadataObjects>
@@ -97,7 +99,32 @@
      </Templates>
   </Options>
  </GetMetadataObjects>
-
+  <!-- We have to do another query of the page to get the groups its in, if we had added this to the previous
+       one, the templates would have traversed the members of every group it was in
+   -->
+  <GetMetadataObjects>
+  <ReposId><xsl:value-of select="$reposId"/></ReposId>
+  <Type>PSPortalPage</Type>
+  <ns>SAS</ns>
+     <!-- 256 = GetMetadata
+          128 = XMLSelect
+            4 =  Template
+     -->
+  <Flags>388</Flags>
+  <Options>
+     <XMLSelect>
+        <xsl:attribute name="search">@Id='<xsl:value-of select="$pageId"/>'</xsl:attribute>
+     </XMLSelect>
+     <Templates>
+         <PSPortalPage Id="" Name="">
+            <Groups/>
+         </PSPortalPage>
+         <Group Id="" Name="">
+           <Groups/>
+         </Group>
+     </Templates>
+  </Options>
+ </GetMetadataObjects>
 </Multiple_Requests> 
 </xsl:template>
 

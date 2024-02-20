@@ -19,6 +19,7 @@
         %let filesDir=&sasenvDir./Files;
         %let jobsDir=&sasenvDir./SASCode/Jobs;
         %let stepsDir=&sasenvDir./SASCode/Steps;
+        %let stpDir=&sasenvDir./SASCode/StoredProcesses;
         %let macroDir=&sasenvDir./SASMacro;
 
         /*

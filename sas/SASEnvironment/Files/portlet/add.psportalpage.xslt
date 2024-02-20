@@ -322,9 +322,10 @@
                 <td>&#160;</td>
                 <td class="textEntry">
                     <div id="scopeDiv" style="visibility: hidden">
+                        <!-- The old IDP set the default scope to be default, so do the same here -->
                         <select name="scope" id="scope">
                             <option value="0"><xsl:value-of select="$portletEditPageShareTypeAvailable"/></option>
-                            <option value="1"><xsl:value-of select="$portletEditPageShareTypeDefault"/></option>
+                            <option value="1" selected="true"><xsl:value-of select="$portletEditPageShareTypeDefault"/></option>
                             <option value="2"><xsl:value-of select="$portletEditPageShareTypePersistent"/></option>
                         </select>
                     </div>
@@ -403,6 +404,8 @@
    var hasChanged = false;
 
    backDepth=-2;
+
+   toggleScopeDiv();
 
    /* 
     *  Validate fields in form

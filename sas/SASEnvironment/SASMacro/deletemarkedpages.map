@@ -1,0 +1,20 @@
+	<?xml version="1.0" encoding="utf-8"?>
+	<SXLEMAP version="2.1">
+	
+	<TABLE name="pages2delete">
+	    <TABLE-PATH syntax="XPath">/GetMetadataObjects/Objects/Extension/OwningObject/PSPortalPage</TABLE-PATH>
+	
+	    <COLUMN name="Id">
+	        <PATH syntax="XPath">/GetMetadataObjects/Objects/Extension/OwningObject/PSPortalPage/@Id</PATH>
+	        <TYPE>character</TYPE>
+	        <DATATYPE>string</DATATYPE>
+	        <LENGTH>17</LENGTH>
+	    </COLUMN>
+	    <COLUMN name="Name">
+	        <PATH syntax="XPath">/GetMetadataObjects/Objects/Extension/OwningObject/PSPortalPage/@Name</PATH>
+	        <TYPE>character</TYPE>
+	        <DATATYPE>string</DATATYPE>
+	        <LENGTH>200</LENGTH>
+	    </COLUMN>
+	</TABLE>
+	</SXLEMAP>

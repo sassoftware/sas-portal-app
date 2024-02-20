@@ -94,117 +94,117 @@
          - For a user specific page:  Tree=User's permission Tree, Pages Group=User's pages group, History Group=User's history group
          - For a group shared page:  Tree=The tree under the Group Permissions tree that corresponds to the sharing type, Pages Group=Group Admin's User's pages group, History Group=Group Admin's User's history group
     -->
+<xsl:variable name="newUniqueId" select="generate-id(/Mod_Request)"/>
+<xsl:variable name="newHGId"><xsl:value-of select="substring-after($repositoryId,'.')"/>.$<xsl:value-of select="$newUniqueId"/></xsl:variable>
     <UpdateMetadata>
 
       <Metadata>
          <!-- Create a history group for this page and add it to the user DESKTOP_PAGEHISTORY_GROUP -->
-         <xsl:variable name="newHistoryGroupId"><xsl:value-of select="substring-after($repositoryId,'.')"/>.$newHistoryGroupObject</xsl:variable>
 
-         <Group>
-           <xsl:attribute name="Name"><xsl:value-of select="$newName"/></xsl:attribute>
-           <xsl:attribute name="Id"><xsl:value-of select="$newHistoryGroupId"/></xsl:attribute>
-           <Groups>
-              <Group>
-                <xsl:attribute name="ObjRef"><xsl:value-of select="$userDesktopPortalHistoryGroupId"/></xsl:attribute>
-                <xsl:attribute name="Name"><xsl:value-of select="$userDesktopPortalHistoryGroupName"/></xsl:attribute>
-              </Group>
-           </Groups>
-
-           <!-- Add the new history group to the user's Home Tree -->
-
-           <Trees>
-              <Tree>
-                 <xsl:attribute name="ObjRef"><xsl:value-of select="$userTreeId"/></xsl:attribute>
-                 <xsl:attribute name="Name"><xsl:value-of select="$userTreeName"/></xsl:attribute>
-              </Tree>
-           </Trees>
-         </Group>
-
-         <PSPortalPage>
-           <xsl:attribute name="Id"><xsl:value-of select="$newObjectId"/></xsl:attribute>
-          
-           <xsl:attribute name="Name"><xsl:value-of select="$newName"/></xsl:attribute>
-
-           <xsl:if test="$newDesc">
-              <xsl:attribute name="Desc"><xsl:value-of select="$newDesc"/></xsl:attribute>
-              </xsl:if>
-
-           <!-- Some default information -->
-           <xsl:attribute name="NumberOfColumns">1</xsl:attribute>
-           <xsl:attribute name="NumberOfRows">0</xsl:attribute>
-           <xsl:attribute name="Type"><xsl:value-of select="defaultLayoutType"/></xsl:attribute>
-
-           <Extensions>
-                <xsl:variable name="newLayoutTypeId"><xsl:value-of select="substring-after($repositoryId,'.')"/>.$newLayoutTypeId</xsl:variable>
-               <Extension Name="LayoutType">
-                     <xsl:attribute name="Id"><xsl:value-of select="$newLayoutTypeId"/></xsl:attribute>
-               </Extension>
-               <xsl:if test="$newPageRank">
-                  
-                  <xsl:variable name="newPageRankId"><xsl:value-of select="substring-after($repositoryId,'.')"/>.$newPageRankObject</xsl:variable>
-                  <Extension Name="PageRank">
-                     <xsl:attribute name="Id"><xsl:value-of select="$newPageRankId"/></xsl:attribute>
-                     <xsl:attribute name="Value"><xsl:value-of select="$newPageRank"/></xsl:attribute>
-                  </Extension>   
-                  </xsl:if>
-               <!-- Add the appropriate extension for shared pages -->
-               <xsl:if test="not($pageTreeId=$userTreeId)">
-                   <xsl:variable name="newPageScopeId"><xsl:value-of select="substring-after($repositoryId,'.')"/>.$newScopeObject</xsl:variable>
-                   <xsl:choose>
-                      <xsl:when test="$newScope='Available'">
-                          <Extension Name="SharedPageAvailable"> 
-                            <xsl:attribute name="Id"><xsl:value-of select="$newPageScopeId"/></xsl:attribute>
-                          </Extension>
-                      </xsl:when>
-                      <xsl:when test="$newScope='Default'">
-                          <Extension Name="SharedPageDefault"> 
-                            <xsl:attribute name="Id"><xsl:value-of select="$newPageScopeId"/></xsl:attribute>
-                          </Extension>
-                      </xsl:when>
-                      <xsl:when test="$newScope='Persistent'">
-                          <Extension Name="SharedPageSticky"> 
-                            <xsl:attribute name="Id"><xsl:value-of select="$newPageScopeId"/></xsl:attribute>
-                          </Extension>
-                      </xsl:when>
-                   </xsl:choose>
-               </xsl:if>
-           </Extensions>
-
-           <Trees>
-              <Tree>
-                <!-- put the page into the correct tree
-                  -->
-                <xsl:attribute name="ObjRef"><xsl:value-of select="$pageTreeId"/></xsl:attribute>
-                <xsl:attribute name="Name"><xsl:value-of select="$pageTreeName"/></xsl:attribute>
-              </Tree>
-           </Trees>
-
-           <Groups>
-               <!-- Add it to the list of portal pages for this user DESKTOP_PORTALPAGES_GROUP -->
+               <!-- create a new group for it under the user DESKTOP_PAGEHISTORY_GROUP -->
                <Group>
-                 <xsl:attribute name="ObjRef"><xsl:value-of select="$userDesktopPortalPagesGroupId"/></xsl:attribute>
-                 <xsl:attribute name="Name"><xsl:value-of select="$userDesktopPortalPagesGroupName"/></xsl:attribute>
-               </Group>
-               <!-- add it to the new group created above under the user DESKTOP_PAGEHISTORY_GROUP -->
+                  <xsl:attribute name="Id"><xsl:value-of select="$newHGId"/></xsl:attribute>
+                  <xsl:attribute name="Name"><xsl:value-of select="$newName"/></xsl:attribute>
 
-               <Group>
-                 <xsl:attribute name="Name"><xsl:value-of select="$newName"/></xsl:attribute>
-                 <xsl:attribute name="ObjRef"><xsl:value-of select="$newHistoryGroupId"/></xsl:attribute>
-               </Group>
-                 
-           </Groups>
+                  <!-- Add the new history group to the user's Home Tree -->
 
-           <!-- Create an initial layout component -->
+                  <Trees>
+                     <Tree>
+                        <xsl:attribute name="ObjRef"><xsl:value-of select="$userTreeId"/></xsl:attribute>
+                        <xsl:attribute name="Name"><xsl:value-of select="$userTreeName"/></xsl:attribute>
+                     </Tree>
+                  </Trees>
+                  <!-- Add it to the overall History Group -->
 
-            <xsl:variable name="newLayoutComponentId"><xsl:value-of select="substring-after($repositoryId,'.')"/>.$newLayoutComponentObject</xsl:variable>
-           <LayoutComponents>
-              <PSColumnLayoutComponent Name="COLUMNLAYOUTCOMPONENT" NumberOfPortlets="0" ColumnWidth="100">
-                 <xsl:attribute name="Id"><xsl:value-of select="$newLayoutComponentId"/></xsl:attribute>
+                  <Groups>
+                    <Group>
+                       <xsl:attribute name="ObjRef"><xsl:value-of select="$userDesktopPortalHistoryGroupId"/></xsl:attribute>
+                       <xsl:attribute name="Name"><xsl:value-of select="$userDesktopPortalHistoryGroupName"/></xsl:attribute>
+                    </Group>
+                  </Groups>
+                  <Members>
+                      <!-- Now Add the Page -->
 
-              </PSColumnLayoutComponent>
-           </LayoutComponents>
-         </PSPortalPage>
+                      <PSPortalPage>
+                        <xsl:attribute name="Id"><xsl:value-of select="$newObjectId"/></xsl:attribute>
+                       
+                        <xsl:attribute name="Name"><xsl:value-of select="$newName"/></xsl:attribute>
 
+                        <xsl:if test="$newDesc">
+                           <xsl:attribute name="Desc"><xsl:value-of select="$newDesc"/></xsl:attribute>
+                           </xsl:if>
+
+                        <!-- Some default information -->
+                        <xsl:attribute name="NumberOfColumns">1</xsl:attribute>
+                        <xsl:attribute name="NumberOfRows">0</xsl:attribute>
+                        <xsl:attribute name="Type"><xsl:value-of select="defaultLayoutType"/></xsl:attribute>
+
+                        <Extensions>
+                             <xsl:variable name="newLayoutTypeId"><xsl:value-of select="substring-after($repositoryId,'.')"/>.$newLayoutTypeId</xsl:variable>
+                            <Extension Name="LayoutType">
+                                  <xsl:attribute name="Id"><xsl:value-of select="$newLayoutTypeId"/></xsl:attribute>
+                            </Extension>
+                            <xsl:if test="$newPageRank">
+                               
+                               <xsl:variable name="newPageRankId"><xsl:value-of select="substring-after($repositoryId,'.')"/>.$newPageRankObject</xsl:variable>
+                               <Extension Name="PageRank">
+                                  <xsl:attribute name="Id"><xsl:value-of select="$newPageRankId"/></xsl:attribute>
+                                  <xsl:attribute name="Value"><xsl:value-of select="$newPageRank"/></xsl:attribute>
+                               </Extension>   
+                               </xsl:if>
+                            <!-- Add the appropriate extension for shared pages -->
+                            <xsl:if test="not($pageTreeId=$userTreeId)">
+                                <xsl:variable name="newPageScopeId"><xsl:value-of select="substring-after($repositoryId,'.')"/>.$newScopeObject</xsl:variable>
+                                <xsl:choose>
+                                   <xsl:when test="$newScope='Available'">
+                                       <Extension Name="SharedPageAvailable"> 
+                                         <xsl:attribute name="Id"><xsl:value-of select="$newPageScopeId"/></xsl:attribute>
+                                       </Extension>
+                                   </xsl:when>
+                                   <xsl:when test="$newScope='Default'">
+                                       <Extension Name="SharedPageDefault"> 
+                                         <xsl:attribute name="Id"><xsl:value-of select="$newPageScopeId"/></xsl:attribute>
+                                       </Extension>
+                                   </xsl:when>
+                                   <xsl:when test="$newScope='Persistent'">
+                                       <Extension Name="SharedPageSticky"> 
+                                         <xsl:attribute name="Id"><xsl:value-of select="$newPageScopeId"/></xsl:attribute>
+                                       </Extension>
+                                   </xsl:when>
+                                </xsl:choose>
+                            </xsl:if>
+                        </Extensions>
+
+                        <Trees>
+                           <Tree>
+                             <!-- put the page into the correct tree
+                               -->
+                             <xsl:attribute name="ObjRef"><xsl:value-of select="$pageTreeId"/></xsl:attribute>
+                             <xsl:attribute name="Name"><xsl:value-of select="$pageTreeName"/></xsl:attribute>
+                           </Tree>
+                        </Trees>
+
+                        <Groups>
+                            <!-- Add it to the list of portal pages for this user DESKTOP_PORTALPAGES_GROUP -->
+                            <Group>
+                              <xsl:attribute name="ObjRef"><xsl:value-of select="$userDesktopPortalPagesGroupId"/></xsl:attribute>
+                              <xsl:attribute name="Name"><xsl:value-of select="$userDesktopPortalPagesGroupName"/></xsl:attribute>
+                            </Group>
+                        </Groups>
+
+                        <!-- Create an initial layout component -->
+
+                         <xsl:variable name="newLayoutComponentId"><xsl:value-of select="substring-after($repositoryId,'.')"/>.$newLayoutComponentObject</xsl:variable>
+                        <LayoutComponents>
+                           <PSColumnLayoutComponent Name="COLUMNLAYOUTCOMPONENT" NumberOfPortlets="0" ColumnWidth="100">
+                              <xsl:attribute name="Id"><xsl:value-of select="$newLayoutComponentId"/></xsl:attribute>
+
+                           </PSColumnLayoutComponent>
+                        </LayoutComponents>
+                      </PSPortalPage>
+
+                   </Members>
+                </Group>
       </Metadata>
 
       <NS>SAS</NS>
@@ -212,7 +212,6 @@
       <Options/>
 
     </UpdateMetadata>
-
    </xsl:otherwise>
  </xsl:choose>
 

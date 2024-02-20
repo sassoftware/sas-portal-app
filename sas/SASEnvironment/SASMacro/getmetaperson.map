@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SXLEMAP version="2.1">
+
+<TABLE name="person">
+    <TABLE-PATH syntax="XPath">/GetMetadataObjects/Objects/Login/AssociatedIdentity/Person</TABLE-PATH>
+
+    <COLUMN name="Name">
+        <PATH syntax="XPath">/GetMetadataObjects/Objects/Login/AssociatedIdentity/Person/@Name</PATH>
+        <TYPE>character</TYPE>
+        <DATATYPE>string</DATATYPE>
+        <LENGTH>200</LENGTH>
+    </COLUMN>
+</TABLE>
+</SXLEMAP>

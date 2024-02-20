@@ -41,7 +41,9 @@
            proc printto print=prtllst new;
            run;
 
-           options mprint mlogic;
+           %if (%symexist(showmprint)) %then %do;
+               options mprint mlogic;
+               %end;
 
            %if (%symexist(showmacros)) %then %do;
 

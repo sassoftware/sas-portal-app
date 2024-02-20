@@ -49,7 +49,11 @@
    </xsl:choose>
    </xsl:variable>
 
-   <xsl:variable name="pageFilter">[Extensions/Extension[@Name='SharedPageSticky' or @Name='SharedPageDefault' or @Name='SharedPageAvailable']</xsl:variable>
+   <!-- Shared Available Pages are not automatically linked to the user's portal, so don't include those in the hunt for new pages!
+        <xsl:variable name="pageFilter">[Extensions/Extension[@Name='SharedPageSticky' or @Name='SharedPageDefault' or @Name='SharedPageAvailable']</xsl:variable>
+     -->
+
+   <xsl:variable name="pageFilter">[Extensions/Extension[@Name='SharedPageSticky' or @Name='SharedPageDefault']</xsl:variable>
 
    <XMLSelect><xsl:attribute name="search">*<xsl:value-of select="$timeFilter"/><xsl:value-of select="$pageFilter"/></xsl:attribute></XMLSelect>
 

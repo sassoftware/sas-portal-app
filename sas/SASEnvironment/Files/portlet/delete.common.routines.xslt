@@ -44,5 +44,13 @@
 
 </xsl:template>
 
+<xsl:template match="Group">
+
+<Group>
+  <xsl:attribute name="Id"><xsl:value-of select="@Id"/></xsl:attribute>
+</Group>
+
+</xsl:template>
+
 </xsl:stylesheet>
 

@@ -1,0 +1,19 @@
+	  <GetMetadataObjects>
+	  <ReposId>$METAREPOSITORY</ReposId>
+	  <Type>Extension</Type>
+	  <ns>SAS</ns>
+	     <!-- 256 = GetMetadata
+	          128 = XMLSelect
+	            4 =  Template
+	     -->
+	  <Flags>388</Flags>
+	  <Options>
+	     <XMLSelect search="@Name='MarkedForDeletion'"/>
+	     <Templates>
+	        <Extension Id="" Name="">
+	           <OwningObject search="PSPortalPage"/>
+	        </Extension>
+	        <PSPortalPage Id="" Name=""/>
+	     </Templates>
+	  </Options>
+	 </GetMetadataObjects>

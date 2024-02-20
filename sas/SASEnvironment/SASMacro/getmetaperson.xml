@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<GetMetadataObjects>
+  <ReposId>$METAREPOSITORY</ReposId>
+  <Type>Login</Type>
+  <ns>SAS</ns>
+     <!-- 256 = GetMetadata
+          128 = XMLSelect
+            4 =  Template
+     -->
+  <Flags>388</Flags>
+  <Options>
+     <!-- There is a chance that the same userid exists in multiple
+          authdomains, but we are going to assume that if that happens
+          each of them points back to the same person, which is what
+          we are really trying to get.
+     -->
+     <XMLSelect search="@UserId='$METAUSER'"/>
+     <Templates>
+        <Login Id="" Name="" UserId="">
+          <AssociatedIdentity search="Person"/>
+        </Login>
+        <Person Id="" Name=""/>
+     </Templates>
+  </Options>
+ </GetMetadataObjects>

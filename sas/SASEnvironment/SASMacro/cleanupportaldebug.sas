@@ -10,7 +10,9 @@
            proc printto log=log; run;
            filename prtllog;
 
-           options nomprint nomlogic;
+           %if (%symexist(showmprint)) %then %do;
+               options nomprint nomlogic;
+               %end;
 
            %if (%symexist(showxmlSaved)) %then %do;
                %let showXML=&saveXMLSaved.;

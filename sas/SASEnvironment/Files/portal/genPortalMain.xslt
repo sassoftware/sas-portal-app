@@ -309,7 +309,7 @@
          to handle that gracefully.
    -->
 
-   <xsl:variable name="numTabs"><xsl:value-of select="count(Multiple_Requests/GetMetadataObjects/Objects/Group/Members/PSPortalPage)"/></xsl:variable>
+   <xsl:variable name="numTabs"><xsl:value-of select="count(Multiple_Requests/GetMetadataObjects/Objects/Group/Members/PSPortalPage[not(Extensions/Extension[@Name='MarkedForDeletion'])])"/></xsl:variable>
 
    <xsl:choose>
 
@@ -339,7 +339,7 @@
 
      <xsl:otherwise>
    
-	   <xsl:for-each select="Multiple_Requests/GetMetadataObjects/Objects/Group/Members/PSPortalPage">
+	   <xsl:for-each select="Multiple_Requests/GetMetadataObjects/Objects/Group/Members/PSPortalPage[not(Extensions/Extension[@Name='MarkedForDeletion'])]">
 		<xsl:sort select="Extensions/Extension[@Name='PageRank']/@Value" data-type="number"/>
 		<xsl:sort select="@MetadataCreated" data-type="number"/>
 
@@ -405,7 +405,7 @@
      
      <div id="pages">
 
-       <xsl:variable name="numTabs"><xsl:value-of select="count(Multiple_Requests/GetMetadataObjects/Objects/Group/Members/PSPortalPage)"/></xsl:variable>
+       <xsl:variable name="numTabs"><xsl:value-of select="count(Multiple_Requests/GetMetadataObjects/Objects/Group/Members/PSPortalPage[not(Extensions/Extension[@Name='MarkedForDeletion'])])"/></xsl:variable>
 
        <xsl:choose>
          <xsl:when test="$numTabs=0">
@@ -413,7 +413,7 @@
          </xsl:when>
 
          <xsl:otherwise>
-           <xsl:apply-templates select="Multiple_Requests/GetMetadataObjects/Objects/Group/Members/PSPortalPage"/>
+           <xsl:apply-templates select="Multiple_Requests/GetMetadataObjects/Objects/Group/Members/PSPortalPage[not(Extensions/Extension[@Name='MarkedForDeletion'])]"/>
          </xsl:otherwise>
 
        </xsl:choose>
@@ -459,7 +459,7 @@
                 <xsl:text>/</xsl:text><xsl:value-of select="@Name"/>
    </xsl:variable>
 
-   <xsl:variable name="stpURI"><xsl:text>/SASStoredProcess/do?_program=</xsl:text><xsl:value-of select="$stpProgram"/></xsl:variable>
+   <xsl:variable name="stpURI"><xsl:text>/SASStoredProcess/do?_action=form,properties,execute&amp;_program=</xsl:text><xsl:value-of select="$stpProgram"/></xsl:variable>
 
    <a><xsl:attribute name="href"><xsl:value-of select="$stpURI"/></xsl:attribute><xsl:value-of select="@Name"/></a>
 
@@ -627,7 +627,7 @@
 			<xsl:variable name="stpURI"><xsl:text>/SASStoredProcess/do?_action=form,properties,execute,nobanner,newwindow&_program=</xsl:text><xsl:value-of select="$stpProgram"/></xsl:variable>
 			-->
 			
-			<xsl:variable name="stpURI"><xsl:text>/SASStoredProcess/do?_program=</xsl:text><xsl:value-of select="$stpProgram"/></xsl:variable>
+			<xsl:variable name="stpURI"><xsl:text>/SASStoredProcess/do?_action=form,properties,execute,nobanner,newwindow&amp;_program=</xsl:text><xsl:value-of select="$stpProgram"/></xsl:variable>
 			<iframe style="overflow: auto;width: 100%" frameborder="0" >
             <xsl:attribute name="data-src"><xsl:value-of select="$stpURI"/></xsl:attribute>
 
