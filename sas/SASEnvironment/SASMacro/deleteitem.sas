@@ -84,6 +84,8 @@
 
                     filename getxsl;
 
+                    %showFormattedXML(getreq,Metadata Query to retrieve input for modification request.);
+
                     /*
                      *  Issue the metadata request
                      */
@@ -94,6 +96,8 @@
                     run;
 
                     filename getreq;
+
+                    %showFormattedXML(getrsp,Metadata Response for input for modification request.);
 
                     /*
                      * Merge the response into the "mod" content
