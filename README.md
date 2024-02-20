@@ -222,6 +222,14 @@ One of the primary portal features is for a portal content administrator to crea
 
 **NOTE:** Currently, this functionality is controlled by the feature flag, SYNCUSER. See [Feature Flags](#feature-flags) for more information on how to set this flag while it is being developed.
 
+### Deleting Shared Content
+
+When content is shared to users, the content is linked into each of the user's, or group's, content area.  Each content area has it's own set of permissions.  Once this linkage occurs, the original shared content can no longer be deleted in it's entirety from the system by a normal user, including a content administrator.  A SAS Administrator, who has un-fettered access to the metadata, will have to do the final removal.
+
+The content administrator is still responsible for initiating the deletion of the content by selecting Remove Page, and then selecting **Remove and permanently delete this page**. This step will mark the page for deletion and is no shown to any user in the system.  However, the content still exists and should be cleaned up.
+
+A [Delete Marked Pages SAS Job](sas/SASEnvironment/SASCode/Jobs/admin/deleteMarkedPages.sas) is provided for the administrator to delete the content from the system.
+
 ## Usage
 
 In your web browser, go to the URL that matches where you installed the application onto your web server, ex. /SASPortalApp.
