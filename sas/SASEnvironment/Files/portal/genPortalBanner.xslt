@@ -350,7 +350,7 @@
          <td nowrap="" id="bantitle" class="banner_title"><xsl:value-of select="$portalTitle"/></td>
          <td id="banbullet" class="banner_bullet"></td>
          <td nowrap="" id="bantitle2" class="banner_secondaryTitle"></td>
-         <td align="right" id="banlogo" class="banner_logo" width="100%"><img width="62" height="24" border="0" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/logo.gif</xsl:attribute></img>
+         <td align="right" id="banlogo" class="banner_logo" width="100%"><a href="JavaScript: location.reload(true);"><img width="62" height="24" border="0" alt=""><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/logo.gif</xsl:attribute></img></a>
          </td>
          <td class="banner_logoPadding">&#160;</td>
          </tr>
