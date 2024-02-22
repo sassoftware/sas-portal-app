@@ -2,7 +2,8 @@
 <xsl:output method="xml"/>
 
 <!-- Re-usable scripts -->
-
+<!-- Set up the metadataContext variable -->
+<xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/setup.metadatacontext.xslt"/>
 <xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/delete.all.routines.xslt"/>
 
 <!-- Scope is the type of removal to do 
@@ -29,9 +30,6 @@
 
 <xsl:variable name="deletePortletsOnPage"><xsl:value-of select="Mod_Request/NewMetadata/DeletePortletsOnPage"/></xsl:variable>
 
-<xsl:variable name="currentPageObject" select="/Mod_Request/Multiple_Requests/GetMetadataObjects[2]/Objects/PSPortalPage"/>
-
-<xsl:variable name="pageName" select="$currentPageObject/@Name"/>
 
 <xsl:variable name="reposIdPrefix" select="substring-before($pageId,'.')"/>
 
@@ -42,8 +40,11 @@
      must be under a shared root object.  Thus, here we can only go to the AccessControlEntries
      level.  Fortunately, the only trees listed under here are the ones we want in our lookup table
   -->
-<xsl:variable name="treeLookup" select="/Mod_Request/Multiple_Requests/GetMetadataObjects[1]/Objects/Person/AccessControlEntries"/>
+<xsl:variable name="treeLookup" select="$metadataContext/Multiple_Requests/GetMetadataObjects[1]/Objects/Person/AccessControlEntries"/>
 
+<xsl:variable name="currentPageObject" select="$metadataContext/Multiple_Requests/GetMetadataObjects[2]/Objects/PSPortalPage"/>
+
+<xsl:variable name="pageName" select="$currentPageObject/@Name"/>
 <!-- Main Entry Point -->
 
 <xsl:template match="/">
@@ -59,7 +60,7 @@
 
             <!-- Remove it from every group we can see -->
 
-            <xsl:variable name="pagesGroupCount" select="count(/Mod_Request/Multiple_Requests/GetMetadataObjects[3]/Objects/PSPortalPage/Groups/Group)"/>
+            <xsl:variable name="pagesGroupCount" select="count($metadataContext/Multiple_Requests/GetMetadataObjects[3]/Objects/PSPortalPage/Groups/Group)"/>
 
            <xsl:if test="$pagesGroupCount &gt; 0">
 
@@ -69,7 +70,7 @@
 
                   <!--- Remove it from all the groups -->
 
-                  <xsl:for-each select="/Mod_Request/Multiple_Requests/GetMetadataObjects[3]/Objects/PSPortalPage/Groups/Group">
+                  <xsl:for-each select="$metadataContext/Multiple_Requests/GetMetadataObjects[3]/Objects/PSPortalPage/Groups/Group">
 
                       <xsl:variable name="pagesGroupId" select="@Id"/>
 
@@ -109,6 +110,8 @@
 <xsl:template match="PSPortalPage">
 
     <!-- Permanently Delete the Page -->
+
+<xsl:variable name="pageId" select="@Id"/>
 
     <!-- If the page is already marked for deletion, then we have already processed this step, so just skip it now -->
 
@@ -160,7 +163,7 @@
 
             <!-- Delete any history groups associated with this Page -->
 
-            <xsl:for-each select="/Mod_Request/Multiple_Requests/GetMetadataObjects[3]/Objects/PSPortalPage/Groups/Group[Groups//Group[@Name='DESKTOP_PAGEHISTORY_GROUP']]">
+            <xsl:for-each select="$metadataContext/Multiple_Requests/GetMetadataObjects[3]/Objects/PSPortalPage/Groups/Group[Groups//Group[@Name='DESKTOP_PAGEHISTORY_GROUP']]">
               <xsl:apply-templates select="."/>
             </xsl:for-each>
 

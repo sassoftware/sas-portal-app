@@ -2,7 +2,8 @@
 <xsl:output method="xml"/>
 
 <!-- Re-usable scripts -->
-
+<!-- Set up the metadataContext variable -->
+<xsl:include href="setup.metadatacontext.xslt"/>
 <xsl:include href="delete.all.routines.xslt"/>
 
 <!-- Removetype is the type of removal to do 
@@ -24,7 +25,7 @@
 
 <xsl:variable name="portletId"><xsl:value-of select="Mod_Request/NewMetadata/Id"/></xsl:variable>
 
-<xsl:variable name="currentPortletObject" select="/Mod_Request/Multiple_Requests/GetMetadataObjects/Objects/PSPortlet"/>
+<xsl:variable name="currentPortletObject" select="$metadataContext/Multiple_Requests/GetMetadataObjects/Objects/PSPortlet"/>
 
 <xsl:variable name="portletName" select="$currentPortletObject/@Name"/>
     <xsl:choose>

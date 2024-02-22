@@ -45,6 +45,15 @@
 
             %getRepoInfo;
 
+            /*
+             * if we have a getter, then go ahead and set up the response file
+             * in a variable to be included by buildModParameters.
+             */
+            %if (%sysfunc(fileexist(&deleteItemGetter.)) ne 0) %then %do;
+                filename getrsp temp;
+                %let metadataContext=%sysfunc(pathname(getrsp));
+                %end;
+
             filename newxml temp;
             %if (%sysfunc(fileexist(&deleteItemParameterHandler.)) ne 0)
                 %then %do;
@@ -90,48 +99,12 @@
                      *  Issue the metadata request
                      */
 
-                    filename getrsp temp;
-
                     proc metadata in=getreq out=getrsp;
                     run;
 
                     filename getreq;
 
                     %showFormattedXML(getrsp,Metadata Response for input for modification request.);
-
-                    /*
-                     * Merge the response into the "mod" content
-                     */
-
-                     data _null_;
-                       infile newxml;
-                       file newxml ;
-                       input;
-                       /*  This is quirky, because we are writing back to the same file
-                           the replacement string needs to be at least as long as the 
-                           string we want to ignore
-                        */
-                       
-                       if (find(_infile_,'</Mod_Request>')) then do;
-                          put            '<!--          -->';
-                          end;
-                       else put _infile_;
-                     run;
-
-                     data _null_;
-                       file newxml mod;
-                       infile getrsp end=last;
-                       input;
-                       put _infile_;
-                       if (last) then do;
-                          put '</Mod_Request>';
-                          end;
-                     run;
-
-                    filename getrsp;
-
-                    %showFormattedXML(newxml,Generated parameters passed to delete routine);
-
                     %end;
 
                 filename remxsl "&deleteItemProcessor.";
@@ -153,6 +126,9 @@
 
                 %end;
 
+            %if (%sysfunc(fileref(getrsp))<1) %then %do;
+                filename getrsp;
+                %end;
             filename newxml;
 
         %end;

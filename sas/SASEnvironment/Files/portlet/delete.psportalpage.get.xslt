@@ -5,7 +5,6 @@
 -->
 
 <xsl:template match="/">
-
  <xsl:variable name="userName" select="/Mod_Request/NewMetadata/Metaperson"/>
  <xsl:variable name="reposId" select="/Mod_Request/NewMetadata/Metareposid"/>
  <xsl:variable name="pageId" select="/Mod_Request/NewMetadata/Id"/>
@@ -126,6 +125,8 @@
   </Options>
  </GetMetadataObjects>
 </Multiple_Requests> 
+
+
 </xsl:template>
 
 </xsl:stylesheet>

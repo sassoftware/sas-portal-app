@@ -60,6 +60,9 @@
                   put "<Metareposid>&reposid.</Metareposid>";
                   %end;
 
+              %if (%symexist(metadataContext)) %then %do;
+                  put "<MetadataContext>&metadataContext.</MetadataContext>";
+                  %end;
 
               /*
                * For an update or delete request, the Id field should be filled in.

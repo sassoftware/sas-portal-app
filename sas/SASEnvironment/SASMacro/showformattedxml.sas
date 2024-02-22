@@ -1,4 +1,4 @@
-%macro showFormattedXML(xmlToFormat,header,out=,force=);
+%macro showFormattedXML(xmlToFormat,header,out=,force=,quiet=no);
 
 %if ((%symexist(SHOWXML)) or ("&force." ne "")) %then %do;
 
@@ -44,12 +44,14 @@
 		    %put showFormattedXML: &header.;
 		    %put --------------------------------------------------;
 	        %end;	    
-		    	
-		data _null_;
-		 infile _fmtdXML;
-		 input;
-		 put _infile_;
-		 run;
+                %if ("&quiet." eq "no" or "&quiet." eq "" and "&quiet." eq "n") %then %do;
+
+                    data _null_;
+                     infile _fmtdXML;
+                     input;
+                     put _infile_;
+                     run;
+                 %end;
 		
 		filename _fmtXSL;
 		
