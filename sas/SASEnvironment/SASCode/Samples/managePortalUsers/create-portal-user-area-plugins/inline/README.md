@@ -16,7 +16,7 @@ When the user tries to log in to the portal and has not been previously register
 
 1. Copy the sas/SASEnvironment/SASCode/Samples/managePortalUsers/create-portal-user-area-plugins/inline directory to your own directory location:
 <pre>
-cd /Data1/SASConfig/Lev1/SASPortal  #assuming this is where this repo directory is linked.
+cd /Data1/SASConfig/Lev1/SASPortal  #assuming this is your server context
 mkdir SASEnvironment/SASCode/user-registration-inline
 cp SASPortalApp/sas/SASEnvironment/SASCode/Samples/managePortalUsers/create-portal-user-area-plugins/inline/* SASEnvironment/SASCode/user-registration-inline
 </pre>

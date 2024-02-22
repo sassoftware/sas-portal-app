@@ -9,10 +9,10 @@
   <string key="portalCustomizationMenuEditPageTitle">Seite bearbeiten</string>
   <string key="portalCustomizationMenuEditPageContent">Seiteninhalt bearbeiten</string>
   <string key="portalCustomizationMenuEditPageContentTitle">Seiteninhalt bearbeiten</string>
-  <string key="portalCustomizationMenuEditPageProperties">Bearbeiten Sie die Seiteneigenschaften</string>
-  <string key="portalCustomizationMenuEditPagePropertiesTitle">Bearbeiten Sie die Seiteneigenschaften</string>
-  <string key="portalCustomizationMenuArrangeTabs">Ordnen Sie Seitenregisterkarten an</string>
-  <string key="portalCustomizationMenuArrangeTabsTitle">Ordnen Sie Seitenregisterkarten an</string>
+  <string key="portalCustomizationMenuEditPageProperties">Seiteneigenschaften bearbeiten</string>
+  <string key="portalCustomizationMenuEditPagePropertiesTitle">Seiteneigenschaften bearbeiten</string>
+  <string key="portalCustomizationMenuArrangeTabs">Seitenregisterkarten anordnen</string>
+  <string key="portalCustomizationMenuArrangeTabsTitle">Seitenregisterkarten anordnen</string>
   <string key="portalCustomizationMenuAddPage">Seite hinzufügen</string>
   <string key="portalCustomizationMenuAddPageTitle">Seite hinzufügen</string>
   <string key="portalCustomizationMenuRemovePage">Seite entfernen</string>
@@ -41,10 +41,10 @@
   -->
   <string key="saveButton">Speichern</string>
   <string key="okButton">OK</string>
-  <string key="cancelButton">Stornieren</string>
+  <string key="cancelButton">Abbrechen</string>
   <string key="doneButton">Erledigt</string>
   <string key="moveUpButton">Nach oben bewegen</string>
-  <string key="moveDownButton">Sich abwärts bewegen</string>
+  <string key="moveDownButton">Abwärts bewegen</string>
   <string key="addButton">Hinzufügen</string>
   <string key="addItemsButton">Hinzufügen...</string>
   <string key="deleteButton">Löschen</string>
@@ -108,11 +108,11 @@
   <string key="portletCollectionItemTypeLinkLabel">Verknüpfung</string>
   <string key="portletCollectionItemTypeApplicationLabel">Anwendung</string>
 
-  <string key="portletEditCollectionConfirmMessage">Dadurch wird das Element aus Ihrem Portal entfernt, aber nicht dauerhaft gelöscht. Möchtest du fortfahren?</string>
-  <string key="portletEditCollectionTooManySelected">Please select only one item to edit.</string>
-  <string key="portletEditCollectionNoneSelected">Bitte wählen Sie nur ein Element zum Bearbeiten aus.</string>
-  <string key="portletEditCollectionNotEditable">Dieses Element kann nicht bearbeitet werden</string>
-  <string key="portletEditCollectionHasChangedMessage">Sie haben Änderungen an dieser Seite vorgenommen. Diese Änderungen gehen verloren, wenn Sie fortfahren. Möchten Sie fortfahren und Ihre Änderungen verlieren?</string>
+  <string key="portletEditCollectionConfirmMessage">Dadurch wird das Element aus Ihrem Portal entfernt, aber nicht dauerhaft gelöscht. Möchten Sie fortfahren?</string>
+  <string key="portletEditCollectionTooManySelected">Bitte wählen Sie nur ein Element zum Bearbeiten aus.</string>
+  <string key="portletEditCollectionNoneSelected">Bitte wählen Sie ein Element zum Bearbeiten aus.</string>
+  <string key="portletEditCollectionNotEditable">Dieses Element kann nicht bearbeitet werden.</string>
+  <string key="portletEditCollectionHasChangedMessage">Sie haben Änderungen an dieser Seite vorgenommen. Wenn Sie fortfahren gehen diese Änderungen verloren. Möchten Sie fortfahren und Ihre Änderungen verwerfen?</string>
 
   <!-- Portal Page Editing -->
 
@@ -126,7 +126,7 @@
   <string key="portletEditPageShareTypeNotShared">Nicht geteilt</string>
   <string key="portletEditPageShareTypeAvailable">Verfügbar</string>
   <string key="portletEditPageShareTypeDefault">Standard</string>
-  <string key="portletEditPageShareTypePersistent">Hartnäckig</string>
+  <string key="portletEditPageShareTypePersistent">Angeheftet</string>
 
   <string key="portletEditPageNumberOfColumns">Anzahl der Spalten:</string>
   <string key="portletEditPageNumberOfColumns1">1</string>
@@ -143,9 +143,9 @@
   <string key="portletEditPageColumn1Heading">Spalte 1:</string>
   <string key="portletEditPageColumn2Heading">Spalte 2:</string>
   <string key="portletEditPageColumn3Heading">Spalte 3:</string>
-  <string key="portletEditPageColumnLayoutMoveUp">Nach oben bewegen</string>
-  <string key="portletEditPageColumnLayoutMoveDown">Sich abwärts bewegen</string>
-  <string key="portletEditPageColumnLayoutMoveLeft">Geh nach links</string>
+  <string key="portletEditPageColumnLayoutMoveUp">Aufwärts bewegen</string>
+  <string key="portletEditPageColumnLayoutMoveDown">Abwärts bewegen</string>
+  <string key="portletEditPageColumnLayoutMoveLeft">Nach links bewegen</string>
   <string key="portletEditPageColumnLayoutMoveRight">Nach rechts bewegen</string>
   <string key="portletEditPageColumnLayoutRemove">Entfernen</string>
   <string key="portletEditPageDeleteRow">Zeile löschen</string>
