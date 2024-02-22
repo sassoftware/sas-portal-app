@@ -27,7 +27,7 @@
   <string key="portalHelpMenuTitle">Wählen Sie diese Option, um das Hilfemenü anzuzeigen.</string>
   <string key="pageTabs_skipTabMenuTitle">Tab-Menü überspringen</string>
 
-  <string key="portalAdminHeader">* Inhaltsadministrator *<string>
+  <string key="portalAdminHeader">* Inhaltsadministrator *</string>
  
   <!-- 
        Portlet Content Editor menu

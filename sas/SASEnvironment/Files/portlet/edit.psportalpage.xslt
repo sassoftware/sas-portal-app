@@ -18,31 +18,32 @@
 <xsl:variable name="okButton" select="$localeXml/string[@key='okButton']/text()"/>
 <xsl:variable name="cancelButton" select="$localeXml/string[@key='cancelButton']/text()"/>
 
-<xsl:variable name="portletEditPageNumberOfColumns">Number of columns:</xsl:variable>
-<xsl:variable name="portletEditPageNumberOfColumns1">1</xsl:variable>
-<xsl:variable name="portletEditPageNumberOfColumns2">2</xsl:variable>
-<xsl:variable name="portletEditPageNumberOfColumns3">3</xsl:variable>
-<xsl:variable name="portletEditPageColumnWidth">Column width:</xsl:variable>
-<xsl:variable name="portletEditPageColumnPercent">%</xsl:variable>
-<xsl:variable name="portletEditPagePortletLayout">Portlet layout:</xsl:variable>
-<xsl:variable name="portletEditPageLayout">Layout:</xsl:variable>
-<xsl:variable name="portletEditPageLayoutColumn">By column</xsl:variable>
-<xsl:variable name="portletEditPageLayoutGrid">By grid</xsl:variable>
-<xsl:variable name="portletEditPageAddPortlets">Add Portlets...</xsl:variable>
+<xsl:variable name="portletEditPageNumberOfColumns" select="$localeXml/string[@key='portletEditPageNumberOfColumns']/text()"/>
+<xsl:variable name="portletEditPageNumberOfColumns1" select="$localeXml/string[@key='portletEditPageNumberOfColumns1']/text()"/>
 
-<xsl:variable name="portletEditPageColumn1Heading">Column 1:</xsl:variable>
-<xsl:variable name="portletEditPageColumn2Heading">Column 2:</xsl:variable>
-<xsl:variable name="portletEditPageColumn3Heading">Column 3:</xsl:variable>
-<xsl:variable name="portletEditPageColumnLayoutMoveUp">Move Up</xsl:variable>
-<xsl:variable name="portletEditPageColumnLayoutMoveDown">Move Down</xsl:variable>
-<xsl:variable name="portletEditPageColumnLayoutMoveLeft">Move Left</xsl:variable>
-<xsl:variable name="portletEditPageColumnLayoutMoveRight">Move Right</xsl:variable>
-<xsl:variable name="portletEditPageColumnLayoutRemove">Remove</xsl:variable>
-<xsl:variable name="portletEditPageDeleteRow">Delete row</xsl:variable>
+<xsl:variable name="portletEditPageNumberOfColumns2"  select="$localeXml/string[@key='portletEditPageNumberOfColumns2']/text()"/>
+<xsl:variable name="portletEditPageNumberOfColumns3" select="$localeXml/string[@key='portletEditPageNumberOfColumns3']/text()"/>
+<xsl:variable name="portletEditPageColumnWidth"  select="$localeXml/string[@key='portletEditPageColumnWidth']/text()"/>
+<xsl:variable name="portletEditPageColumnPercent" select="$localeXml/string[@key='portletEditPageColumnPercent']/text()"/>
+<xsl:variable name="portletEditPagePortletLayout" select="$localeXml/string[@key='portletEditPagePortletLayout']/text()"/>
+<xsl:variable name="portletEditPageLayout" select="$localeXml/string[@key='portletEditPageLayout']/text()"/>
+<xsl:variable name="portletEditPageLayoutColumn" select="$localeXml/string[@key='portletEditPageLayoutColumn']/text()"/>
+<xsl:variable name="portletEditPageLayoutGrid"  select="$localeXml/string[@key='portletEditPageLayoutGrid']/text()"/>
+<xsl:variable name="portletEditPageAddPortlets"  select="$localeXml/string[@key='portletEditPageAddPortlets']/text()"/>
 
-<xsl:variable name="portletEditPageHasChangedMessage">You have made changes to this page.  These changes will be lost if you proceed.  Do you wish to proceed and lose your changes?</xsl:variable>
+<xsl:variable name="portletEditPageColumn1Heading" select="$localeXml/string[@key='portletEditPageColumn1Heading']/text()"/>
+<xsl:variable name="portletEditPageColumn2Heading" select="$localeXml/string[@key='portletEditPageColumn2Heading']/text()"/>
+<xsl:variable name="portletEditPageColumn3Heading" select="$localeXml/string[@key='portletEditPageColumn3Heading']/text()"/>
+<xsl:variable name="portletEditPageColumnLayoutMoveUp" select="$localeXml/string[@key='portletEditPageColumnLayoutMoveUp']/text()"/>
+<xsl:variable name="portletEditPageColumnLayoutMoveDown"  select="$localeXml/string[@key='portletEditPageColumnLayoutMoveDown']/text()"/>
+<xsl:variable name="portletEditPageColumnLayoutMoveLeft"  select="$localeXml/string[@key='portletEditPageColumnLayoutMoveLeft']/text()"/>
+<xsl:variable name="portletEditPageColumnLayoutMoveRight" select="$localeXml/string[@key='portletEditPageColumnLayoutMoveRight']/text()"/>
+<xsl:variable name="portletEditPageColumnLayoutRemove"  select="$localeXml/string[@key='portletEditPageColumnLayoutRemove']/text()"/>
+<xsl:variable name="portletEditPageDeleteRow" select="$localeXml/string[@key='portletEditPageDeleteRow']/text()"/>
 
-<xsl:variable name="portletEditPageRemovePortlet">This will remove the item from your portal, but not delete it permanently. Do you want to continue?</xsl:variable>
+<xsl:variable name="portletEditPageHasChangedMessage" select="$localeXml/string[@key='portletEditPageHasChangedMessage']/text()"/>
+
+<xsl:variable name="portletEditPageRemovePortlet"  select="$localeXml/string[@key='portletEditPageRemovePortlet']/text()"/>
 <!-- Re-usable scripts -->
 
 <xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/form.functions.xslt"/>
