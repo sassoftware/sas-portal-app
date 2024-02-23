@@ -128,6 +128,32 @@
   <string key="portletEditPageShareTypeDefault">Default</string>
   <string key="portletEditPageShareTypePersistent">Persistent</string>
 
+  <string key="portletEditPageNumberOfColumns">Number of columns:</string>
+  <string key="portletEditPageNumberOfColumns1">1</string>
+  <string key="portletEditPageNumberOfColumns2">2</string>
+  <string key="portletEditPageNumberOfColumns3">3</string>
+  <string key="portletEditPageColumnWidth">Column width:</string>
+  <string key="portletEditPageColumnPercent">%</string>
+  <string key="portletEditPagePortletLayout">Portlet layout:</string>
+  <string key="portletEditPageLayout">Layout:</string>
+  <string key="portletEditPageLayoutColumn">By column</string>
+  <string key="portletEditPageLayoutGrid">By grid</string>
+  <string key="portletEditPageAddPortlets">Add Portlets...</string>
+
+  <string key="portletEditPageColumn1Heading">Column 1:</string>
+  <string key="portletEditPageColumn2Heading">Column 2:</string>
+  <string key="portletEditPageColumn3Heading">Column 3:</string>
+  <string key="portletEditPageColumnLayoutMoveUp">Move Up</string>
+  <string key="portletEditPageColumnLayoutMoveDown">Move Down</string>
+  <string key="portletEditPageColumnLayoutMoveLeft">Move Left</string>
+  <string key="portletEditPageColumnLayoutMoveRight">Move Right</string>
+  <string key="portletEditPageColumnLayoutRemove">Remove</string>
+  <string key="portletEditPageDeleteRow">Delete Row</string>
+
+  <string key="portletEditPageHasChangedMessage">You have made changes to this page. These changes will be lost if you continue. Do you want to continue and lose your changes?</string>
+
+  <string key="portletEditPageRemovePortlet">This will remove the item from your portal, but will not permanently delete it. Do you want to continue?</string>
+
   <!--
        Portlet Item Editor menu
   -->
