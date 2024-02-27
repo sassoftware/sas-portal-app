@@ -44,10 +44,21 @@
      %if (%symexist(PageRank)) %then %do;
          put "<PageRank>&PageRank.</PageRank>";
          %end;
+
+     %if (%symexist(scope)) %then %do;
+         put "<Scope>&scope.</Scope>";
+         %end;
+
+     /*
+      *  If the Scope value has changed, then should we also move the Portlets referenced on that page?
+      */
+
+     %if (%symexist(movePortletsOnPage)) %then %do;
+         put "<MovePortletsOnPage>&movePortletsOnPage.</MovePortletsOnPage>";
+         %end;
  
 %mend;
 
-%put got to update psportalpage parameter handler;
 
 %genPSPortalPageParameters;
 

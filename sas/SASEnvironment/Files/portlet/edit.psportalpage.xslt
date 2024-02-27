@@ -1,16 +1,21 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 <xsl:output method="html" encoding="UTF-8"/>
 
-<xsl:param name="appLocEncoded"/>
+<!-- Common Setup -->
 
-<xsl:param name="sastheme">default</xsl:param>
-<xsl:variable name="sasthemeContextRoot">SASTheme_<xsl:value-of select="$sastheme"/></xsl:variable>
-
-<xsl:variable name="localizationDir">SASPortalApp/sas/SASEnvironment/Files/localization</xsl:variable>
-
-<xsl:param name="localizationFile"><xsl:value-of select="$localizationDir"/>/resources_en.xml</xsl:param>
+<!-- Set up the metadataContext variable -->
+<xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/setup.metadatacontext.xslt"/>
+<!-- Set up the environment context variables -->
+<xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/setup.envcontext.xslt"/>
 
 <!-- load the appropriate localizations -->
+
+<xsl:variable name="localizationFile">
+ <xsl:choose>
+   <xsl:when test="/Mod_Request/NewMetadata/LocalizationFile"><xsl:value-of select="/Mod_Request/NewMetadata/LocalizationFile"/></xsl:when>
+   <xsl:otherwise><xsl:value-of select="$localizationDir"/>/resources_en.xml</xsl:otherwise>
+ </xsl:choose>
+</xsl:variable>
 
 <xsl:variable name="localeXml" select="document($localizationFile)/*"/>
 
@@ -50,15 +55,14 @@
 
 <!-- Global Variables -->
 
-<xsl:variable name="reposId" select="/Mod_Request/NewMetadata/Metareposid"/>
-<xsl:variable name="reposName" select="/Mod_Request/NewMetadata/Metarepos"/>
-<xsl:variable name="parentTreeId" select="/Mod_Request/GetMetadata/Metadata/PSPortalPage/Trees/Tree/@Id"/>
+<xsl:variable name="pageObject" select="$metadataContext/GetMetadata/Metadata/PSPortalPage"/>
 
+<xsl:variable name="parentTreeId" select="$pageObject/Trees/Tree/@Id"/>
 
-<xsl:variable name="columnLayouts" select="Mod_Request/GetMetadata/Metadata/PSPortalPage/LayoutComponents/*"/>
-<xsl:variable name="numberOfColumns" select="count(Mod_Request/GetMetadata/Metadata/PSPortalPage/LayoutComponents/*)"/>
-<xsl:variable name="pageId" select="Mod_Request/GetMetadata/Metadata/PSPortalPage/@Id"/>
-<xsl:variable name="pageType" select="name(Mod_Request/GetMetadata/Metadata/PSPortalPage)"/>
+<xsl:variable name="columnLayouts" select="$pageObject/LayoutComponents/*"/>
+<xsl:variable name="numberOfColumns" select="count($pageObject/LayoutComponents/*)"/>
+<xsl:variable name="pageId" select="$pageObject/@Id"/>
+<xsl:variable name="pageType" select="name($pageObject)"/>
 
 <!-- 
       Main Entry Point
@@ -133,7 +137,7 @@
                 <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/1x1.gif</xsl:attribute>
              </img>
              </td>
-             <xsl:variable name="layoutExtension" select="/Mod_Request/GetMetadata/Metadata/PSPortalPage/Extensions/Extension[@Name='LayoutType']"/>
+             <xsl:variable name="layoutExtension" select="$pageObject/Extensions/Extension[@Name='LayoutType']"/>
 
             <xsl:variable name="layoutType">
                <xsl:choose>
@@ -142,6 +146,7 @@
                   <xsl:choose>
                     <!-- TODO: Add support for Grid, for now everything is column based -->
                     <xsl:when test="$layoutExtension/@Value='Grid'">Column</xsl:when>
+                    <xsl:when test="$layoutExtension/@Value=''">Column</xsl:when>
                     <xsl:otherwise><xsl:value-of select="$layoutExtension/@Value"/></xsl:otherwise>
                   </xsl:choose>
                </xsl:when>
@@ -485,7 +490,7 @@
 
 <!-- This iframe is here to capture the response from submitting the form -->
 
-<iframe id="formResponse" name="formResponse" style="display:none">
+<iframe id="formResponse" name="formResponse" style="display:none" width="100%">
 
 </iframe>
 
@@ -531,7 +536,7 @@
                       <xsl:attribute name="id"><xsl:value-of select="$columnId"/></xsl:attribute>
                       <xsl:attribute name="name"><xsl:value-of select="$columnPortletListId"/></xsl:attribute>
 
-                      <xsl:variable name="layoutObject" select="/Mod_Request/GetMetadata/Metadata/PSPortalPage/LayoutComponents/*[position()=$columnNumber]"/>
+                      <xsl:variable name="layoutObject" select="$pageObject/LayoutComponents/*[position()=$columnNumber]"/>
 
                       <xsl:for-each select="$layoutObject/Portlets/*">
                           <option>

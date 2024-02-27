@@ -70,7 +70,6 @@
         /*
          *  TODO:  Add logic to display any errors that happened on the form submission to the user by setting the content of portal_message div.
          */
-
          history.go(backDepth);
 
         } );

@@ -1,12 +1,20 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 
-<xsl:param name="appLocEncoded"/>
+<!-- Common Setup -->
 
-<xsl:variable name="localizationDir">SASPortalApp/sas/SASEnvironment/Files/localization</xsl:variable>
-
-<xsl:param name="localizationFile"><xsl:value-of select="$localizationDir"/>/resources_en.xml</xsl:param>
+<!-- Set up the metadataContext variable -->
+<xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/setup.metadatacontext.xslt"/>
+<!-- Set up the environment context variables -->
+<xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/setup.envcontext.xslt"/>
 
 <!-- load the appropriate localizations -->
+
+<xsl:variable name="localizationFile">
+ <xsl:choose>
+   <xsl:when test="/Mod_Request/NewMetadata/LocalizationFile"><xsl:value-of select="/Mod_Request/NewMetadata/LocalizationFile"/></xsl:when>
+   <xsl:otherwise><xsl:value-of select="$localizationDir"/>/resources_en.xml</xsl:otherwise>
+ </xsl:choose>
+</xsl:variable>
 
 <xsl:variable name="localeXml" select="document($localizationFile)/*"/>
 
@@ -27,13 +35,15 @@
 <xsl:call-template name="thisPageScripts"/>
 
 
-<xsl:variable name="portletId" select="Mod_Request/GetMetadata/Metadata/PSPortlet/@Id"/>
-<xsl:variable name="portletType" select="Mod_Request/GetMetadata/Metadata/PSPortlet/@PortletType"/>
-<xsl:variable name="parentTreeId" select="Mod_Request/GetMetadata/Metadata/PSPortlet/Trees/Tree/@Id"/>
+<xsl:variable name="portletObject" select="$metadataContext/GetMetadata/Metadata/PSPortlet"/>
+
+<xsl:variable name="portletId" select="$portletObject/@Id"/>
+<xsl:variable name="portletType" select="$portletObject/@PortletType"/>
+<xsl:variable name="parentTreeId" select="$portletObject/Trees/Tree/@Id"/>
 
 <!-- Properties -->
 
-<xsl:variable name="configPropertySet" select="Mod_Request/GetMetadata/Metadata/PSPortlet/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']"/>
+<xsl:variable name="configPropertySet" select="$portletObject/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']"/>
 <xsl:variable name="configPropertySetId" select="$configPropertySet/@Id"/>
 
 <xsl:variable name="configProperties" select="$configPropertySet/SetProperties"/>
@@ -139,7 +149,7 @@
 
 <!-- This iframe is here to capture the response from submitting the form -->
       
-      <iframe id="formResponse" name="formResponse" style="display:none">
+      <iframe id="formResponse" name="formResponse" style="display:none" width="100%">
       
       </iframe>
 

@@ -1,7 +1,33 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 <xsl:output method="xml"/>
 
-<!-- input is response from running getUserSharedPortalPages.xslt -->
+<!-- input is response from running getUserSharedPortalPagesReferences.xslt -->
+
+<!-- There is some nuance here that has to be handled.
+ 
+     It is possible that a page was discovered to be added that may already exist for the user, here
+     are the possibilities.
+
+     Previous Scope | New Scope | Result
+     - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+     available      | available | no change (would not have triggered a new page being discovered)
+     available      | default   | page could exist, if so, leave it, if not add it
+     available      | persistent| page could exist, if so, leave it, if not add it
+     default        | available | page could exist, if so, leave it, if not don't add it
+     default        | default   | no change (would not have triggered a new page being discovered)
+     default        | persistent| page could exist, if so, leave it, if not, add it
+     persistent     | available | page will exist
+     persistent     | default   | page will exist
+     persistent     | persistent| no change (would not have triggered a new page being discovered)
+
+     While not processed by this code, there is also a possibility that a content admin stops sharing
+     a page, thus leaving relationships within the users' portal to that page, but the permissions
+     on the page will stop the page from being retieved.
+
+     NOTE: The get request does not include Available pages since they won't automatically be added 
+           to the user's portal content.  Thus, the rows above where New Scope = available do not
+           need to be handled here.
+-->
 
 <!-- - - - - - - - - - - - - - - - - - - -
       Main Entry Point
@@ -13,7 +39,7 @@
 
         <Metadata>
 
-            <xsl:apply-templates select="/Multiple_Requests/GetMetadataObjects[1]/Objects/PSPortalPage">
+            <xsl:apply-templates select="/Multiple_Requests/GetMetadataObjects[1]/Objects/Extension/OwningObject/PSPortalPage">
             </xsl:apply-templates>
 
         </Metadata>
@@ -37,10 +63,13 @@
     <xsl:variable name="parentTreeId" select="$parentTree/@Id"/>
     <xsl:variable name="parentTreeName" select="$parentTree/@Name"/>
 
-    <xsl:variable name="pagesGroupId" select="/Multiple_Requests/GetMetadataObjects[2]/Objects/Tree/Members/Group[@Name='DESKTOP_PORTALPAGES_GROUP']/@Id"/>
-    <xsl:variable name="pagesGroupName" select="/Multiple_Requests/GetMetadataObjects[2]/Objects/Tree/Members/Group[@Name='DESKTOP_PORTALPAGES_GROUP']/@Name"/>
-    <xsl:variable name="historyGroupId" select="/Multiple_Requests/GetMetadataObjects[2]/Objects/Tree/Members/Group[@Name='DESKTOP_PAGEHISTORY_GROUP']/@Id"/>
-    <xsl:variable name="historyGroupName" select="/Multiple_Requests/GetMetadataObjects[2]/Objects/Tree/Members/Group[@Name='DESKTOP_PAGEHISTORY_GROUP']/@Name"/>
+    
+    <xsl:variable name="pagesGroup" select="$parentTree/Members/Group[@Name='DESKTOP_PORTALPAGES_GROUP']"/>
+    <xsl:variable name="pagesGroupId" select="$pagesGroup/@Id"/>
+    <xsl:variable name="pagesGroupName" select="$pagesGroup/@Name"/>
+    <xsl:variable name="historyGroup" select="$parentTree/Members/Group[@Name='DESKTOP_PAGEHISTORY_GROUP']"/>
+    <xsl:variable name="historyGroupId" select="$historyGroup/@Id"/>
+    <xsl:variable name="historyGroupName" select="$historyGroup/@Name"/>
 
     <xsl:if test="not($parentTreeId)">
        <message>ERROR: Parent Tree Id not found in input xml file.</message>
@@ -60,46 +89,58 @@
                           to validate that the correct associations are being made, thus including Name attributes on object references
        -->
 
-    <!-- Add the shared page to the list of portal pages for this user -->
+    <xsl:variable name="existingPage" select="$pagesGroup/Members/PSPortalPage[@Id=$newPageId]"/>
 
-    <Group><xsl:attribute name="Id"><xsl:value-of select="$pagesGroupId"/></xsl:attribute>
-           <xsl:attribute name="Name"><xsl:value-of select="$pagesGroupName"/></xsl:attribute>
+    <xsl:if test="not($existingPage)">
+        <!-- Add the shared page to the list of portal pages for this user -->
 
-       <Members Function="Append">
-         <PSPortalPage><xsl:attribute name="ObjRef"><xsl:value-of select="$newPageId"/></xsl:attribute>
-                       <xsl:attribute name="Name"><xsl:value-of select="$pageName"/></xsl:attribute>
+        <Group><xsl:attribute name="Id"><xsl:value-of select="$pagesGroupId"/></xsl:attribute>
+               <xsl:attribute name="Name"><xsl:value-of select="$pagesGroupName"/></xsl:attribute>
 
-         </PSPortalPage>
-       </Members>
+           <Members Function="Append">
+             <PSPortalPage><xsl:attribute name="ObjRef"><xsl:value-of select="$newPageId"/></xsl:attribute>
+                           <xsl:attribute name="Name"><xsl:value-of select="$pageName"/></xsl:attribute>
 
-    </Group>
+             </PSPortalPage>
+           </Members>
 
-    <xsl:comment>Create the Page History group and link in the shared page</xsl:comment><xsl:text>&#xa;</xsl:text>
+        </Group>
 
-    <!-- UpdateMetadata can create objects if the passed Id is in the form <reposid>.$<uniqueId>, so create that format of Id now for the new history group
-         There is no significance to using part of the page Id as the group Id, other than in this request, we know it will be unique.
-      -->
+        <xsl:comment>Create the Page History group and link in the shared page</xsl:comment><xsl:text>&#xa;</xsl:text>
 
-    <xsl:variable name="reposPrefix" select="substring-before($newPageId,'.')"/>
-    <xsl:variable name="pageSuffix" select="substring-after($newPageId,'.')"/>
+        <!-- UpdateMetadata can create objects if the passed Id is in the form <reposid>.$<uniqueId>, so create that format of Id now for the new history group
+             There is no significance to using part of the page Id as the group Id, other than in this request, we know it will be unique.
+          -->
 
-    <Group><xsl:attribute name="Id"><xsl:value-of select="$reposPrefix"/>.$<xsl:value-of select="$pageSuffix"/></xsl:attribute><xsl:attribute name="Name"><xsl:value-of select="@Name"/></xsl:attribute><xsl:attribute name="Desc"><xsl:value-of select="@Desc"/></xsl:attribute>
-        <Groups>
-           <Group><xsl:attribute name="ObjRef"><xsl:value-of select="$historyGroupId"/></xsl:attribute><xsl:attribute name="Name"><xsl:value-of select="$historyGroupName"/></xsl:attribute></Group>
-        </Groups>
+        <xsl:variable name="reposPrefix" select="substring-before($newPageId,'.')"/>
+        <xsl:variable name="pageSuffix" select="substring-after($newPageId,'.')"/>
 
-        <Trees>
-          <Tree><xsl:attribute name="ObjRef"><xsl:value-of select="$parentTreeId"/></xsl:attribute><xsl:attribute name="Name"><xsl:value-of select="$parentTreeName"/></xsl:attribute>
-          </Tree>
-        </Trees>
+        <!-- It's possible that this page was linked before and then removed from the user's tree.  In this case, the
+             history group will already exist.  The only way to know if this history group was related to this page is
+             to see if the names are the same.  That seems error prone and there sequences where you are going to end 
+             up with multiple history groups for the same page anyway, so we aren't going to try to re-use an existing
+             group.  When finding the history group for this page, we only look to see which one has this page as a 
+             member, so the multiples shouldn't impact that.
+        -->
+        <Group><xsl:attribute name="Id"><xsl:value-of select="$reposPrefix"/>.$<xsl:value-of select="$pageSuffix"/></xsl:attribute><xsl:attribute name="Name"><xsl:value-of select="@Name"/></xsl:attribute><xsl:attribute name="Desc"><xsl:value-of select="@Desc"/></xsl:attribute>
+            <Groups>
+               <Group><xsl:attribute name="ObjRef"><xsl:value-of select="$historyGroupId"/></xsl:attribute><xsl:attribute name="Name"><xsl:value-of select="$historyGroupName"/></xsl:attribute></Group>
+            </Groups>
 
-        <Members>
-          <PSPortalPage><xsl:attribute name="ObjRef"><xsl:value-of select="$newPageId"/></xsl:attribute><xsl:attribute name="Name">
-                        <xsl:value-of select="$pageName"/></xsl:attribute>
-          </PSPortalPage>
-        </Members>
+            <Trees>
+              <Tree><xsl:attribute name="ObjRef"><xsl:value-of select="$parentTreeId"/></xsl:attribute><xsl:attribute name="Name"><xsl:value-of select="$parentTreeName"/></xsl:attribute>
+              </Tree>
+            </Trees>
 
-    </Group>
+            <Members>
+              <PSPortalPage><xsl:attribute name="ObjRef"><xsl:value-of select="$newPageId"/></xsl:attribute><xsl:attribute name="Name">
+                            <xsl:value-of select="$pageName"/></xsl:attribute>
+              </PSPortalPage>
+            </Members>
+
+        </Group>
+
+    </xsl:if>
 
 </xsl:template>
 

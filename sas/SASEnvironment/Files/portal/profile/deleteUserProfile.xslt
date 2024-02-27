@@ -54,8 +54,6 @@
 
            <xsl:when test="$profileCount &gt; 0">
 
-                <xsl:message>Number of profiles found to delete=<xsl:value-of select="$profileCount"/></xsl:message>
-
 		<DeleteMetadata>
 
 		<Metadata>

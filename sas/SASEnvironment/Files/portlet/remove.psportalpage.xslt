@@ -1,18 +1,21 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 <xsl:output method="html"/>
 
-<!-- Input xml format is the Mod_Request format with results merged in from remove.get execution -->
+<!-- Common Setup -->
 
-<xsl:param name="appLocEncoded"/>
-
-<xsl:param name="sastheme">default</xsl:param>
-<xsl:variable name="sasthemeContextRoot">SASTheme_<xsl:value-of select="$sastheme"/></xsl:variable>
-
-<xsl:variable name="localizationDir">SASPortalApp/sas/SASEnvironment/Files/localization</xsl:variable>
-
-<xsl:param name="localizationFile"><xsl:value-of select="$localizationDir"/>/resources_en.xml</xsl:param>
+<!-- Set up the metadataContext variable -->
+<xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/setup.metadatacontext.xslt"/>
+<!-- Set up the environment context variables -->
+<xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/setup.envcontext.xslt"/>
 
 <!-- load the appropriate localizations -->
+
+<xsl:variable name="localizationFile">
+ <xsl:choose>
+   <xsl:when test="/Mod_Request/NewMetadata/LocalizationFile"><xsl:value-of select="/Mod_Request/NewMetadata/LocalizationFile"/></xsl:when>
+   <xsl:otherwise><xsl:value-of select="$localizationDir"/>/resources_en.xml</xsl:otherwise>
+ </xsl:choose>
+</xsl:variable>
 
 <xsl:variable name="localeXml" select="document($localizationFile)/*"/>
 
@@ -30,9 +33,9 @@
      must be under a shared root object.  Thus, here we can only go to the AccessControlEntries
      level.  Fortunately, the only trees listed under here are the ones we want in our lookup table
   -->
-<xsl:variable name="treeLookup" select="/Mod_Request/Multiple_Requests/GetMetadataObjects[1]/Objects/Person/AccessControlEntries"/>
+<xsl:variable name="treeLookup" select="$metadataContext/Multiple_Requests/GetMetadataObjects[1]/Objects/Person/AccessControlEntries"/>
 <!-- Get the same set of nodes in a a variable -->
-<xsl:variable name="writeableTrees" select="/Mod_Request/Multiple_Requests/GetMetadataObjects[1]/Objects/Person/AccessControlEntries/AccessControlEntry/Objects/Tree"/>
+<xsl:variable name="writeableTrees" select="$metadataContext/Multiple_Requests/GetMetadataObjects[1]/Objects/Person/AccessControlEntries/AccessControlEntry/Objects/Tree"/>
 
 <!-- Re-usable scripts -->
 
@@ -50,7 +53,7 @@
 
 <xsl:variable name="pageId" select="/Mod_Request/NewMetadata/Id"/>
 
-<xsl:variable name="numPortlets" select="count(/Mod_Request/Multiple_Requests/GetMetadataObjects/Objects/PSPortalPage/LayoutComponents/*/Portlets/*)"/>
+<xsl:variable name="numPortlets" select="count($metadataContext/Multiple_Requests/GetMetadataObjects/Objects/PSPortalPage/LayoutComponents/*/Portlets/*)"/>
 
 <!--  The rules that need to represented on the resulting page are:
 
@@ -63,7 +66,7 @@
 
   <!-- Calculate what type of remove can be done on this page based on the permissions on the parent tree -->
 
-  <xsl:variable name="permissionsTree" select="/Mod_Request/Multiple_Requests/GetMetadataObjects[2]/Objects/PSPortalPage/Trees/Tree"/>
+  <xsl:variable name="permissionsTree" select="$metadataContext/Multiple_Requests/GetMetadataObjects[2]/Objects/PSPortalPage/Trees/Tree"/>
   <xsl:variable name="permissionsTreeId" select="$permissionsTree/@Id"/>
 
   <xsl:variable name="permissionsTreeKey" select="key('treeKey',$permissionsTreeId,$treeLookup)/@Name"/>
@@ -219,7 +222,7 @@
                             </td>
                         </tr>
 -->
-                        <xsl:for-each select="/Mod_Request/Multiple_Requests/GetMetadataObjects[2]/Objects/PSPortalPage/LayoutComponents/PSColumnLayoutComponent/Portlets/PSPortlet">
+                        <xsl:for-each select="$metadataContext/Multiple_Requests/GetMetadataObjects[2]/Objects/PSPortalPage/LayoutComponents/PSColumnLayoutComponent/Portlets/PSPortlet">
 
 
                              <!-- Only want to include in the list the portlets that we have write access to.  Thus, we have to look up 
@@ -338,7 +341,7 @@
 
   <!-- This iframe is here to capture the response from submitting the form -->
   
-  <iframe id="formResponse" name="formResponse" style="display:none">
+  <iframe id="formResponse" name="formResponse" style="display:none" width="100%">
   
   </iframe>
 

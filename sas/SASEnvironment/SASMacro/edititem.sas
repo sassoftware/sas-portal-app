@@ -60,15 +60,15 @@
                    filename _eirsp temp;
                    proc metadata in=_eireq out=_eirsp;
                    run;
+                   %let metadataContext=%sysfunc(pathname(_eirsp));
 
+                   %showFormattedXML(_eirsp,Edit Item getter metadata response);
                    /* 
-                    * Not the most efficient, but the new xml should be small, so
-                    * just recreate it, merging in the retrieved metadata.
+                    * Recreate the newxml format including the link to the metadata context
                     */
 
 	           filename newxml temp;
-                   %buildModParameters(newxml,merge=_eirsp);
-                   filename _eirsp;
+                   %buildModParameters(newxml);
 
                    %end;
 
@@ -87,6 +87,10 @@
               ;
             run;
 
+            %if (%sysfunc(fileref(_eirsp))<1) %then %do;
+                filename _eirsp;
+                %end;
+        
             /*
              * TODO: Edit logic to make sure page generation succeeded.
              */

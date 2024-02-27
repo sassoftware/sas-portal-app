@@ -7,3 +7,7 @@
      put "<PortletHeight>&portletHeight.</PortletHeight>";
      %end;
 
+  %if (%symexist(SELECTEDSHOWFORM)) %then %do;     
+     put "<ShowForm>&SELECTEDSHOWFORM.</ShowForm>";
+     %end;
+

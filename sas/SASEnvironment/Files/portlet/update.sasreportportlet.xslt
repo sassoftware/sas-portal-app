@@ -1,12 +1,19 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 <xsl:output method="xml"/>
 
+<!-- Common Setup -->
+
+<!-- Set up the metadataContext variable -->
+<xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/setup.metadatacontext.xslt"/>
+<!-- Set up the environment context variables -->
+<xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/setup.envcontext.xslt"/>
+
 <xsl:template match="/">
 
-<xsl:variable name="reposId" select="/Mod_Request/NewMetadata/Metareposid"/>
+<xsl:variable name="portletObject" select="$metadataContext/GetMetadata/Metadata/PSPortlet"/>
 
-<xsl:variable name="portletId" select="Mod_Request/GetMetadata/Metadata/PSPortlet/@Id"/>
-<xsl:variable name="portletType" select="Mod_Request/GetMetadata/Metadata/PSPortlet/@PortletType"/>
+<xsl:variable name="portletId" select="$portletObject/@Id"/>
+<xsl:variable name="portletType" select="$portletObject/@PortletType"/>
 
 <!--  For the following properties, when the portlet is first created, these properties are not
       created by default.  Thus, it's possible that when we get here, we actually have to create them.
@@ -16,7 +23,7 @@
 
 <!-- Properties -->
 
-<xsl:variable name="configPropertySet" select="Mod_Request/GetMetadata/Metadata/PSPortlet/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']"/>
+<xsl:variable name="configPropertySet" select="$portletObject/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']"/>
 <xsl:variable name="configPropertySetId" select="$configPropertySet/@Id"/>
 
 <xsl:variable name="configProperties" select="$configPropertySet/SetProperties"/>

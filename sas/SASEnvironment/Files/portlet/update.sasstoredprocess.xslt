@@ -1,12 +1,20 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 <xsl:output method="xml"/>
 
+<!-- Common Setup -->
+
+<!-- Set up the metadataContext variable -->
+<xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/setup.metadatacontext.xslt"/>
+<!-- Set up the environment context variables -->
+<xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/setup.envcontext.xslt"/>
+
 <xsl:template match="/">
 
-<xsl:variable name="reposId" select="/Mod_Request/NewMetadata/Metareposid"/>
 
-<xsl:variable name="portletId" select="Mod_Request/GetMetadata/Metadata/PSPortlet/@Id"/>
-<xsl:variable name="portletType" select="Mod_Request/GetMetadata/Metadata/PSPortlet/@PortletType"/>
+<xsl:variable name="portletObject" select="$metadataContext/GetMetadata/Metadata/PSPortlet"/>
+
+<xsl:variable name="portletId" select="$portletObject/@Id"/>
+<xsl:variable name="portletType" select="$portletObject/@PortletType"/>
 
 <!--  For the following properties, when the portlet is first created, these properties are not
       created by default.  Thus, it's possible that when we get here, we actually have to create them.
@@ -16,7 +24,7 @@
 
 <!-- Properties -->
 
-<xsl:variable name="configPropertySet" select="Mod_Request/GetMetadata/Metadata/PSPortlet/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']"/>
+<xsl:variable name="configPropertySet" select="$portletObject/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']"/>
 <xsl:variable name="configPropertySetId" select="$configPropertySet/@Id"/>
 
 <xsl:variable name="configProperties" select="$configPropertySet/SetProperties"/>
@@ -92,12 +100,42 @@
   </xsl:choose>
 </xsl:variable>
 
+<!-- Show Form -->
+
+<xsl:variable name="newShowFormId"><xsl:value-of select="substring-after($reposId,'.')"/>.$newShowForm</xsl:variable>
+
+<xsl:variable name="oldShowFormProperty" select="$configProperties/Property[@Name='show-form']"/>
+
+<xsl:variable name="oldShowFormId">
+ <xsl:choose>
+   <xsl:when test="$oldShowFormProperty/@Id">
+      <xsl:value-of select="$oldShowFormProperty/@Id"/>
+   </xsl:when>
+   <xsl:otherwise>
+    <xsl:value-of select="$newShowFormId"/>
+   </xsl:otherwise>
+  </xsl:choose>
+</xsl:variable>
+
+<xsl:variable name="oldShowForm" select="$oldShowFormProperty/@DefaultValue"/>
+
+<xsl:variable name="newShowForm">
+  <xsl:choose>
+     <xsl:when test="Mod_Request/NewMetadata/ShowForm">
+        <xsl:choose>
+        <xsl:when test="Mod_Request/NewMetadata/ShowForm = '0'">false</xsl:when>
+        <xsl:otherwise>true</xsl:otherwise>
+        </xsl:choose>
+     </xsl:when>
+     <xsl:otherwise><xsl:value-of select="$oldShowForm"/></xsl:otherwise>
+  </xsl:choose>
+</xsl:variable>
+
 <!--  See if there is anything changed and if so, do it -->
 
 <xsl:choose>
 
-  <xsl:when test="not($oldPortletHeight = $newPortletHeight) or not($oldPortletURI = $newPortletURI)">
-
+  <xsl:when test="not($oldPortletHeight = $newPortletHeight) or not($oldPortletURI = $newPortletURI) or not($oldShowForm = $newShowForm)">
     <UpdateMetadata>
 
       <Metadata>
@@ -321,6 +359,30 @@
 
          </xsl:if> 
 
+        </xsl:if>
+
+        <!--  Show Form -->
+
+        <xsl:if test="not($oldShowForm=$newShowForm)">
+           <Property><xsl:attribute name="Id"><xsl:value-of select="$oldShowFormId"/></xsl:attribute><xsl:attribute name="DefaultValue"><xsl:value-of select="$newShowForm"/></xsl:attribute>
+
+               <!-- If the old id is not the same as the new id, then we already had the object, so no further
+                    metadata is required.  If they are the same, then we need to fill in the rest of the information
+                    about this property -->
+               <xsl:if test="$oldShowFormId=$newShowFormId">
+
+                   <xsl:attribute name="Name">show-form</xsl:attribute>
+                   <xsl:attribute name="SQLType">12</xsl:attribute>
+
+                   <AssociatedPropertySet>
+                      <PropertySet>
+                        <xsl:attribute name="ObjRef"><xsl:value-of select="$configPropertySetId"/></xsl:attribute>
+                      </PropertySet>
+                   </AssociatedPropertySet>
+
+               </xsl:if>
+
+        </Property>
         </xsl:if>
 
         <!-- TODO:  Add Support for Prompts -->

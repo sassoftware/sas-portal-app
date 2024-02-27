@@ -8,7 +8,9 @@
 
 /*  Set the group you want to create */
 
-%let portalGroup=Group 4;
+%if (%symexist(portalGroup)=0) %then %do;
+    %let portalGroup=Group 4;
+    %end;
 
 %createPortalGroup(name=&portalGroup.,rc=createPortalGroupRC);
 

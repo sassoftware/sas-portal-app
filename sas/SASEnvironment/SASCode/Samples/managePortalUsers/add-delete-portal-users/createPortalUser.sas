@@ -8,7 +8,9 @@
 
 /*  Set the user you want to create */
 
-%let portalUser=Group 4 User 1;
+%if (%symexist(portalUser)=0) %then %do;
+    %let portalUser=Group 4 User 1;
+    %end;
 
 %createPortalUser(name=&portalUser.,rc=createPortalUserRC);
 

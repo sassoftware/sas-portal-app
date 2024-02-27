@@ -53,6 +53,15 @@
 
             filename addhndlr "&createItemParameterHandler.";
 
+            /*
+             * If we are going to get some metadata, create the response file
+             * now so a reference is included in the parameter building.
+             */
+            %if (%sysfunc(fileexist(&createItemGetter.)) ne 0) %then %do;
+                filename getrsp temp;
+                %let metadataContext=%sysfunc(pathname(getrsp));
+                %end;
+
             %buildModParameters(newxml,addhndlr,rc=_ciRC);
 
             filename addhndlr;
@@ -87,47 +96,12 @@
                      *  Issue the metadata request
                      */
 
-                    filename getrsp temp;
-
                     proc metadata in=getreq out=getrsp;
                     run;
 
                     filename getreq;
 
                     %showFormattedXML(getrsp,Create Item getter metadata response);
-
-                    /*
-                     * Merge the response into the "mod" content
-                     */
-
-                     data _null_;
-                       infile newxml;
-                       file newxml ;
-                       input;
-                       /*  This is quirky, because we are writing back to the same file
-                           the replacement string needs to be at least as long as the 
-                           string we want to ignore
-                        */
-                       
-                       if (find(_infile_,'</Mod_Request>')) then do;
-                          put            '<!--          -->';
-                          end;
-                       else put _infile_;
-                     run;
-
-                     data _null_;
-                       file newxml mod;
-                       infile getrsp end=last;
-                       input;
-                       put _infile_;
-                       if (last) then do;
-                          put '</Mod_Request>';
-                          end;
-                     run;
-
-                    filename getrsp;
-
-                    %showFormattedXML(newxml,Merged Create Item getter metadata);
 
                     %end;
 
@@ -148,6 +122,10 @@
 
                 %issueMessage(messageKey=metadataGenerationFailed);
 
+                %end;
+
+            %if (%sysfunc(fileref(getrsp))<1) %then %do;
+                filename getrsp;
                 %end;
 
             filename newxml;

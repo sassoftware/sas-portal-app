@@ -93,6 +93,7 @@
 
   <string key="portletEditSASStoredProcessUri">保存されたプロセス パス</string>
   <string key="portletEditSASStoredProcessHeight">ポートレットの高さ</string>
+  <string key="portletEditCollectionShowFormLabel">フォームを表示</string>
 
   <!--
        Collection Portlet Content Editing
@@ -153,6 +154,11 @@
   <string key="portletEditPageHasChangedMessage">このページに変更を加えました。 続行すると、これらの変更は失われます。 続行して変更内容を失いますか?</string>
 
   <string key="portletEditPageRemovePortlet">これにより、ポータルからアイテムが削除されますが、完全に削除されるわけではありません。 続けたいですか？</string>
+
+  <string key="portletMovePagePortlets">次のアイテムを指定した共有場所に移動します。</string>
+
+  <!-- The name of the page template for the User's home page.  Not sure if this is localized or not, but including it here in case it is -->
+  <string key="portletHomePrototypeName">Home</string>
 
   <!--
        Portlet Item Editor menu

@@ -67,17 +67,18 @@
              proc metadata in=_uireq out=_uirsp;
              run;
 
+             %let metadataContext=%sysfunc(pathname(_uirsp));
+             %showFormattedXML(_uirsp,Update Item getter metadata response);
+
              /*
-              * Not the most efficient, but the new xml should be small, so
-              * just recreate it, merging in the retrieved metadata.
+              * Recreate the newxml format including the link to the metadata context
               */
 
              filename newxml temp;
 
              filename updhndlr "&updateItemParameterHandler.";
 
-             %buildModParameters(newxml,updhndlr,merge=_uirsp);
-             filename _uirsp;
+             %buildModParameters(newxml,updhndlr);
              filename updhndlr;
 
              %showFormattedXML(newxml,generated New Metadata xml);
@@ -97,6 +98,10 @@
                  %issueMessage(messageKey=metadataGenerationFailed);
 
                  %end;
+
+            %if (%sysfunc(fileref(_uirsp))<1) %then %do;
+                filename _uirsp;
+                %end;
 
             filename newxml;
 

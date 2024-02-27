@@ -60,15 +60,14 @@
                    filename _airsp temp;
                    proc metadata in=_aireq out=_airsp;
                    run;
-
+                   %let metadataContext=%sysfunc(pathname(_airsp));
                    /* 
                     * Not the most efficient, but the new xml should be small, so
-                    * just recreate it, merging in the retrieved metadata.
+                    * Recreate the newxml format including the link to the metadata context
                     */
 
 	           filename newxml temp;
-                   %buildModParameters(newxml,merge=_airsp);
-                   filename _airsp;
+                   %buildModParameters(newxml);
 
                    %end;
 
@@ -86,6 +85,10 @@
                          "localizationFile"="&localizationFile."
               ;
             run;
+
+            %if (%sysfunc(fileref(_airsp))<1) %then %do;
+                filename _airsp;
+                %end;
 
             /*
              * TODO: Add logic to make sure page generation succeeded.

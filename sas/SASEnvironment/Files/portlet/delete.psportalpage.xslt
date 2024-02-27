@@ -11,7 +11,7 @@
      delete = permanently delete the page
      if scope=delete then check whether portlets on the page should also be deleted
       DeletePortletsOnPage = true, delete the portlets (but only the writeable ones)
-                             false do not delete the portlets
+                             false do not delete the portlets (NOTE: if no value is passed, false is the default!) 
 
      NOTE: This is a serious "gotcha" here.  Once a page is shared, it is linked into multiple
      user's permissions tree.  At that point, all of these trees play a role on the permissions of the

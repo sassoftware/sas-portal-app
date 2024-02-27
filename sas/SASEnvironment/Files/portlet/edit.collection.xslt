@@ -2,18 +2,21 @@
 
 <xsl:output method="html" encoding="UTF-8"/>
 
-<xsl:param name="reposName">Foundation</xsl:param>
+<!-- Common Setup -->
 
-<xsl:param name="appLocEncoded"/>
-
-<xsl:param name="sastheme">default</xsl:param>
-<xsl:variable name="sasthemeContextRoot">SASTheme_<xsl:value-of select="$sastheme"/></xsl:variable>
-
-<xsl:variable name="localizationDir">SASPortalApp/sas/SASEnvironment/Files/localization</xsl:variable>
-
-<xsl:param name="localizationFile"><xsl:value-of select="$localizationDir"/>/resources_en.xml</xsl:param>
+<!-- Set up the metadataContext variable -->
+<xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/setup.metadatacontext.xslt"/>
+<!-- Set up the environment context variables -->
+<xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/setup.envcontext.xslt"/>
 
 <!-- load the appropriate localizations -->
+
+<xsl:variable name="localizationFile">
+ <xsl:choose>
+   <xsl:when test="/Mod_Request/NewMetadata/LocalizationFile"><xsl:value-of select="/Mod_Request/NewMetadata/LocalizationFile"/></xsl:when>
+   <xsl:otherwise><xsl:value-of select="$localizationDir"/>/resources_en.xml</xsl:otherwise>
+ </xsl:choose>
+</xsl:variable>
 
 <xsl:variable name="localeXml" select="document($localizationFile)/*"/>
 
@@ -42,7 +45,10 @@
 <xsl:variable name="portletEditCollectionHasChangedMessage" select="$localeXml/string[@key='portletEditCollectionHasChangedMessage']/text()"/>
 
 <!-- Global Variables -->
-<xsl:variable name="parentTreeId" select="Mod_Request/GetMetadata/Metadata/PSPortlet/Trees/Tree/@Id"/>
+
+<xsl:variable name="portletObject" select="$metadataContext/GetMetadata/Metadata/PSPortlet"/>
+
+<xsl:variable name="parentTreeId" select="$portletObject/Trees/Tree/@Id"/>
 
 <xsl:variable name="saveLink" select="concat('/SASStoredProcess/do?_program=',$appLocEncoded,'services/updateItem')"/>
 
@@ -56,17 +62,17 @@
 
 <xsl:variable name="itemType">PSPortlet</xsl:variable>
 
-<xsl:variable name="portletId" select="Mod_Request/GetMetadata/Metadata/PSPortlet/@Id"/>
-<xsl:variable name="portletType" select="Mod_Request/GetMetadata/Metadata/PSPortlet/@PortletType"/>
+<xsl:variable name="portletId" select="$portletObject/@Id"/>
+<xsl:variable name="portletType" select="$portletObject/@PortletType"/>
 
-<xsl:variable name="showDescription" select="Mod_Request/GetMetadata/Metadata/PSPortlet/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='show-description']/@DefaultValue"/>
-<xsl:variable name="showLocation" select="Mod_Request/GetMetadata/Metadata/PSPortlet/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='show-location']/@DefaultValue"/>
-<xsl:variable name="packageSortOrder" select="Mod_Request/GetMetadata/Metadata/PSPortlet/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='ascending-packageSortOrder']/@DefaultValue"/>
+<xsl:variable name="showDescription" select="$portletObject/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='show-description']/@DefaultValue"/>
+<xsl:variable name="showLocation" select="$portletObject/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='show-location']/@DefaultValue"/>
+<xsl:variable name="packageSortOrder" select="$portletObject/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='ascending-packageSortOrder']/@DefaultValue"/>
 
 <xsl:call-template name="commonFormFunctions"/>
 <xsl:call-template name="thisPageScripts"/>
 
-  <xsl:for-each select="Mod_Request/GetMetadata/Metadata/PSPortlet/Groups/Group/Members/*">
+  <xsl:for-each select="$portletObject/Groups/Group/Members/*">
 
     <xsl:call-template name="addItemList"/>
 
@@ -254,7 +260,7 @@
                     <td rowspan="5" valign="top" class="textEntry">
                         <select name="portletItemSelect" multiple="multiple" size="6" onchange="selectionChanged('portletItemSelect');" id="portletItemSelect" style="width: 70mm">
 
-                          <xsl:for-each select="Mod_Request/GetMetadata/Metadata/PSPortlet/Groups/Group/Members/*">
+                          <xsl:for-each select="$portletObject/Groups/Group/Members/*">
 
                             <xsl:call-template name="addListBox"/>
 
@@ -325,7 +331,7 @@
                 <tr>
                     <td />
                     <td valign="middle">
-                        <xsl:variable name="collectionGroupId"><xsl:value-of select="Mod_Request/GetMetadata/Metadata/PSPortlet/Groups/Group[1]/@Id"/></xsl:variable>
+                        <xsl:variable name="collectionGroupId"><xsl:value-of select="$portletObject/Groups/Group[1]/@Id"/></xsl:variable>
                         <a role="button">
                            <xsl:attribute name="onclick">if (displayChangedMessage("<xsl:value-of select="$portletEditCollectionHasChangedMessage"/>")) removeItem("portletItemSelect",'<xsl:value-of select="$collectionGroupId"/>','<xsl:value-of select="$removeLink"/>',noneSelected,tooMany); else return false;</xsl:attribute>
                         <img id="removeImg" border="0" 
@@ -351,7 +357,7 @@
                     <!--  We want to add an item to the group associated with this portlet, so pass that information
                           along 
                     -->
-                    <xsl:variable name="collectionGroupId"><xsl:value-of select="Mod_Request/GetMetadata/Metadata/PSPortlet/Groups/Group[1]/@Id"/></xsl:variable>
+                    <xsl:variable name="collectionGroupId"><xsl:value-of select="$portletObject/Groups/Group[1]/@Id"/></xsl:variable>
                     <td valign="top" align="right">
                         <input class="button" type="button">
                         <xsl:attribute name="onclick">if (displayChangedMessage("<xsl:value-of select="$portletEditCollectionHasChangedMessage"/>")) addItem("Collection",'<xsl:value-of select="$collectionGroupId"/>','<xsl:value-of select="$parentTreeId"/>',"portletItemSelect",'<xsl:value-of select="$addLink"/>'); else return false;</xsl:attribute>
@@ -400,7 +406,7 @@
 
 <!-- This iframe is here to capture the response from submitting the form -->
 
-<iframe id="formResponse" name="formResponse" style="display:none">
+<iframe id="formResponse" name="formResponse" style="display:none" width="100%">
 
 </iframe>
 

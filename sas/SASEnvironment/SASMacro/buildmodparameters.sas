@@ -65,6 +65,19 @@
                   %end;
 
               /*
+               *  Current environment context
+               */
+               %if (%symexist(appLocEncoded)) %then %do;
+                   put "<AppLocEncoded>&appLocEncoded.</AppLocEncoded>";
+                   %end;
+               %if (%symexist(sastheme)) %then %do;
+                   put "<SASTheme>&sastheme.</SASTheme>";
+                   %end;
+               %if (%symexist(localizationFile)) %then %do;
+                   put "<LocalizationFile>&localizationFile.</LocalizationFile>";
+                   %end;
+ 
+              /*
                * For an update or delete request, the Id field should be filled in.
                */
 

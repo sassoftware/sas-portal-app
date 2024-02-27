@@ -8,7 +8,9 @@
 
 /*  Set the user you want to delete */
 
-%let portalUser=Group 4 User 1;
+%if (%symexist(portalUser)=0) %then %do;
+    %let portalUser=Group 4 User 1;
+    %end;
 
 %deletePortalUser(name=&portalUser.,rc=deletePortalUserRC);
 

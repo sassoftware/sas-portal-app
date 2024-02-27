@@ -1,20 +1,21 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 <xsl:output method="html"/>
 
-<!-- Input xml format is the Mod_Request format with both the GetMetadataObjects section
-     and the NewMetadata sections filled in.
-     For the content of the GetMetadataObjects section, see add.get.psportalpage.xslt
-  -->
-<xsl:param name="sastheme">default</xsl:param>
-<xsl:variable name="sasthemeContextRoot">SASTheme_<xsl:value-of select="$sastheme"/></xsl:variable>
+<!-- Common Setup -->
 
-<xsl:param name="appLocEncoded"/>
-
-<xsl:variable name="localizationDir">SASPortalApp/sas/SASEnvironment/Files/localization</xsl:variable>
-
-<xsl:param name="localizationFile"><xsl:value-of select="$localizationDir"/>/resources_en.xml</xsl:param>
+<!-- Set up the metadataContext variable -->
+<xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/setup.metadatacontext.xslt"/>
+<!-- Set up the environment context variables -->
+<xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/setup.envcontext.xslt"/>
 
 <!-- load the appropriate localizations -->
+
+<xsl:variable name="localizationFile">
+ <xsl:choose>
+   <xsl:when test="/Mod_Request/NewMetadata/LocalizationFile"><xsl:value-of select="/Mod_Request/NewMetadata/LocalizationFile"/></xsl:when>
+   <xsl:otherwise><xsl:value-of select="$localizationDir"/>/resources_en.xml</xsl:otherwise>
+ </xsl:choose>
+</xsl:variable>
 
 <xsl:variable name="localeXml" select="document($localizationFile)/*"/>
 
@@ -60,7 +61,8 @@
 
     <xsl:variable name="userName" select="Mod_Request/NewMetadata/Metaperson"/>
 
-    <xsl:variable name="numberOfWriteableTrees" select="count(Mod_Request/GetMetadataObjects/Objects/Person/AccessControlEntries//Tree)"/>
+    <xsl:variable name="personObject" select="$metadataContext/GetMetadataObjects/Objects/Person"/>
+    <xsl:variable name="numberOfWriteableTrees" select="count($personObject/AccessControlEntries//Tree)"/>
 
     <xsl:variable name="isContentAdministrator">
       <xsl:choose>
@@ -259,7 +261,7 @@
 			<td>&#160;</td>
 			<td class="textEntry">
 			    <select name="parentTreeId" onchange="toggleScopeDiv();" id="parentTreeId">
-                                <xsl:for-each select="/Mod_Request/GetMetadataObjects/Objects/Person/AccessControlEntries//Tree">
+                                <xsl:for-each select="$personObject/AccessControlEntries//Tree">
                                    <xsl:variable name="optionTreeName" select="@Name"/>
                                    <xsl:variable name="optionTreeId" select="@Id"/>
                                    <xsl:variable name="optionTreeNameDisplay">
@@ -277,7 +279,7 @@
                       <td class="commonLabel" nowrap="nowrap">&#160;</td>
                       <td>&#160;</td>
                       <td class="textEntry">
-                         <input type="hidden" name="parentTreeId"><xsl:attribute name="value"><xsl:value-of select="/Mod_Request/GetMetadataObjects/Objects/Person/AccessControlEntries/AccessControlEntry/Objects/Tree/@Id"/></xsl:attribute>
+                         <input type="hidden" name="parentTreeId"><xsl:attribute name="value"><xsl:value-of select="$personObject/AccessControlEntries/AccessControlEntry/Objects/Tree/@Id"/></xsl:attribute>
                          </input>
                       </td>
                   </xsl:otherwise>
@@ -390,7 +392,7 @@
 
       <!-- This iframe is here to capture the response from submitting the form -->
       
-      <iframe id="formResponse" name="formResponse" style="display:none">
+      <iframe id="formResponse" name="formResponse" style="display:none" width="100%">
       
       </iframe>
 

@@ -1,6 +1,13 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 <xsl:output method="xml"/>
 
+<!-- Common Setup -->
+
+<!-- Set up the metadataContext variable -->
+<xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/setup.metadatacontext.xslt"/>
+<!-- Set up the environment context variables -->
+<xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/setup.envcontext.xslt"/>
+
 <!-- Main Entry Point -->
 
 <xsl:template match="/">
@@ -18,6 +25,13 @@
 </xsl:variable>
 <xsl:variable name="defaultLayoutType">Column</xsl:variable>
 
+<xsl:variable name="newLayoutType">
+  <xsl:choose>
+    <xsl:when test="Mod_Request/NewMetadata/LayoutType"><xsl:value-of select="Mod_Request/NewMetadata/LayoutType"/></xsl:when>
+    <xsl:otherwise><xsl:value-of select="$defaultLayoutType"/></xsl:otherwise>
+  </xsl:choose>
+</xsl:variable>
+
 <xsl:variable name="parentTreeId"><xsl:value-of select="Mod_Request/NewMetadata/ParentTreeId"/></xsl:variable>
 
 <xsl:variable name="repositoryId"><xsl:value-of select="Mod_Request/NewMetadata/Metareposid"/></xsl:variable>
@@ -31,13 +45,15 @@
       3.  Regardless of what tree is passed in, we need to get the users tree and the pages and history groups
           within it.  If we are passed a user group as the parentTree, just use it.  Otherwise, find it.
 -->
-  <xsl:variable name="userTreeId" select="Mod_Request/GetMetadataObjects/Objects/Person/AccessControlEntries/AccessControlEntry/Objects/Tree[Members/Group[@Name='DESKTOP_PORTALPAGES_GROUP']]/@Id"/>
-  <xsl:variable name="userTreeName" select="/Mod_Request/GetMetadataObjects/Objects/Person/AccessControlEntries//Tree[@Id=$userTreeId]/@Name"/>
+  <xsl:variable name="personObject" select="$metadataContext/GetMetadataObjects/Objects/Person"/>
 
-<xsl:variable name="userDesktopPortalPagesGroupId" select="Mod_Request/GetMetadataObjects/Objects/Person/AccessControlEntries/AccessControlEntry/Objects/Tree/Members/Group[@Name='DESKTOP_PORTALPAGES_GROUP']/@Id"/>
-<xsl:variable name="userDesktopPortalPagesGroupName" select="Mod_Request/GetMetadataObjects/Objects/Person/AccessControlEntries/AccessControlEntry/Objects/Tree/Members/Group[@Name='DESKTOP_PORTALPAGES_GROUP']/@Name"/>
-<xsl:variable name="userDesktopPortalHistoryGroupId" select="Mod_Request/GetMetadataObjects/Objects/Person/AccessControlEntries/AccessControlEntry/Objects/Tree/Members/Group[@Name='DESKTOP_PAGEHISTORY_GROUP']/@Id"/>
-<xsl:variable name="userDesktopPortalHistoryGroupName" select="Mod_Request/GetMetadataObjects/Objects/Person/AccessControlEntries/AccessControlEntry/Objects/Tree/Members/Group[@Name='DESKTOP_PAGEHISTORY_GROUP']/@Name"/>
+  <xsl:variable name="userTreeId" select="$personObject/AccessControlEntries/AccessControlEntry/Objects/Tree[Members/Group[@Name='DESKTOP_PORTALPAGES_GROUP']]/@Id"/>
+  <xsl:variable name="userTreeName" select="$personObject/AccessControlEntries//Tree[@Id=$userTreeId]/@Name"/>
+
+<xsl:variable name="userDesktopPortalPagesGroupId" select="$personObject/AccessControlEntries/AccessControlEntry/Objects/Tree/Members/Group[@Name='DESKTOP_PORTALPAGES_GROUP']/@Id"/>
+<xsl:variable name="userDesktopPortalPagesGroupName" select="$personObject/AccessControlEntries/AccessControlEntry/Objects/Tree/Members/Group[@Name='DESKTOP_PORTALPAGES_GROUP']/@Name"/>
+<xsl:variable name="userDesktopPortalHistoryGroupId" select="$personObject/AccessControlEntries/AccessControlEntry/Objects/Tree/Members/Group[@Name='DESKTOP_PAGEHISTORY_GROUP']/@Id"/>
+<xsl:variable name="userDesktopPortalHistoryGroupName" select="$personObject/AccessControlEntries/AccessControlEntry/Objects/Tree/Members/Group[@Name='DESKTOP_PAGEHISTORY_GROUP']/@Name"/>
 
 <!--  Figure out what tree the page should be placed in
       Placing the Portal page into the right tree and groups can be a little tricky, here is what should happen
@@ -60,10 +76,10 @@
   <xsl:otherwise>
     <xsl:choose>
       <xsl:when test="$newScope='Persistent'">
-        <xsl:value-of select="/Mod_Request/GetMetadataObjects/Objects/Person/AccessControlEntries//Tree[@Id=$parentTreeId]/SubTrees//Tree[@Name='Sticky']/@Id"/>
+        <xsl:value-of select="$personObject/AccessControlEntries//Tree[@Id=$parentTreeId]/SubTrees//Tree[@Name='Sticky']/@Id"/>
       </xsl:when>
       <xsl:when test="$newScope='Default'">
-        <xsl:value-of select="/Mod_Request/GetMetadataObjects/Objects/Person/AccessControlEntries//Tree[@Id=$parentTreeId]/SubTrees//Tree[@Name='Default']/@Id"/>
+        <xsl:value-of select="$personObject/AccessControlEntries//Tree[@Id=$parentTreeId]/SubTrees//Tree[@Name='Default']/@Id"/>
       </xsl:when>
       <xsl:otherwise>
         <xsl:value-of select="$parentTreeId"/>
@@ -73,7 +89,7 @@
 </xsl:choose>
 </xsl:variable>
 
-<xsl:variable name="pageTreeName" select="/Mod_Request/GetMetadataObjects/Objects/Person/AccessControlEntries//Tree[@Id=$pageTreeId]/@Name"/>
+<xsl:variable name="pageTreeName" select="$personObject/AccessControlEntries//Tree[@Id=$pageTreeId]/@Name"/>
 
  <!-- Check for the required information and if it isn't set, then fail the generation -->
 
@@ -143,6 +159,7 @@
                              <xsl:variable name="newLayoutTypeId"><xsl:value-of select="substring-after($repositoryId,'.')"/>.$newLayoutTypeId</xsl:variable>
                             <Extension Name="LayoutType">
                                   <xsl:attribute name="Id"><xsl:value-of select="$newLayoutTypeId"/></xsl:attribute>
+                                  <xsl:attribute name="Value"><xsl:value-of select="$newLayoutType"/></xsl:attribute>
                             </Extension>
                             <xsl:if test="$newPageRank">
                                

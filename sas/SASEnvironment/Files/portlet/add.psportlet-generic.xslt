@@ -1,18 +1,21 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 <xsl:output method="html"/>
 
-<!-- Input xml format is the Mod_Request format 
-  -->
-<xsl:param name="sastheme">default</xsl:param>
-<xsl:variable name="sasthemeContextRoot">SASTheme_<xsl:value-of select="$sastheme"/></xsl:variable>
+<!-- Common Setup -->
 
-<xsl:param name="appLocEncoded"/>
-
-<xsl:variable name="localizationDir">SASPortalApp/sas/SASEnvironment/Files/localization</xsl:variable>
-
-<xsl:param name="localizationFile"><xsl:value-of select="$localizationDir"/>/resources_en.xml</xsl:param>
+<!-- Set up the metadataContext variable -->
+<xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/setup.metadatacontext.xslt"/>
+<!-- Set up the environment context variables -->
+<xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/setup.envcontext.xslt"/>
 
 <!-- load the appropriate localizations -->
+
+<xsl:variable name="localizationFile">
+ <xsl:choose>
+   <xsl:when test="/Mod_Request/NewMetadata/LocalizationFile"><xsl:value-of select="/Mod_Request/NewMetadata/LocalizationFile"/></xsl:when>
+   <xsl:otherwise><xsl:value-of select="$localizationDir"/>/resources_en.xml</xsl:otherwise>
+ </xsl:choose>
+</xsl:variable>
 
 <xsl:variable name="localeXml" select="document($localizationFile)/*"/>
 
@@ -41,6 +44,10 @@
 
 <xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/form.functions.xslt"/>
 
+<!-- Global Variables -->
+
+<xsl:variable name="personObject" select="$metadataContext/GetMetadataObjects/Objects/Person"/>
+
 <!-- Main Entry Point -->
 
 <xsl:template match="/">
@@ -55,7 +62,7 @@
 
     <xsl:variable name="userName" select="Mod_Request/NewMetadata/Metaperson"/>
 
-    <xsl:variable name="numberOfWriteableTrees" select="count(Mod_Request/GetMetadataObjects/Objects/Person/AccessControlEntries//Tree[@TreeType='Permissions Tree' or @TreeType=' Permissions Tree'])"/>
+    <xsl:variable name="numberOfWriteableTrees" select="count($personObject/AccessControlEntries//Tree[@TreeType='Permissions Tree' or @TreeType=' Permissions Tree'])"/>
 
     <xsl:variable name="isContentAdministrator">
       <xsl:choose>
@@ -69,7 +76,7 @@
           - a subtree in the hierarchy under the group's root permission tree.
           When we go to add the portlet, we need to know which root permission tree to add it to, so figure that out now.
     -->
-    <xsl:variable name="currentParentTree" select="/Mod_Request/GetMetadataObjects/Objects/Person/AccessControlEntries//Tree[@Id=$parentTreeId]"/>
+    <xsl:variable name="currentParentTree" select="$personObject/AccessControlEntries//Tree[@Id=$parentTreeId]"/>
 
     <xsl:variable name="rootPermissionsTreeId">
       <xsl:choose>
@@ -77,7 +84,7 @@
          <xsl:value-of select="$currentParentTree/@Id"/>
          </xsl:when>
          <xsl:otherwise>
-         <xsl:value-of select="/Mod_Request/GetMetadataObjects/Objects/Person/AccessControlEntries/AccessControlEntry/Objects/Tree[SubTrees//Tree[@Id=$parentTreeId]]/@Id"/>
+         <xsl:value-of select="$personObject/AccessControlEntries/AccessControlEntry/Objects/Tree[SubTrees//Tree[@Id=$parentTreeId]]/@Id"/>
          </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
@@ -288,7 +295,7 @@
 			</td>
                         <td class="textEntry">
                             <select name="parentTreeId" id="parentTreeId">
-                                <xsl:for-each select="/Mod_Request/GetMetadataObjects/Objects/Person/AccessControlEntries//Tree[@TreeType='Permissions Tree' or @TreeType=' Permissions Tree']">
+                                <xsl:for-each select="$personObject/AccessControlEntries//Tree[@TreeType='Permissions Tree' or @TreeType=' Permissions Tree']">
                                    <xsl:variable name="optionTreeName" select="@Name"/>
                                    <xsl:variable name="optionTreeId" select="@Id"/>
                                    <xsl:variable name="optionTreeNameDisplay">
@@ -384,7 +391,7 @@
 
       <!-- This iframe is here to capture the response from submitting the form -->
       
-      <iframe id="formResponse" name="formResponse" style="display:none">
+      <iframe id="formResponse" name="formResponse" style="display:none" width="100%">
       
       </iframe>
 

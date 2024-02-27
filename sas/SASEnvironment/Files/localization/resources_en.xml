@@ -93,6 +93,7 @@
 
   <string key="portletEditSASStoredProcessUri">Stored Process Path</string>
   <string key="portletEditSASStoredProcessHeight">Portlet Height</string>
+  <string key="portletEditCollectionShowFormLabel">Show Form</string>
 
   <!-- 
        Collection Portlet Content Editing
@@ -153,6 +154,11 @@
   <string key="portletEditPageHasChangedMessage">You have made changes to this page. These changes will be lost if you continue. Do you want to continue and lose your changes?</string>
 
   <string key="portletEditPageRemovePortlet">This will remove the item from your portal, but will not permanently delete it. Do you want to continue?</string>
+
+  <string key="portletMovePagePortlets">Move the following items to the specified share location.</string>
+
+  <!-- The name of the page template for the User's home page.  Not sure if this is localized or not, but including it here in case it is -->
+  <string key="portletHomePrototypeName">Home</string>
 
   <!--
        Portlet Item Editor menu

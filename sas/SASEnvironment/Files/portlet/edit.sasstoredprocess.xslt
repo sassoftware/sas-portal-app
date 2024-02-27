@@ -1,21 +1,31 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 
-<xsl:param name="appLocEncoded"/>
+<!-- Common Setup -->
 
-<xsl:variable name="localizationDir">SASPortalApp/sas/SASEnvironment/Files/localization</xsl:variable>
-
-<xsl:param name="localizationFile"><xsl:value-of select="$localizationDir"/>/resources_en.xml</xsl:param>
+<!-- Set up the metadataContext variable -->
+<xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/setup.metadatacontext.xslt"/>
+<!-- Set up the environment context variables -->
+<xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/setup.envcontext.xslt"/>
 
 <!-- load the appropriate localizations -->
+
+<xsl:variable name="localizationFile">
+ <xsl:choose>
+   <xsl:when test="/Mod_Request/NewMetadata/LocalizationFile"><xsl:value-of select="/Mod_Request/NewMetadata/LocalizationFile"/></xsl:when>
+   <xsl:otherwise><xsl:value-of select="$localizationDir"/>/resources_en.xml</xsl:otherwise>
+ </xsl:choose>
+</xsl:variable>
 
 <xsl:variable name="localeXml" select="document($localizationFile)/*"/>
 
 <!-- Strings to be localized -->
+
 <xsl:variable name="saveButton" select="$localeXml/string[@key='saveButton']/text()"/>
 <xsl:variable name="cancelButton" select="$localeXml/string[@key='cancelButton']/text()"/>
 <xsl:variable name="portletEditSASStoredProcessHeight" select="$localeXml/string[@key='portletEditSASStoredProcessHeight']/text()"/>
 
 <xsl:variable name="portletEditSASStoredProcessUri" select="$localeXml/string[@key='portletEditSASStoredProcessUri']/text()"/>
+<xsl:variable name="portletEditCollectionShowFormLabel" select="$localeXml/string[@key='portletEditCollectionShowFormLabel']/text()"/>
 
 <!-- Re-usable scripts -->
 
@@ -27,19 +37,22 @@
 <xsl:call-template name="thisPageScripts"/>
 
 
-<xsl:variable name="portletId" select="Mod_Request/GetMetadata/Metadata/PSPortlet/@Id"/>
-<xsl:variable name="portletType" select="Mod_Request/GetMetadata/Metadata/PSPortlet/@PortletType"/>
-<xsl:variable name="parentTreeId" select="Mod_Request/GetMetadata/Metadata/PSPortlet/Trees/Tree/@Id"/>
+<xsl:variable name="portletObject" select="$metadataContext/GetMetadata/Metadata/PSPortlet"/>
+<xsl:variable name="portletId" select="$portletObject/@Id"/>
+<xsl:variable name="portletType" select="$portletObject/@PortletType"/>
+<xsl:variable name="parentTreeId" select="$portletObject/Trees/Tree/@Id"/>
 
 <!-- Properties -->
 
-<xsl:variable name="configPropertySet" select="Mod_Request/GetMetadata/Metadata/PSPortlet/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']"/>
+<xsl:variable name="configPropertySet" select="$portletObject/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']"/>
 <xsl:variable name="configPropertySetId" select="$configPropertySet/@Id"/>
 
 <xsl:variable name="configProperties" select="$configPropertySet/SetProperties"/>
 <xsl:variable name="configPropertySets" select="$configPropertySet/PropertySets"/>
 
 <xsl:variable name="portletHeight" select="$configPropertySets/PropertySet[@Name='portletHeight']/SetProperties/Property[@Name='PreferenceInstanceProperty']/@DefaultValue"/>
+
+<xsl:variable name="showForm" select="$configProperties/Property[@Name='show-form']/@DefaultValue"/>
 
 <!--  The URI we store has the prefix SBIP://METASERVER on it.  No need to force the user to enter that, just have them enter the full path -->
 
@@ -104,6 +117,37 @@
             <input type="text" id="height" name="portletHeight" size="4"><xsl:attribute name="value"><xsl:value-of select="$portletHeight"/></xsl:attribute></input>
           </td>
          </tr>
+        <tr>
+            <td nowrap=""><xsl:value-of select="$portletEditCollectionShowFormLabel"/>:
+            </td>
+            <td>&#160;</td>
+            <td class="celljustifyleft" nowrap="nowrap">
+                <input type="checkbox" name="showForm" id="showForm" onclick="setBooleanHidden('showForm');hasChanged=true;">
+                  <xsl:choose>
+                  <xsl:when test="$showForm = 'true'">
+                      <xsl:attribute name="checked">checked</xsl:attribute>
+                      <xsl:attribute name="value">true</xsl:attribute>
+                  </xsl:when>
+                  <xsl:otherwise>
+                      <xsl:attribute name="value">false</xsl:attribute>
+                  </xsl:otherwise>
+                  </xsl:choose>
+
+                </input>
+                <input type="hidden" name="selectedshowForm" id="selectedshowForm">
+                  <xsl:choose>
+                  <xsl:when test="$showForm = 'true'">
+                      <xsl:attribute name="value">1</xsl:attribute>
+                  </xsl:when>
+                  <xsl:otherwise>
+                      <xsl:attribute name="value">0</xsl:attribute>
+                  </xsl:otherwise>
+                  </xsl:choose>
+               
+                </input>
+            </td>
+        </tr>
+
         </tbody></table>
   </td>
  </tr>
@@ -139,13 +183,28 @@
 
 <!-- This iframe is here to capture the response from submitting the form -->
       
-      <iframe id="formResponse" name="formResponse" style="display:none">
+      <iframe id="formResponse" name="formResponse" style="display:none" width="100%">
       
       </iframe>
 
 </xsl:template>
 
 <xsl:template name="thisPageScripts">
+
+ <script>
+    var hasChanged=false;
+
+    function setBooleanHidden(fldName) {
+        var checkboxField = document.getElementById(fldName);
+        var hiddenField = document.getElementById("selected" + fldName);
+        if (checkboxField.checked) {
+            hiddenField.value = "1";
+        } else {
+            hiddenField.value = "0";
+        }
+    }
+
+  </script>
 
 </xsl:template>
 

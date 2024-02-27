@@ -1,19 +1,27 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 <xsl:output method="xml"/>
 
+<!-- Common Setup -->
+
+<!-- Set up the metadataContext variable -->
+<xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/setup.metadatacontext.xslt"/>
+<!-- Set up the environment context variables -->
+<xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/setup.envcontext.xslt"/>
+
 <xsl:template match="/">
 
 <xsl:variable name="reposId" select="/Mod_Request/NewMetadata/Metareposid"/>
 
-<xsl:variable name="portletId" select="Mod_Request/GetMetadata/Metadata/PSPortlet/@Id"/>
-<xsl:variable name="portletType" select="Mod_Request/GetMetadata/Metadata/PSPortlet/@PortletType"/>
+<xsl:variable name="portletObject" select="$metadataContext/GetMetadata/Metadata/PSPortlet"/>
+<xsl:variable name="portletId" select="$portletObject/@Id"/>
+<xsl:variable name="portletType" select="$portletObject/@PortletType"/>
 
 <!--  For the following properties, when a collection is first created, these properties are not
       created by default.  Thus, it's possible that when we get here, we actually have to create them.
       If we determine that to be the case, then create the id in the format that UpdateMetadata expects
       so that it will create a new object.
 -->
-<xsl:variable name="configPropertySet" select="Mod_Request/GetMetadata/Metadata/PSPortlet/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']"/>
+<xsl:variable name="configPropertySet" select="$portletObject/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']"/>
 <xsl:variable name="configPropertySetId" select="$configPropertySet/@Id"/>
 
 <xsl:variable name="configProperties" select="$configPropertySet/SetProperties"/>
@@ -180,7 +188,7 @@
                   by the list of items.  In this case, we know the list has changed, but we don't
                   know the extent.  Thus, we will just replace the current list with a new list.
              -->
-             <xsl:variable name="collectionGroupId" select="Mod_Request/GetMetadata/Metadata/PSPortlet/Groups/Group/@Id"/>
+             <xsl:variable name="collectionGroupId" select="$portletObject/Groups/Group/@Id"/>
              <Group><xsl:attribute name="Id"><xsl:value-of select="$collectionGroupId"/></xsl:attribute>
                 <Members function="replace">
                     <PSPortlet><xsl:attribute name="ObjRef"><xsl:value-of select="$portletId"/></xsl:attribute></PSPortlet>

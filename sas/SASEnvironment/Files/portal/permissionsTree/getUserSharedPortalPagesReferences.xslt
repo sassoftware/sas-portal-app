@@ -5,9 +5,19 @@
      the user's existing portal pages so that this output can be taken and
      the shared pages added to the user's portal 
 
-     NOTE: There shouldn't be a case where a page matches the new datetime criteria and
+     NOTE: (this note left here for historical reasons, although it is now incorrect, see the next NOTE for the current stance)
+    
+     There shouldn't be a case where a page matches the new datetime criteria and
      exists in the user's list of portal pages.  However, going to be extra careful and
      get the existing list so they can be compared on the add just to make sure.
+
+     NOTE: (Current!)
+
+     There is a situation where the page matches the new datetime criteria AND already exists in the 
+     user's list of portal pages.  This can happen if a page is created, given an initial group to share with it and 
+     a "scope" (available, default, persistent) and then the scope is changed by the content admin.   
+
+     See chart in createUserSharedPortalPages.xslt for the state transitions.
 
 -->
 
@@ -26,7 +36,7 @@
 <Multiple_Requests>
 <GetMetadataObjects>
  <ReposId><xsl:value-of select="$reposId"/></ReposId>  
- <Type>PSPortalPage</Type>
+ <Type>Extension</Type>
  <ns>SAS</ns>
      <!-- 256 = GetMetadata
           128 = XMLSelect
@@ -35,34 +45,44 @@
  <Flags>388</Flags>
  <Options>
 
-   <!-- We only want to retrieve pages that were created in the passed time interval and those that have one of the "SharedPage" extensions -->
+   <!-- We only want to retrieve pages that were created in the passed time interval and those that have one of the "SharedPage" extensions.  
+
+        NOTE: We need to be careful with this query.  If an admin changes sharing after the initial page was created, the page object itself
+        may not be updated, only the extension object would be created/updated.  Thus, we have to find the new shared extensions and then get
+        the pages from that query (ie. don't assume that the pages and extensions were created at the same time).
+   -->
      
    <xsl:variable name="start"><xsl:value-of select="normalize-space($startDT)"/></xsl:variable>
    <xsl:variable name="end"><xsl:value-of select="normalize-space($endDT)"/></xsl:variable>
 
    <xsl:variable name="timeFilter">
    <xsl:choose>
-	   <xsl:when test="not($start='.') and not($end='.')">[@MetadataCreated GT '<xsl:value-of select="$start"/>' and @MetadataCreated LE '<xsl:value-of select="$end"/>']</xsl:when>
-	   <xsl:when test="$start='.' and not($end='.')">[@MetadataCreated LE '<xsl:value-of select="$end"/>']</xsl:when>
-	   <xsl:when test="not($start='.') and $end='.'">[@MetadataCreated GT '<xsl:value-of select="$start"/>']</xsl:when>
+	   <xsl:when test="not($start='.') and not($end='.')">@MetadataCreated GT '<xsl:value-of select="$start"/>' and @MetadataCreated LE '<xsl:value-of select="$end"/>'</xsl:when>
+	   <xsl:when test="$start='.' and not($end='.')">@MetadataCreated LE '<xsl:value-of select="$end"/>'</xsl:when>
+	   <xsl:when test="not($start='.') and $end='.'">@MetadataCreated GT '<xsl:value-of select="$start"/>'</xsl:when>
 	   <xsl:otherwise></xsl:otherwise>
    </xsl:choose>
    </xsl:variable>
 
    <!-- Shared Available Pages are not automatically linked to the user's portal, so don't include those in the hunt for new pages!
-        <xsl:variable name="pageFilter">[Extensions/Extension[@Name='SharedPageSticky' or @Name='SharedPageDefault' or @Name='SharedPageAvailable']</xsl:variable>
      -->
 
-   <xsl:variable name="pageFilter">[Extensions/Extension[@Name='SharedPageSticky' or @Name='SharedPageDefault']</xsl:variable>
+   <xsl:variable name="pageFilter">@Name='SharedPageSticky' or @Name='SharedPageDefault'</xsl:variable>
 
-   <XMLSelect><xsl:attribute name="search">*<xsl:value-of select="$timeFilter"/><xsl:value-of select="$pageFilter"/></xsl:attribute></XMLSelect>
-
+   <xsl:choose>
+     <xsl:when test="$timeFilter">
+       <XMLSelect><xsl:attribute name="search">*[(<xsl:value-of select="$timeFilter"/>) and (<xsl:value-of select="$pageFilter"/>)]</xsl:attribute></XMLSelect>
+     </xsl:when>
+     <xsl:otherwise>
+       <XMLSelect><xsl:attribute name="search">*[(<xsl:value-of select="$pageFilter"/>)]</xsl:attribute></XMLSelect>
+     </xsl:otherwise>
+   </xsl:choose>
 
    <Templates>
-       <PSPortalPage Id="" Name="" MetadataCreated="">
-          <Extensions search="Extension[@Name='SharedPageSticky' or @Name='SharedPageDefault' or @Name='SharedPageAvailable']"/>
-       </PSPortalPage>
-       <Extension Id="" Name="" Value=""/>
+       <Extension Id="" Name="" Value="" MetadataCreated="">
+         <OwningObject search="PSPortalPage"/>
+       </Extension>
+       <PSPortalPage Id="" Name="" MetadataCreated=""/>
    </Templates>
   </Options>
 </GetMetadataObjects>

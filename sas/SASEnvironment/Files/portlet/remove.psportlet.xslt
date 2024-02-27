@@ -1,12 +1,18 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 <xsl:output method="html"/>
 
-<!-- Input xml format is the Mod_Request format with results merged in from remove.get execution -->
+<!-- Common Setup -->
 
-<xsl:param name="appLocEncoded"/>
+<!-- This setup calls the common setup pieces but because this file is referenced
+     from another xslt file, the path to the files to include are different than
+     normal
+-->
+<!-- Set up the metadataContext variable -->
+<xsl:include href="setup.metadatacontext.xslt"/>
+<!-- Set up the environment context variables -->
+<xsl:include href="setup.envcontext.xslt"/>
 
-<xsl:param name="sastheme">default</xsl:param>
-<xsl:variable name="sasthemeContextRoot">SASTheme_<xsl:value-of select="$sastheme"/></xsl:variable>
+<!-- load the appropriate localizations -->
 
 <!-- This localization handling is not the normal processing!
      Since this file is included in other files, the base uri of this file changes.
@@ -17,11 +23,16 @@
      locale file location for this script
 -->
 
-<xsl:variable name="localizationDir">../localization</xsl:variable>
+<xsl:variable name="localizationDirOverride">../localization</xsl:variable>
 
-<xsl:param name="localizationFile"><xsl:value-of select="$localizationDir"/>/resources_en.xml</xsl:param>
+<xsl:variable name="localizationFile">
+ <xsl:choose>
+   <xsl:when test="/Mod_Request/NewMetadata/LocalizationFile"><xsl:value-of select="/Mod_Request/NewMetadata/LocalizationFile"/></xsl:when>
+   <xsl:otherwise><xsl:value-of select="$localizationDirOverride"/>/resources_en.xml</xsl:otherwise>
+ </xsl:choose>
+</xsl:variable>
 
-<xsl:variable name="useLocalizationFile"><xsl:value-of select="$localizationDir"/>/<xsl:value-of select="tokenize($localizationFile,'/')[last()]"/></xsl:variable>
+<xsl:variable name="useLocalizationFile"><xsl:value-of select="$localizationDirOverride"/>/<xsl:value-of select="tokenize($localizationFile,'/')[last()]"/></xsl:variable>
 
 <!-- load the appropriate localizations -->
 
@@ -41,16 +52,15 @@
      must be under a shared root object.  Thus, here we can only go to the AccessControlEntries
      level.  Fortunately, the only trees listed under here are the ones we want in our lookup table
   -->
-<xsl:variable name="treeLookup" select="/Mod_Request/Multiple_Requests/GetMetadataObjects[1]/Objects/Person/AccessControlEntries"/>
+<xsl:variable name="treeLookup" select="$metadataContext/Multiple_Requests/GetMetadataObjects[1]/Objects/Person/AccessControlEntries"/>
 <!-- Get the same set of nodes in a a variable -->
-<xsl:variable name="writeableTrees" select="/Mod_Request/Multiple_Requests/GetMetadataObjects[1]/Objects/Person/AccessControlEntries/AccessControlEntry/Objects/Tree"/>
+<xsl:variable name="writeableTrees" select="$metadataContext/Multiple_Requests/GetMetadataObjects[1]/Objects/Person/AccessControlEntries/AccessControlEntry/Objects/Tree"/>
 
 <!-- Re-usable scripts -->
 
 <xsl:include href="form.functions.xslt"/>
 
 <xsl:template match="/">
-
 
 <xsl:call-template name="commonFormFunctions"/>
 <xsl:call-template name="thisPageScripts"/>
@@ -62,7 +72,7 @@
 <xsl:variable name="layoutComponentId" select="/Mod_Request/NewMetadata/RelatedId"/>
 <xsl:variable name="layoutComponentType" select="/Mod_Request/NewMetadata/RelatedType"/>
 
-<xsl:variable name="portletObject" select="/Mod_Request/Multiple_Requests/GetMetadataObjects[2]/Objects/PSPortlet"/>
+<xsl:variable name="portletObject" select="$metadataContext/Multiple_Requests/GetMetadataObjects[2]/Objects/PSPortlet"/>
 
 <!--  The rules that need to represented on the resulting portlet are:
 
@@ -224,7 +234,7 @@
 
   <!-- This iframe is here to capture the response from submitting the form -->
   
-  <iframe id="formResponse" name="formResponse" style="display:none">
+  <iframe id="formResponse" name="formResponse" style="display:none" width="100%">
   
   </iframe>
 

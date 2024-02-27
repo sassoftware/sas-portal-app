@@ -458,7 +458,6 @@
                 </xsl:for-each>
                 <xsl:text>/</xsl:text><xsl:value-of select="@Name"/>
    </xsl:variable>
-
    <xsl:variable name="stpURI"><xsl:text>/SASStoredProcess/do?_action=form,properties,execute&amp;_program=</xsl:text><xsl:value-of select="$stpProgram"/></xsl:variable>
 
    <a><xsl:attribute name="href"><xsl:value-of select="$stpURI"/></xsl:attribute><xsl:value-of select="@Name"/></a>
@@ -623,11 +622,31 @@
 	        <td class="portletEntry" valign="top" colspan="2">
 			
 			<xsl:variable name="stpProgram"><xsl:value-of select="encode-for-uri(substring-after($stpSBIPURI,'SBIP://METASERVER'))"/></xsl:variable>
-			<!-- NOTE: Can't figure out how to pass an & in the value of an attribute, thus not including the _action parameter for now
-			<xsl:variable name="stpURI"><xsl:text>/SASStoredProcess/do?_action=form,properties,execute,nobanner,newwindow&_program=</xsl:text><xsl:value-of select="$stpProgram"/></xsl:variable>
-			-->
-			
-			<xsl:variable name="stpURI"><xsl:text>/SASStoredProcess/do?_action=form,properties,execute,nobanner,newwindow&amp;_program=</xsl:text><xsl:value-of select="$stpProgram"/></xsl:variable>
+
+                        <!-- Should we display the form or execute the stp?
+                             The old portal allowed you to set values for the prompts when the stp was selected
+                             to show in this portlet.  When the portal was displayed, the stp was just executed.
+                             Since we aren't currently giving the user the ability to edit prompts when the stp
+                             is created, we need to give them the ability to fill in the form if one exists.
+                             Thus we created a showForm extension so the user could indicate to do so.
+                             Check for it now and see what the want to do.
+                        -->
+                        <xsl:variable name="showSTPForm">
+                          <xsl:choose>
+                             <xsl:when test="PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='show-form']/@DefaultValue">
+                                <xsl:value-of select="PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='show-form']/@DefaultValue"/></xsl:when>
+                              
+                             <xsl:otherwise>false</xsl:otherwise>
+                          </xsl:choose>
+
+                        </xsl:variable>
+                        <xsl:variable name="stpAction">
+                           <xsl:choose>
+                             <xsl:when test="$showSTPForm='true'">form,properties,execute</xsl:when>
+                             <xsl:otherwise>execute</xsl:otherwise>
+                           </xsl:choose>
+                        </xsl:variable>
+			<xsl:variable name="stpURI">/SASStoredProcess/do?_action=nobanner,<xsl:value-of select="$stpAction"/><xsl:text>&amp;</xsl:text>_program=<xsl:value-of select="$stpProgram"/></xsl:variable>
 			<iframe style="overflow: auto;width: 100%" frameborder="0" >
             <xsl:attribute name="data-src"><xsl:value-of select="$stpURI"/></xsl:attribute>
 

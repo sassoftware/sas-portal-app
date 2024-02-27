@@ -104,7 +104,8 @@
 
                     filename getreq;
 
-                    %showFormattedXML(getrsp,Metadata Response for input for modification request.);
+                    %showFormattedXML(getrsp,Delete Item getter metadata response);
+
                     %end;
 
                 filename remxsl "&deleteItemProcessor.";

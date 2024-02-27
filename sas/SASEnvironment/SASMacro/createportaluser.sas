@@ -13,6 +13,8 @@
     %end;
 %else %do;
 
+        %put Create Portal User &name.;
+
 	%let portalUserType=user;
 
 	%let portalPermissionsTree=&name. Permissions Tree;
