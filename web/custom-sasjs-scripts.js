@@ -304,22 +304,38 @@ function afterGeneration() {
    *  All pages have a "data-container" that needs to be populated and displayed.
    */
 
-  defaultTabs=document.getElementsByClassName("default-tab");
+  // restore current tab if any
+  var activeTabId = localStorage.getItem('activeTabId');
+  var tabFound=false;
 
-  if (defaultTabs) {
+  if (activeTabId) {
 
-      // Should only be 1 
+      var previousTab=document.getElementById('page_'+activeTabId);
 
-      defaultTab=defaultTabs[0];
-
-      if (defaultTab) {
-
-         defaultTab.click();
-
+      if (previousTab) {
+         tabFound=true;
+         previousTab.click();
          }
+     }
+  if (!tabFound) {
 
+      // No previously selected tab, just get default
+      defaultTabs=document.getElementsByClassName("default-tab");
+
+      if (defaultTabs) {
+
+          // Should only be 1 
+
+          defaultTab=defaultTabs[0];
+
+          if (defaultTab) {
+
+             defaultTab.click();
+
+             }
+
+          }
       }
-
   /*
    *  Inject any styles that may have been generated as part of the html generation
    */
@@ -565,6 +581,10 @@ function showTab(evt, tabName) {
 
               }
           }
+
+    // remember current tab
+
+    localStorage.setItem('activeTabId', tabName);
 
 }
 function resizeIframe(obj) {

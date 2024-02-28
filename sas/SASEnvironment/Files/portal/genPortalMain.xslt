@@ -342,8 +342,10 @@
 	   <xsl:for-each select="Multiple_Requests/GetMetadataObjects/Objects/Group/Members/PSPortalPage[not(Extensions/Extension[@Name='MarkedForDeletion'])]">
 		<xsl:sort select="Extensions/Extension[@Name='PageRank']/@Value" data-type="number"/>
 		<xsl:sort select="@MetadataCreated" data-type="number"/>
-
+<!--
 		<xsl:variable name="tabNumberId">page_<xsl:value-of select="position() - 1"/></xsl:variable>
+-->
+		<xsl:variable name="tabNumberId">page_<xsl:value-of select="@Id"/></xsl:variable>
 
 		<td><xsl:attribute name="id"><xsl:value-of select="$tabNumberId"/>_TabCell</xsl:attribute>
 		    <xsl:choose>
