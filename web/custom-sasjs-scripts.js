@@ -305,7 +305,7 @@ function afterGeneration() {
    */
 
   // restore current tab if any
-  var activeTabId = localStorage.getItem('activeTabId');
+  var activeTabId = sessionStorage.getItem('activeTabId');
   var tabFound=false;
 
   if (activeTabId) {
@@ -443,7 +443,7 @@ function logout() {
 /********************************************************************************/
 
 function resolve() {
-  console.log('in resolve');
+  // console.log('in resolve');
 
 }
 
@@ -584,7 +584,7 @@ function showTab(evt, tabName) {
 
     // remember current tab
 
-    localStorage.setItem('activeTabId', tabName);
+    sessionStorage.setItem('activeTabId', tabName);
 
 }
 function resizeIframe(obj) {
