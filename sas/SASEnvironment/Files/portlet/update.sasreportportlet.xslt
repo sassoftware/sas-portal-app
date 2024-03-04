@@ -8,25 +8,12 @@
 <!-- Set up the environment context variables -->
 <xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/setup.envcontext.xslt"/>
 
+<!-- Common portlet update processing -->
+
+<xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/update.psportlet-properties.xslt"/>
+
 <xsl:template match="/">
 
-<xsl:variable name="portletObject" select="$metadataContext/GetMetadata/Metadata/PSPortlet"/>
-
-<xsl:variable name="portletId" select="$portletObject/@Id"/>
-<xsl:variable name="portletType" select="$portletObject/@PortletType"/>
-
-<!--  For the following properties, when the portlet is first created, these properties are not
-      created by default.  Thus, it's possible that when we get here, we actually have to create them.
-      If we determine that to be the case, then create the id in the format that UpdateMetadata expects
-      so that it will create a new object.
--->
-
-<!-- Properties -->
-
-<xsl:variable name="configPropertySet" select="$portletObject/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']"/>
-<xsl:variable name="configPropertySetId" select="$configPropertySet/@Id"/>
-
-<xsl:variable name="configProperties" select="$configPropertySet/SetProperties"/>
 <xsl:variable name="configPropertySets" select="$configPropertySet/PropertySets"/>
 
 <!-- Portlet Height -->
@@ -110,11 +97,13 @@
 
 <xsl:choose>
 
-  <xsl:when test="not($oldPortletHeight = $newPortletHeight) or not($oldPortletURI = $newPortletURI)">
+  <xsl:when test="not($oldPortletHeight = $newPortletHeight) or not($oldPortletURI = $newPortletURI) $commonPropertiesChanged">
 
     <UpdateMetadata>
 
       <Metadata>
+
+        <xsl:call-template name="updateCommonPortletProperties"/>
 
         <!--  Portlet Height -->
 

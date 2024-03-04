@@ -35,6 +35,15 @@
   <string key="portletEditContent">コンテンツの編集</string>
   <string key="portletEditContentTitle">ポートレットコンテンツの編集</string>
   <string key="portletEditNotSupported">このタイプのポートレットの編集はサポートされていません。</string>
+
+  <string key="portletEditCollectionTitle">コレクションポートレットの編集</string>
+  <string key="portletEditStoredProcessTitle">ストアド プロセス ポートレットの編集</string>
+  <string key="portletEditDisplayURLTitle">表示URLポートレットの編集</string>
+  <string key="portletEditReportTitle">レポートポートレットの編集</string>
+
+
+  <string key="portletEditProperties">プロパティの編集</string>
+  <string key="portletEditPropertiesTitle">ポートレットのプロパティの編集</string>
  
   <!-- 
        Portlet Content Editing

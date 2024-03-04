@@ -8,23 +8,13 @@
 <!-- Set up the environment context variables -->
 <xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/setup.envcontext.xslt"/>
 
+<!-- Global Variables -->
+
+<!-- Common portlet update processing -->
+
+<xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/update.psportlet-properties.xslt"/>
+
 <xsl:template match="/">
-
-<xsl:variable name="reposId" select="/Mod_Request/NewMetadata/Metareposid"/>
-
-<xsl:variable name="portletObject" select="$metadataContext/GetMetadata/Metadata/PSPortlet"/>
-<xsl:variable name="portletId" select="$portletObject/@Id"/>
-<xsl:variable name="portletType" select="$portletObject/@PortletType"/>
-
-<!--  For the following properties, when a collection is first created, these properties are not
-      created by default.  Thus, it's possible that when we get here, we actually have to create them.
-      If we determine that to be the case, then create the id in the format that UpdateMetadata expects
-      so that it will create a new object.
--->
-<xsl:variable name="configPropertySet" select="$portletObject/PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']"/>
-<xsl:variable name="configPropertySetId" select="$configPropertySet/@Id"/>
-
-<xsl:variable name="configProperties" select="$configPropertySet/SetProperties"/>
 
 <!-- Show Description Property -->
 
@@ -106,11 +96,13 @@
 
 <xsl:choose>
 
-<xsl:when test="not($newShowDescription=$oldShowDescription) or not($newShowLocation=$oldShowLocation) or not($newPackageSortOrder=$oldPackageSortOrder) or ($listChanged='true')">
+<xsl:when test="not($newShowDescription=$oldShowDescription) or not($newShowLocation=$oldShowLocation) or not($newPackageSortOrder=$oldPackageSortOrder) or ($listChanged='true') or $commonPropertiesChanged">
 
     <UpdateMetadata>
 
       <Metadata>
+
+        <xsl:call-template name="updateCommonPortletProperties"/>
 
         <xsl:if test="not($newShowDescription=$oldShowDescription)">
 

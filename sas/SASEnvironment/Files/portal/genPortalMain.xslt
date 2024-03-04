@@ -21,6 +21,7 @@
 <xsl:variable name="pageTabs_skipTabMenuTitle" select="$localeXml/string[@key='pageTabs_skipTabMenuTitle']/text()"/>
 
 <xsl:variable name="portletEditContent" select="$localeXml/string[@key='portletEditContent']/text()"/>
+<xsl:variable name="portletEditProperties" select="$localeXml/string[@key='portletEditProperties']/text()"/>
 <xsl:variable name="portletRemove" select="$localeXml/string[@key='portletRemove']/text()"/>
 <xsl:variable name="portalAdminHeader" select="$localeXml/string[@key='portalAdminHeader']/text()"/>
 
@@ -819,50 +820,67 @@
                          <xsl:otherwise>0</xsl:otherwise>
                       </xsl:choose>
                     </xsl:variable>
+                   <!-- We only support editing of certain types of portlets -->
+                   <xsl:variable name="portletIsEditable">
+                      <xsl:choose>
+	  		<xsl:when test="@portletType='Collection'">1</xsl:when>
+	 		<xsl:when test="@portletType='DisplayURL'">1</xsl:when>
+	  		<xsl:when test="@portletType='SASStoredProcess'">1</xsl:when>
+  			<xsl:when test="@portletType='SASReportPortlet'">1</xsl:when>
+ 			<xsl:when test="@portletType='Report'">1</xsl:when>
+  			<xsl:when test="@portletType='Bookmarks'">1</xsl:when>
+                         <xsl:otherwise>0</xsl:otherwise>
+                      </xsl:choose>
+                    </xsl:variable>
 
 		   <xsl:variable name="portletId" select="@Id"/>
 
 		   <table cellpadding="2" cellspacing="0" width="100%" class="portletTableBorder">
 		   <tr class="portletTableHeader">
-   			<th align="left" class="tableHeader portletTableHeaderLeft">
-	   			<xsl:value-of select="$portletName"/>
+   			<th align="left" class="tableHeader portletTableHeaderLeft" style="border-right:none">
+  			<xsl:value-of select="$portletName"/>
    			</th>
 			<th align="right" class="portletTableHeaderRight">
-	   				<table cellpadding="0" cellspacing="0" border="0">
+			<table cellpadding="0" cellspacing="0" border="0">
                         <tbody>
                             <tr>
                                <td nowrap="" valign="middle"><i><font size="1"> </font></i></td>
-                                <td></td>
+                               <td>&#160;</td>
+                               <td>&#160;</td>
                                 <xsl:choose>
                                     <xsl:when test="$portletIsWriteable='1'">
+
+                                        <xsl:if test="$portletIsEditable='1'">
+                                            <td nowrap="" valign="middle">
+                                                <img alt="" width="1" height="15" valign="middle" border="0"><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/PortletPipe.gif</xsl:attribute></img>
+                                            </td>
+                                            <td>&#160;</td>
+                                            <td nowrap="" valign="middle">
+                                                <xsl:variable name="editPortletContentLink" select="concat('editItem.html?Id=',$portletId,'&amp;portletType=',$portletType,'&amp;Type=PSPortlet','&amp;v=5')"/>
+
+                                                <a target="_self"><xsl:attribute name="href"><xsl:value-of select="$editPortletContentLink"/></xsl:attribute>
+                                                <img valign="middle" border="0"><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/PortletNote.gif</xsl:attribute><xsl:attribute name="alt"><xsl:value-of select="$portletEditContent"/></xsl:attribute><xsl:attribute name="title"><xsl:value-of select="$portletEditContent"/></xsl:attribute></img>
+                                                </a>
+                                            </td>
+                                            <td>&#160;</td>
+                                            <td nowrap="" valign="middle">
+                                                <img alt="" width="1" height="15" valign="middle" border="0"><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/PortletPipe.gif</xsl:attribute></img>
+                                            </td>
+                                            <td>&#160;</td>
+                                            <td nowrap="" valign="middle">
+                                                <xsl:variable name="editPortletPropertiesLink" select="concat('editItem.html?Id=',$portletId,'&amp;portletType=psportlet-properties&amp;Type=PSPortlet','&amp;v=5')"/>
+
+                                                <a target="_self"><xsl:attribute name="href"><xsl:value-of select="$editPortletPropertiesLink"/></xsl:attribute>
+                                                <img valign="middle" border="0"><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/PortletProp.gif</xsl:attribute><xsl:attribute name="alt"><xsl:value-of select="$portletEditProperties"/></xsl:attribute><xsl:attribute name="title"><xsl:value-of select="$portletEditProperties"/></xsl:attribute></img>
+                                                </a>
+                                            </td>
+                                            <td>&#160;</td>
+                                        </xsl:if>
+
                                         <td nowrap="" valign="middle">
                                             <img alt="" width="1" height="15" valign="middle" border="0"><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/PortletPipe.gif</xsl:attribute></img>
                                         </td>
-                                        <td nowrap="" valign="middle">
-                                            <xsl:variable name="editLink" select="concat('editItem.html?Id=',$portletId,'&amp;portletType=',$portletType,'&amp;Type=PSPortlet','&amp;v=5')"/>
-
-                                            <a target="_self"><xsl:attribute name="href"><xsl:value-of select="$editLink"/></xsl:attribute>
-                                            <img valign="middle" border="0"><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/PortletNote.gif</xsl:attribute><xsl:attribute name="alt"><xsl:value-of select="$portletEditContent"/></xsl:attribute><xsl:attribute name="title"><xsl:value-of select="$portletEditContent"/></xsl:attribute></img>
-                                            </a>
-                                        </td>
-                                        <td nowrap="" valign="middle">
-                                            <img alt="" width="1" height="15" valign="middle" border="0"><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/PortletPipe.gif</xsl:attribute></img>
-                                        </td>
-                                   </xsl:when>
-                                   <xsl:otherwise>
-                                     <td nowrap="" valign="middle">&#160;</td>
-                                   </xsl:otherwise>
-                                </xsl:choose>
-
-                                <td>&#160;</td>
-                                <td nowrap="" valign="middle">
-                                    <img alt="" width="1" height="15" valign="middle" border="0"><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/PortletPipe.gif</xsl:attribute></img>
-                                </td>
-                                <td>&#160;</td>
-
-                                <xsl:choose>
-                                  <xsl:when test="$portletIsWriteable='1'">
-
+                                        <td>&#160;</td>
                                     <td nowrap="" valign="middle">
                                         <xsl:variable name="removeLink" select="concat('removeItem.html?Id=',$portletId,'&amp;portletType=',$portletType,'&amp;Type=PSPortlet','&amp;RelatedId=',$layoutComponentId,'&amp;RelatedType=',$layoutComponentType,'&amp;v=5')"/>
                                       <a target="_self">
@@ -870,14 +888,12 @@
                                             <img valign="middle" border="0"><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/PortletClose.gif</xsl:attribute><xsl:attribute name="alt"><xsl:value-of select="$portletRemove"/></xsl:attribute><xsl:attribute name="title"><xsl:value-of select="$portletRemove"/></xsl:attribute></img>
                                       </a>
                                     </td>
-
+                                    <td>&#160;</td>
                                    </xsl:when>
                                    <xsl:otherwise>
-                                     <td nowrap="" valign="middle">&#160;</td>
+                                     <td colspan="13" nowrap="" valign="middle">&#160;</td>
                                    </xsl:otherwise>
                                 </xsl:choose>
-
-                                <td>&#160;</td>
 
 			</tr>
                         </tbody>
@@ -886,8 +902,8 @@
             </tr>
 			<xsl:choose>
 
-		  		<xsl:when test="@portletType='Collection'">
-    	       	<xsl:call-template name="collectionPortlet"/>
+	  		<xsl:when test="@portletType='Collection'">
+    		                <xsl:call-template name="collectionPortlet"/>
       			</xsl:when>
 	  			<xsl:when test="@portletType='DisplayURL'">
            			<xsl:call-template name="displayURLPortlet"/>

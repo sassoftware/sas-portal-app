@@ -17,10 +17,18 @@
 
 %mend;
 
-     put "<ShowDescription>&selectedShowDescription.</ShowDescription>";
-     put "<ShowLocation>&selectedShowLocation.</ShowLocation>";
-     put "<PackageSortOrder>&selectedPackageSortOrder.</PackageSortOrder>";
-     put "<ListChanged>&listChanged.</ListChanged>";
+     %if (%symexist(selectedShowDescription)) %then %do;
+        put "<ShowDescription>&selectedShowDescription.</ShowDescription>";
+        %end;
+     %if (%symexist(selectedShowLocation)) %then %do;
+        put "<ShowLocation>&selectedShowLocation.</ShowLocation>";
+        %end;
+     %if (%symexist(selectedPackageSortOrder)) %then %do;
+        put "<PackageSortOrder>&selectedPackageSortOrder.</PackageSortOrder>";
+        %end;
+     %if (%symexist(listChanged)) %then %do;
+        put "<ListChanged>&listChanged.</ListChanged>";
+        %end;
 
      put '<Items>';
 

@@ -36,6 +36,14 @@
   <string key="portletEditContentTitle">Edit Portlet Content</string>
   <string key="portletEditNotSupported">Editing of this type of portlet is not supported.</string>
  
+  <string key="portletEditCollectionTitle">Edit Collection Portlet</string>
+  <string key="portletEditStoredProcessTitle">Edit Stored Process Portlet</string>
+  <string key="portletEditDisplayURLTitle">Edit Display URL Portlet</string>
+  <string key="portletEditReportTitle">Edit Report Portlet</string>
+
+  <string key="portletEditProperties">Edit Properties</string>
+  <string key="portletEditPropertiesTitle">Edit Portlet Properties</string>
+
   <!-- 
        Portlet Content Editing
   -->

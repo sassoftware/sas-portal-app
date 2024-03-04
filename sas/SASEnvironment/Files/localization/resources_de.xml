@@ -36,6 +36,14 @@
   <string key="portletEditContentTitle">Bearbeiten Sie den Portlet-Inhalt</string>
   <string key="portletEditNotSupported">Das Bearbeiten dieses Portlettyps wird nicht unterstützt.</string>
 
+  <string key="portletEditCollectionTitle">Sammlungs-Portlet bearbeiten</string>
+  <string key="portletEditStoredProcessTitle">Portlet für gespeicherte Prozesse bearbeiten</string>
+  <string key="portletEditDisplayURLTitle">Bearbeiten Sie das Portlet „Anzeige-URL“.</string>
+  <string key="portletEditReportTitle">Berichts-Portlet bearbeiten</string>
+
+  <string key="portletEditProperties">Eigenschaften bearbeiten</string>
+  <string key="portletEditPropertiesTitle">Bearbeiten Sie die Portlet-Eigenschaften</string>
+
  <!--
        Portlet Content Editing
   -->
