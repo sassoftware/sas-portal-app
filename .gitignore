@@ -1,2 +1,5 @@
 #  Don't push any local mods to setup
 sas/setup_usermods.sas
+sas/autoexec_usermods.sas
+sas/request_setup_usermods.sas
+sas/SASPortalApp_autoexec_usermods.sas

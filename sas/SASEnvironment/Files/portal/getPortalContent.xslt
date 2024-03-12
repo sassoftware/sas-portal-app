@@ -69,7 +69,7 @@
          <PSColumnLayoutComponent Id="" Name="" NumberOfPortlets="" ColumnWidth="">
             <Portlets/>
          </PSColumnLayoutComponent>
-         <PSPortlet Id="" Name="" portletType="">
+         <PSPortlet Id="" Name="" portletType="" >
             <Groups/>
             <PropertySets/>
             <Trees/>
@@ -80,7 +80,7 @@
          </PropertySet>
          <Property Id="" Name="" SQLType="" DefaultValue=""/>
          <Extension Id="" Name="" Value=""/>
-         <Document Id="" Name="" URIType="" URI="" TextRole="" TextType=""/>
+         <Document Id="" Name="" URIType="" URI="" TextRole="" TextType="" Desc="" />
          <Transformation Id="" Name="" TransformRole="">
             <Trees/>
          </Transformation>
