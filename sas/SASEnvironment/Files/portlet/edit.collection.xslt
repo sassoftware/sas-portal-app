@@ -141,7 +141,16 @@
                 <label for="showDescription">
                     <xsl:value-of select="$portletEditCollectionShowDescriptionLabel"/>
                 </label>
-                <input type="hidden" name="selectedShowDescription" value="1" id="selectedshowDescription"/>
+                <input type="hidden" name="selectedShowDescription" id="selectedshowDescription">
+				 <xsl:choose>
+				   <xsl:when test="$showDescription = 'true'">
+					<xsl:attribute name="value">1</xsl:attribute>
+                   </xsl:when>
+				   <xsl:otherwise>
+					<xsl:attribute name="value">0</xsl:attribute>
+				   </xsl:otherwise>
+                 </xsl:choose>
+				</input>
             </td>
         </tr>
 
@@ -172,7 +181,16 @@
                 <label for="showLocation">
                     <xsl:value-of select="$portletEditCollectionShowLocationLabel"/>
                 </label>
-                <input type="hidden" name="selectedShowLocation" value="1" id="selectedshowLocation"/>
+                <input type="hidden" name="selectedShowLocation" id="selectedshowLocation">
+				 <xsl:choose>
+				   <xsl:when test="$showLocation = 'true'">
+					<xsl:attribute name="value">1</xsl:attribute>
+                   </xsl:when>
+				   <xsl:otherwise>
+					<xsl:attribute name="value">0</xsl:attribute>
+				   </xsl:otherwise>
+                 </xsl:choose>
+				</input>
             </td>
         </tr>
 
