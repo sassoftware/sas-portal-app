@@ -434,20 +434,41 @@
 </xsl:template>
 
 <xsl:template name="PortalPageLink">
+	<xsl:param name="showDescription"/>
+	<xsl:param name="showLocation"/>
+	<!-- TODO: Figure out how to link to another portal page, select the tab and show the page content 
+		 Something like this is needed to be added to the line below...
+		 <xsl:attribute name="href">#<xsl:value-of select="@Id"/></xsl:attribute>
+	-->
 
-<!-- TODO: Figure out how to link to another portal page, select the tab and show the page content 
-     Something like this is needed to be added to the line below...
-     <xsl:attribute name="href">#<xsl:value-of select="@Id"/></xsl:attribute>
--->
+	<a><xsl:attribute name="href"></xsl:attribute><xsl:value-of select="@Name"/></a>
 
-<a><xsl:attribute name="href"></xsl:attribute><xsl:value-of select="@Name"/></a>
-
+	<xsl:choose>
+		<xsl:when test="'$showDescription' != '' and $showDescription = 'true'">
+			<table><tr><td><xsl:value-of select="@Desc"/></td></tr></table>
+		</xsl:when>
+		<xsl:when test="'$showLocation' != '' and $showLocation = 'true'">
+			<table><tr><td><xsl:value-of select="@URI"/></td></tr></table>
+		</xsl:when>
+	</xsl:choose>
 </xsl:template>
 
 <xsl:template match="Document">
-
-<a><xsl:attribute name="href"><xsl:value-of select="@URI"/></xsl:attribute><xsl:value-of select="@Name"/></a>
-  
+	<xsl:param name="showDescription"/>
+	<xsl:param name="showLocation"/>
+	
+	<a><xsl:attribute name="href"><xsl:value-of select="@URI"/></xsl:attribute><xsl:value-of select="@Name"/></a><br/>
+	
+	<xsl:choose>
+		<xsl:when test="$showDescription = 'true' and @Desc != ''">
+			<span class="treeDescription">- <xsl:value-of select="@Desc"/><br/></span>
+		</xsl:when>
+	</xsl:choose>
+	<xsl:choose>
+		<xsl:when test="$showLocation = 'true' and @URI != ''">
+			<span class="treeDescription" style="white-space:nowrap">- <xsl:value-of select="@URI"/><br/></span>
+		</xsl:when>
+	</xsl:choose>
 </xsl:template>
 
 <!-- Template to handle a reference to a stored process (typically in bookmarks) -->
@@ -499,6 +520,13 @@
 	       <xsl:value-of select="count(Groups/Group)"/>
 	   </xsl:variable>
 
+       <xsl:variable name="showDescription">
+	       <xsl:value-of select="PropertySets/PropertySet/SetProperties/Property[@Name='show-description']/@DefaultValue"/>
+	   </xsl:variable>
+       <xsl:variable name="showLocation">
+	       <xsl:value-of select="PropertySets/PropertySet/SetProperties/Property[@Name='show-location']/@DefaultValue"/>
+	   </xsl:variable>
+	   
 	   <!-- The first member in the group seems to be a link back to itself, so skip that entry -->
 	   <xsl:for-each select="Groups/Group">
 	   
@@ -517,10 +545,16 @@
                      -->
                      <xsl:choose>
                          <xsl:when test="name(.)='PSPortalPage'">
-                            <xsl:call-template name="PortalPageLink"/>
+                            <xsl:call-template name="PortalPageLink">
+								<xsl:with-param name="showDescription" select="$showDescription"/>
+								<xsl:with-param name="showLocation" select="$showLocation"/>
+							</xsl:call-template>
                          </xsl:when>
                          <xsl:otherwise>
-         	             <xsl:apply-templates  select="."/>
+         	             <xsl:apply-templates  select=".">
+							<xsl:with-param name="showDescription" select="$showDescription"/>
+							<xsl:with-param name="showLocation" select="$showLocation"/>
+						 </xsl:apply-templates>
                          </xsl:otherwise>
                      </xsl:choose>
 	             </td>
