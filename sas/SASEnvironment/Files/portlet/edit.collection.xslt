@@ -146,6 +146,9 @@
 				   <xsl:when test="$showDescription = 'true'">
 					<xsl:attribute name="value">1</xsl:attribute>
                    </xsl:when>
+				   <xsl:when test="not($showDescription)">
+					<xsl:attribute name="value">1</xsl:attribute>
+                   </xsl:when>
 				   <xsl:otherwise>
 					<xsl:attribute name="value">0</xsl:attribute>
 				   </xsl:otherwise>
@@ -184,6 +187,9 @@
                 <input type="hidden" name="selectedShowLocation" id="selectedshowLocation">
 				 <xsl:choose>
 				   <xsl:when test="$showLocation = 'true'">
+					<xsl:attribute name="value">1</xsl:attribute>
+                   </xsl:when>
+				   <xsl:when test="not($showLocation)">
 					<xsl:attribute name="value">1</xsl:attribute>
                    </xsl:when>
 				   <xsl:otherwise>
