@@ -549,6 +549,9 @@
         
         <xsl:variable name="portletPermissionsTree" select="Trees/Tree"/>
         <xsl:variable name="portletPermissionsTreeId" select="$portletPermissionsTree/@Id"/>
+        <xsl:variable name="portletId" select="@Id"/>
+        <xsl:variable name="portletType" select="@portletType"/>
+
         <xsl:choose>
            <xsl:when test="$oldRootPermissionsTreeId=$portletPermissionsTreeId">
               <UpdateMetadata>
@@ -561,6 +564,50 @@
                     </Tree>
                   </Trees>
                 </PSPortlet>
+
+                <!-- For collections, we need to move the items in the collection also -->
+                <xsl:if test="$portletType='Collection'">
+                  <xsl:for-each select="Groups/Group">
+
+                    <xsl:variable name="groupId" select="@Id"/>
+
+                    <Group>
+
+                       <xsl:attribute name="Id"><xsl:value-of select="@Id"/></xsl:attribute>
+                       <Trees Function="replace">
+                         <Tree>
+                            <xsl:attribute name="ObjRef"><xsl:value-of select="$newRootPermissionsTreeId"/></xsl:attribute>
+                         </Tree>
+                       </Trees>
+
+                    </Group>
+
+                    <xsl:for-each select="Members/*">
+
+                    <!-- The list of members of the collection contains a link bank to the collection psportlet itself, ignore that one -->
+
+                      <xsl:variable name="itemId" select="@Id"/>
+
+                      <xsl:if test="not($itemId=$portletId)">
+
+                         <xsl:variable name="itemType" select="name(.)"/>
+                         <xsl:element name="{$itemType}">
+
+                           <xsl:attribute name="Id"><xsl:value-of select="@Id"/></xsl:attribute>
+                           <Trees Function="replace">
+                             <Tree>
+                                <xsl:attribute name="ObjRef"><xsl:value-of select="$newRootPermissionsTreeId"/></xsl:attribute>
+                             </Tree>
+                           </Trees>
+
+                         </xsl:element>
+
+                      </xsl:if>
+
+                    </xsl:for-each>
+                  </xsl:for-each>
+
+                </xsl:if>
               </Metadata>
               <NS>SAS</NS>
               <Flags>268435456</Flags>
