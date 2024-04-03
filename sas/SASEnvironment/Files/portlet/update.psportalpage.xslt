@@ -590,17 +590,23 @@
 
                       <xsl:if test="not($itemId=$portletId)">
 
-                         <xsl:variable name="itemType" select="name(.)"/>
-                         <xsl:element name="{$itemType}">
+                         <!-- We only want to move items that are in the same tree that we are moving from -->
+                         <xsl:variable name="itemParentTreeId" select="Trees/Tree[1]/@Id"/>
+                         <xsl:if test="$portletPermissionsTreeId=$itemParentTreeId">
 
-                           <xsl:attribute name="Id"><xsl:value-of select="@Id"/></xsl:attribute>
-                           <Trees Function="replace">
-                             <Tree>
-                                <xsl:attribute name="ObjRef"><xsl:value-of select="$newRootPermissionsTreeId"/></xsl:attribute>
-                             </Tree>
-                           </Trees>
+                           <xsl:variable name="itemType" select="name(.)"/>
+                           <xsl:element name="{$itemType}">
 
-                         </xsl:element>
+                             <xsl:attribute name="Id"><xsl:value-of select="@Id"/></xsl:attribute>
+                             <Trees Function="replace">
+                               <Tree>
+                                  <xsl:attribute name="ObjRef"><xsl:value-of select="$newRootPermissionsTreeId"/></xsl:attribute>
+                               </Tree>
+                             </Trees>
+
+                           </xsl:element>
+
+                         </xsl:if>
 
                       </xsl:if>
 
