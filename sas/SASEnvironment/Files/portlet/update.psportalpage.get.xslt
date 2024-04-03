@@ -62,8 +62,9 @@
  </Metadata>
  <NS>SAS</NS>
      <!-- 4 =  Template
+         16 =  Include Subtypes (to pick up Root template below)
      -->
- <Flags>4</Flags>
+ <Flags>20</Flags>
  <Options>
      <Templates>
          <PSPortalPage Id="" Name="" Desc="" NumberOfColumns="" NumberOfRows="" Type="">
@@ -95,7 +96,16 @@
          <Group Id="" Name="">
             <Members/>
          </Group>
-         <Document Id="" Name=""/>
+         <Document Id="" Name=""> 
+            <Trees/>
+         </Document>
+         <!-- Since almost anything can be put into a collection, and when if we move the portlet, we also
+              have to move the linked items, but only those in the same tree, we have to get the Trees relationship
+              for all unknown items
+         -->
+         <Root Id="" Name="">
+            <Trees/>
+         </Root>
      </Templates>
   </Options>
  </GetMetadata>
