@@ -296,6 +296,7 @@
                         <td class="textEntry">
                             <select name="parentTreeId" id="parentTreeId">
                                 <xsl:for-each select="$personObject/AccessControlEntries//Tree[@TreeType='Permissions Tree' or @TreeType=' Permissions Tree']">
+                                   <xsl:sort select="@Name"/>
                                    <xsl:variable name="optionTreeName" select="@Name"/>
                                    <xsl:variable name="optionTreeId" select="@Id"/>
                                    <xsl:variable name="optionTreeNameDisplay">
