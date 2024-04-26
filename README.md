@@ -411,8 +411,11 @@ For more details on the type of content that can be surfaced and shared through 
 
 Synchronize here refers to the concept of determining that there is a new shared content for a user and adding that content to the user's portal view.
 
-
 ## Contributing
 
-The intent is that this project will be maintained by SAS, but that contributions will be submitted from the community.
+> We welcome your contributions! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to submit contributions to this project. 
 
+## License
+
+> This project is licensed under the [Apache 2.0 License](LICENSE).
+ 
