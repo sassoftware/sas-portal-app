@@ -32,7 +32,6 @@
 		
 		%end;
 		
-    %end;
 
 %if ("&rc." ne "") %then %do;
    %global &rc.;
