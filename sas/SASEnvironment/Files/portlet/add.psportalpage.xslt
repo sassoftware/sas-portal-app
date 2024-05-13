@@ -262,6 +262,7 @@
 			<td class="textEntry">
 			    <select name="parentTreeId" onchange="toggleScopeDiv();" id="parentTreeId">
                                 <xsl:for-each select="$personObject/AccessControlEntries//Tree">
+                                   <xsl:sort select="@Name"/>
                                    <xsl:variable name="optionTreeName" select="@Name"/>
                                    <xsl:variable name="optionTreeId" select="@Id"/>
                                    <xsl:variable name="optionTreeNameDisplay">
