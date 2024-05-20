@@ -22,6 +22,7 @@
                            <Groups/>
                            <PropertySets/>
                            <Trees/>
+                           <Keywords/>
                         </PSPortlet>
                         <Group>
                            <Members/>
@@ -39,6 +40,7 @@
                         <Tree Id="" Name="">
                           <ParentTree/>
                         </Tree>
+                        <Keyword Id="" Name=""/>
                      </Templates>
                 </Options>
 </GetMetadata>

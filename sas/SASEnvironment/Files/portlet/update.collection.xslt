@@ -98,6 +98,8 @@
 
 <xsl:when test="not($newShowDescription=$oldShowDescription) or not($newShowLocation=$oldShowLocation) or not($newPackageSortOrder=$oldPackageSortOrder) or ($listChanged='true') or $commonPropertiesChanged">
 
+    <Multiple_Requests>
+
     <UpdateMetadata>
 
       <Metadata>
@@ -207,6 +209,10 @@
       <Options/>
 
     </UpdateMetadata>
+
+    <xsl:call-template name="updatePortletKeywords"/>
+
+    </Multiple_Requests>
 
    </xsl:when>
    <xsl:otherwise>

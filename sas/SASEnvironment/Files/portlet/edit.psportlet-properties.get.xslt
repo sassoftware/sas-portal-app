@@ -67,7 +67,7 @@
                            <Keywords/>
                         </PSPortlet>
                         <Tree Id="" Name="" TreeType=""/>
-                        <Keyword Id="" Name="" Value=""/>
+                        <Keyword Id="" Name=""/>
                      </Templates>
                 </Options>
 </GetMetadata>

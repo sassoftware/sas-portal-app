@@ -236,27 +236,12 @@
                     </img>
 		</td>
 
-<!-- TODO: Add support for Keywords 
-
 		<td class="commonLabel" nowrap="nowrap">
 		    <label for="keywords"><xsl:value-of select="$portletEditItemKeywords"/></label>
 		    &#160;
 		</td>
 		<td class="textEntry">
 		    <input type="text" name="keywords" size="40" value="" id="keywords"/>
-		</td>
--->
-<!-- TODO: When adding support for Keywords, remove these 2 spacers -->
-
-		<td>
-		    <img border="0" alt="">
-                     <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/1x1.gif</xsl:attribute>
-                    </img>
-		</td>
-		<td>
-		    <img border="0" alt="">
-                     <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/1x1.gif</xsl:attribute>
-                    </img>
 		</td>
 
 		<td width="100%">&#160;</td>

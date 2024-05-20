@@ -8,12 +8,16 @@
 <!-- Set up the environment context variables -->
 <xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/setup.envcontext.xslt"/>
 
+<xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/manage.keywords.xslt"/>
+
 <!-- Main Entry Point -->
 
 <xsl:template match="/">
 
 <xsl:variable name="newName"><xsl:value-of select="Mod_Request/NewMetadata/Name"/></xsl:variable>
 <xsl:variable name="newDesc"><xsl:value-of select="Mod_Request/NewMetadata/Desc"/></xsl:variable>
+<xsl:variable name="newKeywords"><xsl:value-of select="Mod_Request/NewMetadata/Keywords"/></xsl:variable>
+
 <xsl:variable name="newPageRank"><xsl:value-of select="Mod_Request/NewMetadata/PageRank"/></xsl:variable>
 <xsl:variable name="passedScope"><xsl:value-of select="Mod_Request/NewMetadata/Scope"/></xsl:variable>
 <xsl:variable name="newScope">
@@ -155,6 +159,24 @@
                         <xsl:attribute name="NumberOfRows">0</xsl:attribute>
                         <xsl:attribute name="Type"><xsl:value-of select="defaultLayoutType"/></xsl:attribute>
 
+                        <xsl:if test="$newKeywords">
+
+                           <Keywords>
+ 
+                           <xsl:call-template name="ManageKeywords">
+
+                               <xsl:with-param name="oldKeywords"/>
+                               <xsl:with-param name="newKeywords" select="$newKeywords"/>
+
+                               <xsl:with-param name="owningObjectType">PSPortalPage</xsl:with-param>
+                               <xsl:with-param name="owningObjectId" select="$newObjectId"/>
+                               <xsl:with-param name="embeddedObject">1</xsl:with-param>
+
+                           </xsl:call-template>
+
+                           </Keywords>
+
+                           </xsl:if>
                         <Extensions>
                              <xsl:variable name="newLayoutTypeId"><xsl:value-of select="substring-after($repositoryId,'.')"/>.$newLayoutTypeId</xsl:variable>
                             <Extension Name="LayoutType">

@@ -26,6 +26,10 @@
 
 <xsl:variable name="portletName" select="/Mod_Request/NewMetadata/Name"/>
 <xsl:variable name="portletDesc" select="/Mod_Request/NewMetadata/Desc"/>
+<xsl:variable name="newDesc" select="Mod_Request/NewMetadata/Desc"/>
+<xsl:variable name="newKeywords" select="Mod_Request/NewMetadata/Keywords"/>
+
+<xsl:include href="manage.keywords.xslt"/>
 
 <xsl:template match="/">
 
@@ -53,6 +57,24 @@
              <xsl:attribute name="Name"><xsl:value-of select="$portletName"/></xsl:attribute>
              <xsl:attribute name="Desc"><xsl:value-of select="$portletDesc"/></xsl:attribute>
              <xsl:attribute name="portletType"><xsl:value-of select="$portletType"/></xsl:attribute>
+             <xsl:if test="$newKeywords">
+
+                 <Keywords>
+
+                 <xsl:call-template name="ManageKeywords">
+
+                     <xsl:with-param name="oldKeywords"/>
+                     <xsl:with-param name="newKeywords" select="$newKeywords"/>
+
+                     <xsl:with-param name="owningObjectType">PSPortlet</xsl:with-param>
+                     <xsl:with-param name="owningObjectId" select="$mainPortlet"/>
+                     <xsl:with-param name="embeddedObject">1</xsl:with-param>
+
+                 </xsl:call-template>
+
+                 </Keywords>
+
+                 </xsl:if>
 
      <PropertySets>
          <xsl:variable name="newPSId"><xsl:value-of select="substring-after($reposId,'.')"/>.$newPS</xsl:variable>

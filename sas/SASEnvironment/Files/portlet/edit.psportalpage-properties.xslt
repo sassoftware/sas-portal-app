@@ -105,8 +105,12 @@
     <xsl:variable name="objectId" select="Mod_Request/NewMetadata/Id"/>
 
     <xsl:variable name="objectDesc" select="$pageObject/@Desc"/>
-    <!-- TODO: Keywords not currently supported -->
-    <xsl:variable name="objectKeywords"/>
+    
+   <xsl:variable name="objectKeywords">
+      <xsl:for-each select="$pageObject/Keywords/Keyword">
+        <xsl:value-of select="@Name"/><xsl:text> </xsl:text>
+      </xsl:for-each>
+    </xsl:variable>
     <xsl:variable name="pageRank" select="$pageObject/Extensions/Extension[@Name='PageRank']/@Value"/>
 
     <xsl:variable name="userName" select="Mod_Request/NewMetadata/Metaperson"/>
@@ -254,7 +258,7 @@
                 </td>
                 <td>&#160;</td>
                 <td class="textEntry">
-                    <input type="text" name="keywords" size="40" id="keywords" disabled="disabled">
+                    <input type="text" name="keywords" size="40" id="keywords">
                       <xsl:attribute name="value"><xsl:value-of select="$objectKeywords"/></xsl:attribute>
                     </input>
                 </td>

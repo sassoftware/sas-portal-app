@@ -95,6 +95,9 @@
               %if (%symexist(desc)) %then %do;
                   put "<Desc>&Desc.</Desc>";
                   %end;
+              %if (%symexist(keywords)) %then %do;
+                  put "<Keywords>&Keywords.</Keywords>";
+                  %end;
 
 
               /*

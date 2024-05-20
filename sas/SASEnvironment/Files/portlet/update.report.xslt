@@ -75,6 +75,8 @@
 
   <xsl:when test="not($oldPortletURI = $newPortletURI) or $commonPropertiesChanged">
 
+    <Multiple_Requests>
+
     <UpdateMetadata>
 
       <Metadata>
@@ -176,6 +178,10 @@
       <Options/>
 
     </UpdateMetadata>
+
+    <xsl:call-template name="updatePortletKeywords"/>
+
+    </Multiple_Requests>
 
   </xsl:when>
 

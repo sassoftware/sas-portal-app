@@ -26,6 +26,8 @@
               true = yes, move the portlets that are in the same tree to the new tree
               false = no, leave the portlets where they are (NOTE: if this parameter not passed, false is the default)
 
+      Keywords = The list of keyword associated with the object.
+
       Any thing that is not passed should remain unchanged.
  
 -->
@@ -81,6 +83,20 @@
  <xsl:choose>
     <xsl:when test="/Mod_Request/NewMetadata/Desc"><xsl:value-of select="/Mod_Request/NewMetadata/Desc"/></xsl:when>
     <xsl:otherwise><xsl:value-of select="$oldDesc"/></xsl:otherwise>
+ </xsl:choose>
+</xsl:variable>
+
+    <!-- Keywords -->
+
+<xsl:variable name="oldKeywords">
+  <xsl:for-each select="$pageObject/Keywords/Keyword">
+    <xsl:value-of select="@Name"/><xsl:text> </xsl:text>
+  </xsl:for-each>
+</xsl:variable>
+<xsl:variable name="newKeywords">
+ <xsl:choose>
+    <xsl:when test="/Mod_Request/NewMetadata/Keywords"><xsl:value-of select="/Mod_Request/NewMetadata/Keywords"/></xsl:when>
+    <xsl:otherwise><xsl:value-of select="$oldKeywords"/></xsl:otherwise>
  </xsl:choose>
 </xsl:variable>
 
@@ -200,6 +216,7 @@
 <!-- Re-usable scripts -->
 
 <xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/delete.all.routines.xslt"/>
+<xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/manage.keywords.xslt"/>
 
 <xsl:template match="/">
 
@@ -370,6 +387,7 @@
                 <xsl:if test="not($newDesc='') and not($newDesc=$oldDesc)">
                    <xsl:attribute name="Desc"><xsl:value-of select="$newDesc"/></xsl:attribute>
                 </xsl:if>
+
               </PSPortalPage>
 
            </Metadata>
@@ -381,6 +399,20 @@
          </UpdateMetadata>
 
     </xsl:if>
+
+    <!-- Update list of Keywords? -->
+         <!-- NOTE: there is the possibility here that newKeywords could be "" and there still be work to do, ie. delete the existing keywords -->
+
+    <xsl:if test="not($newKeywords=$oldKeywords)">
+
+         <xsl:call-template name="ManageKeywords">
+             <xsl:with-param name="oldKeywords" select="$oldKeywords"/>
+             <xsl:with-param name="newKeywords" select="$newKeywords"/>
+             <xsl:with-param name="owningObject" select="$pageObject"/>
+         </xsl:call-template>
+
+    </xsl:if>
+
     <xsl:if test="not($newPageRank=$oldPageRank)">
 
          <xsl:variable name="oldPageRankId" select="$pageObject/Extensions/Extension[@Name='PageRank']/@Id"/>

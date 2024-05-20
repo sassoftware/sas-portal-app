@@ -36,6 +36,20 @@
   </xsl:choose>
 </xsl:variable>
 
+<!-- Keywords -->
+
+<xsl:variable name="oldKeywords">
+  <xsl:for-each select="$portletObject/Keywords/Keyword">
+    <xsl:value-of select="@Name"/><xsl:text> </xsl:text>
+  </xsl:for-each>
+</xsl:variable>
+<xsl:variable name="newKeywords">
+ <xsl:choose>
+    <xsl:when test="/Mod_Request/NewMetadata/Keywords"><xsl:value-of select="/Mod_Request/NewMetadata/Keywords"/></xsl:when>
+    <xsl:otherwise><xsl:value-of select="$oldKeywords"/></xsl:otherwise>
+ </xsl:choose>
+</xsl:variable>
+
 <!-- Parent Tree -->
 
 <xsl:variable name="oldParentTreeId" select="$portletObject/Trees/Tree/@Id"/>
@@ -48,10 +62,12 @@
 
 <xsl:variable name="commonPropertiesChanged">
   <xsl:choose>
-    <xsl:when test="not($newName=$oldName) or not($newDesc=$oldDesc) or not($newParentTreeId=$oldParentTreeId)">1</xsl:when>
+    <xsl:when test="not($newName=$oldName) or not($newDesc=$oldDesc) or not($newParentTreeId=$oldParentTreeId) or not($newKeywords=$oldKeywords)">1</xsl:when>
     <xsl:otherwise/>
   </xsl:choose>
 </xsl:variable>
+
+<xsl:include href="manage.keywords.xslt"/>
 
 <!-- template to handle updating common portlet properties -->
 
@@ -86,6 +102,27 @@
        </PSPortlet>
     </xsl:if>
 </xsl:template>
+
+<xsl:template name="updatePortletKeywords">
+
+   <!-- We have to do this as a separate call because we may end up generating Delete Metadata calls to delete
+        existing Keywords, and thus we can't process it inline 
+    -->
+
+           <!-- Update list of Keywords? -->
+
+           <xsl:if test="not($newKeywords=$oldKeywords)">
+
+                <xsl:call-template name="ManageKeywords">
+                    <xsl:with-param name="oldKeywords" select="$oldKeywords"/>
+                    <xsl:with-param name="newKeywords" select="$newKeywords"/>
+                    <xsl:with-param name="owningObject" select="$portletObject"/>
+                </xsl:call-template>
+
+           </xsl:if>
+
+</xsl:template>
+
 
 </xsl:stylesheet>
 
