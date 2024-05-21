@@ -19,17 +19,16 @@
 	
 	%createPermissionsTree(identityType=&portalUserType.,IdentityName=&name.,tree=&portalPermissionsTree.,rc=cptRC);
 
-    %if (&cptRC.=0) %then %do;
+        %if (&cptRC.=0) %then %do;
 				
-				%let _cgp=0;
+		%let _cgp=0;
 			
-			%end;
+		%end;
+
 	    %else %do;
 	    
 	        %let _cgp=&cptRC.;
 	        
-	        %end;
-		
 		%end;
 		
 
