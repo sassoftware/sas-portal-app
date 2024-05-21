@@ -206,11 +206,14 @@
 
                   <AccessControlEntry Id="" Desc="" IsHidden="0" PublicType="" UsageVersion="0"> <xsl:attribute name="Name"><xsl:value-of select="$newAdminACEName"/></xsl:attribute>
                         <Identities>
-
+<xsl:choose>
+<xsl:when test="$identityGroupAdminId != ''">
                                <Person>
                                      <xsl:attribute name="ObjRef"><xsl:value-of select="$identityGroupAdminId"/></xsl:attribute>
                                      <xsl:attribute name="Name"><xsl:value-of select="$identityGroupAdminName"/></xsl:attribute>
                                </Person>
+</xsl:when>
+</xsl:choose>
                         </Identities>
                         <Permissions>
                            <Permission>
