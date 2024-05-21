@@ -2,6 +2,7 @@
 <xsl:output method="xml"/>
 
 <xsl:param name="treeName"/>
+<xsl:param name="setOwner">1</xsl:param>
 
 <!-- - - - - - - - - - - - - - - -
 
@@ -202,28 +203,42 @@
 
                   <!-- Create the Group Admin ACE -->
 
-                  <xsl:variable name="newAdminACEName">GRANT <xsl:value-of select="$identityGroupAdminName"/> Write</xsl:variable>
+                  <xsl:choose>
 
-                  <AccessControlEntry Id="" Desc="" IsHidden="0" PublicType="" UsageVersion="0"> <xsl:attribute name="Name"><xsl:value-of select="$newAdminACEName"/></xsl:attribute>
-                        <Identities>
+                  <xsl:when test="$setOwner='1' and ($identityGroupAdminId and $identityGroupAdminName)">
 
-                               <Person>
-                                     <xsl:attribute name="ObjRef"><xsl:value-of select="$identityGroupAdminId"/></xsl:attribute>
-                                     <xsl:attribute name="Name"><xsl:value-of select="$identityGroupAdminName"/></xsl:attribute>
-                               </Person>
-                        </Identities>
-                        <Permissions>
-                           <Permission>
-                               <xsl:attribute name="ObjRef"><xsl:value-of select="$readPermissionId"/></xsl:attribute>
-                               <xsl:attribute name="Name"><xsl:value-of select="$readPermissionName"/></xsl:attribute>
-                            </Permission>
-                           <Permission>
-                               <xsl:attribute name="ObjRef"><xsl:value-of select="$writePermissionId"/></xsl:attribute>
-                               <xsl:attribute name="Name"><xsl:value-of select="$writePermissionName"/></xsl:attribute>
-                           </Permission>
-                        </Permissions>
-                  </AccessControlEntry>
+                      <xsl:variable name="newAdminACEName">GRANT <xsl:value-of select="$identityGroupAdminName"/> Write</xsl:variable>
 
+                      <AccessControlEntry Id="" Desc="" IsHidden="0" PublicType="" UsageVersion="0"> <xsl:attribute name="Name"><xsl:value-of select="$newAdminACEName"/></xsl:attribute>
+                            <Identities>
+
+                                   <Person>
+                                         <xsl:attribute name="ObjRef"><xsl:value-of select="$identityGroupAdminId"/></xsl:attribute>
+                                         <xsl:attribute name="Name"><xsl:value-of select="$identityGroupAdminName"/></xsl:attribute>
+                                   </Person>
+                            </Identities>
+                            <Permissions>
+                               <Permission>
+                                   <xsl:attribute name="ObjRef"><xsl:value-of select="$readPermissionId"/></xsl:attribute>
+                                   <xsl:attribute name="Name"><xsl:value-of select="$readPermissionName"/></xsl:attribute>
+                                </Permission>
+                               <Permission>
+                                   <xsl:attribute name="ObjRef"><xsl:value-of select="$writePermissionId"/></xsl:attribute>
+                                   <xsl:attribute name="Name"><xsl:value-of select="$writePermissionName"/></xsl:attribute>
+                               </Permission>
+                            </Permissions>
+                      </AccessControlEntry>
+                  </xsl:when>
+
+                  <xsl:otherwise>
+                      <xsl:if test="$setOwner='1'">
+
+                         <xsl:comment>ERROR: Group Admin information not found, either fix authorizations on group $identityGroupName, or use the setOwner=1 parameter!</xsl:comment>
+
+                      </xsl:if>
+                  </xsl:otherwise>
+
+                  </xsl:choose>
            </xsl:when>
            <xsl:when test="$personId != ''">
 

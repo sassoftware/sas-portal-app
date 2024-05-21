@@ -6,9 +6,13 @@
     identityName= the name of the identity for which to create the permissions tree
     tree= the name of the permissions tree to create.  If not set, default is
               &identityName. Permissions Tree
+    rc  = (optional) the name of a macro variable that should contain the return code
+    setOwner = an indicator of whether the admnistrative ownership should be set for this tree.  1 (default) indicates
+               to set the ownership, 0 indicates not to.  NOTE: This variable should only be set to 0 if there is another
+               process that will set the administrative ownership of this tree!
 */
 
-%macro createPermissionsTree(identityType=,identityName=,tree=,rc=);
+%macro createPermissionsTree(identityType=,identityName=,tree=,setOwner=1,rc=);
 
 %let _cptRC=0;
 
@@ -61,7 +65,7 @@
 		%let reposname=%sysfunc(dequote(%sysfunc(getoption(METAREPOSITORY))));
 		
 		proc xsl in=_cptrout out=_cptixml xsl=_cpttxsl;
-		  parameter "identityType"="&identityType." "identityName"="&identityName." "reposName"="&reposName.";
+		  parameter "identityType"="&identityType." "identityName"="&identityName." "reposName"="&reposName." "setOwner"="&setOwner.";
 		run;
 		
 		filename _cptrout;
@@ -87,7 +91,7 @@
 			filename _cptaxml temp;
 			
 			proc xsl in=_cptoxml out=_cptaxml xsl=_cptixsl;
-			   parameter "treeName"="&tree.";
+			   parameter "treeName"="&tree." "setOwner"="&setOwner.";
 			run;
 			
 			/*
