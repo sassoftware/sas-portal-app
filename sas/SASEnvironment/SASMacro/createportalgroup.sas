@@ -30,7 +30,7 @@
 	        %let _cgp=&cptRC.;
 	        
 		%end;
-		
+        %end;
 
 %if ("&rc." ne "") %then %do;
    %global &rc.;
