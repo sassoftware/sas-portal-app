@@ -198,8 +198,15 @@
 
                 <!--  Also, in my test system, there were some pages that weren't in trees, that shouldn't happen and don't allow them to select those -->
 
-                <xsl:for-each select="$metadataContext/Multiple_Requests//Objects/PSPortalPage[not(Extensions/Extension[@Name='MarkedForDeletion']) and Trees/Tree]">
-                    <xsl:sort select="@Name"/> 
+                <!--  Since we did 2 different queries, there is a possibility of duplicates in the resulting set of objects.  Here we group the objects by id, then only select
+                      the first one with a given id to process.
+                -->
+
+                <xsl:for-each-group group-by="@Id" select="$metadataContext/Multiple_Requests//Objects/PSPortalPage[not(Extensions/Extension[@Name='MarkedForDeletion']) and Trees/Tree]">
+                    <!-- typically a sort is case sensitive, it makes more sense to do a case insensitive sort here -->
+                    <xsl:sort select="lower-case(@Name)"/> 
+                    <xsl:for-each select="current-group()[1]">
+
                     <xsl:variable name="resultPosition" select="position()"/>
 
                     <xsl:variable name="resultPageId"><xsl:value-of select="@Id"/></xsl:variable>
@@ -299,8 +306,8 @@
                           <xsl:value-of select="@MetadataCreated"/> 
                         </td>
                      </tr>
-
-                 </xsl:for-each>
+                   </xsl:for-each>
+                 </xsl:for-each-group>
 
          </table>
 
