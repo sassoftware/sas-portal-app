@@ -68,6 +68,12 @@
     <xsl:variable name="relatedId" select="Mod_Request/NewMetadata/RelatedId"/>
     <xsl:variable name="relatedRelationship" select="Mod_Request/NewMetadata/RelatedRelationship"/>
 
+    <xsl:variable name="searchTableMaxHeight">
+      <xsl:choose>
+          <xsl:when test="Mod_Request/NewMetadata/SearchTableMaxHeight"><xsl:value-of select="Mod_Request/NewMetadata/SearchTableMaxHeight"/></xsl:when>
+          <xsl:otherwise>30em</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <xsl:variable name="displayTabCount" select="count(Mod_Request/NewMetadata/Tabs/Tab)"/>
 
     <xsl:variable name="userName" select="Mod_Request/NewMetadata/Metaperson"/>
@@ -480,6 +486,7 @@
                                     </td>
                                 </tr>
                                 <!-- Put some space in the search options to have the page line up better with Create tab upon initial entry -->
+<!--
                                 <tr>
                                     <td>&#160;</td>
                                 </tr>
@@ -507,6 +514,7 @@
                                 <tr>
                                     <td>&#160;</td>
                                 </tr>
+-->
                             </table>
                         </td>
                         <!-- End Sidebar table -->
@@ -559,6 +567,8 @@
                                 </tr>
                             </table>
                             <div id="searchresults" name="searchresults">
+                                 <xsl:attribute name="style">height: <xsl:value-of select="$searchTableMaxHeight"/>; overflow: auto;</xsl:attribute>
+                             
                                <xsl:comment> Search Results table </xsl:comment>
                                <table border="0" width="100%" cellspacing="0" cellpadding="1">
                                 <!--  Initial display - no search results found -->

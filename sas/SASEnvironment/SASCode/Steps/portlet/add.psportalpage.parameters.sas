@@ -9,3 +9,11 @@ put '<Tab Id="search" NameKey="portletEditSearchTitle"/>';
 
 put '</Tabs>';
 
+/*
+ *  Allow some control over the height of the search results table
+ */
+     %if (%symexist(searchtablemaxheight)) %then %do;
+         put "<SearchTableMaxHeight>&searchtablemaxheight.</SearchTableMaxHeight>";
+         %end;
+
+
