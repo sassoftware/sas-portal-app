@@ -300,8 +300,6 @@
 
 <script>
 
-console.log('add page entry');
-
    var hasChanged = false;
   
    /*

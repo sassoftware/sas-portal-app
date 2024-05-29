@@ -72,6 +72,9 @@
 
   <string key="portletEditItemRequiredField">必須フィールド</string>
 
+  <string key="portletEditCreateTitle">作成する</string>
+  <string key="portletEditSearchTitle">検索</string>
+
   <!--
        Create Portlet Listing
    -->
@@ -197,6 +200,27 @@
   <string key="portletRemovePagePersonal">このページを私の個人ポータルから削除してください。</string>
   <string key="portletRemovePagePermanent">このページを削除して完全に削除します。</string>
   <string key="portletRemovePagePortlets">ページに含まれる次のポートレットを削除します。</string>
+
+<!-- Search -->
+
+  <string key="portletSearchNotSupported">Searching of this type is not supported.</string>
+
+  <string key="portletSearchButton">検索</string>
+  <string key="portletSearchCollapse">崩壊</string>
+  <string key="portletSearchExpand">拡大する</string>
+  <string key="portletSearchNoResults">検索結果が見つかりませんでした</string>
+  <string key="portletSearchNoSelection">検索結果が選択されていませんでした</string>
+  <string key="portletSearchOnlyOneSelection">選択できる検索結果は 1 つだけです</string>
+  <string key="portletSearchNoQuery">検索文字列を入力して再試行してください。</string>
+  <string key="portletSearchType">タイプ</string>
+  <string key="portletSearchTypePage">ページ</string>
+  <string key="portletSearchName">名前</string>
+  <string key="portletSearchDesc">説明</string>
+  <string key="portletSearchLocation">位置</string>
+  <string key="portletSearchCreated">作成日</string>
+  <string key="portletSearchAscending">上昇</string>
+  <string key="portletSearchDescending">降順</string>
+  <string key="portletSearchCheckbox">追加する項目を選択してください</string>
 
   <!--
        Errors

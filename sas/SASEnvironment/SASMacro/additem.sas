@@ -1,5 +1,5 @@
 /*  Generate the Add Item page */
-%macro addItem(in=,out=_webout,rc=);
+%macro addItem(in=,out=_webout,rc=,handler=);
 
         /*
          *   For each item that the add page needs to  be generated for, there should be the following routines:
@@ -44,7 +44,7 @@
                %getRepoInfo;
 
 	       filename newxml temp;
-	       %buildModParameters(newxml);
+	       %buildModParameters(newxml,handler=&handler.);
 
                %let addItemGetter=&filesDir./portlet/add.%lowcase(&searchType.).get.xslt;
                %if (%sysfunc(fileexist(&addItemGetter.)) ne 0) %then %do;
@@ -67,7 +67,7 @@
                     */
 
 	           filename newxml temp;
-                   %buildModParameters(newxml);
+                   %buildModParameters(newxml,handler=&handler.);
 
                    %end;
 

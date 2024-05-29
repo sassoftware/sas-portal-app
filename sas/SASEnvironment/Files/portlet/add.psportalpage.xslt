@@ -43,6 +43,15 @@
 <xsl:variable name="portletEditPageShareTypePersistent" select="$localeXml/string[@key='portletEditPageShareTypePersistent']/text()"/>
 
 <xsl:variable name="portletEditItemNameRequired" select="$localeXml/string[@key='portletEditItemNameRequired']/text()"/>
+
+<xsl:variable name="portletSearchButton" select="$localeXml/string[@key='portletSearchButton']/text()"/>
+<xsl:variable name="portletSearchCollapse" select="$localeXml/string[@key='portletSearchCollapse']/text()"/>
+<xsl:variable name="portletSearchExpand" select="$localeXml/string[@key='portletSearchExpand']/text()"/>
+<xsl:variable name="portletSearchNoResults" select="$localeXml/string[@key='portletSearchNoResults']/text()"/>
+<xsl:variable name="portletSearchNoQuery" select="$localeXml/string[@key='portletSearchNoQuery']/text()"/>
+<xsl:variable name="portletSearchNoSelection" select="$localeXml/string[@key='portletSearchNoSelection']/text()"/>
+<xsl:variable name="portletSearchOnlyOneSelection" select="$localeXml/string[@key='portletSearchOnlyOneSelection']/text()"/>
+
 <!-- Re-usable scripts -->
 
 <xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/form.functions.xslt"/>
@@ -58,6 +67,8 @@
     <xsl:variable name="relatedType" select="Mod_Request/NewMetadata/RelatedType"/>
     <xsl:variable name="relatedId" select="Mod_Request/NewMetadata/RelatedId"/>
     <xsl:variable name="relatedRelationship" select="Mod_Request/NewMetadata/RelatedRelationship"/>
+
+    <xsl:variable name="displayTabCount" select="count(Mod_Request/NewMetadata/Tabs/Tab)"/>
 
     <xsl:variable name="userName" select="Mod_Request/NewMetadata/Metaperson"/>
 
@@ -76,6 +87,10 @@
     <xsl:variable name="addLink" select="concat('/SASStoredProcess/do?_program=',$appLocEncoded,'services/createItem')"/>
 
 <!--  NOTE: We set up a hidden formResponse iframe to capture the result so that we can either display the results (if debugging) or simply cause a "go back" to happen after the form is submitted (by using the iframe onload function).  The event handler to handle this is in the CommonFormFunctions template -->
+
+<div id="pages">
+
+  <div class="tabcontent" id="create">
 
     <form method="post" enctype="application/x-www-form-urlencoded" target="formResponse">
         <xsl:attribute name="action"><xsl:value-of select="$addLink"/></xsl:attribute>
@@ -381,7 +396,7 @@
                     <xsl:attribute name="value"><xsl:value-of select="$saveButton"/></xsl:attribute>
                 </input>
                 &#160;
-                <input class="button" type="button" onclick='if (submitDisableAllForms()) history.go(-2); else return false;'>
+                <input class="button" type="button" onclick='if (submitDisableAllForms()) history.go(backDepth); else return false;'>
                     <xsl:attribute name="value"><xsl:value-of select="$cancelButton"/></xsl:attribute>
                 </input>
             </td>
@@ -391,6 +406,216 @@
         </table>
     </form>
 
+  </div>
+
+  <div class="tabcontent" id="search">
+
+     <form name="taskSearchForm" id="taskSearchForm" method="post" onsubmit="submitDisableAllForms(); " target="formResponse">
+        <xsl:attribute name="action"><xsl:value-of select="$addLink"/></xsl:attribute>
+
+                <input type="hidden" name="type" id="type" value="PSPortalPage"/>
+
+                <input type="hidden" name="parentTreeId" id='searchparenttreeid'>
+                     <xsl:attribute name="value"><xsl:value-of select="$personObject/AccessControlEntries/AccessControlEntry/Objects/Tree/@Id"/></xsl:attribute>
+                </input>
+
+                <!-- the id will be set dynamically based on what is selected in the search results -->
+                <input type="hidden" name="id" id="searchpageid" value=""/>
+
+                <!-- Container table -->
+                <table id="resultsdiv" border="0" cellspacing="0" cellpadding="0" width="100%" valign="top" height="100%">
+                    <tr>
+                        <td class="dataEntryBG" id="searchOptions" valign="top">
+                            <!-- Sidebar table -->
+                            <table id="sidebar" border="0" cellspacing="6" cellpadding="3" valign="top" style="">
+                                <tr>
+                                    <td>
+                                        <!-- Keywords table -->
+                                        <table cellpadding="3" cellspacing="0" width="100%">
+                                            <tr>
+                                                <td class="commonLabel">
+                                                    <label for="query"><xsl:value-of select="$portletEditItemKeywords"/>: </label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="textEntry" onkeypress="if(event.keyCode==13) return submitSearch(searchErrorMsg); ">
+                                                    <input type="text" name="query" size="30" value=""  id="query"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="right">
+                                                    <input class="button" type="button" onclick='return submitSearch(searchErrorMsg);'>
+                                                       <xsl:attribute name="value"><xsl:value-of select="$portletSearchButton"/></xsl:attribute>
+                                                    </input>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <!-- End Keywords table -->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <!-- Search Options table -->
+                                        <!--  Paging support not supported from original portal 
+                                        <table cellpadding="3" cellspacing="0" class="tableBorder" width="100%">
+                                            <tr class="searchResultsTableHeader">
+                                                <td colspan="2" class="portalTableSubheadingTrans" nowrap="nowrap">Search Results</td>
+                                            </tr>
+                                            <tr>
+                                                <td align="left" nowrap="nowrap" class="commonLabel">
+                                                    <label for="resultsperpage">Results per page: </label>
+                                                </td>
+                                                <td align="left" nowrap="nowrap" width="100%">
+                                                    <select name="noOfRows" size="1" onchange="submitChangeRows();return true;" id="resultsperpage">
+                                                        <option value="20" selected="selected">20</option>
+                                                        <option value="30">30</option>
+                                                        <option value="40">40</option>
+                                                        <option value="50">50</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        -->
+                                        <!-- End Search Options table -->
+                                    </td>
+                                </tr>
+                                <!-- Put some space in the search options to have the page line up better with Create tab upon initial entry -->
+                                <tr>
+                                    <td>&#160;</td>
+                                </tr>
+                                <tr>
+                                    <td>&#160;</td>
+                                </tr>
+                                <tr>
+                                    <td>&#160;</td>
+                                </tr>
+                                <tr>
+                                    <td>&#160;</td>
+                                </tr>
+                                <tr>
+                                    <td>&#160;</td>
+                                </tr>
+                                <tr>
+                                    <td>&#160;</td>
+                                </tr>
+                                <tr>
+                                    <td>&#160;</td>
+                                </tr>
+                                <tr>
+                                    <td>&#160;</td>
+                                </tr>
+                                <tr>
+                                    <td>&#160;</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <!-- End Sidebar table -->
+                        <td class="searchResultsTableColumn">
+                            <div id="expandSidebar">
+                                <img border="0" valign="top" width="11" height="16" onclick='toggleSearchOptionsDiv(); ' >
+                                     <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/CollapseLeftArrows.gif</xsl:attribute>
+                                     <xsl:attribute name="alt"><xsl:value-of select="$portletSearchCollapse"/></xsl:attribute>
+                                     <xsl:attribute name="title"><xsl:value-of select="$portletSearchCollapse"/></xsl:attribute>
+				</img>
+
+                            </div>
+                            <div id="collapseSidebar" style="display: none">
+                                <img border="0" valign="top" width="11" height="16" onclick='toggleSearchOptionsDiv(); ' >
+                                     <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/CollapseRightArrows.gif</xsl:attribute>
+                                     <xsl:attribute name="alt"><xsl:value-of select="$portletSearchExpand"/></xsl:attribute>
+                                     <xsl:attribute name="title"><xsl:value-of select="$portletSearchExpand"/></xsl:attribute>
+				</img>
+                                
+                            </div>
+                        </td>
+                        <td>
+                            <img border="0" height="12" alt="">
+                                 <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/1x1.gif</xsl:attribute>
+		            </img>
+                            
+                        </td>
+                        <td width="100%" valign="top">
+                            <table border="0" cellspacing="0" cellpadding="0" width="100%">
+                                <tr>
+                                    <td>
+                                       <img border="0" height="12" alt="">
+				            <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/1x1.gif</xsl:attribute>
+				       </img>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                       <img border="0" alt="">
+				            <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/1x1.gif</xsl:attribute>
+				       </img>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                       <img border="0" height="6" alt="">
+				            <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/1x1.gif</xsl:attribute>
+				       </img>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div id="searchresults" name="searchresults">
+                               <xsl:comment> Search Results table </xsl:comment>
+                               <table border="0" width="100%" cellspacing="0" cellpadding="1">
+                                <!--  Initial display - no search results found -->
+                                <tr align="center">
+                                    <td class="textEntry" colspan="12" align="center"><xsl:value-of select="$portletSearchNoResults"/></td>
+                                </tr>
+                                </table>
+                               <xsl:comment> End Search Results table </xsl:comment>
+                            </div>
+ 
+                            <table border="0" width="100%" cellspacing="0" cellpadding="1">
+                                <tr align="center">
+                                    <td colspan="12" align="center">
+                                       <img border="0" height="6" alt="">
+				            <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/1x1.gif</xsl:attribute>
+				       </img>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>&#160;</td>
+                    </tr>
+                   
+                    <tr>
+                        <td colspan="5" class="wizardMessageFooter" height="1"></td>
+                    </tr>
+            <tr class="buttonBar">
+                <td colspan="6">
+                    <img border="0" height="6" alt="">
+                       <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/1x1.gif</xsl:attribute>
+                    </img>
+
+                </td>
+            </tr>
+
+                    <tr class="buttonBar">
+                        <td nowrap="nowrap" align="left" colspan="5">
+                            <img border="0" height="12" alt="">
+                              <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/1x1.gif</xsl:attribute>
+                            </img>
+                            <input class="button" type="submit" onclick='if (validateSearchForm()) return submitDisableAllForms(); else return false;'>
+                                <xsl:attribute name="value"><xsl:value-of select="$saveButton"/></xsl:attribute>
+                            </input>
+                            &#160;
+                            <input class="button" type="button" onclick='if (submitDisableAllForms()) history.go(backDepth); else return false;'>
+                                <xsl:attribute name="value"><xsl:value-of select="$cancelButton"/></xsl:attribute>
+                            </input>
+                        </td>
+                        <td width="100%" />
+                    </tr>
+
+        </table>
+
+     </form>
+
+  </div>
+</div>
       <!-- This iframe is here to capture the response from submitting the form -->
       
       <iframe id="formResponse" name="formResponse" style="display:none" width="100%">
@@ -402,13 +627,21 @@
 
 <xsl:template name="thisPageScripts">
 
+<xsl:variable name="searchLink" select="concat('/SASStoredProcess/do?_program=',$appLocEncoded,'services/search')"/>
+
 <script>
 
    var hasChanged = false;
 
+   rememberCurrentTab=false;
+
    backDepth=-2;
 
    toggleScopeDiv();
+
+   var searchErrorMsg = "<xsl:value-of select="$portletSearchNoQuery"/>";
+
+   var searchLink="<xsl:value-of select="$searchLink"/>";
 
    /* 
     *  Validate fields in form
@@ -429,38 +662,240 @@
       return true;
 
    }
+   /* 
+    *  Validate fields in search form
+    */
+
+   function validateSearchForm() {
+
+      var noResultSelected = "<xsl:value-of select="$portletSearchNoSelection"/>";
+      var tooManyResultsSelected = "<xsl:value-of select="$portletSearchOnlyOneSelection"/>";
+
+      searchResultsTable=document.getElementById('searchResultsTable');
+      /*
+       *  Make sure a search result is selected.
+       */
+
+      if (searchResultsTable==null) {
+
+            /*  If the "No Search Results" table is shown, it doesn't have the id on the table
+             *  so nothing can be selected.
+             */
+
+            alert(""+noResultSelected);
+            return false;
+          }
+
+      /*
+       *  Get all of the checkboxes and see how many are selected, min=1, max=1
+       */
+
+      const items = searchResultsTable.querySelectorAll('input');
+
+      var selectedCount=0;
+      var selectedCheckboxId='';
+
+      for (let i = 0; i  &lt; items.length; i++) {
+          var item=items[i];
+
+          if (item.type='checkbox') {
+             if (item.checked) {
+                selectedCount=selectedCount+1;
+                selectedCheckboxId=item.id;
+
+                }
+             }
+          }
+     
+      if (selectedCount==0) {
+         alert(""+noResultSelected);
+         return false;
+         }
+      else if (selectedCount>1) {
+         alert(""+tooManyResultsSelected);
+         return false;
+
+         }
+
+      else {
+
+         /*
+          *  Set the selected id for the input form
+          */
+
+         document.getElementById('searchpageid').value=selectedCheckboxId;
+
+         return true;
+
+        } 
+   }
 
    function toggleScopeDiv() {
 
        /*
         *  Toggle the scope field visibility based on the sharing location.
         */
-
        /*
         *  If it's the not the "not shared" entry, then see what type of page
         *  are we creating.
         */
        var parentTreeSelect=document.getElementById('parentTreeId');
-       var selectedText=parentTreeSelect.options[parentTreeSelect.selectedIndex].text;
-       /*
-        *  If not shared, hide the option to select which sharing option
-        */
-       var scopeLabelDiv=document.getElementById('scopeLabelDiv');
-       var scopeDiv=document.getElementById('scopeDiv');
 
-       if (selectedText==='<xsl:value-of select="$portletEditPageShareTypeNotShared"/>') {
+       if (parentTreeSelect) {
 
-          scopeLabelDiv.style.visibility="hidden";
-          scopeDiv.style.visibility="hidden";
-
+       if (parentTreeSelect instanceof HTMLInputElement) {
+              scopeLabelDiv.style.visibility="hidden";
+              scopeDiv.style.visibility="hidden";
           }
        else {
+           var selectedText=parentTreeSelect.options[parentTreeSelect.selectedIndex].text;
 
-          scopeLabelDiv.style.visibility="";
-          scopeDiv.style.visibility="";
+           /*
+            *  If not shared, hide the option to select which sharing option
+            */
+           var scopeLabelDiv=document.getElementById('scopeLabelDiv');
+           var scopeDiv=document.getElementById('scopeDiv');
 
-          }
+           if (selectedText==='<xsl:value-of select="$portletEditPageShareTypeNotShared"/>') {
+
+              scopeLabelDiv.style.visibility="hidden";
+              scopeDiv.style.visibility="hidden";
+              }
+           else {
+
+              scopeLabelDiv.style.visibility="";
+              scopeDiv.style.visibility="";
+
+              }
+           }
+        }
      }
+
+    function toggleSearchOptionsDiv() {
+        var searchOptions = document.getElementById("searchOptions");
+        // var optionsDisplayStyle = document.getElementById("optionsDisplayStyle");
+        var collapseImageDiv = document.getElementById("collapseSidebar");
+        var expandImageDiv = document.getElementById("expandSidebar");
+        var visibility = searchOptions.style.display;
+        if (visibility == '') {
+            searchOptions.style.display = 'none';
+            // optionsDisplayStyle.value = 'none';
+            collapseImageDiv.style.display = '';
+            expandImageDiv.style.display = 'none';
+        } else {
+            searchOptions.style.display = '';
+            // optionsDisplayStyle.value = '';
+            collapseImageDiv.style.display = 'none';
+            expandImageDiv.style.display = '';
+        }
+    }
+
+    // Function to check for empty query fields and alert the user to enter a value
+    function validate(fieldName,text)
+    {
+        var object = document.getElementById(fieldName);
+
+        if (object == null || object.value.trim().length > 0)
+            return true;
+        else
+        {
+            alert(""+text);
+            if (navigator.appName.indexOf('Netscape') > -1)
+            {
+                object.focus();
+            }
+            return false;
+        }
+    }
+
+    function getContentTypeChkBoxes() {
+        values = "";
+        var i=1;
+        while (true) {
+            id = "item" + i;
+            var element = document.getElementById(id);
+            if (element == null)
+               break;
+            if (i==1)
+               values = values + element.checked;
+            else
+               values = values + "," + element.checked;
+            i++;
+        }
+        var element2 = document.getElementById("selectedItemString");
+        element2.value=values;
+    }
+
+    function submitSearch(jsMessage) {
+
+            /*
+             *  Since we may be inside a larger form, make sure we
+             *  don't propagate the event that got us here.
+             */
+            event.preventDefault();
+
+            element=document.getElementById("searchresults");
+
+            // getContentTypeChkBoxes();  
+            if (validate("query", jsMessage)) {
+               submitDisableAllForms(); 
+
+               /* Make an HTTP request to get search results */
+               xhttp = new XMLHttpRequest();
+
+               /*
+                *  Start On State Change function definition
+                */
+
+               xhttp.onreadystatechange = function() {
+
+                 if (this.readyState == 4) {
+                   if (this.status == 200) {
+                      element.innerHTML = this.responseText;
+
+                      /*
+                       *  Execute any scripts that may be in the generated text
+                       *  Scripts in dynamically generted content aren't parsed and executed
+                       *  Thus here we need to explicitly find all of the script elements and
+                       *  add them as children (which will cause the execution).
+                       *  NOTE: experimented with several ways of doing this, this is the only
+                       *  way I found that would both execute them AND make the contents of the
+                       *  scripts available to other scripts.
+                       */
+                      element.querySelectorAll('script').forEach(function(node) {
+                         script = document.createElement('script');
+                         script.innerHTML=node.innerText;
+                         element.appendChild(script);
+
+                         });
+
+                      }
+                   if (this.status == 404) {
+                      element.innerHTML = "Page not found.";
+                      }
+                   }
+                 }
+               /*
+                * End  On State Change function definition
+                */
+
+               var query = document.getElementById('query').value;
+
+
+               var searchURL=searchLink;
+               searchURL=searchURL.concat('<xsl:text disable-output-escaping="yes">&amp;</xsl:text>','query=',query);
+               searchURL=searchURL.concat('<xsl:text disable-output-escaping="yes">&amp;</xsl:text>','type=PSPortalPage');
+               xhttp.open("GET", searchURL, true);
+               xhttp.send();
+
+               /* Done processing the file request, exit and let the onreadystatechange function do it's thing */
+               return;
+
+            }
+            else {
+                    return false;
+            }
+    }
 
 </script>
 

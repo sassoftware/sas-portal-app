@@ -584,7 +584,9 @@ function showTab(evt, tabName) {
 
     // remember current tab
 
-    sessionStorage.setItem('activeTabId', tabName);
+    if (typeof rememberCurrentTab == 'undefined') {
+       sessionStorage.setItem('activeTabId', tabName);
+       }
 
 }
 function resizeIframe(obj) {

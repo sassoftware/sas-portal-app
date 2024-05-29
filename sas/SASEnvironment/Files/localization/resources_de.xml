@@ -71,6 +71,9 @@
 
   <string key="portletEditItemRequiredField">Pflichtfeld</string>
 
+  <string key="portletEditCreateTitle">Erstellen</string>
+  <string key="portletEditSearchTitle">Suchen</string>
+
   <!--
        Create Portlet Listing
    -->
@@ -196,6 +199,27 @@
   <string key="portletRemovePagePersonal">Diese Seite aus meinem persönlichen Portal entfernen.</string>
   <string key="portletRemovePagePermanent">Entfernen Sie diese Seite und löschen Sie sie endgültig.</string>
   <string key="portletRemovePagePortlets">Löschen Sie die folgenden Portlets, die auf der Seite enthalten sind.</string>
+
+<!-- Search -->
+
+  <string key="portletSearchNotSupported">Eine Suche dieser Art wird nicht unterstützt.</string>
+
+  <string key="portletSearchButton">Suchen</string>
+  <string key="portletSearchCollapse">Zusammenbruch</string>
+  <string key="portletSearchExpand">Expandieren</string>
+  <string key="portletSearchNoResults">Keine Suchergebnisse gefunden</string>
+  <string key="portletSearchNoSelection">Es wurde kein Suchergebnis ausgewählt</string>
+  <string key="portletSearchOnlyOneSelection">Es kann nur ein Suchergebnis ausgewählt werden</string>
+  <string key="portletSearchNoQuery">Bitte geben Sie einen Suchbegriff ein und versuchen Sie es dann erneut.</string>
+  <string key="portletSearchType">Typ</string>
+  <string key="portletSearchTypePage">Seite</string>
+  <string key="portletSearchName">Name</string>
+  <string key="portletSearchDesc">Beschreibung</string>
+  <string key="portletSearchLocation">Standort</string>
+  <string key="portletSearchCreated">Erstellungsdatum</string>
+  <string key="portletSearchAscending">Aufsteigend</string>
+  <string key="portletSearchDescending">Absteigend</string>
+  <string key="portletSearchCheckbox">Wählen Sie dieses Element aus, um es hinzuzufügen</string>
 
   <!--
        Errors

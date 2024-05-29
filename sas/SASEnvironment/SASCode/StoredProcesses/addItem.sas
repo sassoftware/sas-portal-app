@@ -36,12 +36,39 @@
   %let addItemGenerator=;
 
   /*
-   *  Create some xml to pass the current info into the various routines.
+   *   A parameter handler is normally used to map metadata results into the NewMetadata xml 
+   *   document.  However, in this case, we are using it to add additional fields into the NewMetadata.xml structure
+   *   for the html generators.
    */
-
   filename newxml temp;
 
-  %buildModParameters(newxml);
+  %if ("%upcase(&type.)"="PSPORTLET") %then %do;
+      %let searchType=&portletType.;
+      %end;
+  %else %do;
+      %let searchType=&type.;
+      %end;
+
+  %let addItemHandlerFile=&stepsDir./portlet/add.%lowcase(&searchType.).parameters.sas;
+
+  %if (%sysfunc(fileexist(&addItemHandlerFile.)) ne 0)
+    %then %do;
+
+    %let addItemHandler=addhndlr;
+    filename &addItemHandler. "&addItemHandlerFile.";
+
+    %end;
+  %else %do;
+
+    %let addItemHandler=;
+
+    %end;
+
+  /*
+   *  Create some xml to pass the current info into the various routines.
+   */
+ 
+  %buildModParameters(newxml,&addItemHandler.);
 
   /*
    *  Generate the Common part of the page
@@ -83,9 +110,13 @@
   filename details temp;
   %let details=%sysfunc(pathname(details));
 
-  %addItem(out=details,rc=addItemRC);
+  %addItem(out=details,rc=addItemRC,handler=&addItemHandler.);
 
   %put addItemRC=&addItemRC.;
+
+  %if ( "&addItemHandler." ne "" ) %then %do;
+      filename &addItemHandler.;
+      %end;
 
   /*
    *  End the details section

@@ -71,6 +71,9 @@
 
   <string key="portletEditItemRequiredField">Required Field</string>
 
+  <string key="portletEditCreateTitle">Create</string>
+  <string key="portletEditSearchTitle">Search</string>
+
   <!--
        Create Portlet Listing
    -->
@@ -196,6 +199,27 @@
   <string key="portletRemovePagePersonal">Remove this page from my personal portal.</string>
   <string key="portletRemovePagePermanent">Remove and permanently delete this page.</string>
   <string key="portletRemovePagePortlets">Delete the following portlets that are contained on the page.</string>
+
+  <!-- Search -->
+
+  <string key="portletSearchNotSupported">Searching of this type is not supported.</string>
+
+  <string key="portletSearchButton">Search</string>
+  <string key="portletSearchCollapse">Collapse</string>
+  <string key="portletSearchExpand">Expand</string>
+  <string key="portletSearchNoResults">No Search results found</string>
+  <string key="portletSearchNoSelection">No Search result was selected</string>
+  <string key="portletSearchOnlyOneSelection">Only one search result can be selected</string>
+  <string key="portletSearchNoQuery">Please enter a search string and then try again.</string>
+  <string key="portletSearchType">Type</string> 
+  <string key="portletSearchTypePage">Page</string> 
+  <string key="portletSearchName">Name</string> 
+  <string key="portletSearchDesc">Description</string> 
+  <string key="portletSearchLocation">Location</string> 
+  <string key="portletSearchCreated">Creation Date</string> 
+  <string key="portletSearchAscending">Ascending</string> 
+  <string key="portletSearchDescending">Descending</string> 
+  <string key="portletSearchCheckbox">Select this item to add</string> 
 
   <!-- 
        Errors

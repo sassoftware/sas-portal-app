@@ -9,12 +9,18 @@
  <xsl:variable name="userName" select="/Mod_Request/NewMetadata/Metaperson"/>
  <xsl:variable name="reposId" select="/Mod_Request/NewMetadata/Metareposid"/>
 
+ <!-- If we are adding a reference to an existing page, the pageId field will be filled in -->
+
+ <xsl:variable name="pageId" select="/Mod_Request/NewMetadata/Id"/>
+
  <!-- Get the information about what Permission Trees this user has write access to.  They should only
       be trying to add to one of these trees (otherwise, it should fail).
       Get some additional details about the contents of the tree, so we know whether it is a user
       or group permissions tree.
  -->
 
+ <Multiple_Requests>
+ 
  <GetMetadataObjects>
   <ReposId><xsl:value-of select="$reposId"/></ReposId>
   <Type>Person</Type>
@@ -50,6 +56,55 @@
      </Templates>
   </Options>
  </GetMetadataObjects>
+
+ <xsl:if test="not($pageId='')">
+
+     <!-- Get the basic information about the Id passed, this will also be used to validate that the passed id was valid -->
+
+     <GetMetadataObjects>
+      <ReposId><xsl:value-of select="$reposId"/></ReposId>
+      <Type>PSPortalPage</Type>
+      <ns>SAS</ns>
+         <!-- 256 = GetMetadata
+              128 = XMLSelect
+                4 =  Template
+         -->
+      <Flags>388</Flags>
+      <Options>
+         <XMLSelect>
+            <xsl:attribute name="search">@Id='<xsl:value-of select="$pageId"/>'</xsl:attribute>
+         </XMLSelect>
+         <Templates>
+           <PSPortalPage Id="" Name=""/>
+         </Templates>
+      </Options>
+     </GetMetadataObjects>
+
+     <!-- Have to get the existing set of pages for this user so we don't let them add the same one again -->
+
+     <GetMetadataObjects>
+      <ReposId><xsl:value-of select="$reposId"/></ReposId>
+      <Type>Group</Type>
+      <ns>SAS</ns>
+       <!-- 256 = GetMetadata
+            128 = XMLSelect
+              4 =  Template
+       -->
+      <Flags>388</Flags>
+      <Options>
+          <XMLSelect search="@Name='DESKTOP_PORTALPAGES_GROUP' "/>
+          <Templates>
+             <Group>
+                <Members/>
+             </Group>
+             <PSPortalPage Id="" Name=""/>
+          </Templates>
+      </Options>
+     </GetMetadataObjects>
+  
+ </xsl:if>
+
+ </Multiple_Requests>
  
 </xsl:template>
 

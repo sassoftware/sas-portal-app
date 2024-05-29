@@ -21,6 +21,12 @@
 
 <!-- Strings to be localized -->
 <xsl:variable name="portletItemAddTitle" select="$localeXml/string[@key='portletItemAddTitle']/text()"/>
+
+<!-- Global Variables -->
+<xsl:variable name="tabCount" select="count(Mod_Request/NewMetadata/Tabs/Tab)"/>
+
+<xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portal/buildBannerTab.xslt"/>
+
 <xsl:template match="/">
 
   <xsl:variable name="itemType" select="Mod_Request/NewMetadata/Type"/>
@@ -74,6 +80,14 @@
     </tbody>
     </table>
 
+        <xsl:if test="not($tabCount='0')">
+
+         <div id="tabs">
+              <xsl:call-template name="genTabList"/>
+         </div>
+
+        </xsl:if>
+
         <a name="skipBanner"></a>
         <table class="secondaryMenuTable" width="100%" cellspacing="0" cellpadding="0">
             <tbody><tr>
@@ -85,4 +99,64 @@
 </div>
 
 </xsl:template>
+
+<xsl:template name="genTabList">
+
+   <table id="pagetabs_Table" class="BannerTabMenuTable" cellspacing="0" cellpadding="0" border="0">
+   <tbody>
+   <tr>
+
+        <xsl:for-each select="Mod_Request/NewMetadata/Tabs/Tab">
+          <xsl:variable name="tabNumberId">page_<xsl:value-of select="@Id"/></xsl:variable>
+          <xsl:variable name="nameKey" select="@NameKey"/>
+          <xsl:variable name="tabName" select="$localeXml/string[@key=$nameKey]/text()"/>
+
+          <td>
+                <xsl:attribute name="id"><xsl:value-of select="$tabNumberId"/>_TabCell</xsl:attribute>
+                <xsl:choose>
+                    <xsl:when test="position() = 1">
+                       <xsl:attribute name="class">BannerTabMenuActiveTabCell</xsl:attribute>
+                    </xsl:when>
+                    <xsl:otherwise>
+                       <xsl:attribute name="class">BannerTabMenuTabCell</xsl:attribute>
+                    </xsl:otherwise>
+                </xsl:choose>
+
+                <table border="0" cellspacing="0" cellpadding="0">
+                       <xsl:attribute name="id"><xsl:value-of select="$tabNumberId"/></xsl:attribute>
+                       <xsl:attribute name="onclick">showTab(event, '<xsl:value-of select="@Id"/>')</xsl:attribute>
+
+                       <!-- Mark the first tab to display so that the javascript can find it and display it -->
+                       <xsl:choose>
+
+                         <xsl:when test="position() = 1">
+                             <xsl:attribute name="class">buttonContainer default-tab</xsl:attribute>
+                         </xsl:when>
+                         <xsl:otherwise>
+                             <xsl:attribute name="class">buttonContainer</xsl:attribute>
+                         </xsl:otherwise>
+                       </xsl:choose>
+                       <tbody>
+                          <tr>
+                             <xsl:call-template name="buildTab">
+                                <xsl:with-param name="tabId"><xsl:value-of select="$tabNumberId"/></xsl:with-param>
+                                <xsl:with-param name="tabName"><xsl:value-of select="$tabName"/></xsl:with-param>
+                                <xsl:with-param name="tabPosition"><xsl:value-of select="position()"/></xsl:with-param>
+                              </xsl:call-template>
+
+                          </tr>
+                        </tbody>
+                   </table>
+
+          </td>
+
+       </xsl:for-each>
+
+   </tr>
+
+   </tbody>
+   </table>
+
+</xsl:template>
+
 </xsl:stylesheet>
