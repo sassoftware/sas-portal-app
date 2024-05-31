@@ -421,7 +421,7 @@ Beyond the items marked as not available or tbd in the [Roadmap](#roadmap) secti
 - The process for deleting shared content is different.  See [Deleting shared content](#deleting-shared-content) for more information.
 - Can add only 1 page or portlet at a time (previous SAS Information Delivery Portal allowed for creation of multiple at one time)
 - The search syntax is slightly different.  The following is supported:
-  - * = all 
+  - \* = all 
   - single words separated by spaces (search results match any of the individual words)
   - phrases, each surrounded by "" and if multiple, each phrase separated by spaces (search results match any of the phrases)
 
