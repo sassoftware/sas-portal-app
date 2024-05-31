@@ -336,12 +336,12 @@ The existing SAS Information Delivery Portal has the following capabilities in t
 
 | Category | Setting | Support |
 | ------ | ------ | ------ |
-| By Keyword | | tbd |
+| By Keyword | | available 1 |
 | By Content Type | Application | tbd |
 | By Content Type | File | no |
 | By Content Type | Link | no |
 | By Content Type | Package | no |
-| By Content Type | Page | tbd |
+| By Content Type | Page | 1vailable  |
 | By Content Type | PageTemplate | no |
 | By Content Type | Portlet | tbd |
 | By Content Type | Publication Channel | no |
@@ -350,6 +350,8 @@ The existing SAS Information Delivery Portal has the following capabilities in t
 | By Content Type | SAS Stored Process | tbd |
 | By Content Type | Syndication Channel | no |
 | Search Results | Results Per Page | no |
+
+1. Searching by Keyword, Name and Description is only currently supported when adding a Page to your portlet.
 
 ### Capabilities
 
@@ -410,6 +412,21 @@ For more details on the type of content that can be surfaced and shared through 
 | Page Templates | N/A | tbd | tbd | tbd |
 
 Synchronize here refers to the concept of determining that there is a new shared content for a user and adding that content to the user's portal view.
+
+## Differences with SAS Information Delivery Portal ##
+
+Beyond the items marked as not available or tbd in the [Roadmap](#roadmap) section, here is a list of the major differences between the existing SAS Information Delivery Portal and this offering:
+
+- The process for onboarding new users is different.  See [Onboarding new users](#onboarding-new-users) for more information.
+- The process for deleting shared content is different.  See [Deleting shared content](#deleting-shared-content) for more information.
+- Can add only 1 page or portlet at a time (previous SAS Information Delivery Portal allowed for creation of multiple at one time)
+- The search syntax is slightly different.  The following is supported:
+  - * = all 
+  - single words separated by spaces (search results match any of the individual words)
+  - phrases, each surrounded by "" and if multiple, each phrase separated by spaces (search results match any of the phrases)
+
+    NOTE: The SAS Information Delivery Portal allowed you to mix and match single words (not surrounded by quotes) and phrases (surrounded by quotes).  This implementation only supports either no quotes in search string or each phrase/word surrounded by quotes.
+
 
 ## Contributing
 
