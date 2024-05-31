@@ -53,7 +53,6 @@
     -->
 
     <xsl:variable name="query" select="Mod_Request/NewMetadata/Query"/>
-
     <xsl:variable name="type" select="Mod_Request/NewMetadata/Type"/>
 
     <Multiple_Requests>

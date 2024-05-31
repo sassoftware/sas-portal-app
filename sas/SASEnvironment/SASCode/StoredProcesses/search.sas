@@ -6,6 +6,8 @@
 
 %setupPortalDebug(search);
 
+%put query=&query.;
+
 /*
  *   The only required parameter to this routine is:
  *    query = the terms to search for

@@ -90,13 +90,13 @@
                   %end;
 
               %if (%symexist(name)) %then %do;
-                  put "<Name>&Name.</Name>";
+                  put "<Name>%nrbquote(%sysfunc(tranwrd(&Name.,&,&amp;)))</Name>";
                   %end;
               %if (%symexist(desc)) %then %do;
-                  put "<Desc>&Desc.</Desc>";
+                  put "<Desc>%nrbquote(%sysfunc(tranwrd(&desc.,&,&amp;)))</Desc>";
                   %end;
               %if (%symexist(keywords)) %then %do;
-                  put "<Keywords>&Keywords.</Keywords>";
+                  put "<Keywords>%nrbquote(%sysfunc(tranwrd(&Keywords.,&,&amp;)))</Keywords>";
                   %end;
 
 

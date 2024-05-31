@@ -889,8 +889,7 @@
                 * End  On State Change function definition
                 */
 
-               var query = document.getElementById('query').value;
-
+               var query = encodeURIComponent(document.getElementById('query').value);
 
                var searchURL=searchLink;
                searchURL=searchURL.concat('<xsl:text disable-output-escaping="yes">&amp;</xsl:text>','query=',query);
