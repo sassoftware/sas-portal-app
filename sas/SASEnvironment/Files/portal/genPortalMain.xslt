@@ -723,7 +723,7 @@
 
 			<xsl:variable name="wrsURI"><xsl:text>/SASWebReportStudio/openRVUrl.do?rsRID=</xsl:text><xsl:value-of select="$wrsProgram"/></xsl:variable>
 
-			<a><xsl:attribute name="href"><xsl:value-of select="$wrsURI"/></xsl:attribute><xsl:value-of select="$wrsPath"/></a>
+			<a><xsl:attribute name="href"><xsl:value-of select="$wrsURI"/></xsl:attribute><xsl:value-of select="@Name"/></a>
 
 			<!--
 			<iframe style="overflow: auto;width: 100%" frameborder="0" >
