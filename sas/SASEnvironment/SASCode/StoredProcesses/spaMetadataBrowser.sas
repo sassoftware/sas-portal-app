@@ -1,31 +1,34 @@
 /*
-StoredProcess,Report,InformationMap
+%global path objectFilter;
+%let path=/;
+%let objectFilter=StoredProcess,Report,InformationMap;
 */
+
 %macro spa_browser(showDescription=0);
 
 %let folderPath=%bquote(&path);
 %let mObjectFilter=%bquote(&objectFilter);
 %let uObjectFilter=%str(&)objectFilter=%sysfunc(urlencode(&mObjectFilter));
 %let type=Transformation;
-%let homeURL=/SASStoredProcess/do?_program=%2FSystem%2FApplications%2FSAS+Portal+App%2Fservices%2FspaNavigatorPortlet;
+%let homeURL=/SASStoredProcess/do?_program=&applocencoded.services%2FspaNavigatorPortlet;
 
 %macro filterList(inVal=, outVar=);
-	%let value = %str(%bquote(&inVal));
-	%global &outVar.;
-	%let filterout=%str(*[);
+    %let value = %str(%bquote(&inVal));
+    %global &outVar.;
+    %let filterout=%str(*[);
 
-	%do mvI=1 %to %sysfunc(countw(&value, %str(,)));
-		%let next_value = %scan(&value, &mvI, %str(,));
+    %do mvI=1 %to %sysfunc(countw(&value, %str(,)));
+        %let next_value = %scan(&value, &mvI, %str(,));
 
-		%let filterout=&filterout @TransformRole contains %str(%')&next_value.%str(%') ;
-		%if &mvI < %sysfunc(countw(&value, %str(,))) %then %do;
-			%let filterout=&filterout or;
-		%end;
-	%end;
-	%let filterout=&filterout %str(]);
-	data _null_;
-		call symputx("&outVar.","&filterout.");
-	run;
+        %let filterout=&filterout @TransformRole contains %str(%')&next_value.%str(%') ;
+        %if &mvI < %sysfunc(countw(&value, %str(,))) %then %do;
+            %let filterout=&filterout or;
+        %end;
+    %end;
+    %let filterout=&filterout %str(]);
+    data _null_;
+        call symputx("&outVar.","&filterout.");
+    run;
 %mend;
 %filterList(inVal=&mObjectFilter., outVar=filter);
 %put NOTE: &filter;
@@ -38,17 +41,17 @@ data metaout (keep=name folder dateCreated role description path);
     nobj=metadata_getnobj("omsobj:&type.?&filter.",n,uri);
     folder='';
     description='';
-	arc=metadata_getattr(uri,"Name",name);
-	arc=metadata_getattr(uri,"TransformRole",role);
-	arc=metadata_getattr(uri,"MetadataCreated",dateCreated);
-	arc=metadata_getattr(uri,"Desc",description);
-	rc =metadata_getnasn(uri,"Trees",1,path);
-	do while (rc>0);
-	  rc=metadata_getattr(path,"Name",name2);
-	  folder = "/" || trim(name2) || folder;
-	  rc=metadata_getnasn(path,"ParentTree",1,path);
-	end;
-	output;
+    arc=metadata_getattr(uri,"Name",name);
+    arc=metadata_getattr(uri,"TransformRole",role);
+    arc=metadata_getattr(uri,"MetadataCreated",dateCreated);
+    arc=metadata_getattr(uri,"Desc",description);
+    rc =metadata_getnasn(uri,"Trees",1,path);
+    do while (rc>0);
+      rc=metadata_getattr(path,"Name",name2);
+      folder = "/" || trim(name2) || folder;
+      rc=metadata_getnasn(path,"ParentTree",1,path);
+    end;
+    output;
     n=n+1;
   end;
 run;
@@ -77,7 +80,7 @@ run;
 
 data metaout2;
     set rootfolder foldersout metaout ;
-	if name = '' then delete;
+    if name = '' then delete;
 run;
 
 data _null_;
@@ -193,12 +196,12 @@ Location: <div class='dropdown'>
     if (trim(url) ne "/") then do;
       
     put "<a href=&homeURL.&uObjectFilter.%str(&)_action=execute%str(&)path=/>";
-	put "<img src='/SASTheme_default/themes/default/images/SASFolders.gif' border='0'>  SAS Folders</a>";
+    put "<img src='/SASTheme_default/themes/default/images/SASFolders.gif' border='0'>  SAS Folders</a>";
       
         do i = 1 to countw(url,'/');
             lName = scan(url,i,'/');
             lUrl = urlencode(substr(url,1,findw(url,scan(url,i,'/'),'/',0)+length(lName)-1));
-			put "<a href=&homeURL.&uObjectFilter.%str(&)_action=execute%str(&)path="lUrl">";
+            put "<a href=&homeURL.&uObjectFilter.%str(&)_action=execute%str(&)path="lUrl">";
             do k = 1 to i ;
                 space=cats(%str(space));
                 put space;
@@ -240,10 +243,10 @@ if ((folder eq symget('folderPath')) and (role eq "Folder")) then do;
             if (folder = '/') then do;
                 folder='';
             end;
-			lUrl=urlencode(cats(folder,'/',name));
-			lUrl=catt(folder,'/',name);
-			of=symget('mObjectFilter');
-			homeU=symget('homeURL');
+            lUrl=urlencode(cats(folder,'/',name));
+            lUrl=catt(folder,'/',name);
+            of=symget('mObjectFilter');
+            homeU=symget('homeURL');
             url=cats(homeU,'&_action=execute&path=',lUrl);
             put '<tr><td><span><img style="vertical-align:baseline;" border="0" src="/SASTheme_default/themes/default/images/Folder.gif" width="16" height="16" alt="Open Folder" title="Open Folder">';
             put '<a href="' url '" >';
@@ -277,7 +280,7 @@ if (folder eq symget('folderPath') and role ne "Folder") then do;
             put '</span></td></tr>';
         end;
         if role="StoredProcess" then do;
-            url=cats('http://sas-aap.demo.sas.com/SASStoredProcess/do?_action=execute&_program=',folder,'/',name);
+            url=cats('/SASStoredProcess/do?_action=execute&_program=',folder,'/',name);
             
             put '<tr><td><span><img style="vertical-align:baseline;" border="0" src="/SASTheme_default/themes/default/images/StoredProcess.gif" width="16" height="16" alt="SAS StoredProcess" title="SAS StoredProcess">';
             put '<a href="' url '" target=_blank>';
@@ -301,10 +304,7 @@ if (folder eq symget('folderPath') and role ne "Folder") then do;
 run;
 
 %mend;
-/*
 
-%global path objectFilter;
-%let path=/;
-%let objectFilter=StoredProcess,Report,InformationMap;
-*/
+%inc "&sasDir./request_setup.sas";
+
 %spa_browser();
