@@ -851,6 +851,7 @@
 
 	             <tr>
 	             <td class="portletEntry" valign="top">
+	             <br/>
 	             </td>
 	             </tr>
 	      
