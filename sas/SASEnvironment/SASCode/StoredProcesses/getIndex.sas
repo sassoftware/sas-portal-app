@@ -23,6 +23,17 @@
 
 %checkPortalUser(name=&user.,exists=userPortalContentExists,rc=checkUserPortalContentRC);
 
+
+/*
+ *  Enable SASNavigator Portlet feature flag
+ */
+
+%if (%symexist(SASNAVIGATOR)) %then %do;
+
+	%let featureFlagSASNAVIGATOR=&SASNAVIGATOR.;
+
+%end;
+		
 %if (&checkUserPortalContentRC.=0) %then %do;
 
     %if (&userPortalContentExists.=0) %then %do;
@@ -183,6 +194,7 @@
 	   parameter "appLocEncoded"="&appLocEncoded."
 	             "sastheme"="&sastheme."
                  "localizationFile"="&localizationFile."
+                 "featureFlagSASNAVIGATOR"="&featureFlagSASNAVIGATOR."
 	       ;
 	
 	run;
