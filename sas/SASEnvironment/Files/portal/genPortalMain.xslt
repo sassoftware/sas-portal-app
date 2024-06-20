@@ -566,7 +566,7 @@
 	      <!-- If the portlet didn't have any members, add a few blank rows -->
 	      
 	      <xsl:if test="$numMembers = 1">
-			 <xsl:call-template name="emptyPortlet"/>
+			 <xsl:call-template name="emptyPortlet"/>	         	      
 	      </xsl:if>
 	      
 	   </xsl:for-each>
