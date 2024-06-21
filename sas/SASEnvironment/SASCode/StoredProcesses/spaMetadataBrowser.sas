@@ -33,7 +33,7 @@
 %filterList(inVal=&mObjectFilter., outVar=filter);
 %put NOTE: &filter;
 
-data metaout (keep=name folder dateCreated role description path);
+data metaout (keep=name folder dateCreated role description );
   length uri $256 name $60 role $32 path $256 name2 $256 folder $256 dateCreated $80 description $512  ;
   nobj=1; 
   n=1; 
@@ -59,27 +59,32 @@ run;
 proc sort data=metaout out=folders nodupkey;
     by folder;
 run;
-data foldersout ;
+data foldersout (drop=folder w i rename=(rootfolder=folder));
     set folders;
     length role $32 dateCreated $80 description $512 ;
     description='';
     dateCreated='';
     role ='Folder';
-    name = scan(folder,-1,'/');
-    folder = substr(folder,1,(length(folder)-length(scan(folder,-1,'/')))-1);
+	
+    do i=1 to countc(folder,'/');
+		name = scan(folder,i,'/');
+		w=findw(folder,scan(folder,i,'/'));
+		if i=1 then do;
+			rootfolder = substr(folder,1,w-1);
+		end;
+		else do;
+			rootfolder = substr(folder,1,w-2);
+		end;
+		output;
+	end;
 run;
-data rootfolder (drop=folder rename=(root=folder)) ;
-    length root $256 ;
-    set foldersout;
-    name = scan(folder,1,'/');
-    root = '/';
-run;
-proc sort data=rootfolder nodupkey;
-    by name;
+
+proc sort data=foldersout nodupkey;
+    by folder name;
 run;
 
 data metaout2;
-    set rootfolder foldersout metaout ;
+    set foldersout metaout ;
     if name = '' then delete;
 run;
 
