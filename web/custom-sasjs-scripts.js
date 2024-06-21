@@ -592,28 +592,3 @@ function showTab(evt, tabName) {
 function resizeIframe(obj) {
     obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
 }
-
-function getUserPreferredLanguage() {
-  // Modern browsers support navigator.language
-  if (navigator.language) {
-    return navigator.language.substring(0,2);
-  }
-  // For IE and older versions of Microsoft Edge, use navigator.userLanguage
-  if (navigator.userLanguage) {
-    return navigator.userLanguage.substring(0,2);
-  }
-
-  // If none of the above is available, use a default language code
-  return 'en';
-}
-
-// try it out
-//console.log(getUserPreferredLanguage());
-
-function loginWindowPhraseConst() {
-	var loginWindowPhrase = [];
-	loginWindowPhrase['de'] = "Sie sind jetzt angemeldet.";
-	loginWindowPhrase['en'] = "You have signed in.";
-
-	return loginWindowPhrase[getUserPreferredLanguage()];
-}
