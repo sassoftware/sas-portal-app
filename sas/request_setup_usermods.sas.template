@@ -39,7 +39,7 @@
  *            %let portaldebug=fred barney;
  *
  *          Turn on for betty and wilma and use an alternate logs directory:
- *            %global portaldebug;
+ *            %global portaldebug portaldebugdir;
  *            %let portaldebug=betty wilma;
  *            %let portaldebugdir=/tmp;
  *
