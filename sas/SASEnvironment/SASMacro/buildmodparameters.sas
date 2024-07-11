@@ -45,7 +45,9 @@
 
               put '<NewMetadata>';
 
-              put "<Type>&type.</Type>";
+              %if (%symexist(type)) %then %do;
+                  put "<Type>&type.</Type>";
+                  %end;
 
               /*
                * Current metadata context 
@@ -61,7 +63,9 @@
                   %end;
 
               %if (%symexist(metadataContext)) %then %do;
-                  put "<MetadataContext>&metadataContext.</MetadataContext>";
+                  %if ("&metadataContext" ne "") %then %do;
+                      put "<MetadataContext>&metadataContext.</MetadataContext>";
+                      %end;
                   %end;
 
               /*
@@ -75,6 +79,9 @@
                    %end;
                %if (%symexist(localizationFile)) %then %do;
                    put "<LocalizationFile>&localizationFile.</LocalizationFile>";
+                   %end;
+               %if (%symexist(featureFlags)) %then %do;
+                   put "<FeatureFlags>&featureFlags.</FeatureFlags>";
                    %end;
  
               /*

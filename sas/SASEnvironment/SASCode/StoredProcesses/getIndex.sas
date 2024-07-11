@@ -178,11 +178,18 @@
 	 */
 	
 	filename inxsl "&filesDir./portal/genPortalMain.xslt" encoding='utf-8';
+
+%put NOTE: featureFlags=&featureFlags.;
 	
 	proc xsl in=outxml xsl=inXSL out=_webout;
 	   parameter "appLocEncoded"="&appLocEncoded."
 	             "sastheme"="&sastheme."
                  "localizationFile"="&localizationFile."
+
+               %if (%symexist(featureFlags)) %then %do;
+                 "featureFlags"="&featureFlags."
+               %end;
+                 
 	       ;
 	
 	run;
@@ -224,6 +231,8 @@
 %inc "&sasDir./request_setup.sas";
 
 %setupPortalDebug(getIndex);
+
+%put featureFlags=&featureFlags;
 
 %genPortalMain(user=%bquote(&_metaperson.));
 

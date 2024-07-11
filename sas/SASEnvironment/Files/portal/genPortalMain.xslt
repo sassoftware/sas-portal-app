@@ -12,6 +12,7 @@
 <xsl:variable name="sasthemeContextRoot">SASTheme_<xsl:value-of select="$sastheme"/></xsl:variable>
 
 <xsl:param name="appLocEncoded"></xsl:param>
+<xsl:param name="featureFlags"></xsl:param>
 
 <!-- load the appropriate localizations -->
 
@@ -48,7 +49,7 @@
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
 
 <xsl:template match="/" name="main">
-
+<xsl:message>Feature Flags passed:<xsl:value-of select="$featureFlags"/></xsl:message>
 <!-- pass back the theme to use -->
 
 <xsl:call-template name="thisPageScripts"/>
@@ -642,6 +643,64 @@
 
 </xsl:template>
 
+
+<xsl:template name="SASNavigator">
+
+   <!-- Get the SASNavigator and display and call stp -->
+
+	<xsl:variable name="spaNavPath">
+		<xsl:choose>
+			<xsl:when test="PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/PropertySets/PropertySet[@Name='selectedFolder']/SetProperties/Property[@Name='PreferenceInstanceProperty']/@DefaultValue">
+				<xsl:value-of select="PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/PropertySets/PropertySet[@Name='selectedFolder']/SetProperties/Property[@Name='PreferenceInstanceProperty']/@DefaultValue"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>SBIP://METASERVER/(Folder)</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+	<xsl:variable name="stpPortletHeight" select="250"/>
+	<xsl:variable name="spaPath"><xsl:value-of select="substring-after(substring-before($spaNavPath,'(Folder)'),'SBIP://METASERVER')"/></xsl:variable>
+	
+	<xsl:variable name="spaObjects">
+		<xsl:choose>
+			<xsl:when test="PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/PropertySets/PropertySet[@Name='SMART_OBJECT_TYPE']/SetProperties/Property[@Name='PreferenceInstanceProperty']/@DefaultValue">
+				<xsl:for-each select="PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/PropertySets/PropertySet[@Name='SMART_OBJECT_TYPE']/SetProperties/Property[@Name='PreferenceInstanceProperty']/@DefaultValue">
+					<xsl:value-of select="."/>
+					<xsl:if test="position() != last()">
+						<xsl:text>,</xsl:text>
+					</xsl:if>
+				</xsl:for-each>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>StoredProcess,Report,InformationMap</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+	
+	<xsl:variable name="stpURI">/SASStoredProcess/do?_action=execute<xsl:text>&amp;</xsl:text>_program=<xsl:value-of select="$appLocEncoded"/>services/spaNavigatorPortlet<xsl:text>&amp;</xsl:text>path=<xsl:value-of select="$spaPath"/><xsl:text>&amp;</xsl:text>objectFilter=<xsl:value-of select="$spaObjects"/></xsl:variable>
+	
+		<tr>
+			<td class="portletEntry" valign="top" colspan="2">
+				<iframe style="overflow: auto;width: 100%" frameborder="0" >
+					<xsl:attribute name="data-src"><xsl:value-of select="$stpURI"/></xsl:attribute>
+					
+					<xsl:choose>
+					<xsl:when test="$stpPortletHeight != '' and $stpPortletHeight != 0">
+						<xsl:attribute name="height"><xsl:value-of select="$stpPortletHeight"/></xsl:attribute>
+					</xsl:when>
+					
+					<xsl:otherwise>
+						<xsl:attribute name="onload">resizeIframe(this)</xsl:attribute>
+					</xsl:otherwise>
+					</xsl:choose>
+				</iframe>
+			</td>
+		</tr>
+
+</xsl:template>
+
+
+
 <xsl:template name="SASStoredProcessPortlet">
 
    <!-- Get the Stored Prcess reference and display it as if it was just a call to a url -->
@@ -706,6 +765,7 @@
 	 <xsl:otherwise>
 		   <xsl:call-template name="emptyPortlet"/>
 	 </xsl:otherwise>
+
 
 	 </xsl:choose>
 
@@ -863,6 +923,7 @@
   			<xsl:when test="@portletType='SASReportPortlet'">1</xsl:when>
  			<xsl:when test="@portletType='Report'">1</xsl:when>
   			<xsl:when test="@portletType='Bookmarks'">1</xsl:when>
+  			<xsl:when test="@portletType='SASNavigator'">1</xsl:when>
                          <xsl:otherwise>0</xsl:otherwise>
                       </xsl:choose>
                     </xsl:variable>
@@ -939,26 +1000,31 @@
 	  		<xsl:when test="@portletType='Collection'">
     		                <xsl:call-template name="collectionPortlet"/>
       			</xsl:when>
-	  			<xsl:when test="@portletType='DisplayURL'">
+	          	<xsl:when test="@portletType='DisplayURL'">
            			<xsl:call-template name="displayURLPortlet"/>
     			</xsl:when>
-	  			<xsl:when test="@portletType='SASStoredProcess'">
+	  		<xsl:when test="@portletType='SASStoredProcess'">
            			<xsl:call-template name="SASStoredProcessPortlet"/>
     			</xsl:when>
-	  			<xsl:when test="@portletType='SASReportPortlet'">
+	  		<xsl:when test="@portletType='SASReportPortlet'">
            			<xsl:call-template name="SASReportPortlet"/>
     			</xsl:when>
-	  			<xsl:when test="@portletType='Report'">
+	  		<xsl:when test="@portletType='Report'">
            			<xsl:call-template name="ReportLocalPortlet"/>
     			</xsl:when>
-	  			<xsl:when test="@portletType='Bookmarks'">
+	  		<xsl:when test="@portletType='Bookmarks'">
            			<xsl:call-template name="bookmarksPortlet"/>
     			</xsl:when>
+	  		<xsl:when test="@portletType='SASNavigator' and contains($featureFlags,'SASNAVIGATOR')">
+<xsl:message>calling sasnavigator template</xsl:message>
+           			<xsl:call-template name="SASNavigator"/>
+    			</xsl:when>
+				
 
-	   			<xsl:otherwise>
-		    		<!-- currently unsupported portlet type, render an empty portlet -->
+	   		<xsl:otherwise>
+		    	<!-- currently unsupported portlet type, render an empty portlet -->
 		    		<xsl:call-template name="emptyPortlet"/>
-		  		</xsl:otherwise>
+		  	</xsl:otherwise>
 			</xsl:choose>
 
 	   		</table>

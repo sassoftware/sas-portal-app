@@ -221,6 +221,18 @@
   <string key="portletSearchDescending">Absteigend</string>
   <string key="portletSearchCheckbox">Wählen Sie dieses Element aus, um es hinzuzufügen</string>
 
+  <!-- SAS Navigator portlet -->
+
+  <string key="sasFolders">SAS-Ordner</string>
+  <string key="locationTitle">Standort:</string>
+  <string key="upOneLevelTitle">Eine Ebene höher</string>
+  <string key="sasnavigatorNameTitle">Name</string>
+  <string key="sasnavigatorTypeTitle">Typ</string>
+  <string key="sasnavigatorCreatedTitle">Datum erstellt</string>
+  <string key="sasnavigatorFolderType">Ordner</string>
+  <string key="sasnavigatorStoredProcessType">Gespeicherter Prozess</string>
+  <string key="sasnavigatorReportType">Bericht</string>
+
   <!--
        Errors
   -->

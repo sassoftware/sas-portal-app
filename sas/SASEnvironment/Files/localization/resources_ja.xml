@@ -222,6 +222,18 @@
   <string key="portletSearchDescending">降順</string>
   <string key="portletSearchCheckbox">追加する項目を選択してください</string>
 
+  <!-- SAS Navigator portlet -->
+
+  <string key="sasFolders">SAS フォルダー</string>
+  <string key="locationTitle">位置：</string>
+  <string key="upOneLevelTitle">1つ上のレベル</string>
+  <string key="sasnavigatorNameTitle">名前</string>
+  <string key="sasnavigatorTypeTitle">タイプ</string>
+  <string key="sasnavigatorCreatedTitle">作成日</string>
+  <string key="sasnavigatorFolderType">フォルダ</string>
+  <string key="sasnavigatorStoredProcessType">ストアドプロセス</string>
+  <string key="sasnavigatorReportType">報告</string>
+
   <!--
        Errors
   -->

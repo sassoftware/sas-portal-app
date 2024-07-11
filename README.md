@@ -244,7 +244,19 @@ Use the Issues section of this repo to check for existing known issues, as well 
 
 ## Feature Flags
 
-As potentially breaking or significant new features that may need additional field validation is required before turning them on by default, the feature will be enabled via setting a Feature Flag. A Feature Flag is set by setting a SAS Macro variable in one of the autoexec or request_setup customization points described above.  If the macro variable exists at all, ie. %symexist(variable) returns 1, then it is assumed to be turned on.
+As potentially breaking or significant new features that may need additional field validation is required before turning them on by default, the feature will be enabled via setting a Feature Flag. 
+
+### Turning on a Feature Flag
+
+A feature flag is enabled by adding a value to the featureFlags macro variable.  This variable contains a comma separated list of feature flags.  For example:
+<pre>
+%global featureFlags;
+%let featureFlags=SASNAVIGATOR,NEWFEATURE2;
+</pre>
+
+would turn on the 2 feature flags, SASNAVIGATOR and NEWFEATURE2.
+
+**NOTE:** Prior to July 2024, a Feature Flag was enabled by setting a SAS Macro variable in one of the autoexec or request_setup customization points described above.  If the macro variable exists at all, ie. %symexist(variable) returns 1, then it is assumed to be turned on.
 
 Features initially protected by a Feature Flag are either:
 - intended to be turned on by default in a future release 
@@ -255,6 +267,7 @@ based on user feedback.
 | ------ | ------ | ------ | ------ | ------ |
 | [Initialize New User](IMPLEMENTATION.md#new-users)  |  INITNEWUSER | 15NOV2023  | Included | 01FEB2024 |
 | [Sync shared content](IMPLEMENTATION.md#synchronizing-shared-content-with-users)  |  SYNCUSER | 15NOV2023  | Included | 01FEB2024 |
+| Support for SAS Navigator portlet | SASNAVIGATOR | 11JUL2024 | TBD | TBD |
  
 ## Roadmap
 

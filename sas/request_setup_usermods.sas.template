@@ -39,7 +39,7 @@
  *            %let portaldebug=fred barney;
  *
  *          Turn on for betty and wilma and use an alternate logs directory:
- *            %global portaldebug;
+ *            %global portaldebug portaldebugdir;
  *            %let portaldebug=betty wilma;
  *            %let portaldebugdir=/tmp;
  *
@@ -49,6 +49,20 @@
  *              it is recommended to set the portaldebug variable to just those userids that are
  *              experiencing issues or that you want to do diagnostics for.
  *
+ *   Turn on Feature Flags
+ *
+ *        Feature flags are the ability to turn on features that are currently in development and not
+ *        yet ready to be turned on by default, either because of the incompleteness of the development or 
+ *        the feature is a "trial" to get feedback on whether it should be included or not.
+ *
+ *        The feature flags are controlled by a macro variable, featureFlags.
+ *           %global featureFlags;
+ *
+ *        It's contents are a comma separated list of feature flags, example: 
+ *
+ *          %let featureFlags=SASNAVIGATOR,NEWFEATURE2;
+ * 
+ *        would turn on the SASNAVIGATOR and NEWFEATURE2 features.
  *        
  */
  
