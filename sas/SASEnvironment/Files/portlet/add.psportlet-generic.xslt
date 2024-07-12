@@ -35,6 +35,7 @@
 <xsl:variable name="portletEditPortletTypeReport" select="$localeXml/string[@key='portletEditPortletTypeReport']/text()"/>
 <xsl:variable name="portletEditPortletTypeStoredProcess" select="$localeXml/string[@key='portletEditPortletTypeStoredProcess']/text()"/>
 <xsl:variable name="portletEditPortletTypeDisplayURL" select="$localeXml/string[@key='portletEditPortletTypeDisplayURL']/text()"/>
+<xsl:variable name="portletEditPortletTypeNavigator" select="$localeXml/string[@key='portletEditPortletTypeNavigator']/text()"/>
 
 <xsl:variable name="portletEditPageLocation" select="$localeXml/string[@key='portletEditPageLocation']/text()"/>
 <xsl:variable name="portletEditPageLocationTitle" select="$localeXml/string[@key='portletEditPageLocationTitle']/text()"/>
@@ -47,6 +48,7 @@
 <!-- Global Variables -->
 
 <xsl:variable name="personObject" select="$metadataContext/GetMetadataObjects/Objects/Person"/>
+<xsl:variable name="featureFlags" select="/Mod_Request/NewMetadata/FeatureFlags"/>
 
 <!-- Main Entry Point -->
 
@@ -151,6 +153,9 @@
 		<td class="textEntry">
 		    <select name="portlettype" id="portlettype">
 			<option value="collection"><xsl:value-of select="$portletEditPortletTypeCollection"/></option>
+                        <xsl:if test="contains(upper-case($featureFlags),'SASNAVIGATOR')">
+			<option value="sasnavigator"><xsl:value-of select="$portletEditPortletTypeNavigator"/></option>
+                        </xsl:if>
 			<option value="report"><xsl:value-of select="$portletEditPortletTypeReport"/></option>
 			<option value="sasstoredprocess"><xsl:value-of select="$portletEditPortletTypeStoredProcess"/></option>
 			<option value="displayurl"><xsl:value-of select="$portletEditPortletTypeDisplayURL"/></option>

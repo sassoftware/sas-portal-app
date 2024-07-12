@@ -923,7 +923,7 @@
   			<xsl:when test="@portletType='SASReportPortlet'">1</xsl:when>
  			<xsl:when test="@portletType='Report'">1</xsl:when>
   			<xsl:when test="@portletType='Bookmarks'">1</xsl:when>
-  			<xsl:when test="@portletType='SASNavigator'">1</xsl:when>
+  			<xsl:when test="@portletType='SASNavigator'  and contains($featureFlags,'SASNAVIGATOR')">1</xsl:when>
                          <xsl:otherwise>0</xsl:otherwise>
                       </xsl:choose>
                     </xsl:variable>
@@ -1016,7 +1016,6 @@
            			<xsl:call-template name="bookmarksPortlet"/>
     			</xsl:when>
 	  		<xsl:when test="@portletType='SASNavigator' and contains($featureFlags,'SASNAVIGATOR')">
-<xsl:message>calling sasnavigator template</xsl:message>
            			<xsl:call-template name="SASNavigator"/>
     			</xsl:when>
 				

@@ -84,6 +84,7 @@
   <string key="portletEditPortletTypeReport">SAS レポート ポートレット</string>
   <string key="portletEditPortletTypeStoredProcess">SAS ストアド プロセス ポートレット</string>
   <string key="portletEditPortletTypeDisplayURL">URL表示ポートレット</string>
+  <string key="portletEditPortletTypeNavigator">SAS ナビゲーター</string>
 
   <!-- 
        Display URL Portlet Content Editing

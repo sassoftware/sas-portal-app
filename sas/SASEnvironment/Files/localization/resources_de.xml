@@ -83,6 +83,7 @@
   <string key="portletEditPortletTypeReport">SAS-Berichtsportlet</string>
   <string key="portletEditPortletTypeStoredProcess">SAS Stored Process Portlet</string>
   <string key="portletEditPortletTypeDisplayURL">URL-Anzeige-Portlet</string>
+  <string key="portletEditPortletTypeNavigator">SAS Navigator</string>
 
   <!--
        Display URL Portlet Content Editing
