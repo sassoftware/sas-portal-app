@@ -85,7 +85,6 @@
            </xsl:if>
 
            <xsl:if test="not($newDesc=$oldDesc)">
-
              <xsl:attribute name="Desc"><xsl:value-of select="$newDesc"/></xsl:attribute>
 
            </xsl:if>

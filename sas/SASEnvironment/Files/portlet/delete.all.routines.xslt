@@ -8,5 +8,6 @@
 <xsl:include href="delete.sasstoredprocess.routines.xslt"/>
 <xsl:include href="delete.report.routines.xslt"/>
 <xsl:include href="delete.sasreportportlet.routines.xslt"/>
+<xsl:include href="delete.sasnavigator.routines.xslt"/>
 
 </xsl:stylesheet>

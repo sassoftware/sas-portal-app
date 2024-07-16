@@ -235,6 +235,9 @@
   <string key="sasnavigatorStoredProcessType">ストアドプロセス</string>
   <string key="sasnavigatorReportType">報告</string>
 
+  <string key="portletEditNavigatorFolder">フォルダ：</string>
+  <string key="portletEditNavigatorFolderRequired">エラー: フォルダー フィールドは必須です。</string>
+
   <!--
        Errors
   -->

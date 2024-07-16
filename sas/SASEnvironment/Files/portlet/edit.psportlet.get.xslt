@@ -10,7 +10,7 @@
 
 <GetMetadata>
  <Metadata>
- <PSPortlet PortletType="" Name="">
+ <PSPortlet PortletType="" Name="" Desc="">
    <xsl:attribute name="Id"><xsl:value-of select="$id"/></xsl:attribute>
  </PSPortlet>
  </Metadata>
@@ -18,7 +18,7 @@
  <Flags>20</Flags>
  <Options>
                      <Templates>
-                        <PSPortlet Id="" Name="" PortletType="">
+                        <PSPortlet Id="" Name="" PortletType="" Desc="">
                            <Groups/>
                            <PropertySets/>
                            <Trees/>

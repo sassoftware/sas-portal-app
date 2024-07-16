@@ -234,6 +234,9 @@
   <string key="sasnavigatorStoredProcessType">Stored Process</string>
   <string key="sasnavigatorReportType">Report</string>
 
+  <string key="portletEditNavigatorFolder">Folder:</string>
+  <string key="portletEditNavigatorFolderRequired">ERROR: Folder field is required.</string>
+
   <!-- 
        Errors
   -->

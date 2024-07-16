@@ -234,6 +234,9 @@
   <string key="sasnavigatorStoredProcessType">Gespeicherter Prozess</string>
   <string key="sasnavigatorReportType">Bericht</string>
 
+  <string key="portletEditNavigatorFolder">Ordner:</string>
+  <string key="portletEditNavigatorFolderRequired">FEHLER: Das Ordnerfeld ist erforderlich.</string>
+
   <!--
        Errors
   -->
