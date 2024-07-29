@@ -30,6 +30,7 @@
  *        to the user's portal tree that the user does not have permissions (and might be given permissions
  *        as part of this process)
  */
+%macro getLastSharingInfo;
 
 /* 
  *  There is a property stored on the user's portal profile, Portal.LastSharingCheck, that indicates the
@@ -75,6 +76,14 @@ filename _sucpreq;
  filename _sucpmap "&filesDir./portal/permissionsTree/lastUpdateCheck.map";
 
  libname _sucprsp xmlv2 xmlmap=_sucpmap xmlfileref=_sucprsp;
+
+/*
+ *  NOTE:  We ran into a situation at a customer where the portal profile information
+ *         didn't exist and this data step didn't run because there were no rows returned.
+ *         This left all of the macro variables created by symput below not initialized.
+ *         Thus, the later code needs to check to make sure that the variables exist and
+ *         do the right thing.
+ */
 
 data _null_;
 
@@ -129,22 +138,23 @@ data _null_;
   
   call symput('startJavaDT',trim(left(put(startJavaDT,19.))));
   call symput('startDT',trim(left(put(startDT,datetime23.3))));
-  
+
   now=datetime();
   /*
    *  Make sure we use the UTC value when this is referenced in the future.
    */
-  
+
   endDT=now-tzoneoff();
-  
+
   call symput('endDT',trim(left(put(endDT,datetime23.3))));
 
-  /* Make sure the java dt is in milliseconds */ 
+  /* Make sure the java dt is in milliseconds */
   endJavaDT=(endDT-315619200)*1000;
   /*  Need to make sure it's formatted as a number and not in exponential notation */
- 
+
   call symput('endJavaDT',trim(left(put(endJavaDT,19.))));
 
+  
   /*
    *  Save the Property Id so we can easily update it later
    */
@@ -164,6 +174,13 @@ run;
 
 libname _sucprsp;
 filename _sucprsp;
+
+%mend;
+
+%getLastSharingInfo;
+
+%put startDT=&startDT.;
+%put Id=&lastUpdatePropertyId;
 
 /*
  *  Get the list of portal pages that this user can see created between the start and end timestamps
@@ -189,10 +206,23 @@ filename _succreq temp encoding='utf-8';
  *        about the values passed here.
  */
 
+/*
+ *  If we got here and no dates have been set, then don't pass them to the stylesheet so they won't be included on
+ *  the query.
+ */
+
 proc xsl in=_succxml xsl=_succxsl out=_succreq;
-  parameter "startDT"="&startdt."
+    %if (%symexist(startdt) or %symexist(enddt)) %then %do;
+
+        parameter 
+        %if (%symexist(startdt)) %then %do;
+            "startDT"="&startdt."
+            %end;
+        %if (%symexist(endDT)) %then %do;
             "endDT"="&endDT."
+            %end;
             ;
+        %end;
 run;
 
 %showFormattedXML(_succreq,Check New Portal Pages query);
@@ -257,8 +287,14 @@ filename _succrsp;
         %let reposname=%sysfunc(dequote(%sysfunc(getoption(METAREPOSITORY))));
 	%let treename=&name. Permissions Tree;
 	proc xsl in=_sucrrsp xsl=_sucgxsl out=_sucgreq;
-	  parameter "startDT"="&startdt."
-	            "endDT"="&endDT."
+	  parameter 
+                  %if (%symexist(startdt)) %then %do;
+                      "startDT"="&startdt."
+                      %end;
+                  %if (%symexist(endDT)) %then %do;
+                      "endDT"="&endDT."
+                      %end;
+
 	            "reposName"="&reposname."
 	            "treeName"="&treeName."
 	            ;
@@ -312,6 +348,20 @@ filename _succrsp;
 /*
  *  Update the last checked timestamp
  */
+
+/*
+ *  If the property Id is not set, then we need to create the profile information first, 
+ *  then set the value.  We want to do this so subsequent runs through this code for the same
+ *  user is not so expensive.
+ */
+
+%if (%symexist(lastUpdatePropertyId)=0) %then %do;
+
+    %createUserProfile(name=&name.);
+
+    %getLastSharingInfo;
+
+    %end;
 
 %updateSharedLastTimestamp(timestampId=&lastUpdatePropertyId.,timestamp=&endJavaDT.);
 

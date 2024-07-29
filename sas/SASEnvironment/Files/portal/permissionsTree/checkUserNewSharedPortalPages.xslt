@@ -53,7 +53,7 @@
    <xsl:variable name="pageFilter">(@Name='SharedPageSticky' or @Name='SharedPageDefault' or @Name='SharedPageAvailable')</xsl:variable>
 
    <xsl:choose>
-       <xsl:when test="$timeFilter">
+       <xsl:when test="not($timeFilter='')">
            <XMLSelect><xsl:attribute name="search">*[<xsl:value-of select="$timeFilter"/> and <xsl:value-of select="$pageFilter"/>]</xsl:attribute></XMLSelect>
        </xsl:when>
        <xsl:otherwise>

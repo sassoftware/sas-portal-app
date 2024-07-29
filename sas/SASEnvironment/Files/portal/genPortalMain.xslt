@@ -49,7 +49,6 @@
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
 
 <xsl:template match="/" name="main">
-<xsl:message>Feature Flags passed:<xsl:value-of select="$featureFlags"/></xsl:message>
 <!-- pass back the theme to use -->
 
 <xsl:call-template name="thisPageScripts"/>
