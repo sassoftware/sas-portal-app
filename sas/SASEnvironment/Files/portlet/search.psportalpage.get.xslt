@@ -179,7 +179,7 @@
 
                  <!--  Get Pages that match the name or description search -->
 
-                 <!--  TODO: Handle if contentType contains multiple types -->
+                 <!--  TODO: Handle if searchTypes contains multiple types -->
 
                  <GetMetadataObjects>
                   <ReposId><xsl:value-of select="$reposId"/></ReposId>

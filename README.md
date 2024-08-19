@@ -354,17 +354,18 @@ The existing SAS Information Delivery Portal has the following capabilities in t
 | By Content Type | File | no |
 | By Content Type | Link | no |
 | By Content Type | Package | no |
-| By Content Type | Page | 1vailable  |
+| By Content Type | Page | available 1  |
 | By Content Type | PageTemplate | no |
 | By Content Type | Portlet | tbd |
 | By Content Type | Publication Channel | no |
 | By Content Type | SAS Information Map | no |
-| By Content Type | SAS Report | tbd |
-| By Content Type | SAS Stored Process | tbd |
+| By Content Type | SAS Report | available 2 |
+| By Content Type | SAS Stored Process | available 2 |
 | By Content Type | Syndication Channel | no |
 | Search Results | Results Per Page | no |
 
 1. Searching by Keyword, Name and Description is only currently supported when adding a Page to your portlet.
+2. Searching by Keyword, Name and Description is only currently supported when adding content to a collection portlet.
 
 ### Capabilities
 

@@ -223,6 +223,11 @@
   <string key="portletSearchDescending">降順</string>
   <string key="portletSearchCheckbox">追加する項目を選択してください</string>
 
+  <string key="portletSearchTypeTitle">コンテンツタイプ</string>
+  <string key="portletSearchTypeReport">SASレポート</string>
+  <string key="portletSearchTypeStoredProcess">SAS ストアドプロセス</string>
+  <string key="portletSearchTypeUnknown">不明なタイプ</string>
+
   <!-- SAS Navigator portlet -->
 
   <string key="sasFolders">SAS フォルダー</string>

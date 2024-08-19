@@ -449,7 +449,7 @@
     <!-- The list of members of the collection contains a link bank to the collection psportlet itself, ignore that one -->
 
     <xsl:variable name="itemType" select="name(.)"/>
-
+<xsl:message>addItemList: itemType=<xsl:value-of select="$itemType"/></xsl:message>
     <xsl:if test="$itemType != 'PSPortlet'">
 
         <xsl:variable name="itemName" select="@Name"/>
@@ -473,7 +473,15 @@
              itemDataList[itemCount] = new Object();
              itemDataList[itemCount].name = "<xsl:value-of select="$itemName"/>";
              itemDataList[itemCount].entityKey = "<xsl:value-of select="$itemKey"/>";
+
+        <xsl:choose>
+           <xsl:when test="lower-case($itemType)='document'">
              itemDataList[itemCount].canEdit = true;
+           </xsl:when>
+           <xsl:otherwise>
+             itemDataList[itemCount].canEdit = false;
+           </xsl:otherwise>
+       </xsl:choose>
              itemCount++;
 
           </script>

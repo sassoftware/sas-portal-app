@@ -222,6 +222,11 @@
   <string key="portletSearchDescending">Descending</string> 
   <string key="portletSearchCheckbox">Select this item to add</string> 
 
+  <string key="portletSearchTypeTitle">Content Types</string> 
+  <string key="portletSearchTypeReport">SAS Report</string> 
+  <string key="portletSearchTypeStoredProcess">SAS Stored Process</string> 
+  <string key="portletSearchTypeUnknown">Unknown type</string> 
+
   <!-- SAS Navigator portlet -->
 
   <string key="sasFolders">SAS Folders</string> 

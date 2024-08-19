@@ -1,6 +1,6 @@
 
   put "<Query>%nrbquote(%sysfunc(tranwrd(&query.,&,&amp;)))</Query>";
 
-  %if (%symexist(contentType)) %then %do;
-     put "<ContentType>&ContentType.</ContentType>";
+  %if (%symexist(searchTypes)) %then %do;
+     put "<SearchTypes>&SearchTypes.</SearchTypes>";
      %end;
