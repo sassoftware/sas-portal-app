@@ -230,8 +230,6 @@
 
 %setupPortalDebug(getIndex);
 
-%put featureFlags=&featureFlags;
-
 %genPortalMain(user=%bquote(&_metaperson.));
 
 %cleanupPortalDebug;

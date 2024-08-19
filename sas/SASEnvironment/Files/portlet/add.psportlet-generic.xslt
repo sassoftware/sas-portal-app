@@ -153,9 +153,7 @@
 		<td class="textEntry">
 		    <select name="portlettype" id="portlettype">
 			<option value="collection"><xsl:value-of select="$portletEditPortletTypeCollection"/></option>
-                        <xsl:if test="contains(upper-case($featureFlags),'SASNAVIGATOR')">
 			<option value="sasnavigator"><xsl:value-of select="$portletEditPortletTypeNavigator"/></option>
-                        </xsl:if>
 			<option value="report"><xsl:value-of select="$portletEditPortletTypeReport"/></option>
 			<option value="sasstoredprocess"><xsl:value-of select="$portletEditPortletTypeStoredProcess"/></option>
 			<option value="displayurl"><xsl:value-of select="$portletEditPortletTypeDisplayURL"/></option>
