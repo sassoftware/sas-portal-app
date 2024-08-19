@@ -267,7 +267,7 @@ based on user feedback.
 | ------ | ------ | ------ | ------ | ------ |
 | [Initialize New User](IMPLEMENTATION.md#new-users)  |  INITNEWUSER | 15NOV2023  | Included | 01FEB2024 |
 | [Sync shared content](IMPLEMENTATION.md#synchronizing-shared-content-with-users)  |  SYNCUSER | 15NOV2023  | Included | 01FEB2024 |
-| Support for SAS Navigator portlet | SASNAVIGATOR | 11JUL2024 | TBD | TBD |
+| Support for SAS Navigator portlet | SASNAVIGATOR | 11JUL2024 | Included | 20AUG2024 |
  
 ## Roadmap
 
@@ -375,12 +375,12 @@ The SAS Information Delivery Portal currently supports these categories of objec
 | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
 | Portal Page | All | available | available | available | available | available |
 | Portlet | Collection | available | available | available | available | available |
-| Portlet | Report Portlet | 1 | no | available | tbd | no |
-| Portlet | Report Portlet Local | 1 | available | available | yes | available |
+| Portlet | Report Portlet | available 1 | no | available | tbd | no |
+| Portlet | Report Portlet Local | available 1 | available | available | yes | available |
 | Portlet | SAS BI Dashboard | no | no | no | no | no |
 | Portlet | SAS Collections | available | no | no | no | no |
 | Portlet | SAS Diagnostics | no | no | no | no | no |
-| Portlet | SAS Navigator | tbd | no | no | no | no |
+| Portlet | SAS Navigator | available | available | available | available | available |
 | Portlet | SAS Report | 1 | tbd | no | no | no |
 | Portlet | SAS Stored Process | available | available | available | available | available |
 | Portlet | Shared Alerts | no | no | no | no | no |
