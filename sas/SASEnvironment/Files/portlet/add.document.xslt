@@ -586,7 +586,7 @@
 
 <!-- This iframe is here to capture the response from submitting the form -->
 
-<iframe id="formResponse" name="formResponse" style="display:block" width="100%">
+<iframe id="formResponse" name="formResponse" style="display:none" width="100%">
 
 </iframe>
 
