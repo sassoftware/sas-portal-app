@@ -282,10 +282,10 @@ The following legend is used for each of the tables below.
 | Value | Definition |
 | ------ | ------ |
 |  available | support for this is already available |
-|    yes    | this is planning on being supported       |
-|  tbd      | this is being considered for support       |
-|  no       | no support for this item is currently planned |
-|  N/A      | this column is not application to this row |
+|   yes      | this is planning on being supported       |
+|  tbd       | this is being considered for support       |
+|  no        | no support for this item is currently planned |
+|  N/A       | this column is not application to this row |
 |  <number>      | See the numbered item in the notes following that table |
 
 
@@ -349,23 +349,23 @@ The existing SAS Information Delivery Portal has the following capabilities in t
 
 | Category | Setting | Support |
 | ------ | ------ | ------ |
-| By Keyword | | available 1 |
+| By Keyword | | available <sup>1</sup> |
 | By Content Type | Application | tbd |
 | By Content Type | File | no |
 | By Content Type | Link | no |
 | By Content Type | Package | no |
-| By Content Type | Page | available 1  |
+| By Content Type | Page | available <sup>1</sup>  |
 | By Content Type | PageTemplate | no |
 | By Content Type | Portlet | tbd |
 | By Content Type | Publication Channel | no |
 | By Content Type | SAS Information Map | no |
-| By Content Type | SAS Report | available 2 |
-| By Content Type | SAS Stored Process | available 2 |
+| By Content Type | SAS Report | available <sup>2</sup> |
+| By Content Type | SAS Stored Process | available <sup>2</sup> |
 | By Content Type | Syndication Channel | no |
 | Search Results | Results Per Page | no |
 
-1. Searching by Keyword, Name and Description is only currently supported when adding a Page to your portlet.
-2. Searching by Keyword, Name and Description is only currently supported when adding content to a collection portlet.
+<sup>1</sup> Searching by Keyword, Name and Description is only currently supported when adding a Page to your portlet.
+<sup>2</sup> Searching by Keyword, Name and Description is only currently supported when adding content to a collection portlet.
 
 ### Capabilities
 
@@ -375,13 +375,13 @@ The SAS Information Delivery Portal currently supports these categories of objec
 | ------ | ------ | ------ | ------ | ------ | ------ | ------ |
 | Portal Page | All | available | available | available | available | available |
 | Portlet | Collection | available | available | available | available | available |
-| Portlet | Report Portlet | available 1 | no | available | tbd | no |
-| Portlet | Report Portlet Local | available 1 | available | available | yes | available |
+| Portlet | Report Portlet | <span style="white-space:nowrap;">available <sup>1</sup></span> | no | available | tbd | no |
+| Portlet | Report Portlet Local | <span style="white-space:nowrap;">available <sup>1</sup></span> | available | available | yes | available |
 | Portlet | SAS BI Dashboard | no | no | no | no | no |
 | Portlet | SAS Collections | available | no | no | no | no |
 | Portlet | SAS Diagnostics | no | no | no | no | no |
 | Portlet | SAS Navigator | available | available | available | available | available |
-| Portlet | SAS Report | 1 | tbd | no | no | no |
+| Portlet | SAS Report | <sup>1</sup> | tbd | no | no | no |
 | Portlet | SAS Stored Process | available | available | available | available | available |
 | Portlet | Shared Alerts | no | no | no | no | no |
 | Portlet | URL Display Portlet | available | available | available | available | available |
@@ -390,7 +390,7 @@ The SAS Information Delivery Portal currently supports these categories of objec
 | Portlet | WebDav Navigator | no | no | no | no | no |
 
 
-1. All Report portlets will show a link to the report, not the report content or a static image of the report.
+<sup>1</sup> All Report portlets will show a link to the report, not the report content or a static image of the report.
 
 ### Layouts
 
