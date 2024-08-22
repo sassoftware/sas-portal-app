@@ -2,23 +2,50 @@
 <html>
   <head>
     <meta charset="utf-8" http-equiv="X-UA-Compatible" content="IE=edge" />
-
+    <style>
+        .loader {
+            border: 6px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 6px solid #3498db;
+            width: 40px;
+            height: 40px;
+            -webkit-animation: spin 1s linear infinite; /* Safari */
+            animation: spin 1s linear infinite;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: -20px;
+            margin-left: -20px;
+            width: 100px;
+            height: 100px;
+        }
+        
+        #sasjsAdapterLoginPromptBG.sasjs-adapterpopUpBG {
+            opacity: 1 !important;
+        }
+        
+        /* Safari */
+        @-webkit-keyframes spin {
+            0% { -webkit-transform: rotate(0deg); }
+            100% { -webkit-transform: rotate(360deg); }
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
     <script src="init.js?v=24"></script>
     <script>loadScripts();</script>
-
   </head>
-
   <body class="workarea">
-
-<!-- Before we execute the stored process, the logic in the onload() function will do text replacement on any ${VARIABLE} references
-     in the w3-include-html attribute value! -->
-
-<div id="data-container" style="display: none" w3-include-html="/SASStoredProcess/do?_action=execute,nobanner,newwindow&_program=${APPLOC}index">
-
-<!-- Don't display anything on the page until we are logged in, this data-container will be hidden until that happens -->
-
-</div>
-
+    <!-- Before we execute the stored process, the logic in the onload() function will do text replacement on any ${VARIABLE} references
+         in the w3-include-html attribute value! -->
+         
+    <div id="data-container" w3-include-html="/SASStoredProcess/do?_action=execute,nobanner,newwindow&_program=${APPLOC}index">
+        <!-- Display loader / spinning wheel until we are logged in, this data-container will be hidden until that happens -->
+        <div class="loader" ></div>
+    </div>
   </body>
 </html>
 
