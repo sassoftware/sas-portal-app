@@ -364,7 +364,7 @@ The existing SAS Information Delivery Portal has the following capabilities in t
 | By Content Type | Syndication Channel | no |
 | Search Results | Results Per Page | no |
 
-<sup>1</sup> Searching by Keyword, Name and Description is only currently supported when adding a Page to your portlet.
+<sup>1</sup> Searching by Keyword, Name and Description is only currently supported when adding a Page to your portal.
 <sup>2</sup> Searching by Keyword, Name and Description is only currently supported when adding content to a collection portlet.
 
 ### Capabilities
