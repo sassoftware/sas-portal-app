@@ -25,10 +25,16 @@
 <xsl:variable name="portletEditProperties" select="$localeXml/string[@key='portletEditProperties']/text()"/>
 <xsl:variable name="portletRemove" select="$localeXml/string[@key='portletRemove']/text()"/>
 <xsl:variable name="portalAdminHeader" select="$localeXml/string[@key='portalAdminHeader']/text()"/>
+<xsl:variable name="removeButton" select="$localeXml/string[@key='removeButton']/text()"/>
+<xsl:variable name="portletEditCollectionHasChangedMessage" select="$localeXml/string[@key='portletEditCollectionHasChangedMessage']/text()"/>
 
 <!-- include shared files -->
 
 <xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portal/genPortalBanner.xslt"/>
+
+<!-- Re-usable scripts -->
+
+<xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/form.functions.xslt"/>
 
 <!-- Define the lookup table of writeable trees -->
 <xsl:key name="treeKey" match="Tree" use="@Id"/>
@@ -41,6 +47,11 @@
 <xsl:variable name="writeableTrees" select="/Multiple_Requests/GetMetadataObjects[1]/Objects/Person/AccessControlEntries/AccessControlEntry/Objects/Tree"/>
 
 <xsl:variable name="userName" select="/Multiple_Requests/GetMetadataObjects[1]/Objects/Person/@Name"/>
+ 
+<!-- Links used in the form -->
+<xsl:variable name="removeLink" select="concat('/SASStoredProcess/do?_program=',$appLocEncoded,'services/deleteItem')"/>
+
+
  
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -91,6 +102,7 @@
   </xsl:variable>
 
   <script>
+
 
     var tabId='<xsl:value-of select="$tabId"/>';
     tabs.set(tabId,new Object());
@@ -290,6 +302,126 @@
    }
 
 
+             function addReloadHandler(iframe) {
+
+                  iframe.addEventListener( "load", function(e) {
+
+                  /*
+                  * Since we removed an item from the list, refresh the screen.
+                  */
+                  location.reload();
+
+                  } );
+
+                  }
+
+                  /*
+                  *  The call to remove an item will target a div called removeResponse.
+                  *  When it is populated, refresh the page to pick up the change.
+                  */
+
+                  var removeResponse = document.getElementsByName('removeResponse')[0];
+                  if (removeResponse) {
+
+                     addReloadHandler(removeResponse);
+
+                  }
+                  var hasChanged = false;
+
+                  function displayChangedMessage(hasChangedMessage)
+                  {
+                     retval = true;
+                     if (hasChanged)
+                        var retval = confirm(hasChangedMessage);
+
+                     if (retval)
+                        hasChanged = false;
+
+                     return retval;
+                  }
+
+                  function removeBookmarksItem(removeBookmarksButton, groupId, removeUrl){
+                     removeButton=document.getElementsByName("removeBookmarksButton")[0];
+                     let relatedId = removeButton.id
+                     
+                     checkboxItems=document.getElementsByName('checkbox_book');
+
+                     let itemType;
+                     let itemId
+                     let removeItemParms="Type=";
+
+                     checkboxItems.forEach(function(node) {
+                     
+                        if (node.type=="checkbox") {
+
+                           if (node.checked==true) {
+
+                              const keyArray = node.value.split("/");
+                              itemType = keyArray[1];
+                              itemId = keyArray[2];
+                              }
+                           
+                           }   
+
+                        });
+
+                     removeItemParms=removeItemParms.concat(itemType,'<xsl:text disable-output-escaping="yes">&amp;</xsl:text>id=',itemId,'<xsl:text disable-output-escaping="yes">&amp;</xsl:text>relatedId=',relatedId,'<xsl:text disable-output-escaping="yes">&amp;</xsl:text>relatedType=Group');
+
+                     if (removeUrl.includes('?')) {
+                      removeUrl=removeUrl.concat('<xsl:text disable-output-escaping="yes">&amp;</xsl:text>',removeItemParms);
+                      }
+
+                     else {
+                      removeUrl=removeUrl.concat('?',removeItemParms);
+                      }
+                     
+                     console.log(removeUrl);
+
+                     
+                     removeResponse.contentWindow.location.replace(removeUrl);
+                     
+                  }
+
+                  function selectCheckbox(checkbox) {
+
+                     removeButton=document.getElementsByName("removeBookmarksButton")[0];
+
+                     
+
+                      //console.log(removeButton);
+
+                     if (checkbox.checked == true) {
+                     /* 
+                     *  Deselect all others besides the one just selected.
+                     */
+                        
+                        removeButton.disabled = false;
+
+                        checkboxItems=document.getElementsByName('checkbox_book');
+
+                       
+
+                        checkboxItems.forEach(function(node) {
+                     
+                        if (node.type=="checkbox") {
+
+                           if (node != checkbox) {
+
+                              node.checked=false;
+
+                              }
+                           
+                           }   
+
+                        });
+                     }
+
+                     else {
+                        removeButton.disabled = true;
+                     }
+                  }
+
+
 </script>
 </xsl:template>
 
@@ -456,17 +588,33 @@
 <xsl:template match="Document">
 	<xsl:param name="showDescription"/>
 	<xsl:param name="showLocation"/>
+   <xsl:param name="portletType"/>
+
+   <xsl:if test="$portletType = 'Bookmarks'">
+      <xsl:variable name="itemType" select="name(.)"/>
+      <xsl:variable name="itemName" select="@Name"/>
+      <xsl:variable name="itemId" select="@Id"/>
+     <xsl:variable name="itemKey">/<xsl:value-of select="$itemType"/>/<xsl:value-of select="$itemId"/></xsl:variable>
+
+
+   <input type="checkbox" name="checkbox_book" onclick='selectCheckbox(this); hasChanged=true;'>
+      <xsl:attribute name="id"><xsl:value-of select="$itemKey"/></xsl:attribute>
+      <xsl:attribute name="value"><xsl:value-of select="$itemKey"/></xsl:attribute>
+   </input>
+   </xsl:if>
+
+
 	
 	<a><xsl:attribute name="href"><xsl:value-of select="@URI"/></xsl:attribute><xsl:value-of select="@Name"/></a><br/>
 	
 	<xsl:choose>
 		<xsl:when test="$showDescription = 'true' and @Desc != ''">
-			<span class="treeDescription">- <xsl:value-of select="@Desc"/><br/></span>
+			<span colspan="13" class="treeDescription">&#160;&#160;&#160;&#160;&#160;&#160;&#160;- <xsl:value-of select="@Desc"/><br/></span>
 		</xsl:when>
 	</xsl:choose>
 	<xsl:choose>
 		<xsl:when test="$showLocation = 'true' and @URI != ''">
-			<span class="treeDescription" style="white-space:nowrap">- <xsl:value-of select="@URI"/><br/></span>
+			<span class="treeDescription" style="white-space:nowrap">&#160;&#160;&#160;&#160;&#160;&#160;&#160;- <xsl:value-of select="@URI"/><br/></span>
 		</xsl:when>
 	</xsl:choose>
 </xsl:template>
@@ -474,6 +622,22 @@
 <!-- Template to handle a reference to a stored process (typically in bookmarks) -->
 
 <xsl:template match="ClassifierMap[@TransformRole='StoredProcess']">
+	<xsl:param name="showDescription"/>
+	<xsl:param name="showLocation"/>
+   <xsl:param name="portletType"/>
+
+   <xsl:if test="$portletType = 'Bookmarks'">
+      <xsl:variable name="itemType" select="name(.)"/>
+      <xsl:variable name="itemName" select="@Name"/>
+      <xsl:variable name="itemId" select="@Id"/>
+     <xsl:variable name="itemKey">/<xsl:value-of select="$itemType"/>/<xsl:value-of select="$itemId"/></xsl:variable>
+
+
+   <input type="checkbox" name="checkbox_book" onclick='selectCheckbox(this); hasChanged=true;'>
+      <xsl:attribute name="id"><xsl:value-of select="$itemKey"/></xsl:attribute>
+      <xsl:attribute name="value"><xsl:value-of select="$itemKey"/></xsl:attribute>
+   </input>
+   </xsl:if>
 
    <xsl:variable name="stpProgram">
                 <xsl:for-each select="Trees//Tree">
@@ -491,6 +655,10 @@
 <!-- Template to handle a reference to a Report (typically in bookmarks)-->
 
 <xsl:template match="Transformation[@TransformRole='Report']">
+	<xsl:param name="showDescription"/>
+	<xsl:param name="showLocation"/>
+   <xsl:param name="portletType"/>
+
 
 <!-- Unfortunately, to display a report, you need the entire path to it, thus it is required to navigate the parent tree
      structure.
@@ -507,6 +675,9 @@
 
     <xsl:call-template name="reportLink">
 	    <xsl:with-param name="reportSBIPURI" select="$reportSBIPURI"/>
+       <xsl:with-param name="showDescription" select="$showDescription"/>
+		 <xsl:with-param name="showLocation" select="$showLocation"/>
+       <xsl:with-param name="portletType" select="$portletType"/>
 	</xsl:call-template>
 
 </xsl:template>
@@ -594,7 +765,85 @@
 
     <!-- not yet convinced there won't be some differences in how the different collections are processed so keep this redirection template here-->
 
-    <xsl:call-template name="processCollection"/>
+      <xsl:variable name="numGroups">
+	       <xsl:value-of select="count(Groups/Group)"/>
+	   </xsl:variable>
+
+      <xsl:variable name="bookmarksGroupId">
+	       <xsl:value-of select="Groups/Group/@Id"/>
+	   </xsl:variable>
+
+       <xsl:variable name="showDescription">
+	       <xsl:value-of select="PropertySets/PropertySet/SetProperties/Property[@Name='show-description']/@DefaultValue"/>
+	   </xsl:variable>
+       <xsl:variable name="showLocation">
+	       <xsl:value-of select="PropertySets/PropertySet/SetProperties/Property[@Name='show-location']/@DefaultValue"/>
+	   </xsl:variable>
+
+	   <!-- The first member in the group seems to be a link back to itself, so skip that entry -->
+	   <xsl:for-each select="Groups/Group">
+	   
+	   	  <xsl:variable name="numMembers">
+	         <xsl:value-of select="count(Members/*)"/>
+	      </xsl:variable>
+
+	      <xsl:for-each select="Members/*">
+	             <xsl:if test="position() > 1">
+
+               <xsl:if test="position() = 2">
+                  <tr>
+                     <td>
+                        <button  type="button" name="removeBookmarksButton" disabled="disabled"> <!-- style="background-color: transparent;border-style: none;" -->
+                           <xsl:attribute name="id"><xsl:value-of select="$bookmarksGroupId"/></xsl:attribute>
+                           <xsl:attribute name="title"><xsl:value-of select="$removeButton"/></xsl:attribute>
+                           <xsl:attribute name="onclick">if (displayChangedMessage("<xsl:value-of select="$portletEditCollectionHasChangedMessage"/>")) removeBookmarksItem("removeBookmarksButton",'<xsl:value-of select="$bookmarksGroupId"/>','<xsl:value-of select="$removeLink"/>'); else return false;</xsl:attribute>
+                           <span>
+                              <xsl:value-of select="$removeButton"/>
+                           </span>
+                        </button>
+                     </td>
+                  </tr>
+               </xsl:if>
+	             <tr>
+	             <td class="portletEntry" valign="top">
+
+                     <!-- The user can make a bookmark to Portal Page.  If we just apply the templates
+                          to the current entry, it will try to create a new page div in the output html.
+                          In this case, we simply want to make a link to the right tab for this referenced portal page.
+                     -->
+                     <xsl:choose>
+                         <xsl:when test="name(.)='PSPortalPage'">
+                            <xsl:call-template name="PortalPageLink">
+								<xsl:with-param name="showDescription" select="$showDescription"/>
+								<xsl:with-param name="showLocation" select="$showLocation"/>
+							</xsl:call-template>
+                         </xsl:when>
+                         <xsl:otherwise>
+         	             <xsl:apply-templates  select=".">
+							<xsl:with-param name="showDescription" select="$showDescription"/>
+							<xsl:with-param name="showLocation" select="$showLocation"/>
+                     <xsl:with-param name="portletType" select="'Bookmarks'"/>
+						 </xsl:apply-templates>
+                         </xsl:otherwise>
+                     </xsl:choose>
+	             </td>
+	             </tr>
+	             </xsl:if>
+	         </xsl:for-each>
+	         
+	      <!-- If the portlet didn't have any members, add a few blank rows -->
+	      
+	      <xsl:if test="$numMembers = 1">
+			 <xsl:call-template name="emptyPortlet"/>	         	      
+	      </xsl:if>
+	      
+	   </xsl:for-each>
+
+	      <xsl:if test="$numGroups = 0">
+	         	      
+			  <xsl:call-template name="emptyPortlet"/>
+
+	      </xsl:if>
 
 </xsl:template>
 
@@ -646,6 +895,8 @@
 <xsl:template name="SASNavigator">
 
    <!-- Get the SASNavigator and display and call stp -->
+
+   
 
 	<xsl:variable name="spaNavPath">
 		<xsl:choose>
@@ -772,10 +1023,25 @@
 
 <xsl:template name="reportLink">
 
-  <xsl:param name = "reportSBIPURI" />
+   <xsl:param name = "reportSBIPURI" />
+   <xsl:param name="showDescription"/>
+	<xsl:param name="showLocation"/>
+   <xsl:param name="portletType"/>
 
-         <tr>
-	        <td class="portletEntry" valign="top" colspan="2">
+   <tr>
+	      <td class="portletEntry" valign="top" colspan="2">
+
+         
+         <xsl:if test="$portletType = 'Bookmarks'">
+            <xsl:variable name="itemType" select="name(.)"/>
+            <xsl:variable name="itemName" select="@Name"/>
+            <xsl:variable name="itemId" select="@Id"/>
+            <xsl:variable name="itemKey">/<xsl:value-of select="$itemType"/>/<xsl:value-of select="$itemId"/></xsl:variable>
+            <input type="checkbox" name="checkbox_book" onclick='selectCheckbox(this); hasChanged=true;'>
+               <xsl:attribute name="id"><xsl:value-of select="$itemKey"/></xsl:attribute>
+               <xsl:attribute name="value"><xsl:value-of select="$itemKey"/></xsl:attribute>
+            </input>
+         </xsl:if>
 			
 			<xsl:variable name="wrsProgram"><xsl:value-of select="encode-for-uri($reportSBIPURI)"/></xsl:variable>
 			<xsl:variable name="wrsPath"><xsl:value-of select="substring-after($reportSBIPURI,'SBIP://METASERVER')"/></xsl:variable>
@@ -929,7 +1195,7 @@
 
 		   <xsl:variable name="portletId" select="@Id"/>
 
-		   <table cellpadding="2" cellspacing="0" width="100%" class="portletTableBorder">
+		   <table cellpadding="2" cellspacing="0" width="100%" class="portletTableBorder" id="portletTableBorder">
 		   <tr class="portletTableHeader">
    			<th align="left" class="tableHeader portletTableHeaderLeft" style="border-right:none">
   			<xsl:value-of select="$portletName"/>
@@ -976,7 +1242,7 @@
                                         </td>
                                         <td>&#160;</td>
                                     <td nowrap="" valign="middle">
-                                        <xsl:variable name="removeLink" select="concat('removeItem.html?Id=',$portletId,'&amp;portletType=',$portletType,'&amp;Type=PSPortlet','&amp;RelatedId=',$layoutComponentId,'&amp;RelatedType=',$layoutComponentType,'&amp;v=5')"/>
+                                        <xsl:variable name="removeLink" select="concat('removeItem.html?Id=',$portletId,'&amp;portletType=',$portletType,'&amp;Type=PSPortlet','&amp;v=5')"/>
                                       <a target="_self">
                                         <xsl:attribute name="href"><xsl:value-of select="$removeLink"/></xsl:attribute>
                                             <img valign="middle" border="0"><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/PortletClose.gif</xsl:attribute><xsl:attribute name="alt"><xsl:value-of select="$portletRemove"/></xsl:attribute><xsl:attribute name="title"><xsl:value-of select="$portletRemove"/></xsl:attribute></img>
@@ -1091,6 +1357,12 @@
 	   </xsl:choose>
 	   
 	   </table>
+
+      <!-- This iframe is here to capture the response from removing an item -->
+
+      <iframe id="removeResponse" name="removeResponse" style="display:none">
+
+      </iframe>
 	   
 	   </div>
 </xsl:template>
