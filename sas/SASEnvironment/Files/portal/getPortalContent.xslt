@@ -81,7 +81,7 @@
          <Property Id="" Name="" SQLType="" DefaultValue=""/>
          <Extension Id="" Name="" Value=""/>
          <Document Id="" Name="" URIType="" URI="" TextRole="" TextType="" Desc="" />
-         <Transformation Id="" Name="" TransformRole="">
+         <Transformation Id="" Name="" Desc=""  TransformRole="">
             <Trees/>
          </Transformation>
          <Tree Id="" Name="" TreeType="">
