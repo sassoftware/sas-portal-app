@@ -484,7 +484,16 @@
    </xsl:variable>
    <xsl:variable name="stpURI"><xsl:text>/SASStoredProcess/do?_action=form,properties,execute&amp;_program=</xsl:text><xsl:value-of select="$stpProgram"/></xsl:variable>
 
-   <a><xsl:attribute name="href"><xsl:value-of select="$stpURI"/></xsl:attribute><xsl:value-of select="@Name"/></a>
+   <xsl:variable name="stpLocation">
+      <xsl:for-each select="Trees//Tree">
+                     <xsl:sort select="position()" order="descending"/>
+                     <xsl:text>/</xsl:text><xsl:value-of select="@Name"/>
+      </xsl:for-each>
+   </xsl:variable>
+
+   <a><xsl:attribute name="href"><xsl:value-of select="$stpURI"/></xsl:attribute><xsl:value-of select="@Name"/></a><br/>
+   <span style="white-space: nowrap;" colspan="13" class="treeDescription">- <xsl:value-of select="@Desc"/></span><br/>
+   <span style="white-space: nowrap;" colspan="13" class="treeDescription">- METASERVER<xsl:value-of select="$stpLocation"/></span>
 
 </xsl:template>
 
@@ -782,7 +791,16 @@
 
 			<xsl:variable name="wrsURI"><xsl:text>/SASWebReportStudio/openRVUrl.do?rsRID=</xsl:text><xsl:value-of select="$wrsProgram"/></xsl:variable>
 
-			<a><xsl:attribute name="href"><xsl:value-of select="$wrsURI"/></xsl:attribute><xsl:value-of select="@Name"/></a>
+			<a><xsl:attribute name="href"><xsl:value-of select="$wrsURI"/></xsl:attribute><xsl:value-of select="@Name"/></a><br/>
+         <xsl:variable name="stpLocation">
+            <xsl:for-each select="Trees//Tree">
+                           <xsl:sort select="position()" order="descending"/>
+                           <xsl:text>/</xsl:text><xsl:value-of select="@Name"/>
+            </xsl:for-each>
+         </xsl:variable>
+
+         <span style="white-space: nowrap;" colspan="13" class="treeDescription">- <xsl:value-of select="@Desc"/><br/></span>
+         <span style="white-space: nowrap;" colspan="13" class="treeDescription">- METASERVER<xsl:value-of select="$stpLocation"/></span>
 
 			<!--
 			<iframe style="overflow: auto;width: 100%" frameborder="0" >
@@ -792,6 +810,7 @@
 			
 	        </td>
 	        </tr>
+
 
 </xsl:template>
 
