@@ -34,3 +34,7 @@ var sasjsDebug="false";
 var CSSOverrides='';
 var JSOverrides='';
 
+/*
+ *  Allow overrides of default Portal URL pathname
+ */
+var sasPortalAppHome="/SASPortalApp";
