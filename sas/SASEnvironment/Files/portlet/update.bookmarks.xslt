@@ -64,9 +64,39 @@
 
 </xsl:variable>
 
+<!-- Package Sort Order Property -->
+
+<xsl:variable name="newPackageSortOrderId"><xsl:value-of select="substring-after($reposId,'.')"/>.$newPackageSortOrder</xsl:variable>
+<xsl:variable name="oldPackageSortOrderId">
+ <xsl:choose>
+   <xsl:when test="$configProperties/Property[@Name='ascending-packageSortOrder']/@Id">
+      <xsl:value-of select="$configProperties/Property[@Name='ascending-packageSortOrder']/@Id"/>
+   </xsl:when>
+   <xsl:otherwise>
+    <xsl:value-of select="$newPackageSortOrderId"/>
+   </xsl:otherwise>
+  </xsl:choose>
+</xsl:variable>
+<xsl:variable name="oldPackageSortOrder" select="$configProperties/Property[@Name='ascending-packageSortOrder']/@DefaultValue"/>
+
+<xsl:variable name="newPackageSortOrder">
+
+  <xsl:choose>
+     <xsl:when test="Mod_Request/NewMetadata/PackageSortOrder = 'UsePreferences'">UsePreferences</xsl:when>
+     <xsl:when test="Mod_Request/NewMetadata/PackageSortOrder = 'Ascending'">Ascending</xsl:when>
+     <xsl:when test="Mod_Request/NewMetadata/PackageSortOrder = 'Descending'">Descending</xsl:when>
+     <xsl:otherwise><xsl:value-of select="$oldPackageSortOrder"/></xsl:otherwise>
+  </xsl:choose>
+
+</xsl:variable>
+
+<xsl:variable name="listChanged"><xsl:value-of select="Mod_Request/NewMetadata/ListChanged"/></xsl:variable>
+
+<!-- See if we have anything to update -->
+
 <xsl:choose>
 
-<xsl:when test="not($newShowDescription=$oldShowDescription) or not($newShowLocation=$oldShowLocation) or $commonPropertiesChanged">
+<xsl:when test="not($newShowDescription=$oldShowDescription) or not($newShowLocation=$oldShowLocation) or not($newPackageSortOrder=$oldPackageSortOrder) or ($listChanged='true') or $commonPropertiesChanged">
 
     <Multiple_Requests>
 
@@ -125,6 +155,53 @@
             </Property>
         </xsl:if>
         
+        <xsl:if test="not($newPackageSortOrder=$oldPackageSortOrder)">
+            <Property>
+               <xsl:attribute name="Id"><xsl:value-of select="$oldPackageSortOrderId"/></xsl:attribute>
+               <xsl:attribute name="DefaultValue"><xsl:value-of select="$newPackageSortOrder"/></xsl:attribute>
+               <!-- If the old id is not the same as the new id, then we already had the object, so no further
+                    metadata is required.  If they are the same, then we need to fill in the rest of the information
+                    about this property -->
+
+               <xsl:if test="$oldPackageSortOrderId=$newPackageSortOrderId">
+                   <xsl:attribute name="Name">ascending-packageSortOrder</xsl:attribute>
+                   <xsl:attribute name="SQLType">12</xsl:attribute>
+
+                   <AssociatedPropertySet> 
+                      <PropertySet>
+                        <xsl:attribute name="ObjRef"><xsl:value-of select="$configPropertySetId"/></xsl:attribute>
+                      </PropertySet>
+                   </AssociatedPropertySet>
+
+               </xsl:if>
+            </Property>
+        </xsl:if>
+
+        <xsl:if test="$listChanged = 'true'">
+            <!--  The group list has as it's first item a link back to the portlet itself, followed
+                  by the list of items.  In this case, we know the list has changed, but we don't
+                  know the extent.  Thus, we will just replace the current list with a new list.
+             -->
+             <xsl:variable name="collectionGroupId" select="$portletObject/Groups/Group/@Id"/>
+             <Group><xsl:attribute name="Id"><xsl:value-of select="$collectionGroupId"/></xsl:attribute>
+                <Members function="replace">
+                    <PSPortlet><xsl:attribute name="ObjRef"><xsl:value-of select="$portletId"/></xsl:attribute></PSPortlet>
+                    <xsl:for-each select="Mod_Request/NewMetadata/Items/*">
+                      <!-- The format of each item in the list is defined as 
+                           <linkType>/<repository>/<objectType>/<objectId>
+                           all we need here is the <objectType> and </objectId>
+                      -->
+                      <xsl:variable name="listItemId"><xsl:value-of select="tokenize(., '/')[last()]"/></xsl:variable>
+                      <xsl:variable name="listItemType"><xsl:value-of select="tokenize(.,'/')[3]"/></xsl:variable> 
+                      <xsl:element name="{$listItemType}"><xsl:attribute name="ObjRef"><xsl:value-of select="$listItemId"/></xsl:attribute></xsl:element>
+                    </xsl:for-each>
+
+                </Members>
+
+             </Group>
+
+        </xsl:if>
+
       </Metadata>
 
       <NS>SAS</NS>

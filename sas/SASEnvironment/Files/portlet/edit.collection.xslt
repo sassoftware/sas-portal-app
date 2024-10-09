@@ -874,6 +874,7 @@
     {
          selBox = document.getElementById(name);
          selectAllOptions(selBox);
+         window.location.href = sasPortalAppHome;
     }
 
     //
