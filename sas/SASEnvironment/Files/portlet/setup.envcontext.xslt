@@ -30,4 +30,7 @@
 <xsl:variable name="sasthemeContextRoot">SASTheme_<xsl:value-of select="$sastheme"/></xsl:variable>
 
 <xsl:variable name="localizationDir">SASPortalApp/sas/SASEnvironment/Files/localization</xsl:variable>
+
+<xsl:variable name="envMetaperson" select="/Mod_Request/NewMetadata/Metaperson"/>
+
 </xsl:stylesheet>
