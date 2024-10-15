@@ -21,6 +21,7 @@
 
 <!-- Strings to be localized -->
 <xsl:variable name="sasFolders" select="$localeXml/string[@key='sasFolders']/text()"/>
+<xsl:variable name="myFolder" select="$localeXml/string[@key='myFolder']/text()"/>
 <xsl:variable name="locationTitle" select="$localeXml/string[@key='locationTitle']/text()"/>
 <xsl:variable name="upOneLevelTitle" select="$localeXml/string[@key='upOneLevelTitle']/text()"/>
 <xsl:variable name="sasnavigatorNameTitle" select="$localeXml/string[@key='sasnavigatorNameTitle']/text()"/>
@@ -241,6 +242,7 @@
 
         <xsl:variable name="childPathTemp" select="concat($path,'/',$childFolderName)"/>
         <xsl:variable name="childPath" select="replace($childPathTemp,'//','/')"/>
+		<xsl:variable name="myfolderPath" select="concat($homeURL,$objectFilterEncoded,'&amp;_action=execute&amp;path=/User Folders/',$envMetaperson,'/My Folder')"/>
 
         <xsl:variable name="childLink">
             <xsl:choose>
@@ -252,7 +254,29 @@
         </xsl:variable>
 
         <xsl:if test="not($childTypeString='')">
-
+			<xsl:if test="$path='/' and position()=1">
+				<tr>
+					<td><span><img style="vertical-align:baseline;" border="0">
+							  <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/MyFolder.gif</xsl:attribute></img>
+						<xsl:choose>
+							<xsl:when test="$childLink">
+								<a><xsl:attribute name="href" select="$myfolderPath"/>
+								<xsl:if test="not($childType='folder')">
+								   <xsl:attribute name="target">_blank</xsl:attribute>
+								</xsl:if>
+								<xsl:value-of select="$myFolder"/>
+								</a>
+							</xsl:when>
+						</xsl:choose>
+						<xsl:if test="$showDescription">
+						<br/><small><xsl:value-of select="@Desc"/></small>
+						</xsl:if>
+						</span>
+					</td>
+					<td><span><xsl:value-of select="$childTypeString"/></span></td>
+					<td><span><xsl:value-of select="@MetadataCreated"/></span></td>
+				</tr>
+			</xsl:if>
             <tr>
                 <td><span><img style="vertical-align:baseline;" border="0">
                           <xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/<xsl:value-of select="$childImage"/></xsl:attribute></img>

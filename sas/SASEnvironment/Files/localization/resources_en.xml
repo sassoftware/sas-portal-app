@@ -230,6 +230,7 @@
   <!-- SAS Navigator portlet -->
 
   <string key="sasFolders">SAS Folders</string> 
+  <string key="myFolder">My Folder</string> 
   <string key="locationTitle">Location:</string> 
   <string key="upOneLevelTitle">Up one level</string> 
   <string key="sasnavigatorNameTitle">Name</string> 
