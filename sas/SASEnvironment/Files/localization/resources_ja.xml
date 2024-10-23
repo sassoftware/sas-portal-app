@@ -231,7 +231,7 @@
   <!-- SAS Navigator portlet -->
 
   <string key="sasFolders">SAS フォルダー</string>
-  <string key="myFolder">私のフォルダ</string> 
+  <string key="myFolder">My Folder</string> 
   <string key="locationTitle">位置：</string>
   <string key="upOneLevelTitle">1つ上のレベル</string>
   <string key="sasnavigatorNameTitle">名前</string>
