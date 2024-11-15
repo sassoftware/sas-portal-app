@@ -91,7 +91,7 @@
 <xsl:variable name="upOneLevel" select="replace($upOneLevelTemp,'//','/')"/>
 
 <table border='0' cellspacing='0'>
-    <tr class='tableColumnHeaderRow'>
+    <tr class='tableColumnHeaderRow'>        
         <td class="none" nowrap='nowrap'><xsl:value-of select="$locationTitle"/>
               <div class='dropdown'>
                   <button class='dropbtn'><img border='0'><xsl:attribute name="src" select="$folderNameImage"/></img><xsl:value-of select="$folderName"/></button>
@@ -114,15 +114,15 @@
 
                            <xsl:if test="$subFolderName">
 
-                   <!-- Build the path for this parent folder -->
+				   <!-- Build the path for this parent folder -->
 
-                   <xsl:variable name="subFolderPathTemp">/<xsl:for-each select="$folderNames[position() &lt;= $currentDepth]"><xsl:if test="."><xsl:value-of select="."/>/</xsl:if></xsl:for-each></xsl:variable>
+				   <xsl:variable name="subFolderPathTemp">/<xsl:for-each select="$folderNames[position() &lt;= $currentDepth]"><xsl:if test="."><xsl:value-of select="."/>/</xsl:if></xsl:for-each></xsl:variable>
                                    <!-- depending on what syntax of path is passed in, we could end up with some double slashes in it, make sure
                                         those are removed.
                                    -->
                                    <xsl:variable name="subFolderPath" select="replace($subFolderPathTemp,'//','/')"/>
 
-                   <a><xsl:attribute name="href" select="concat($homeURL,$objectFilterEncoded,'&amp;_action=execute&amp;path=',$subFolderPath)"/>
+				   <a><xsl:attribute name="href" select="concat($homeURL,$objectFilterEncoded,'&amp;_action=execute&amp;path=',$subFolderPath)"/>
                                       <!-- indent for each layer of the path -->
                                       <xsl:for-each select="1 to $currentDepth">&#160;</xsl:for-each>                                      
                                       <img border='0'><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/Folder.gif</xsl:attribute></img>&#160;<xsl:value-of select="$subFolderName"/>
@@ -192,14 +192,19 @@
     <xsl:variable name="folderMemberObject" select="$metadataContext/Multiple_Requests/GetMetadata[2]/Metadata/Tree"/>
 
     <xsl:call-template name="listChildren">
-     <xsl:with-param name="childListParent" select="$folderMemberObject/Members"/>
+	 <xsl:with-param name="childListParent" select="$folderMemberObject/Members"/>
     </xsl:call-template>
  
     </tbody>
 </table>
 
 </body>
+<script >
 
+    var pathValue = "<xsl:value-of select='$path' />";
+    localStorage.setItem("pathValue", pathValue);
+
+</script>
 </xsl:template>
 
 <xsl:template name="listChildren">
@@ -254,7 +259,7 @@
         </xsl:variable>
 
         <xsl:if test="not($childTypeString='')">
-        
+
             <xsl:if test="$path='/' and position()=1">
                 <tr>
                     <td><span><img style="vertical-align:baseline;" border="0">

@@ -24,6 +24,7 @@
 <xsl:variable name="cancelButton" select="$localeXml/string[@key='cancelButton']/text()"/>
 <xsl:variable name="portletEditNavigatorFolder" select="$localeXml/string[@key='portletEditNavigatorFolder']/text()"/>
 <xsl:variable name="portletEditNavigatorFolderRequired" select="$localeXml/string[@key='portletEditNavigatorFolderRequired']/text()"/>
+<xsl:variable name="sasnavigatorPathCheckbox" select="$localeXml/string[@key='sasnavigatorPathCheckbox']/text()"/>
 
 <!-- Re-usable scripts -->
 
@@ -93,11 +94,21 @@
           <td nowrap="">
             <xsl:value-of select="$portletEditNavigatorFolder"/>
           </td>
-          <td>&#160;</td>
+          
           <td class="celljustifyleft" nowrap="">
             <input type="text" id="path" name="path" size="60"><xsl:attribute name="value"><xsl:value-of select="$portletPathFolder"/></xsl:attribute></input>
           </td>
          </tr>
+         <tr>
+            <td>&#160;</td>
+            <td>
+              <input type="checkbox" id="checkboxPath" name="checkboxPath"></input>
+              <label for="checkboxPath"><xsl:value-of select="$sasnavigatorPathCheckbox"/></label>
+              <label for="checkboxPath" id="labelPath"></label>
+            
+        </td>
+        <td>&#160;</td>
+        </tr>
          <tr>
           <td nowrap="">
           </td>
@@ -121,7 +132,7 @@
             &#160;
             </td>
             <td>
-                    <input class="button" type="submit" name="submit" onclick='if (validateForm()) return submitDisableAllForms(); else return false;'><xsl:attribute name="value"><xsl:value-of select="$saveButton"/></xsl:attribute></input>
+                    <input class="button" type="submit" name="submit" onclick=' return onsubmitPath(); '><xsl:attribute name="value"><xsl:value-of select="$saveButton"/></xsl:attribute></input>
             </td>
             <td>
                     <input class="button" type="button" name="cancel" onclick="history.back()"><xsl:attribute name="value"><xsl:value-of select="$cancelButton"/></xsl:attribute></input>
@@ -149,6 +160,18 @@
 
  <script>
     var hasChanged=false;
+
+  document.getElementById('labelPath').textContent = localStorage.getItem("pathValue");
+
+    function onsubmitPath() {
+    if (validateForm()) {
+        var checkbox = document.getElementById('checkboxPath');
+        if (checkbox.checked) {
+          document.getElementById("path").value = localStorage.getItem("pathValue");
+        }
+        
+      return submitDisableAllForms(); } else  return false;
+    };
 
     function setBooleanHidden(fldName) {
         var checkboxField = document.getElementById(fldName);

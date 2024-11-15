@@ -240,6 +240,7 @@
   <string key="sasnavigatorFolderType">フォルダ</string>
   <string key="sasnavigatorStoredProcessType">ストアドプロセス</string>
   <string key="sasnavigatorReportType">報告</string>
+  <string key="sasnavigatorPathCheckbox">初期フォルダを現在選択されているフォルダに設定します:</string>
 
   <string key="portletEditNavigatorFolder">フォルダ：</string>
   <string key="portletEditNavigatorFolderRequired">エラー: フォルダー フィールドは必須です。</string>

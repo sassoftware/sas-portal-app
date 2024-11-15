@@ -239,6 +239,7 @@
   <string key="sasnavigatorFolderType">Ordner</string>
   <string key="sasnavigatorStoredProcessType">Gespeicherter Prozess</string>
   <string key="sasnavigatorReportType">Bericht</string>
+  <string key="sasnavigatorPathCheckbox">Setze den Anfangsordner auf den aktuell ausgewählten Ordner:</string>
 
   <string key="portletEditNavigatorFolder">Ordner:</string>
   <string key="portletEditNavigatorFolderRequired">FEHLER: Das Ordnerfeld ist erforderlich.</string>
