@@ -647,6 +647,8 @@
 
    <!-- Get the SASNavigator and display and call stp -->
 
+        <xsl:variable name="navigatorId" select="@Id"/>
+
 	<xsl:variable name="spaNavPath">
 		<xsl:choose>
 			<xsl:when test="PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/PropertySets/PropertySet[@Name='selectedFolder']/SetProperties/Property[@Name='PreferenceInstanceProperty']/@DefaultValue">
@@ -676,7 +678,7 @@
 		</xsl:choose>
 	</xsl:variable>
 	
-	<xsl:variable name="stpURI">/SASStoredProcess/do?_action=execute<xsl:text>&amp;</xsl:text>_program=<xsl:value-of select="$appLocEncoded"/>services/spaNavigatorPortlet<xsl:text>&amp;</xsl:text>path=<xsl:value-of select="$spaPath"/><xsl:text>&amp;</xsl:text>objectFilter=<xsl:value-of select="$spaObjects"/></xsl:variable>
+	<xsl:variable name="stpURI">/SASStoredProcess/do?_action=execute<xsl:text>&amp;</xsl:text>_program=<xsl:value-of select="$appLocEncoded"/>services/spaNavigatorPortlet<xsl:text>&amp;</xsl:text>path=<xsl:value-of select="$spaPath"/><xsl:text>&amp;</xsl:text>objectFilter=<xsl:value-of select="$spaObjects"/><xsl:text>&amp;</xsl:text>navigatorId=<xsl:value-of select="$navigatorId"/></xsl:variable>
 	
 		<tr>
 			<td class="portletEntry" valign="top" colspan="2">

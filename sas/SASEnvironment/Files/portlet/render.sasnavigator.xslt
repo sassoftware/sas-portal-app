@@ -36,6 +36,7 @@
 <xsl:variable name="path" select="/Mod_Request/NewMetadata/Path"/>
 <xsl:variable name="objectFilter" select="/Mod_Request/NewMetadata/ObjectFilter"/>
 <xsl:variable name="objectFilterEncoded" select="concat('&amp;objectFilter=',encode-for-uri($objectFilter))"/>
+<xsl:variable name="navigatorId" select="/Mod_Request/NewMetadata/NavigatorId"/>
 
 <xsl:variable name="showDescription" select="/Mod_Request/NewMetadata/ShowDescription"/>
 
@@ -91,7 +92,7 @@
 <xsl:variable name="upOneLevel" select="replace($upOneLevelTemp,'//','/')"/>
 
 <table border='0' cellspacing='0'>
-    <tr class='tableColumnHeaderRow'>
+    <tr class='tableColumnHeaderRow'>        
         <td class="none" nowrap='nowrap'><xsl:value-of select="$locationTitle"/>
               <div class='dropdown'>
                   <button class='dropbtn'><img border='0'><xsl:attribute name="src" select="$folderNameImage"/></img><xsl:value-of select="$folderName"/></button>
@@ -100,7 +101,7 @@
 
                         <!-- Add a title entry -->
 
-                        <a><xsl:attribute name="href" select="concat($homeURL,$objectFilterEncoded,'&amp;_action=execute&amp;path=/')"/>
+                        <a><xsl:attribute name="href" select="concat($homeURL,$objectFilterEncoded,'&amp;_action=execute&amp;path=/','&amp;navigatorId=',$navigatorId)"/>
                            <img border='0'><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/Folder.gif</xsl:attribute></img>&#160;<xsl:value-of select="$sasFolders"/>
                         </a>
 
@@ -114,15 +115,14 @@
 
                            <xsl:if test="$subFolderName">
 
-                   <!-- Build the path for this parent folder -->
+				   <!-- Build the path for this parent folder -->
 
-                   <xsl:variable name="subFolderPathTemp">/<xsl:for-each select="$folderNames[position() &lt;= $currentDepth]"><xsl:if test="."><xsl:value-of select="."/>/</xsl:if></xsl:for-each></xsl:variable>
+				   <xsl:variable name="subFolderPathTemp">/<xsl:for-each select="$folderNames[position() &lt;= $currentDepth]"><xsl:if test="."><xsl:value-of select="."/>/</xsl:if></xsl:for-each></xsl:variable>
                                    <!-- depending on what syntax of path is passed in, we could end up with some double slashes in it, make sure
                                         those are removed.
                                    -->
                                    <xsl:variable name="subFolderPath" select="replace($subFolderPathTemp,'//','/')"/>
-
-                   <a><xsl:attribute name="href" select="concat($homeURL,$objectFilterEncoded,'&amp;_action=execute&amp;path=',$subFolderPath)"/>
+				   <a><xsl:attribute name="href" select="concat($homeURL,$objectFilterEncoded,'&amp;_action=execute&amp;path=',$subFolderPath,'&amp;navigatorId=',$navigatorId)"/>
                                       <!-- indent for each layer of the path -->
                                       <xsl:for-each select="1 to $currentDepth">&#160;</xsl:for-each>                                      
                                       <img border='0'><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/Folder.gif</xsl:attribute></img>&#160;<xsl:value-of select="$subFolderName"/>
@@ -141,7 +141,7 @@
            <xsl:choose>
            <xsl:when test="not($path='/') and not($path='')">
 
-                        <a><xsl:attribute name="href" select="concat($homeURL,$objectFilterEncoded,'&amp;_action=execute&amp;path=',$upOneLevel)"/>
+                        <a><xsl:attribute name="href" select="concat($homeURL,$objectFilterEncoded,'&amp;_action=execute&amp;path=',$upOneLevel,'&amp;navigatorId=',$navigatorId)"/>
                            <img border='0'><xsl:attribute name="src">/<xsl:value-of select="$sasthemeContextRoot"/>/themes/<xsl:value-of select="$sastheme"/>/images/up_one_level.gif</xsl:attribute><xsl:attribute name="alt" select="$upOneLevelTitle"/><xsl:attribute name="title" select="$upOneLevelTitle"/></img><span><xsl:attribute name="title" select="$upOneLevelTitle"/>&#160;<xsl:value-of select="$upOneLevelTitle"/></span>
                         </a>
            </xsl:when>
@@ -192,14 +192,19 @@
     <xsl:variable name="folderMemberObject" select="$metadataContext/Multiple_Requests/GetMetadata[2]/Metadata/Tree"/>
 
     <xsl:call-template name="listChildren">
-     <xsl:with-param name="childListParent" select="$folderMemberObject/Members"/>
+	 <xsl:with-param name="childListParent" select="$folderMemberObject/Members"/>
     </xsl:call-template>
  
     </tbody>
 </table>
 
 </body>
+<script >
 
+    var pathValue = "<xsl:value-of select='$path' />";
+    sessionStorage.setItem("pathValue.<xsl:value-of select="$navigatorId"/>", pathValue);
+
+</script>
 </xsl:template>
 
 <xsl:template name="listChildren">
@@ -207,6 +212,7 @@
  <xsl:param name="childListParent"/>
 
     <xsl:for-each select="$childListParent/*">
+        <xsl:sort select="@Name"/>
 
         <xsl:variable name="childFolderName" select="@Name"/>
 
@@ -242,11 +248,11 @@
 
         <xsl:variable name="childPathTemp" select="concat($path,'/',$childFolderName)"/>
         <xsl:variable name="childPath" select="replace($childPathTemp,'//','/')"/>
-        <xsl:variable name="myfolderPath" select="concat($homeURL,$objectFilterEncoded,'&amp;_action=execute&amp;path=/User Folders/',$envMetaperson,'/My Folder')"/>
+        <xsl:variable name="myfolderPath" select="concat($homeURL,$objectFilterEncoded,'&amp;_action=execute&amp;path=/User Folders/',$envMetaperson,'/My Folder','&amp;navigatorId=',$navigatorId)"/>
 
         <xsl:variable name="childLink">
             <xsl:choose>
-              <xsl:when test="$childType='folder'"><xsl:value-of select="concat($homeURL,$objectFilterEncoded,'&amp;_action=execute&amp;path=',$childPath)"/></xsl:when>
+              <xsl:when test="$childType='folder'"><xsl:value-of select="concat($homeURL,$objectFilterEncoded,'&amp;_action=execute&amp;path=',$childPath,'&amp;navigatorId=',$navigatorId)"/></xsl:when>
               <xsl:when test="$childType='storedprocess'"><xsl:value-of select="concat('/SASStoredProcess/do?_program=',$childPath)"/></xsl:when>
               <xsl:when test="$childType='report'"><xsl:value-of select="concat('/SASWebReportStudio/openRVUrl.do?rsRID=SBIP://METASERVER',$childPath,'(Report)')"/></xsl:when>
               <xsl:otherwise></xsl:otherwise>
@@ -254,7 +260,7 @@
         </xsl:variable>
 
         <xsl:if test="not($childTypeString='')">
-        
+
             <xsl:if test="$path='/' and position()=1">
                 <tr>
                     <td><span><img style="vertical-align:baseline;" border="0">

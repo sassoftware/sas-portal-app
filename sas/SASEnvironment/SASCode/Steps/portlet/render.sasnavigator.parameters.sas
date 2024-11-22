@@ -8,3 +8,8 @@
   %if (%symexist(folderId)) %then %do;
      put "<FolderId>&folderId.</FolderId>";
      %end;
+
+
+  %if (%symexist(navigatorId)) %then %do;
+     put "<NavigatorId>&navigatorId.</NavigatorId>";
+     %end;
