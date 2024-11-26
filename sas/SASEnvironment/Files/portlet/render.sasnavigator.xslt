@@ -212,7 +212,7 @@
  <xsl:param name="childListParent"/>
 
     <xsl:for-each select="$childListParent/*">
-        <xsl:sort select="@Name"/>
+        <xsl:sort select="upper-case(@Name)" order="ascending" />
 
         <xsl:variable name="childFolderName" select="@Name"/>
 
@@ -253,7 +253,7 @@
         <xsl:variable name="childLink">
             <xsl:choose>
               <xsl:when test="$childType='folder'"><xsl:value-of select="concat($homeURL,$objectFilterEncoded,'&amp;_action=execute&amp;path=',$childPath,'&amp;navigatorId=',$navigatorId)"/></xsl:when>
-              <xsl:when test="$childType='storedprocess'"><xsl:value-of select="concat('/SASStoredProcess/do?_program=',$childPath)"/></xsl:when>
+              <xsl:when test="$childType='storedprocess'"><xsl:value-of select="concat('/SASStoredProcess/do?_action=form,properties,execute,newwindow&amp;_program=',$childPath)"/></xsl:when>
               <xsl:when test="$childType='report'"><xsl:value-of select="concat('/SASWebReportStudio/openRVUrl.do?rsRID=SBIP://METASERVER',$childPath,'(Report)')"/></xsl:when>
               <xsl:otherwise></xsl:otherwise>
             </xsl:choose>
