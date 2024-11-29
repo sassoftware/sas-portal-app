@@ -90,7 +90,7 @@ Getting the application on to your web server can be done by copying files to yo
 - copy the file setup.js.template as setup.js in your directory under htdocs
 - verify the information defined in that file
   - sasjsAppLoc = If you have chosen to import the package into a different location than the default of _/System/Applications/SAS Portal App_, then you will need to modify the path in sasjsAppLoc
-
+  - sasPortalAppHome = If you have chosen to copy the contents of the web directory from the Git repository to htdocs with a different name than the default /SASPortalApp, you will need to update the path in sasPortalAppHome accordingly
 ## Additional Configuration Customization (Optional)
 
 There may need to be, or a desire to, customize the configuration.  These may include server side or web server side customizations.

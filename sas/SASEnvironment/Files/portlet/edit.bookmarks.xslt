@@ -337,7 +337,7 @@
                     <td valign="middle">
                         <a role="button">
  
-                        <xsl:attribute name="onclick">if (displayChangedMessage("<xsl:value-of select="$portletEditCollectionHasChangedMessage"/>")) editItem("Collection","portletItemSelect",'<xsl:value-of select="$editLink"/>',noneSelected,tooMany); else return false;</xsl:attribute>
+                        <xsl:attribute name="onclick">if (displayChangedMessage("<xsl:value-of select="$portletEditCollectionHasChangedMessage"/>")) editItem("Bookmarks","portletItemSelect",'<xsl:value-of select="$editLink"/>',noneSelected,tooMany); else return false;</xsl:attribute>
 
                         <img id="editImg" border="0"
                             width="12" height="14"
