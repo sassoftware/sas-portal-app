@@ -477,14 +477,6 @@
 	<xsl:param name="showDescription"/>
 	<xsl:param name="showLocation"/>
 
-   <xsl:variable name="stpProgram">
-                <xsl:for-each select="Trees//Tree">
-                        <xsl:sort select="position()" order="descending"/>
-                        <xsl:text>/</xsl:text><xsl:value-of select="@Name"/>
-                </xsl:for-each>
-                <xsl:text>/</xsl:text><xsl:value-of select="@Name"/>
-   </xsl:variable>
-   <xsl:variable name="stpURI"><xsl:text>/SASStoredProcess/do?_action=form,properties,execute&amp;_program=</xsl:text><xsl:value-of select="$stpProgram"/></xsl:variable>
 
    <xsl:variable name="stpLocation">
       <xsl:for-each select="Trees//Tree">
@@ -492,6 +484,13 @@
                      <xsl:text>/</xsl:text><xsl:value-of select="@Name"/>
       </xsl:for-each>
    </xsl:variable>
+
+   <xsl:variable name="stpProgram">
+      <xsl:value-of select="$stpLocation"/><xsl:text>/</xsl:text><xsl:value-of select="@Name"/>
+   </xsl:variable>
+   <xsl:variable name="stpURI"><xsl:text>/SASStoredProcess/do?_action=form,properties,execute&amp;_program=</xsl:text><xsl:value-of select="$stpProgram"/></xsl:variable>
+
+
 
    <a><xsl:attribute name="href"><xsl:value-of select="$stpURI"/></xsl:attribute><xsl:value-of select="@Name"/></a><br/>
 
@@ -808,7 +807,7 @@
 
 			<a><xsl:attribute name="href"><xsl:value-of select="$wrsURI"/></xsl:attribute><xsl:value-of select="@Name"/></a><br/>
 
-         <xsl:variable name="stpLocation">
+         <xsl:variable name="wrsLocation">
             <xsl:for-each select="Trees//Tree">
                            <xsl:sort select="position()" order="descending"/>
                            <xsl:text>/</xsl:text><xsl:value-of select="@Name"/>
@@ -821,8 +820,8 @@
 		      </xsl:when>
 	      </xsl:choose>
 	      <xsl:choose>
-		      <xsl:when test="$showLocation = 'true' and $stpLocation != ''">
-			      <span style="white-space: nowrap;" colspan="13" class="treeDescription">- METASERVER<xsl:value-of select="$stpLocation"/></span>
+		      <xsl:when test="$showLocation = 'true' and $wrsLocation != ''">
+			      <span style="white-space: nowrap;" colspan="13" class="treeDescription">- METASERVER<xsl:value-of select="$wrsLocation"/></span>
 		      </xsl:when>
 	      </xsl:choose>
 
