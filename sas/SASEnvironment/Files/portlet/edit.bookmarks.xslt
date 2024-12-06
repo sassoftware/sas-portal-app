@@ -872,9 +872,10 @@
 
     function selectAllItems(name)
     {
-         selBox = document.getElementById(name);
-         selectAllOptions(selBox);
-         window.location.href = sasPortalAppHome;
+        selBox = document.getElementById(name);
+        selectAllOptions(selBox);
+        const context = window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
+        window.location.href = context;
     }
 
     //
