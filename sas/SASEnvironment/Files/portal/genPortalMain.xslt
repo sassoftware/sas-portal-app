@@ -474,24 +474,44 @@
 <!-- Template to handle a reference to a stored process (typically in bookmarks) -->
 
 <xsl:template match="ClassifierMap[@TransformRole='StoredProcess']">
+	<xsl:param name="showDescription"/>
+	<xsl:param name="showLocation"/>
+
+
+   <xsl:variable name="stpLocation">
+      <xsl:for-each select="Trees//Tree">
+                     <xsl:sort select="position()" order="descending"/>
+                     <xsl:text>/</xsl:text><xsl:value-of select="@Name"/>
+      </xsl:for-each>
+   </xsl:variable>
 
    <xsl:variable name="stpProgram">
-                <xsl:for-each select="Trees//Tree">
-                        <xsl:sort select="position()" order="descending"/>
-                        <xsl:text>/</xsl:text><xsl:value-of select="@Name"/>
-                </xsl:for-each>
-                <xsl:text>/</xsl:text><xsl:value-of select="@Name"/>
+      <xsl:value-of select="$stpLocation"/><xsl:text>/</xsl:text><xsl:value-of select="@Name"/>
    </xsl:variable>
    <xsl:variable name="stpURI"><xsl:text>/SASStoredProcess/do?_action=form,properties,execute&amp;_program=</xsl:text><xsl:value-of select="$stpProgram"/></xsl:variable>
 
-   <a><xsl:attribute name="href"><xsl:value-of select="$stpURI"/></xsl:attribute><xsl:value-of select="@Name"/></a>
+
+
+   <a><xsl:attribute name="href"><xsl:value-of select="$stpURI"/></xsl:attribute><xsl:value-of select="@Name"/></a><br/>
+
+   <xsl:choose>
+		<xsl:when test="$showDescription = 'true' and @Desc != ''">
+			<span style="white-space: nowrap;" colspan="13" class="treeDescription">- <xsl:value-of select="@Desc"/></span><br/>
+		</xsl:when>
+	</xsl:choose>
+	<xsl:choose>
+		<xsl:when test="$showLocation = 'true' and $stpLocation != ''">
+			 <span style="white-space: nowrap;" colspan="13" class="treeDescription">- METASERVER<xsl:value-of select="$stpLocation"/></span>
+		</xsl:when>
+	</xsl:choose>
 
 </xsl:template>
 
 <!-- Template to handle a reference to a Report (typically in bookmarks)-->
 
 <xsl:template match="Transformation[@TransformRole='Report']">
-
+	<xsl:param name="showDescription"/>
+	<xsl:param name="showLocation"/>
 <!-- Unfortunately, to display a report, you need the entire path to it, thus it is required to navigate the parent tree
      structure.
 -->
@@ -506,7 +526,9 @@
    </xsl:variable>
 
     <xsl:call-template name="reportLink">
-	    <xsl:with-param name="reportSBIPURI" select="$reportSBIPURI"/>
+	   <xsl:with-param name="reportSBIPURI" select="$reportSBIPURI"/>
+      <xsl:with-param name="showDescription" select="$showDescription"/>
+		<xsl:with-param name="showLocation" select="$showLocation"/>
 	</xsl:call-template>
 
 </xsl:template>
@@ -544,17 +566,17 @@
                           In this case, we simply want to make a link to the right tab for this referenced portal page.
                      -->
                      <xsl:choose>
-                         <xsl:when test="name(.)='PSPortalPage'">
+                        <xsl:when test="name(.)='PSPortalPage'">
                             <xsl:call-template name="PortalPageLink">
-								<xsl:with-param name="showDescription" select="$showDescription"/>
-								<xsl:with-param name="showLocation" select="$showLocation"/>
-							</xsl:call-template>
-                         </xsl:when>
-                         <xsl:otherwise>
-         	             <xsl:apply-templates  select=".">
-							<xsl:with-param name="showDescription" select="$showDescription"/>
-							<xsl:with-param name="showLocation" select="$showLocation"/>
-						 </xsl:apply-templates>
+								    <xsl:with-param name="showDescription" select="$showDescription"/>
+								    <xsl:with-param name="showLocation" select="$showLocation"/>
+							      </xsl:call-template>
+                        </xsl:when>
+                        <xsl:otherwise>
+         	               <xsl:apply-templates  select=".">
+							         <xsl:with-param name="showDescription" select="$showDescription"/>
+							         <xsl:with-param name="showLocation" select="$showLocation"/>
+						         </xsl:apply-templates>
                          </xsl:otherwise>
                      </xsl:choose>
 	             </td>
@@ -678,7 +700,7 @@
 		</xsl:choose>
 	</xsl:variable>
 	
-	<xsl:variable name="stpURI">/SASStoredProcess/do?_action=execute<xsl:text>&amp;</xsl:text>_program=<xsl:value-of select="$appLocEncoded"/>services/spaNavigatorPortlet<xsl:text>&amp;</xsl:text>path=<xsl:value-of select="$spaPath"/><xsl:text>&amp;</xsl:text>objectFilter=<xsl:value-of select="$spaObjects"/><xsl:text>&amp;</xsl:text>navigatorId=<xsl:value-of select="$navigatorId"/></xsl:variable>
+        <xsl:variable name="stpURI">/SASStoredProcess/do?_action=execute<xsl:text>&amp;</xsl:text>_program=<xsl:value-of select="$appLocEncoded"/>services/spaNavigatorPortlet<xsl:text>&amp;</xsl:text>path=<xsl:value-of select="$spaPath"/><xsl:text>&amp;</xsl:text>objectFilter=<xsl:value-of select="$spaObjects"/><xsl:text>&amp;</xsl:text>navigatorId=<xsl:value-of select="$navigatorId"/></xsl:variable>
 	
 		<tr>
 			<td class="portletEntry" valign="top" colspan="2">
@@ -773,8 +795,9 @@
 </xsl:template>
 
 <xsl:template name="reportLink">
-
-  <xsl:param name = "reportSBIPURI" />
+   <xsl:param name = "reportSBIPURI" />
+   <xsl:param name="showDescription"/>
+	<xsl:param name="showLocation"/>
 
          <tr>
 	        <td class="portletEntry" valign="top" colspan="2">
@@ -784,7 +807,26 @@
 
 			<xsl:variable name="wrsURI"><xsl:text>/SASWebReportStudio/openRVUrl.do?rsRID=</xsl:text><xsl:value-of select="$wrsProgram"/></xsl:variable>
 
-			<a><xsl:attribute name="href"><xsl:value-of select="$wrsURI"/></xsl:attribute><xsl:value-of select="@Name"/></a>
+			<a><xsl:attribute name="href"><xsl:value-of select="$wrsURI"/></xsl:attribute><xsl:value-of select="@Name"/></a><br/>
+
+         <xsl:variable name="wrsLocation">
+            <xsl:for-each select="Trees//Tree">
+                           <xsl:sort select="position()" order="descending"/>
+                           <xsl:text>/</xsl:text><xsl:value-of select="@Name"/>
+            </xsl:for-each>
+         </xsl:variable>    
+
+         <xsl:choose>
+	      	<xsl:when test="$showDescription = 'true' and @Desc != ''">
+			      <span style="white-space: nowrap;" colspan="13" class="treeDescription">- <xsl:value-of select="@Desc"/><br/></span>
+		      </xsl:when>
+	      </xsl:choose>
+	      <xsl:choose>
+		      <xsl:when test="$showLocation = 'true' and $wrsLocation != ''">
+			      <span style="white-space: nowrap;" colspan="13" class="treeDescription">- METASERVER<xsl:value-of select="$wrsLocation"/></span>
+		      </xsl:when>
+	      </xsl:choose>
+
 
 			<!--
 			<iframe style="overflow: auto;width: 100%" frameborder="0" >
@@ -794,6 +836,7 @@
 			
 	        </td>
 	        </tr>
+
 
 </xsl:template>
 
