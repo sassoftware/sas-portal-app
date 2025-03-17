@@ -235,7 +235,8 @@
   <string key="upOneLevelTitle">Up one level</string> 
   <string key="sasnavigatorNameTitle">Name</string> 
   <string key="sasnavigatorTypeTitle">Type</string> 
-  <string key="sasnavigatorCreatedTitle">Date Created</string> 
+  <string key="sasnavigatorCreatedTitle">Date Created</string>
+  <string key="sasnavigatorModifiedTitle">Date Modified</string> 
   <string key="sasnavigatorFolderType">Folder</string> 
   <string key="sasnavigatorStoredProcessType">Stored Process</string>
   <string key="sasnavigatorReportType">Report</string>

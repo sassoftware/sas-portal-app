@@ -236,6 +236,7 @@
   <string key="sasnavigatorNameTitle">Name</string>
   <string key="sasnavigatorTypeTitle">Typ</string>
   <string key="sasnavigatorCreatedTitle">Datum erstellt</string>
+  <string key="sasnavigatorModifiedTitle">Datum aktualisiert</string>
   <string key="sasnavigatorFolderType">Ordner</string>
   <string key="sasnavigatorStoredProcessType">Gespeicherter Prozess</string>
   <string key="sasnavigatorReportType">Bericht</string>
