@@ -27,6 +27,7 @@
 <xsl:variable name="sasnavigatorNameTitle" select="$localeXml/string[@key='sasnavigatorNameTitle']/text()"/>
 <xsl:variable name="sasnavigatorTypeTitle" select="$localeXml/string[@key='sasnavigatorTypeTitle']/text()"/>
 <xsl:variable name="sasnavigatorCreatedTitle" select="$localeXml/string[@key='sasnavigatorCreatedTitle']/text()"/>
+<xsl:variable name="sasnavigatorModifiedTitle" select="$localeXml/string[@key='sasnavigatorModifiedTitle']/text()"/>
 <xsl:variable name="sasnavigatorFolderType" select="$localeXml/string[@key='sasnavigatorFolderType']/text()"/>
 <xsl:variable name="sasnavigatorStoredProcessType" select="$localeXml/string[@key='sasnavigatorStoredProcessType']/text()"/>
 <xsl:variable name="sasnavigatorReportType" select="$localeXml/string[@key='sasnavigatorReportType']/text()"/>
@@ -92,7 +93,7 @@
 <xsl:variable name="upOneLevel" select="replace($upOneLevelTemp,'//','/')"/>
 
 <table border='0' cellspacing='0'>
-    <tr class='tableColumnHeaderRow'>        
+    <tr class='tableColumnHeaderRow'>
         <td class="none" nowrap='nowrap'><xsl:value-of select="$locationTitle"/>
               <div class='dropdown'>
                   <button class='dropbtn'><img border='0'><xsl:attribute name="src" select="$folderNameImage"/></img><xsl:value-of select="$folderName"/></button>
@@ -163,7 +164,7 @@
         <tr class="tableColumnHeaderRow">
             <th class="l"><span class="portletTableHeader"><xsl:value-of select="$sasnavigatorNameTitle"/></span></th>
             <th class="l"><span class="l"><xsl:value-of select="$sasnavigatorTypeTitle"/></span></th>
-            <th class="l"><span><xsl:value-of select="$sasnavigatorCreatedTitle"/></span></th>
+            <th class="l"><span><xsl:value-of select="$sasnavigatorModifiedTitle"/></span></th>
         </tr>
     </thead>
 
@@ -247,7 +248,8 @@
         </xsl:variable>
 
         <xsl:variable name="childPathTemp" select="concat($path,'/',$childFolderName)"/>
-        <xsl:variable name="childPath" select="replace($childPathTemp,'//','/')"/>
+        <xsl:variable name="childPathSlash" select="replace($childPathTemp,'//','/')"/>
+        <xsl:variable name="childPath" select="replace($childPathSlash,'\+','%2B')"/>
         <xsl:variable name="myfolderPath" select="concat($homeURL,$objectFilterEncoded,'&amp;_action=execute&amp;path=/User Folders/',$envMetaperson,'/My Folder','&amp;navigatorId=',$navigatorId)"/>
 
         <xsl:variable name="childLink">
@@ -307,7 +309,15 @@
                 </td>
 
                 <td><span><xsl:value-of select="$childTypeString"/></span></td>
-                <td><span><xsl:value-of select="@MetadataCreated"/></span></td>
+                <xsl:choose>
+                        <xsl:when test="@MetadataUpdated">
+                            <td><span><xsl:value-of select="@MetadataUpdated"/></span></td>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <td><span><xsl:value-of select="@MetadataCreated"/></span></td>
+                        </xsl:otherwise>
+                </xsl:choose>
+                
             </tr>
 
         </xsl:if>

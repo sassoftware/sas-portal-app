@@ -237,6 +237,7 @@
   <string key="sasnavigatorNameTitle">名前</string>
   <string key="sasnavigatorTypeTitle">タイプ</string>
   <string key="sasnavigatorCreatedTitle">作成日</string>
+  <string key="sasnavigatorModifiedTitle">変更日</string>
   <string key="sasnavigatorFolderType">フォルダ</string>
   <string key="sasnavigatorStoredProcessType">ストアドプロセス</string>
   <string key="sasnavigatorReportType">報告</string>
