@@ -340,51 +340,51 @@
 
      <xsl:otherwise>
    
-	   <xsl:for-each select="Multiple_Requests/GetMetadataObjects/Objects/Group/Members/PSPortalPage[not(Extensions/Extension[@Name='MarkedForDeletion'])]">
-		<xsl:sort select="Extensions/Extension[@Name='PageRank']/@Value" data-type="number"/>
-		<xsl:sort select="@MetadataCreated" data-type="number"/>
+       <xsl:for-each select="Multiple_Requests/GetMetadataObjects/Objects/Group/Members/PSPortalPage[not(Extensions/Extension[@Name='MarkedForDeletion'])]">
+        <xsl:sort select="Extensions/Extension[@Name='PageRank']/@Value" data-type="number"/>
+        <xsl:sort select="@MetadataCreated" data-type="number"/>
 <!--
-		<xsl:variable name="tabNumberId">page_<xsl:value-of select="position() - 1"/></xsl:variable>
+        <xsl:variable name="tabNumberId">page_<xsl:value-of select="position() - 1"/></xsl:variable>
 -->
-		<xsl:variable name="tabNumberId">page_<xsl:value-of select="@Id"/></xsl:variable>
+        <xsl:variable name="tabNumberId">page_<xsl:value-of select="@Id"/></xsl:variable>
 
-		<td><xsl:attribute name="id"><xsl:value-of select="$tabNumberId"/>_TabCell</xsl:attribute>
-		    <xsl:choose>
-		    <xsl:when test="position() = 1">
-		       <xsl:attribute name="class">BannerTabMenuActiveTabCell</xsl:attribute>
-		    </xsl:when>
-		    <xsl:otherwise>
-		       <xsl:attribute name="class">BannerTabMenuTabCell</xsl:attribute>
-		    </xsl:otherwise>
-		    </xsl:choose>
+        <td><xsl:attribute name="id"><xsl:value-of select="$tabNumberId"/>_TabCell</xsl:attribute>
+            <xsl:choose>
+            <xsl:when test="position() = 1">
+               <xsl:attribute name="class">BannerTabMenuActiveTabCell</xsl:attribute>
+            </xsl:when>
+            <xsl:otherwise>
+               <xsl:attribute name="class">BannerTabMenuTabCell</xsl:attribute>
+            </xsl:otherwise>
+            </xsl:choose>
 
-			<table border="0" cellspacing="0" cellpadding="0">
-			       <xsl:attribute name="id"><xsl:value-of select="$tabNumberId"/></xsl:attribute><xsl:attribute name="onclick">showTab(event, '<xsl:value-of select="@Id"/>')</xsl:attribute>
-			       <!-- Mark the first tab to display so that the javascript can find it and display it -->
-			       <xsl:choose>
+            <table border="0" cellspacing="0" cellpadding="0">
+                   <xsl:attribute name="id"><xsl:value-of select="$tabNumberId"/></xsl:attribute><xsl:attribute name="onclick">showTab(event, '<xsl:value-of select="@Id"/>')</xsl:attribute>
+                   <!-- Mark the first tab to display so that the javascript can find it and display it -->
+                   <xsl:choose>
 
-				 <xsl:when test="position() = 1">
-				     <xsl:attribute name="class">buttonContainer default-tab</xsl:attribute>
-				 </xsl:when>
-				 <xsl:otherwise>
-				     <xsl:attribute name="class">buttonContainer</xsl:attribute>
-				 </xsl:otherwise>
-			       </xsl:choose>
+                 <xsl:when test="position() = 1">
+                     <xsl:attribute name="class">buttonContainer default-tab</xsl:attribute>
+                 </xsl:when>
+                 <xsl:otherwise>
+                     <xsl:attribute name="class">buttonContainer</xsl:attribute>
+                 </xsl:otherwise>
+                   </xsl:choose>
 
-			<tbody>
-				<tr>
+            <tbody>
+                <tr>
                                    <xsl:call-template name="buildTab">
                                       <xsl:with-param name="tabId"><xsl:value-of select="$tabNumberId"/></xsl:with-param>
                                       <xsl:with-param name="tabName"><xsl:value-of select="@Name"/></xsl:with-param>
                                       <xsl:with-param name="tabPosition"><xsl:value-of select="position()"/></xsl:with-param>
                                    </xsl:call-template>
 
-				</tr>
-			</tbody>
-			</table>
-		</td>
+                </tr>
+            </tbody>
+            </table>
+        </td>
 
-	   </xsl:for-each>
+       </xsl:for-each>
   
         </xsl:otherwise>
 
@@ -434,48 +434,48 @@
 </xsl:template>
 
 <xsl:template name="PortalPageLink">
-	<xsl:param name="showDescription"/>
-	<xsl:param name="showLocation"/>
-	<!-- TODO: Figure out how to link to another portal page, select the tab and show the page content 
-		 Something like this is needed to be added to the line below...
-		 <xsl:attribute name="href">#<xsl:value-of select="@Id"/></xsl:attribute>
-	-->
+    <xsl:param name="showDescription"/>
+    <xsl:param name="showLocation"/>
+    <!-- TODO: Figure out how to link to another portal page, select the tab and show the page content 
+         Something like this is needed to be added to the line below...
+         <xsl:attribute name="href">#<xsl:value-of select="@Id"/></xsl:attribute>
+    -->
 
-	<a><xsl:attribute name="href"></xsl:attribute><xsl:value-of select="@Name"/></a>
+    <a><xsl:attribute name="href"></xsl:attribute><xsl:value-of select="@Name"/></a>
 
-	<xsl:choose>
-		<xsl:when test="'$showDescription' != '' and $showDescription = 'true'">
-			<table><tr><td><xsl:value-of select="@Desc"/></td></tr></table>
-		</xsl:when>
-		<xsl:when test="'$showLocation' != '' and $showLocation = 'true'">
-			<table><tr><td><xsl:value-of select="@URI"/></td></tr></table>
-		</xsl:when>
-	</xsl:choose>
+    <xsl:choose>
+        <xsl:when test="'$showDescription' != '' and $showDescription = 'true'">
+            <table><tr><td><xsl:value-of select="@Desc"/></td></tr></table>
+        </xsl:when>
+        <xsl:when test="'$showLocation' != '' and $showLocation = 'true'">
+            <table><tr><td><xsl:value-of select="@URI"/></td></tr></table>
+        </xsl:when>
+    </xsl:choose>
 </xsl:template>
 
 <xsl:template match="Document">
-	<xsl:param name="showDescription"/>
-	<xsl:param name="showLocation"/>
-	
-	<a><xsl:attribute name="href"><xsl:value-of select="@URI"/></xsl:attribute><xsl:value-of select="@Name"/></a><br/>
-	
-	<xsl:choose>
-		<xsl:when test="$showDescription = 'true' and @Desc != ''">
-			<span class="treeDescription">- <xsl:value-of select="@Desc"/><br/></span>
-		</xsl:when>
-	</xsl:choose>
-	<xsl:choose>
-		<xsl:when test="$showLocation = 'true' and @URI != ''">
-			<span class="treeDescription" style="white-space:nowrap">- <xsl:value-of select="@URI"/><br/></span>
-		</xsl:when>
-	</xsl:choose>
+    <xsl:param name="showDescription"/>
+    <xsl:param name="showLocation"/>
+    
+    <a><xsl:attribute name="href"><xsl:value-of select="@URI"/></xsl:attribute><xsl:value-of select="@Name"/></a><br/>
+    
+    <xsl:choose>
+        <xsl:when test="$showDescription = 'true' and @Desc != ''">
+            <span class="treeDescription">- <xsl:value-of select="@Desc"/><br/></span>
+        </xsl:when>
+    </xsl:choose>
+    <xsl:choose>
+        <xsl:when test="$showLocation = 'true' and @URI != ''">
+            <span class="treeDescription" style="white-space:nowrap">- <xsl:value-of select="@URI"/><br/></span>
+        </xsl:when>
+    </xsl:choose>
 </xsl:template>
 
 <!-- Template to handle a reference to a stored process (typically in bookmarks) -->
 
 <xsl:template match="ClassifierMap[@TransformRole='StoredProcess']">
-	<xsl:param name="showDescription"/>
-	<xsl:param name="showLocation"/>
+    <xsl:param name="showDescription"/>
+    <xsl:param name="showLocation"/>
 
 
    <xsl:variable name="stpLocation">
@@ -495,71 +495,98 @@
    <a><xsl:attribute name="href"><xsl:value-of select="$stpURI"/></xsl:attribute><xsl:value-of select="@Name"/></a><br/>
 
    <xsl:choose>
-		<xsl:when test="$showDescription = 'true' and @Desc != ''">
-			<span style="white-space: nowrap;" colspan="13" class="treeDescription">- <xsl:value-of select="@Desc"/></span><br/>
-		</xsl:when>
-	</xsl:choose>
-	<xsl:choose>
-		<xsl:when test="$showLocation = 'true' and $stpLocation != ''">
-			 <span style="white-space: nowrap;" colspan="13" class="treeDescription">- METASERVER<xsl:value-of select="$stpLocation"/></span>
-		</xsl:when>
-	</xsl:choose>
+        <xsl:when test="$showDescription = 'true' and @Desc != ''">
+            <span style="white-space: nowrap;" colspan="13" class="treeDescription">- <xsl:value-of select="@Desc"/></span><br/>
+        </xsl:when>
+    </xsl:choose>
+    <xsl:choose>
+        <xsl:when test="$showLocation = 'true' and $stpLocation != ''">
+             <span style="white-space: nowrap;" colspan="13" class="treeDescription">- METASERVER<xsl:value-of select="$stpLocation"/></span>
+        </xsl:when>
+    </xsl:choose>
 
 </xsl:template>
 
 <!-- Template to handle a reference to a Report (typically in bookmarks)-->
 
 <xsl:template match="Transformation[@TransformRole='Report']">
-	<xsl:param name="showDescription"/>
-	<xsl:param name="showLocation"/>
+    <xsl:param name="showDescription"/>
+    <xsl:param name="showLocation"/>
 <!-- Unfortunately, to display a report, you need the entire path to it, thus it is required to navigate the parent tree
      structure.
 -->
 
    <xsl:variable name="reportSBIPURI">
         <xsl:text>SBIP://METASERVER</xsl:text>
-		<xsl:for-each select="Trees//Tree">
-			<xsl:sort select="position()" order="descending"/>
-			<xsl:text>/</xsl:text><xsl:value-of select="@Name"/>
-		</xsl:for-each>
-		<xsl:text>/</xsl:text><xsl:value-of select="@Name"/>
+        <xsl:for-each select="Trees//Tree">
+            <xsl:sort select="position()" order="descending"/>
+            <xsl:text>/</xsl:text><xsl:value-of select="@Name"/>
+        </xsl:for-each>
+        <xsl:text>/</xsl:text><xsl:value-of select="@Name"/>
    </xsl:variable>
 
     <xsl:call-template name="reportLink">
-	   <xsl:with-param name="reportSBIPURI" select="$reportSBIPURI"/>
+       <xsl:with-param name="reportSBIPURI" select="$reportSBIPURI"/>
       <xsl:with-param name="showDescription" select="$showDescription"/>
-		<xsl:with-param name="showLocation" select="$showLocation"/>
-	</xsl:call-template>
+        <xsl:with-param name="showLocation" select="$showLocation"/>
+    </xsl:call-template>
+
+</xsl:template>
+
+<!-- Template to handle a reference to a InformationMap (typically in bookmarks)-->
+
+<xsl:template match="Transformation[@TransformRole='InformationMap']">
+    <xsl:param name="showDescription"/>
+    <xsl:param name="showLocation"/>
+<!-- Unfortunately, to display a report, you need the entire path to it, thus it is required to navigate the parent tree
+     structure.
+-->
+
+   <xsl:variable name="reportSBIPURI">
+        <xsl:text>SBIP://METASERVER</xsl:text>
+        <xsl:for-each select="Trees//Tree">
+            <xsl:sort select="position()" order="descending"/>
+            <xsl:text>/</xsl:text><xsl:value-of select="@Name"/>
+        </xsl:for-each>
+        <xsl:text>/</xsl:text><xsl:value-of select="@Name"/>
+        <xsl:text>(</xsl:text><xsl:value-of select="@TransformRole"/><xsl:text>)</xsl:text>
+   </xsl:variable>
+
+    <xsl:call-template name="reportLink">
+       <xsl:with-param name="reportSBIPURI" select="$reportSBIPURI"/>
+      <xsl:with-param name="showDescription" select="$showDescription"/>
+        <xsl:with-param name="showLocation" select="$showLocation"/>
+    </xsl:call-template>
 
 </xsl:template>
 
 <!-- there are several types of "collection" portlets, ex. collection, bookmarks, etc. 
      Each of these seem to store content in the same way, so have the common processing here
-	 -->
+     -->
 <xsl:template name="processCollection">
 
       <xsl:variable name="numGroups">
-	       <xsl:value-of select="count(Groups/Group)"/>
-	   </xsl:variable>
+           <xsl:value-of select="count(Groups/Group)"/>
+       </xsl:variable>
 
        <xsl:variable name="showDescription">
-	       <xsl:value-of select="PropertySets/PropertySet/SetProperties/Property[@Name='show-description']/@DefaultValue"/>
-	   </xsl:variable>
+           <xsl:value-of select="PropertySets/PropertySet/SetProperties/Property[@Name='show-description']/@DefaultValue"/>
+       </xsl:variable>
        <xsl:variable name="showLocation">
-	       <xsl:value-of select="PropertySets/PropertySet/SetProperties/Property[@Name='show-location']/@DefaultValue"/>
-	   </xsl:variable>
-	   
-	   <!-- The first member in the group seems to be a link back to itself, so skip that entry -->
-	   <xsl:for-each select="Groups/Group">
-	   
-	   	  <xsl:variable name="numMembers">
-	         <xsl:value-of select="count(Members/*)"/>
-	      </xsl:variable>
-	      
-	      <xsl:for-each select="Members/*">
-	             <xsl:if test="position() > 1">
-	             <tr>
-	             <td class="portletEntry" valign="top">
+           <xsl:value-of select="PropertySets/PropertySet/SetProperties/Property[@Name='show-location']/@DefaultValue"/>
+       </xsl:variable>
+       
+       <!-- The first member in the group seems to be a link back to itself, so skip that entry -->
+       <xsl:for-each select="Groups/Group">
+       
+             <xsl:variable name="numMembers">
+             <xsl:value-of select="count(Members/*)"/>
+          </xsl:variable>
+          
+          <xsl:for-each select="Members/*">
+                 <xsl:if test="position() > 1">
+                 <tr>
+                 <td class="portletEntry" valign="top">
 
                      <!-- The user can make a bookmark to Portal Page.  If we just apply the templates
                           to the current entry, it will try to create a new page div in the output html.
@@ -568,35 +595,35 @@
                      <xsl:choose>
                         <xsl:when test="name(.)='PSPortalPage'">
                             <xsl:call-template name="PortalPageLink">
-								    <xsl:with-param name="showDescription" select="$showDescription"/>
-								    <xsl:with-param name="showLocation" select="$showLocation"/>
-							      </xsl:call-template>
+                                    <xsl:with-param name="showDescription" select="$showDescription"/>
+                                    <xsl:with-param name="showLocation" select="$showLocation"/>
+                                  </xsl:call-template>
                         </xsl:when>
                         <xsl:otherwise>
-         	               <xsl:apply-templates  select=".">
-							         <xsl:with-param name="showDescription" select="$showDescription"/>
-							         <xsl:with-param name="showLocation" select="$showLocation"/>
-						         </xsl:apply-templates>
+                            <xsl:apply-templates  select=".">
+                                     <xsl:with-param name="showDescription" select="$showDescription"/>
+                                     <xsl:with-param name="showLocation" select="$showLocation"/>
+                                 </xsl:apply-templates>
                          </xsl:otherwise>
                      </xsl:choose>
-	             </td>
-	             </tr>
-	             </xsl:if>
-	         </xsl:for-each>
-	         
-	      <!-- If the portlet didn't have any members, add a few blank rows -->
-	      
-	      <xsl:if test="$numMembers = 1">
-			 <xsl:call-template name="emptyPortlet"/>	         	      
-	      </xsl:if>
-	      
-	   </xsl:for-each>
+                 </td>
+                 </tr>
+                 </xsl:if>
+             </xsl:for-each>
+             
+          <!-- If the portlet didn't have any members, add a few blank rows -->
+          
+          <xsl:if test="$numMembers = 1">
+             <xsl:call-template name="emptyPortlet"/>                       
+          </xsl:if>
+          
+       </xsl:for-each>
 
-	      <xsl:if test="$numGroups = 0">
-	         	      
-			  <xsl:call-template name="emptyPortlet"/>
+          <xsl:if test="$numGroups = 0">
+                       
+              <xsl:call-template name="emptyPortlet"/>
 
-	      </xsl:if>	
+          </xsl:if>    
 
 </xsl:template>
 
@@ -638,29 +665,29 @@
 
 
     <!-- If a URI is defined, show it, otherwise just render an empty portlet -->
-	<xsl:choose >
+    <xsl:choose >
 
-    	<xsl:when test="$displayURI != ''">
-   	        <tr>
-	        <td class="portletEntry" valign="top" colspan="2">
-			<iframe style="overflow: auto;width: 100%" frameborder="0" >
-	        <xsl:attribute name="data-src"><xsl:value-of select="$displayURI"/></xsl:attribute>
+        <xsl:when test="$displayURI != ''">
+               <tr>
+            <td class="portletEntry" valign="top" colspan="2">
+            <iframe style="overflow: auto;width: 100%" frameborder="0" >
+            <xsl:attribute name="data-src"><xsl:value-of select="$displayURI"/></xsl:attribute>
                         <xsl:choose>
-			<xsl:when test="'$iframeHeight' != '' and $iframeHeight != 0">
+            <xsl:when test="'$iframeHeight' != '' and $iframeHeight != 0">
                     <xsl:attribute name="height"><xsl:value-of select="$iframeHeight"/></xsl:attribute>
-			</xsl:when> 
+            </xsl:when> 
                         <xsl:otherwise>
                             <xsl:attribute name="onload">resizeIframe(this)</xsl:attribute>
                         </xsl:otherwise>
                         </xsl:choose>
-			</iframe>
-	        </td>
-	        </tr>
-			</xsl:when>
-		<xsl:otherwise>
-		   <xsl:call-template name="emptyPortlet"/>
-		</xsl:otherwise>
-	</xsl:choose>
+            </iframe>
+            </td>
+            </tr>
+            </xsl:when>
+        <xsl:otherwise>
+           <xsl:call-template name="emptyPortlet"/>
+        </xsl:otherwise>
+    </xsl:choose>
 
 </xsl:template>
 
@@ -671,54 +698,54 @@
 
         <xsl:variable name="navigatorId" select="@Id"/>
 
-	<xsl:variable name="spaNavPath">
-		<xsl:choose>
-			<xsl:when test="PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/PropertySets/PropertySet[@Name='selectedFolder']/SetProperties/Property[@Name='PreferenceInstanceProperty']/@DefaultValue">
-				<xsl:value-of select="PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/PropertySets/PropertySet[@Name='selectedFolder']/SetProperties/Property[@Name='PreferenceInstanceProperty']/@DefaultValue"/>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:text>SBIP://METASERVER/(Folder)</xsl:text>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:variable>
-	<xsl:variable name="stpPortletHeight" select="250"/>
-	<xsl:variable name="spaPath"><xsl:value-of select="substring-after(substring-before($spaNavPath,'(Folder)'),'SBIP://METASERVER')"/></xsl:variable>
-	
-	<xsl:variable name="spaObjects">
-		<xsl:choose>
-			<xsl:when test="PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/PropertySets/PropertySet[@Name='SMART_OBJECT_TYPE']/SetProperties/Property[@Name='PreferenceInstanceProperty']/@DefaultValue">
-				<xsl:for-each select="PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/PropertySets/PropertySet[@Name='SMART_OBJECT_TYPE']/SetProperties/Property[@Name='PreferenceInstanceProperty']/@DefaultValue">
-					<xsl:value-of select="."/>
-					<xsl:if test="position() != last()">
-						<xsl:text>,</xsl:text>
-					</xsl:if>
-				</xsl:for-each>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:text>StoredProcess,Report,InformationMap</xsl:text>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:variable>
-	
+    <xsl:variable name="spaNavPath">
+        <xsl:choose>
+            <xsl:when test="PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/PropertySets/PropertySet[@Name='selectedFolder']/SetProperties/Property[@Name='PreferenceInstanceProperty']/@DefaultValue">
+                <xsl:value-of select="PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/PropertySets/PropertySet[@Name='selectedFolder']/SetProperties/Property[@Name='PreferenceInstanceProperty']/@DefaultValue"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:text>SBIP://METASERVER/(Folder)</xsl:text>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
+    <xsl:variable name="stpPortletHeight" select="250"/>
+    <xsl:variable name="spaPath"><xsl:value-of select="substring-after(substring-before($spaNavPath,'(Folder)'),'SBIP://METASERVER')"/></xsl:variable>
+    
+    <xsl:variable name="spaObjects">
+        <xsl:choose>
+            <xsl:when test="PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/PropertySets/PropertySet[@Name='SMART_OBJECT_TYPE']/SetProperties/Property[@Name='PreferenceInstanceProperty']/@DefaultValue">
+                <xsl:for-each select="PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/PropertySets/PropertySet[@Name='SMART_OBJECT_TYPE']/SetProperties/Property[@Name='PreferenceInstanceProperty']/@DefaultValue">
+                    <xsl:value-of select="."/>
+                    <xsl:if test="position() != last()">
+                        <xsl:text>,</xsl:text>
+                    </xsl:if>
+                </xsl:for-each>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:text>StoredProcess,Report,InformationMap</xsl:text>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
+    
         <xsl:variable name="stpURI">/SASStoredProcess/do?_action=execute<xsl:text>&amp;</xsl:text>_program=<xsl:value-of select="$appLocEncoded"/>services/spaNavigatorPortlet<xsl:text>&amp;</xsl:text>path=<xsl:value-of select="$spaPath"/><xsl:text>&amp;</xsl:text>objectFilter=<xsl:value-of select="$spaObjects"/><xsl:text>&amp;</xsl:text>navigatorId=<xsl:value-of select="$navigatorId"/></xsl:variable>
-	
-		<tr>
-			<td class="portletEntry" valign="top" colspan="2">
-				<iframe style="overflow: auto;width: 100%" frameborder="0" >
-					<xsl:attribute name="data-src"><xsl:value-of select="$stpURI"/></xsl:attribute>
-					
-					<xsl:choose>
-					<xsl:when test="$stpPortletHeight != '' and $stpPortletHeight != 0">
-						<xsl:attribute name="height"><xsl:value-of select="$stpPortletHeight"/></xsl:attribute>
-					</xsl:when>
-					
-					<xsl:otherwise>
-						<xsl:attribute name="onload">resizeIframe(this)</xsl:attribute>
-					</xsl:otherwise>
-					</xsl:choose>
-				</iframe>
-			</td>
-		</tr>
+    
+        <tr>
+            <td class="portletEntry" valign="top" colspan="2">
+                <iframe style="overflow: auto;width: 100%" frameborder="0" >
+                    <xsl:attribute name="data-src"><xsl:value-of select="$stpURI"/></xsl:attribute>
+                    
+                    <xsl:choose>
+                    <xsl:when test="$stpPortletHeight != '' and $stpPortletHeight != 0">
+                        <xsl:attribute name="height"><xsl:value-of select="$stpPortletHeight"/></xsl:attribute>
+                    </xsl:when>
+                    
+                    <xsl:otherwise>
+                        <xsl:attribute name="onload">resizeIframe(this)</xsl:attribute>
+                    </xsl:otherwise>
+                    </xsl:choose>
+                </iframe>
+            </td>
+        </tr>
 
 </xsl:template>
 
@@ -730,17 +757,17 @@
 
    <xsl:variable name="stpSBIPURI">
       <xsl:value-of select="PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/PropertySets/PropertySet[@Name='selectedFolderItem']/SetProperties/Property[@Name='PreferenceInstanceProperty']/@DefaultValue"/>
-	</xsl:variable>
+    </xsl:variable>
    <xsl:variable name="stpPortletHeight">
       <xsl:value-of select="PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/PropertySets/PropertySet[@Name='portletHeight']/SetProperties/Property[@Name='PreferenceInstanceProperty']/@DefaultValue"/>
-	</xsl:variable>
+    </xsl:variable>
 
    <xsl:choose>
      <xsl:when test="$stpSBIPURI != ''">
          <tr>
-	        <td class="portletEntry" valign="top" colspan="2">
-			
-			<xsl:variable name="stpProgram"><xsl:value-of select="encode-for-uri(substring-after($stpSBIPURI,'SBIP://METASERVER'))"/></xsl:variable>
+            <td class="portletEntry" valign="top" colspan="2">
+            
+            <xsl:variable name="stpProgram"><xsl:value-of select="encode-for-uri(substring-after($stpSBIPURI,'SBIP://METASERVER'))"/></xsl:variable>
 
                         <!-- Should we display the form or execute the stp?
                              The old portal allowed you to set values for the prompts when the stp was selected
@@ -765,49 +792,49 @@
                              <xsl:otherwise>execute</xsl:otherwise>
                            </xsl:choose>
                         </xsl:variable>
-			<xsl:variable name="stpURI">/SASStoredProcess/do?_action=nobanner,<xsl:value-of select="$stpAction"/><xsl:text>&amp;</xsl:text>_program=<xsl:value-of select="$stpProgram"/></xsl:variable>
-			<iframe style="overflow: auto;width: 100%" frameborder="0" >
+            <xsl:variable name="stpURI">/SASStoredProcess/do?_action=nobanner,<xsl:value-of select="$stpAction"/><xsl:text>&amp;</xsl:text>_program=<xsl:value-of select="$stpProgram"/></xsl:variable>
+            <iframe style="overflow: auto;width: 100%" frameborder="0" >
             <xsl:attribute name="data-src"><xsl:value-of select="$stpURI"/></xsl:attribute>
 
-			<xsl:choose>
-			<xsl:when test="$stpPortletHeight != '' and $stpPortletHeight != 0">
-	            <xsl:attribute name="height"><xsl:value-of select="$stpPortletHeight"/></xsl:attribute>
+            <xsl:choose>
+            <xsl:when test="$stpPortletHeight != '' and $stpPortletHeight != 0">
+                <xsl:attribute name="height"><xsl:value-of select="$stpPortletHeight"/></xsl:attribute>
             </xsl:when>
 
-			<xsl:otherwise>
+            <xsl:otherwise>
                           <xsl:attribute name="onload">resizeIframe(this)</xsl:attribute>
-			</xsl:otherwise>
-			</xsl:choose>
+            </xsl:otherwise>
+            </xsl:choose>
 
             </iframe>
 
-	        </td>
-	        </tr>
+            </td>
+            </tr>
 
-	 </xsl:when>
-	 <xsl:otherwise>
-		   <xsl:call-template name="emptyPortlet"/>
-	 </xsl:otherwise>
+     </xsl:when>
+     <xsl:otherwise>
+           <xsl:call-template name="emptyPortlet"/>
+     </xsl:otherwise>
 
 
-	 </xsl:choose>
+     </xsl:choose>
 
 </xsl:template>
 
 <xsl:template name="reportLink">
    <xsl:param name = "reportSBIPURI" />
    <xsl:param name="showDescription"/>
-	<xsl:param name="showLocation"/>
+    <xsl:param name="showLocation"/>
 
          <tr>
-	        <td class="portletEntry" valign="top" colspan="2">
-			
-			<xsl:variable name="wrsProgram"><xsl:value-of select="encode-for-uri($reportSBIPURI)"/></xsl:variable>
-			<xsl:variable name="wrsPath"><xsl:value-of select="substring-after($reportSBIPURI,'SBIP://METASERVER')"/></xsl:variable>
+            <td class="portletEntry" valign="top" colspan="2">
+            
+            <xsl:variable name="wrsProgram"><xsl:value-of select="encode-for-uri($reportSBIPURI)"/></xsl:variable>
+            <xsl:variable name="wrsPath"><xsl:value-of select="substring-after($reportSBIPURI,'SBIP://METASERVER')"/></xsl:variable>
 
-			<xsl:variable name="wrsURI"><xsl:text>/SASWebReportStudio/openRVUrl.do?rsRID=</xsl:text><xsl:value-of select="$wrsProgram"/></xsl:variable>
+            <xsl:variable name="wrsURI"><xsl:text>/SASWebReportStudio/openRVUrl.do?rsRID=</xsl:text><xsl:value-of select="$wrsProgram"/></xsl:variable>
 
-			<a><xsl:attribute name="href"><xsl:value-of select="$wrsURI"/></xsl:attribute><xsl:value-of select="@Name"/></a><br/>
+            <a><xsl:attribute name="href"><xsl:value-of select="$wrsURI"/></xsl:attribute><xsl:value-of select="@Name"/></a><br/>
 
          <xsl:variable name="wrsLocation">
             <xsl:for-each select="Trees//Tree">
@@ -817,25 +844,25 @@
          </xsl:variable>    
 
          <xsl:choose>
-	      	<xsl:when test="$showDescription = 'true' and @Desc != ''">
-			      <span style="white-space: nowrap;" colspan="13" class="treeDescription">- <xsl:value-of select="@Desc"/><br/></span>
-		      </xsl:when>
-	      </xsl:choose>
-	      <xsl:choose>
-		      <xsl:when test="$showLocation = 'true' and $wrsLocation != ''">
-			      <span style="white-space: nowrap;" colspan="13" class="treeDescription">- METASERVER<xsl:value-of select="$wrsLocation"/></span>
-		      </xsl:when>
-	      </xsl:choose>
+              <xsl:when test="$showDescription = 'true' and @Desc != ''">
+                  <span style="white-space: nowrap;" colspan="13" class="treeDescription">- <xsl:value-of select="@Desc"/><br/></span>
+              </xsl:when>
+          </xsl:choose>
+          <xsl:choose>
+              <xsl:when test="$showLocation = 'true' and $wrsLocation != ''">
+                  <span style="white-space: nowrap;" colspan="13" class="treeDescription">- METASERVER<xsl:value-of select="$wrsLocation"/></span>
+              </xsl:when>
+          </xsl:choose>
 
 
-			<!--
-			<iframe style="overflow: auto;width: 100%" frameborder="0" >
+            <!--
+            <iframe style="overflow: auto;width: 100%" frameborder="0" >
             <xsl:attribute name="data-src"><xsl:value-of select="$wrsURI"/></xsl:attribute>
             </iframe>
-			-->
-			
-	        </td>
-	        </tr>
+            -->
+            
+            </td>
+            </tr>
 
 
 </xsl:template>
@@ -846,15 +873,15 @@
     <xsl:choose>
      <xsl:when test="'$reportSBIPURI' != ''">
 
-	    <xsl:call-template name="reportLink">
-		    <xsl:with-param name="reportSBIPURI" select="$reportSBIPURI"/>
-		</xsl:call-template>
+        <xsl:call-template name="reportLink">
+            <xsl:with-param name="reportSBIPURI" select="$reportSBIPURI"/>
+        </xsl:call-template>
 
 
-	 </xsl:when>
-	 <xsl:otherwise>
-		   <xsl:call-template name="emptyPortlet"/>
-	 </xsl:otherwise>
+     </xsl:when>
+     <xsl:otherwise>
+           <xsl:call-template name="emptyPortlet"/>
+     </xsl:otherwise>
 
    </xsl:choose>
 </xsl:template>
@@ -867,11 +894,11 @@
 
    <xsl:variable name="wrsSBIPURI">
       <xsl:value-of select="PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/SetProperties/Property[@Name='SELECTED_REPORT']/@DefaultValue"/>
-	</xsl:variable>
+    </xsl:variable>
     
-	<xsl:call-template name="processReportPortlet">
-	   <xsl:with-param name="reportSBIPURI" select="$wrsSBIPURI"/>
-	</xsl:call-template>
+    <xsl:call-template name="processReportPortlet">
+       <xsl:with-param name="reportSBIPURI" select="$wrsSBIPURI"/>
+    </xsl:call-template>
  
 </xsl:template>
 
@@ -883,27 +910,27 @@
 
    <xsl:variable name="wrsSBIPURI">
       <xsl:value-of select="PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/PropertySets/PropertySet[@Name='selectedFolderItem']/SetProperties/Property[@Name='PreferenceInstanceProperty']/@DefaultValue"/>
-	</xsl:variable>
+    </xsl:variable>
 
- 	<xsl:call-template name="processReportPortlet">
-	   <xsl:with-param name="reportSBIPURI" select="$wrsSBIPURI"/>
-	</xsl:call-template>
+     <xsl:call-template name="processReportPortlet">
+       <xsl:with-param name="reportSBIPURI" select="$wrsSBIPURI"/>
+    </xsl:call-template>
    
 </xsl:template>
 
 <xsl:template name="emptyPortlet">
 
-	             <tr>
-	             <td class="portletEntry" valign="top">
-	             <br/>
-	             </td>
-	             </tr>
-	      
-	             <tr>
-	             <td class="portletEntry" valign="top">
-	             <br/>
-	             </td>
-	             </tr>
+                 <tr>
+                 <td class="portletEntry" valign="top">
+                 <br/>
+                 </td>
+                 </tr>
+          
+                 <tr>
+                 <td class="portletEntry" valign="top">
+                 <br/>
+                 </td>
+                 </tr>
 
 
 </xsl:template>
@@ -930,16 +957,16 @@
      -->
    <xsl:choose>     
 
-	   <xsl:when test="@Name = 'PlaceHolder'">
-		    <xsl:call-template name="buildPlaceholderPortlet">
+       <xsl:when test="@Name = 'PlaceHolder'">
+            <xsl:call-template name="buildPlaceholderPortlet">
 
-		       <xsl:with-param name="portletName"><xsl:value-of select="$portletName"/></xsl:with-param>
-		    </xsl:call-template>
+               <xsl:with-param name="portletName"><xsl:value-of select="$portletName"/></xsl:with-param>
+            </xsl:call-template>
 
-		</xsl:when>
-		<xsl:otherwise>
+        </xsl:when>
+        <xsl:otherwise>
 
-		   <!-- Non-placeholder portlets -->
+           <!-- Non-placeholder portlets -->
            <xsl:variable name="portletType" select="@portletType"/>
 
                    <!-- Have to determine if this portlet can be modified.  We have to do a similar
@@ -961,26 +988,26 @@
                    <!-- We only support editing of certain types of portlets -->
                    <xsl:variable name="portletIsEditable">
                       <xsl:choose>
-	  		<xsl:when test="@portletType='Collection'">1</xsl:when>
-	 		<xsl:when test="@portletType='DisplayURL'">1</xsl:when>
-	  		<xsl:when test="@portletType='SASStoredProcess'">1</xsl:when>
-  			<xsl:when test="@portletType='SASReportPortlet'">1</xsl:when>
- 			<xsl:when test="@portletType='Report'">1</xsl:when>
-  			<xsl:when test="@portletType='Bookmarks'">1</xsl:when>
-  			<xsl:when test="@portletType='SASNavigator'">1</xsl:when>
+              <xsl:when test="@portletType='Collection'">1</xsl:when>
+             <xsl:when test="@portletType='DisplayURL'">1</xsl:when>
+              <xsl:when test="@portletType='SASStoredProcess'">1</xsl:when>
+              <xsl:when test="@portletType='SASReportPortlet'">1</xsl:when>
+             <xsl:when test="@portletType='Report'">1</xsl:when>
+              <xsl:when test="@portletType='Bookmarks'">1</xsl:when>
+              <xsl:when test="@portletType='SASNavigator'">1</xsl:when>
                          <xsl:otherwise>0</xsl:otherwise>
                       </xsl:choose>
                     </xsl:variable>
 
-		   <xsl:variable name="portletId" select="@Id"/>
+           <xsl:variable name="portletId" select="@Id"/>
 
-		   <table cellpadding="2" cellspacing="0" width="100%" class="portletTableBorder">
-		   <tr class="portletTableHeader">
-   			<th align="left" class="tableHeader portletTableHeaderLeft" style="border-right:none">
-  			<xsl:value-of select="$portletName"/>
-   			</th>
-			<th align="right" class="portletTableHeaderRight">
-			<table cellpadding="0" cellspacing="0" border="0">
+           <table cellpadding="2" cellspacing="0" width="100%" class="portletTableBorder">
+           <tr class="portletTableHeader">
+               <th align="left" class="tableHeader portletTableHeaderLeft" style="border-right:none">
+              <xsl:value-of select="$portletName"/>
+               </th>
+            <th align="right" class="portletTableHeaderRight">
+            <table cellpadding="0" cellspacing="0" border="0">
                         <tbody>
                             <tr>
                                <td nowrap="" valign="middle"><i><font size="1"> </font></i></td>
@@ -1034,46 +1061,46 @@
                                    </xsl:otherwise>
                                 </xsl:choose>
 
-			</tr>
+            </tr>
                         </tbody>
-		</table>
+        </table>
             </th>
             </tr>
-			<xsl:choose>
+            <xsl:choose>
 
-	  		<xsl:when test="@portletType='Collection'">
-    		                <xsl:call-template name="collectionPortlet"/>
-      			</xsl:when>
-	          	<xsl:when test="@portletType='DisplayURL'">
-           			<xsl:call-template name="displayURLPortlet"/>
-    			</xsl:when>
-	  		<xsl:when test="@portletType='SASStoredProcess'">
-           			<xsl:call-template name="SASStoredProcessPortlet"/>
-    			</xsl:when>
-	  		<xsl:when test="@portletType='SASReportPortlet'">
-           			<xsl:call-template name="SASReportPortlet"/>
-    			</xsl:when>
-	  		<xsl:when test="@portletType='Report'">
-           			<xsl:call-template name="ReportLocalPortlet"/>
-    			</xsl:when>
-	  		<xsl:when test="@portletType='Bookmarks'">
-           			<xsl:call-template name="bookmarksPortlet"/>
-    			</xsl:when>
-	  		<xsl:when test="@portletType='SASNavigator'">
-           			<xsl:call-template name="SASNavigator"/>
-    			</xsl:when>
-				
+              <xsl:when test="@portletType='Collection'">
+                            <xsl:call-template name="collectionPortlet"/>
+                  </xsl:when>
+                  <xsl:when test="@portletType='DisplayURL'">
+                       <xsl:call-template name="displayURLPortlet"/>
+                </xsl:when>
+              <xsl:when test="@portletType='SASStoredProcess'">
+                       <xsl:call-template name="SASStoredProcessPortlet"/>
+                </xsl:when>
+              <xsl:when test="@portletType='SASReportPortlet'">
+                       <xsl:call-template name="SASReportPortlet"/>
+                </xsl:when>
+              <xsl:when test="@portletType='Report'">
+                       <xsl:call-template name="ReportLocalPortlet"/>
+                </xsl:when>
+              <xsl:when test="@portletType='Bookmarks'">
+                       <xsl:call-template name="bookmarksPortlet"/>
+                </xsl:when>
+              <xsl:when test="@portletType='SASNavigator'">
+                       <xsl:call-template name="SASNavigator"/>
+                </xsl:when>
+                
 
-	   		<xsl:otherwise>
-		    	<!-- currently unsupported portlet type, render an empty portlet -->
-		    		<xsl:call-template name="emptyPortlet"/>
-		  	</xsl:otherwise>
-			</xsl:choose>
+               <xsl:otherwise>
+                <!-- currently unsupported portlet type, render an empty portlet -->
+                    <xsl:call-template name="emptyPortlet"/>
+              </xsl:otherwise>
+            </xsl:choose>
 
-	   		</table>
-	   </xsl:otherwise>
+               </table>
+       </xsl:otherwise>
 
-	</xsl:choose>
+    </xsl:choose>
 
 </xsl:template>
 
@@ -1094,50 +1121,50 @@
 
 <xsl:template match="PSPortalPage">
 
-	   <div class="tabcontent"><xsl:attribute name="id"><xsl:value-of select="@Id"/></xsl:attribute>
-	 
+       <div class="tabcontent"><xsl:attribute name="id"><xsl:value-of select="@Id"/></xsl:attribute>
+     
            <!-- Add it to our metadata about the tabs -->
  
            <xsl:call-template name="addTabMap"/>
  
-	   <!--  Get what type of layout it has, 1, 2 or 3 columns -->
-	   
-	   <xsl:variable name="numColumns">
-	      <xsl:value-of select="count(LayoutComponents/PSColumnLayoutComponent)"/>
-	   </xsl:variable>
-	
-	   <!-- table cellpadding="2" cellspacing="0" width="100%" class="portletTableBorder" -->
-	   <table cellpadding="2" cellspacing="0" width="100%">
-	   
-	   <xsl:choose>
-	      <xsl:when test="$numColumns = 1">
-	        <tr valign="top">
-	        <td><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[1]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[1]"/>
-	        </td>
-	        </tr>
-	      </xsl:when>
-	      <xsl:when test="$numColumns = 2">
-	        <tr valign="top">
-	        <td align="top"><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[1]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[1]"/></td>
-	        <td alight="top"><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[2]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[2]"/></td>
-	        </tr>
-	      </xsl:when>
-	      <xsl:when test="$numColumns = 3">
-	        <tr valign="top">
-   	        <td><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[1]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[1]"/></td>
-	        <td><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[2]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[2]"/></td>
-	        <td><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[3]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[3]"/></td>
-	        </tr>
-	      </xsl:when>
-	      <xsl:otherwise>
-	        <p>unknown columns</p>
-	      </xsl:otherwise>
-	
-	   </xsl:choose>
-	   
-	   </table>
-	   
-	   </div>
+       <!--  Get what type of layout it has, 1, 2 or 3 columns -->
+       
+       <xsl:variable name="numColumns">
+          <xsl:value-of select="count(LayoutComponents/PSColumnLayoutComponent)"/>
+       </xsl:variable>
+    
+       <!-- table cellpadding="2" cellspacing="0" width="100%" class="portletTableBorder" -->
+       <table cellpadding="2" cellspacing="0" width="100%">
+       
+       <xsl:choose>
+          <xsl:when test="$numColumns = 1">
+            <tr valign="top">
+            <td><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[1]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[1]"/>
+            </td>
+            </tr>
+          </xsl:when>
+          <xsl:when test="$numColumns = 2">
+            <tr valign="top">
+            <td align="top"><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[1]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[1]"/></td>
+            <td alight="top"><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[2]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[2]"/></td>
+            </tr>
+          </xsl:when>
+          <xsl:when test="$numColumns = 3">
+            <tr valign="top">
+               <td><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[1]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[1]"/></td>
+            <td><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[2]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[2]"/></td>
+            <td><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[3]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[3]"/></td>
+            </tr>
+          </xsl:when>
+          <xsl:otherwise>
+            <p>unknown columns</p>
+          </xsl:otherwise>
+    
+       </xsl:choose>
+       
+       </table>
+       
+       </div>
 </xsl:template>
 
 <!-- Build an ERROR Page -->
