@@ -431,7 +431,8 @@
          </UpdateMetadata>
 
     </xsl:if>
-    <xsl:if test="not($oldRootPermissionsTreeId=$newRootPermissionsTreeId) and not($newRootPermissionsTreeId)">
+    <xsl:if test="not($oldRootPermissionsTreeId=$newRootPermissionsTreeId) and not($newRootPermissionsTreeId='')">
+
       <!-- If going from a shared tree to a non-shared tree, must delete the sharing extension -->
       <!-- TODO: What happens with all of the users portal info that has the shared page in it? -->
       <!--       Answer: when it goes to non-shared, the permissions will change and thus other users links will not resolve since it can no longer
