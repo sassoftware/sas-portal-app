@@ -449,7 +449,6 @@
     <!-- The list of members of the collection contains a link bank to the collection psportlet itself, ignore that one -->
 
     <xsl:variable name="itemType" select="name(.)"/>
-<xsl:message>addItemList: itemType=<xsl:value-of select="$itemType"/></xsl:message>
     <xsl:if test="$itemType != 'PSPortlet'">
 
         <xsl:variable name="itemName" select="@Name"/>
