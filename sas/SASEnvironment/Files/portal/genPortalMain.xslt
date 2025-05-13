@@ -488,7 +488,7 @@
    <xsl:variable name="stpProgram">
       <xsl:value-of select="$stpLocation"/><xsl:text>/</xsl:text><xsl:value-of select="@Name"/>
    </xsl:variable>
-   <xsl:variable name="stpURI"><xsl:text>/SASStoredProcess/do?_action=form,properties,execute&amp;_program=</xsl:text><xsl:value-of select="$stpProgram"/></xsl:variable>
+   <xsl:variable name="stpURI"><xsl:text>/SASStoredProcess/do?_action=form,properties,execute&amp;_program=</xsl:text><xsl:value-of select="replace($stpProgram, '&amp;', '%26')"/></xsl:variable>
 
 
 
