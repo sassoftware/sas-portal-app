@@ -12,7 +12,7 @@
     %let portalUser=Group 4 User 1;
     %end;
 
-%deletePortalUser(name=&portalUser.,rc=deletePortalUserRC);
+%deletePortalUser(name=%bquote(&portalUser.),rc=deletePortalUserRC);
 
 %put deletePortalUserRC=&deletePortalUserRC.;
 

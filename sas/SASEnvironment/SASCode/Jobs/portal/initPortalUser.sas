@@ -10,7 +10,7 @@
 
 %put identityName=&identityName.;
 
-%initPortalUser(name=&identityName.,rc=initRC);
+%initPortalUser(name=%bquote(&identityName.),rc=initRC);
 
 %put initRC=&initRC.;
 

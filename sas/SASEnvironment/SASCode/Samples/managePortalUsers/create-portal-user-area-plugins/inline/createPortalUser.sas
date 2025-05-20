@@ -18,7 +18,7 @@
   
 %macro myCreatePortalUser(user=);
 
-%createPortalUser(name=&user.,rc=createPortalUserRC);
+%createPortalUser(name=%bquote(&user.),rc=createPortalUserRC);
 
 %put createPortalUserRC=&createPortalUserRC.;
 

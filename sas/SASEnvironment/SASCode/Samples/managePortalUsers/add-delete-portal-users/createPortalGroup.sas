@@ -12,7 +12,7 @@
     %let portalGroup=Group 4;
     %end;
 
-%createPortalGroup(name=&portalGroup.,rc=createPortalGroupRC);
+%createPortalGroup(name=%bquote(&portalGroup.),rc=createPortalGroupRC);
 
 %put createPortalGroupRC=&createPortalGroupRC.;
 

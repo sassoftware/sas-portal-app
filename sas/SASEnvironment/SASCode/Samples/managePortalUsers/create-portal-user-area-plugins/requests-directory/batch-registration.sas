@@ -31,22 +31,22 @@ data _null_;
   if (memname ne '') then do;
  
         putlog 'Processing file' memname=;
-	    do while (^done);
-	    
-	     input;
-	     codeline=cats('%put Processing User:',_infile_,';');
-	     put codeline;
-	     codeline=cats('%createPortalUser(name=',_infile_,',rc=createPortalUserRC);');
-	     put codeline;
-	     put '%if (&createPortalUserRC.=0) %then %do;';
-		     codeline=cats('filename userfile "',"&requestDirectory.",'/',memname,'";');
-		     put codeline;
-		     put '%let deleterc=%sysfunc(fdelete(userfile));';
-		     put '%put deleteRC=&deleteRC.;';
-		     put 'filename userfile;';
+        do while (^done);
+        
+         input;
+         codeline=cats('%put Processing User:',_infile_,';');
+         put codeline;
+         codeline=cats('%createPortalUser(name=%bquote(',_infile_,'),rc=createPortalUserRC);');
+         put codeline;
+         put '%if (&createPortalUserRC.=0) %then %do;';
+             codeline=cats('filename userfile "',"&requestDirectory.",'/',memname,'";');
+             put codeline;
+             put '%let deleterc=%sysfunc(fdelete(userfile));';
+             put '%put deleteRC=&deleteRC.;';
+             put 'filename userfile;';
          put '%end;';
          
-	     end;
+         end;
      
      end;
      
