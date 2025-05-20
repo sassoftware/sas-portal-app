@@ -12,7 +12,7 @@
     %let portalGroup=Group 4;
     %end;
 
-%deletePortalGroup(name=&portalGroup.,rc=deletePortalGroupRC);
+%deletePortalGroup(name=%bquote(&portalGroup.),rc=deletePortalGroupRC);
 
 %put deletePortalGroupRC=&deletePortalGroupRC.;
 

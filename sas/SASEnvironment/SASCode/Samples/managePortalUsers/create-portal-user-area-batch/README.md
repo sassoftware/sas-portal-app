@@ -18,7 +18,7 @@ See [createFileUsersContentAreas.sas](createFileUsersContentAreas.sas) for detai
 
 1. Copy the sas/SASEnvironment/SASCode/Samples/managePortalUsers/create-portal-user-area-plugins/batch directory contents to your own directory location:
 <pre>
-cd /Data1/SASConfig/Lev1/SASPortal  #assuming this is where this repo directory is linked.
+cd [sasconfig]/Lev1/SASPortal  #assuming this is where this repo directory is linked.
 mkdir SASEnvironment/SASCode/create-user-portal-area-batch
 cp SASPortalApp/sas/SASEnvironment/SASCode/Samples/managePortalUsers/create-portal-user-area-batch/* SASEnvironment/SASCode/create-user-portal-area-batch
 </pre>
@@ -27,9 +27,9 @@ cp SASPortalApp/sas/SASEnvironment/SASCode/Samples/managePortalUsers/create-port
 3. If using a list of users in a file, create the file with 1 user name per line (the name specified here must match the User metadata object created for that user).
 4. Execute the sas program
 <pre>
-/Data1/SASConfig/Lev1/SASPortal/sas.sh -sysin SASEnvironment/SASCode/create-user-portal-area-batch/<sas program>-log $HOME/batch-registration.log -initstmt "options metauser='portal admin' metapass='portal admin password';"
+[sasconfig]/Lev1/SASPortal/sas.sh -sysin SASEnvironment/SASCode/create-user-portal-area-batch/[sas program]  -log $HOME/batch-registration.log -initstmt "options metauser='portal admin' metapass='portal admin password';"
 </pre>
-Where <sas program> is the program to execute based on which scenario (metadata users, list of users in a file) is being used.
+Where [sas program] is the program to execute based on which scenario (metadata users, list of users in a file) is being used.
 
 **NOTE: Passing a specific metauser and metapass on the command line is one option to make sure this happens (although it is not a secure means to do so).  It is included in this example solely to point out the importance of running with the correct metadata user and permissions.
 
