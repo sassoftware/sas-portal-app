@@ -37,5 +37,5 @@ filename userfile;
 %let portalUser=&_metaPerson.;
 %let portalUserId=&_metaUser.;
 
-%myCreatePortalUserFile(id=&portalUserId.,user=&portalUser.);
+%myCreatePortalUserFile(id=&portalUserId.,user=%bquote(&portalUser.));
 
