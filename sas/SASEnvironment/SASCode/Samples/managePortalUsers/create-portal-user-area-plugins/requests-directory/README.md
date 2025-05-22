@@ -63,6 +63,6 @@ There are multiple ways that the requests could be processed:
 A sample program, batch-registration.sas, that will loop over all files in the directory and create the users is included.  This program can be invoked like:
 
 <pre>
-/Data1/SASConfig/Lev1/SASPortal/sas.sh -sysin SASEnvironment/SASCode/user-registry/batch-registration.sas -log $HOME/batch-registration.log -initstmt "options metauser='portal admin' metapass='portal admin password';"
+/Data1/SASConfig/Lev1/SASPortal/sas.sh -sysin SASEnvironment/SASCode/user-registration/batch-registration.sas -log $HOME/batch-registration.log -initstmt "options metauser='portal admin' metapass='portal admin password';"
 </pre>
 **NOTE: This program must be run as a metadata user that has the permissions to create folders/trees under the SAS Portal Application Tree AND to have read permission on any existing trees that exist there (to avoid duplicating content).   Passing a specific metauser and metapass on the command line is one option to make sure this happens (although it is not a secure means to do so).  It is included in this example solely to point out the importance of running with the correct metadata user and permissions.
