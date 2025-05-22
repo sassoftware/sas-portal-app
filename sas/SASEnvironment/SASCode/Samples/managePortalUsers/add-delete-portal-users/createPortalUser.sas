@@ -12,7 +12,7 @@
     %let portalUser=Group 4 User 1;
     %end;
 
-%createPortalUser(name=&portalUser.,rc=createPortalUserRC);
+%createPortalUser(name=%bquote(&portalUser.),rc=createPortalUserRC);
 
 %put createPortalUserRC=&createPortalUserRC.;
 
