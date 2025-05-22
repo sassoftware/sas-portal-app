@@ -33,7 +33,7 @@
 	    %let tree=&identityName. Permissions Tree;
 	    %end;
 	    
-	%objectExists(type=Tree,name=&tree.,existsvar=_cptTreeExists);
+	%objectExists(type=Tree,name=%bquote(&tree.),existsvar=_cptTreeExists);
 	
 	%if (&_cptTreeExists. = 0) %then %do;
 		
@@ -65,7 +65,7 @@
 		%let reposname=%sysfunc(dequote(%sysfunc(getoption(METAREPOSITORY))));
 		
 		proc xsl in=_cptrout out=_cptixml xsl=_cpttxsl;
-		  parameter "identityType"="&identityType." "identityName"="&identityName." "reposName"="&reposName." "setOwner"="&setOwner.";
+		  parameter "identityType"="&identityType." "identityName"="%bquote(&identityName.)" "reposName"="&reposName." "setOwner"="&setOwner.";
 		run;
 		
 		filename _cptrout;
