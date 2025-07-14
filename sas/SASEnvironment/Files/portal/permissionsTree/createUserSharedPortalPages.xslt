@@ -27,14 +27,39 @@
      NOTE: The get request does not include Available pages since they won't automatically be added 
            to the user's portal content.  Thus, the rows above where New Scope = available do not
            need to be handled here.
+
+     Syncing Group Content
+     - - - - - - - - - - - - - - - - - - - - -
+
+     There are 2 ways that a user can get access to shared pages:
+
+     1. A group that they are already in has new pages added to it
+     2. A user is added to a group (that has pages)
+
+     In the case #2, there is no page updates so we have to get all of the pages the user can see
+     and see which ones and add them to user area (if they don't exist). This process is run on a repeating
+     schedule.  There is a special case here that has to be handled.   If the shared page is of type "default", meaning
+     it is automatically added to the user's portal area when the page is created for the group, it can be "removed"
+     from the user's portal area by the user.  The next time the "full" sync process runs, that page will show up again as
+     needing to be added to the user's portal area.  In this case, we should NOT add it back to the user's portal area.
+
+     It is difficult to determine this situation.  The only indication we have that this might have happened is that there
+     is a history group with the same name as the page, but has no page members.  Note that since page names are not unique,
+     there could be a history group that existed for another page that had the same name.  However, we don't have any other way
+     of determining this situation so we will go with this check.
+
+     To give us some options if this situation exists, this stylesheet will take a parameter that indicates how to deal with 
+     default pages that don't exist in that user's profile area.
+
 -->
+
+<xsl:param name="forceDefaultPageAdd">1</xsl:param>
 
 <!-- - - - - - - - - - - - - - - - - - - -
       Main Entry Point
 - - - - - - - - - - - - - - - - - - - - - - -->
 
 <xsl:template match="/">
-
     <UpdateMetadata>
 
         <Metadata>
@@ -67,7 +92,7 @@
     <xsl:variable name="pagesGroup" select="$parentTree/Members/Group[@Name='DESKTOP_PORTALPAGES_GROUP']"/>
     <xsl:variable name="pagesGroupId" select="$pagesGroup/@Id"/>
     <xsl:variable name="pagesGroupName" select="$pagesGroup/@Name"/>
-    <xsl:variable name="historyGroup" select="$parentTree/Members/Group[@Name='DESKTOP_PAGEHISTORY_GROUP']"/>
+    <xsl:variable name="historyGroup" select="/Multiple_Requests/GetMetadataObjects[2]/Objects/Tree/Members/Group[@Name='DESKTOP_PAGEHISTORY_GROUP']"/>
     <xsl:variable name="historyGroupId" select="$historyGroup/@Id"/>
     <xsl:variable name="historyGroupName" select="$historyGroup/@Name"/>
 
@@ -88,10 +113,23 @@
       <!-- General Note: Including the Name attribute on objects referenced through ObjRef doesn't change the processing, but it makes it much easier
                           to validate that the correct associations are being made, thus including Name attributes on object references
        -->
+    
+    <xsl:variable name="existingPage" select="$pagesGroup/Members/PSPortalPage[@Id=$newPageId]/@Id"/>
 
-    <xsl:variable name="existingPage" select="$pagesGroup/Members/PSPortalPage[@Id=$newPageId]"/>
+    <!--  We should never add a new reference to a page that the user still has in their page list.
+          We may be passed a page to add that we may/may not have added and deleted before.
+          If it looks like we have added and deleted it before (ie. the group name matches and the history group doesn't have any members), then don't add it.
+          The forceDefaultPageAdd parameter can be set to always force a page to be added, even if we would have met the criteria for the add then delete scenario.        
 
-    <xsl:if test="not($existingPage)">
+          NOTE: The 3rd GetMetadataObjects query may not exist in the passed xml if we are doing a "fast check".  However the reference in the 2nd query results does
+                not include the members of the history group (which is what is needed here).  Make sure to use the correct history group reference.  Also note that the
+                3rd query should only be returning the History Group Member of our Permissions tree, so no need to check the name of the group during this processing.
+    -->
+    
+    <xsl:variable name="existingHistoryGroupId" select="/Multiple_Requests/GetMetadataObjects[3]/Objects/Tree/Members/Group/Members/Group[@Name=$pageName and not(Members/*)]/@Id"/>
+
+    <xsl:if test="not($existingPage) and (not($existingHistoryGroupId) or $forceDefaultPageAdd=1)">
+
         <!-- Add the shared page to the list of portal pages for this user -->
 
         <Group><xsl:attribute name="Id"><xsl:value-of select="$pagesGroupId"/></xsl:attribute>

@@ -222,6 +222,30 @@ One of the primary portal features is for a portal content administrator to crea
 
 **NOTE:** Currently, this functionality is controlled by the feature flag, SYNCUSER. See [Feature Flags](#feature-flags) for more information on how to set this flag while it is being developed.
 
+#### Shared Content Synchronization process
+
+New content can be shared with users in 2 ways:
+
+  - Adding/Updating pages to a group that the user is already a member of
+  - Adding a user to a group to which they did not previously belong
+
+Each time the user logs in, the content is checked to see if there is new shared content available for this user.  If so, it is added as appropriate to their portal area.  However, there is a difference in the performance impact in determining the two types of sharing methods.  To check for new content to an existing group, the check is very quick (here to referred to as the "fast check") because pages have timestamps that can be checked to see if they are new since the last time the user logged in.   However, checking for the scenario where a user has been added to a group can be very expensive, because you have to retrieve all of the pages the user has access to and compare them to what they already have in their user area (here to referred to as the "full check").  It is assumed that users are not added to groups on a frequent basis and it wouldn't make sense to pay the performance impact on every user logon.  Thus, a compromise solution has been implemented:
+
+  - On each logon, the "fast check" will be performed.
+  - A timestamp will be maintained that indicates the last time a "full check" was performed.
+  - The admin will set the interval since the last full check to perform another "full check"
+  - At logon, the "full check" interval will be checked, and if expired, a "full check" will be performed instead of the "fast check"
+
+The administrator controls the interval for the "full check" by setting the fullUpdateCheckInterval macro variable.  The following values are valid:
+
+  - -1 : Never perform a full check (not generally recommended)
+  - 0  : Always perform a full check (this can degrade the user's logon or portal refresh performance is not generally recommended)
+  - n  : The number of minutes between each full check
+
+If no value is explicitly set, the default is 720 minutes, ie. 12 hours.  The administrator has the ability to change these values whenever and have the appropriate behavior happen.   
+
+If the user has been added to a new group, the user will not see that group's content automatically in their user area until the next "full check" is performed.   However, the user will immediately have access to the new content via the Add Page->Search capability.  If the user adds a page manually via the Add Page->Search capability, it will not interfere with the next "full check", ie. the next full check will see that page has already been added and not process that page again.
+
 ### Deleting Shared Content
 
 When content is shared to users, the content is linked into each of the user's, or group's, content area.  Each content area has it's own set of permissions.  Once this linkage occurs, the original shared content can no longer be deleted in it's entirety from the system by a normal user, including a content administrator.  A SAS Administrator, who has un-fettered access to the metadata, will have to do the final removal.

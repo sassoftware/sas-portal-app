@@ -2,13 +2,20 @@
 <SXLEMAP version="2.1">
 
 <TABLE name="LastUpdateProperty">
-    <TABLE-PATH syntax="XPath">/GetMetadataObjects/Objects/Person/PropertySets/PropertySet/PropertySets/PropertySet/PropertySets/PropertySet/SetProperties</TABLE-PATH>
+    <TABLE-PATH syntax="XPath">/GetMetadataObjects/Objects/Person/PropertySets/PropertySet/PropertySets/PropertySet/PropertySets/PropertySet/SetProperties/Property</TABLE-PATH>
 
-    <COLUMN name="PersonName">
+    <COLUMN name="PersonName" retain="YES">
         <PATH syntax="XPath">/GetMetadataObjects/Objects/Person/@Name</PATH>
         <TYPE>character</TYPE>
         <DATATYPE>string</DATATYPE>
         <LENGTH>200</LENGTH>
+    </COLUMN>
+
+    <COLUMN name="PortalProfileId" retain="YES">
+        <PATH syntax="XPath">/GetMetadataObjects/Objects/Person/PropertySets/PropertySet/PropertySets/PropertySet/PropertySets/PropertySet/@Id</PATH>
+        <TYPE>character</TYPE>
+        <DATATYPE>string</DATATYPE>
+        <LENGTH>17</LENGTH>
     </COLUMN>
 
     <COLUMN name="Id">

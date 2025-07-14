@@ -64,5 +64,23 @@
  * 
  *        would turn on the SASNAVIGATOR and NEWFEATURE2 features.
  *        
+ *
+ *   Set the full check interval
+ *
+ *        To synchronize shared content with a user's private area, checks are done at each user logon
+ *        or profile browser refresh.  To minimize performance impact to the user, there are 2 different
+ *        types of checks that can be done: a "fast check" and a "full check".  The administrator
+ *        set the interval between full checks by setting the fullUpdateCheckInterval macro variable:
+ *        Allowed values are:
+ *              -1 = never do a full check (not recommended)
+ *               0 = always do a full check (generally, not recommended)
+ *               n = the number of minutes since the last check to wait before doing another.
+ *        If no value is set, the default is 720 minutes (ie. 12 hours).
+ *
+ *        To set a value other than the default, the following code is required:
+ *
+ *              %global fullUpdateCheckInterval;
+ *              %let fullUpdateCheckInterval=<value>;
+ *        where <value> is the value you want to set it to (ie. -1, 0 or n, as explained above).
  */
  

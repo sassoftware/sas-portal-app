@@ -97,6 +97,11 @@
                     <PropertyType Name="StringType" SQLType="12"/>
                  </OwningType>
               </Property>
+              <Property Id="$PortalLastFullSharingCheckProperty" Name="Portal.LastFullSharingCheck" PropertyName="Portal.LastFullSharingCheck" DefaultValue="0" SQLType="12">
+                 <OwningType>
+                    <PropertyType Name="StringType" SQLType="12"/>
+                 </OwningType>
+              </Property>
 
            </SetProperties>
 

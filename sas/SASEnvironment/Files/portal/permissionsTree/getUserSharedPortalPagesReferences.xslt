@@ -23,7 +23,7 @@
 
 <xsl:param name="startDT">.</xsl:param>
 <xsl:param name="endDT">.</xsl:param>
-
+<xsl:param name="retrieveFullHistory">0</xsl:param>
 <xsl:param name="treeName"/>
 <xsl:param name="reposName"/>
 
@@ -118,6 +118,50 @@
    </Templates>
   </Options>
 </GetMetadataObjects>
+
+<xsl:if test="$retrieveFullHistory=1">
+<xsl:message>Retrieving full history references</xsl:message>
+        <!-- Get the user's history pages 
+
+             Note: When doing a "fast check" only the root history group is needed.
+                   However, when the "full check" is run, the entire history is needed.
+
+                   Note that "fast check" can be satisfied by the previous queries and doesn't
+                   need this additional one.  Thus, we only include this query if needed to minimize
+                   processing time.
+        -->
+
+        <GetMetadataObjects>
+         <ReposId><xsl:value-of select="$reposId"/></ReposId>
+         <Type>Tree</Type>
+         <ns>SAS</ns>
+             <!-- 256 = GetMetadata
+                  128 = XMLSelect
+                    4 =  Template
+             -->
+         <Flags>388</Flags>
+         <Options>
+           <XMLSelect>
+               <xsl:attribute name="search">@Name='<xsl:value-of select="$treeName"/>'</xsl:attribute>
+
+           </XMLSelect>
+
+           <Templates>
+               <Tree Id="" Name="">
+
+                 <Members search="Group[@Name='DESKTOP_PAGEHISTORY_GROUP']"/>
+
+               </Tree>
+
+               <Group  Id="" Name="">
+                  <Members/>
+               </Group> 
+               <PSPortalPage Id="" Name="" MetadataCreated=""/>
+           </Templates>
+          </Options>
+        </GetMetadataObjects>
+
+</xsl:if>
 
 </Multiple_Requests>
 

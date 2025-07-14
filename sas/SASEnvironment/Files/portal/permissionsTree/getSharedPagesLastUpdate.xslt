@@ -23,7 +23,7 @@
                          </Person>                                                                                                     
                          <PropertySet Id="" Name="" Desc="" SetRole="">
                             <PropertySets/>
-                            <SetProperties search="*[@Name='Portal.LastSharingCheck']"/>
+                            <SetProperties search="*[@Name='Portal.LastSharingCheck' or @Name='Portal.LastFullSharingCheck']"/>
                          </PropertySet>                                                        
                          <Property Id="" Name="" PropertyName="" DefaultValue="">
                          </Property>  
