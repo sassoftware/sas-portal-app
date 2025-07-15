@@ -1096,9 +1096,25 @@
               <xsl:when test="@portletType='SASNavigator'">
                        <xsl:call-template name="SASNavigator"/>
                 </xsl:when>
-                
-
-               <xsl:otherwise>
+              <xsl:when test="@portletType='InformationMapNavigator'">
+                        <xsl:call-template name="SASNavigator"/>
+              </xsl:when>
+              <xsl:when test="@portletType='PersonalRepositoryNavigator'">
+                        <xsl:call-template name="SASNavigator"/>
+              </xsl:when>     
+              <xsl:when test="@portletType='ResultsNavigator'">
+                        <xsl:call-template name="SASNavigator"/>
+              </xsl:when>
+              <xsl:when test="@portletType='StoredProcessNavigator'">
+                        <xsl:call-template name="SASNavigator"/>
+              </xsl:when>
+              <xsl:when test="@portletType='TreeNavigator'">
+                        <xsl:call-template name="SASNavigator"/>
+              </xsl:when>
+              <xsl:when test="@portletType='ReportNavigator'">
+                        <xsl:call-template name="SASNavigator"/>
+              </xsl:when>
+              <xsl:otherwise>
                 <!-- currently unsupported portlet type, render an empty portlet -->
                     <xsl:call-template name="emptyPortlet"/>
               </xsl:otherwise>
