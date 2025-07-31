@@ -64,6 +64,7 @@
  * 
  *        would turn on the SASNAVIGATOR and NEWFEATURE2 features.
  *        
+ *        Issue 71 LINKSTABBLANK to open links WSR, STP and links in new browser window or tab
  *
  *   Set the full check interval
  *

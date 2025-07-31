@@ -41,7 +41,14 @@
 <xsl:variable name="writeableTrees" select="/Multiple_Requests/GetMetadataObjects[1]/Objects/Person/AccessControlEntries/AccessControlEntry/Objects/Tree"/>
 
 <xsl:variable name="userName" select="/Multiple_Requests/GetMetadataObjects[1]/Objects/Person/@Name"/>
- 
+
+<!-- Issue 71 featureflag LINKSTABBLANK: when set links open in new browser window/tab -->
+<xsl:variable name="aTarget">
+    <xsl:choose>
+        <xsl:when test="contains($featureFlags,'LINKSTABBLANK') = 'true'">_target</xsl:when>
+        <xsl:otherwise>_self</xsl:otherwise>
+    </xsl:choose>
+</xsl:variable>
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   The main entry point
@@ -457,7 +464,7 @@
     <xsl:param name="showDescription"/>
     <xsl:param name="showLocation"/>
     
-    <a><xsl:attribute name="href"><xsl:value-of select="@URI"/></xsl:attribute><xsl:value-of select="@Name"/></a><br/>
+    <a><xsl:attribute name="target"><xsl:value-of select="$aTarget"/></xsl:attribute><xsl:attribute name="href"><xsl:value-of select="@URI"/></xsl:attribute><xsl:value-of select="@Name"/></a><br/>
     
     <xsl:choose>
         <xsl:when test="$showDescription = 'true' and @Desc != ''">
@@ -492,7 +499,7 @@
 
 
 
-   <a><xsl:attribute name="href"><xsl:value-of select="$stpURI"/></xsl:attribute><xsl:value-of select="@Name"/></a><br/>
+   <a><xsl:attribute name="target"><xsl:value-of select="$aTarget"/></xsl:attribute><xsl:attribute name="href"><xsl:value-of select="$stpURI"/></xsl:attribute><xsl:value-of select="@Name"/></a><br/>
 
    <xsl:choose>
         <xsl:when test="$showDescription = 'true' and @Desc != ''">
@@ -834,7 +841,7 @@
 
             <xsl:variable name="wrsURI"><xsl:text>/SASWebReportStudio/openRVUrl.do?rsRID=</xsl:text><xsl:value-of select="$wrsProgram"/></xsl:variable>
 
-            <a><xsl:attribute name="href"><xsl:value-of select="$wrsURI"/></xsl:attribute><xsl:value-of select="@Name"/></a><br/>
+            <a><xsl:attribute name="target"><xsl:value-of select="$aTarget"/></xsl:attribute><xsl:attribute name="href"><xsl:value-of select="$wrsURI"/></xsl:attribute><xsl:value-of select="@Name"/></a><br/>
 
          <xsl:variable name="wrsLocation">
             <xsl:for-each select="Trees//Tree">
