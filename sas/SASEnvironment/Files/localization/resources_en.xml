@@ -240,6 +240,8 @@
   <string key="sasnavigatorFolderType">Folder</string> 
   <string key="sasnavigatorStoredProcessType">Stored Process</string>
   <string key="sasnavigatorReportType">Report</string>
+  <string key="sasnavigatorInformationMapRelationalType">Information map (relational)</string>
+  <string key="sasnavigatorInformationMapOlapType">Information map (OLAP)</string>
   <string key="sasnavigatorPathCheckbox">Set the initial folder to the current selected folder:</string>
 
   <string key="portletEditNavigatorFolder">Folder:</string>

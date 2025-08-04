@@ -85,8 +85,8 @@
  <Flags>20</Flags>
  <Options>
      <Templates>
-        <Transformation Id="" Name="" Desc="" TransformRole="" MetadataCreated="" MetadataUpdated=""/>
-        <ClassifierMap Id="" Name="" Desc="" TransformRole="" MetadataCreated="" MetadataUpdated=""/>
+        <Transformation Id="" Name="" Desc="" TransformRole="" PublicType="" MetadataCreated="" MetadataUpdated=""/>
+        <ClassifierMap Id="" Name="" Desc="" TransformRole="" PublicType="" MetadataCreated="" MetadataUpdated=""/>
         <Root Id="" Name="" Desc="" MetadataCreated="" MetadataUpdated=""/>
      </Templates>
  </Options>

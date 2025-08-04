@@ -31,6 +31,8 @@
 <xsl:variable name="sasnavigatorFolderType" select="$localeXml/string[@key='sasnavigatorFolderType']/text()"/>
 <xsl:variable name="sasnavigatorStoredProcessType" select="$localeXml/string[@key='sasnavigatorStoredProcessType']/text()"/>
 <xsl:variable name="sasnavigatorReportType" select="$localeXml/string[@key='sasnavigatorReportType']/text()"/>
+<xsl:variable name="sasnavigatorInformationMapRelationalType" select="$localeXml/string[@key='sasnavigatorInformationMapRelationalType']/text()"/>
+<xsl:variable name="sasnavigatorInformationMapOlapType" select="$localeXml/string[@key='sasnavigatorInformationMapOlapType']/text()"/>
 
 <!-- Global Variables -->
 
@@ -222,6 +224,8 @@
               <xsl:when test="name(.)='Tree'">folder</xsl:when>
               <xsl:when test="name(.)='ClassifierMap' and @TransformRole='StoredProcess'">storedprocess</xsl:when>
               <xsl:when test="name(.)='Transformation' and @TransformRole='Report'">report</xsl:when>
+              <xsl:when test="name(.)='Transformation' and @TransformRole='InformationMap' and @PublicType='InformationMap.OLAP'">imap_olap</xsl:when>
+              <xsl:when test="name(.)='Transformation' and @TransformRole='InformationMap' and @PublicType='InformationMap.Relational'">imap_relational</xsl:when>
               <xsl:otherwise>unsupported</xsl:otherwise>
            </xsl:choose>
         </xsl:variable>
@@ -235,6 +239,8 @@
               <xsl:when test="$childType='folder'"><xsl:value-of select="$sasnavigatorFolderType"/></xsl:when>
               <xsl:when test="$childType='storedprocess'"><xsl:if test="contains(lower-case($objectFilter),'storedprocess')"><xsl:value-of select="$sasnavigatorStoredProcessType"/></xsl:if></xsl:when>
               <xsl:when test="$childType='report'"><xsl:if test="contains(lower-case($objectFilter),'report')"><xsl:value-of select="$sasnavigatorReportType"/></xsl:if></xsl:when>
+              <xsl:when test="$childType='imap_relational'"><xsl:if test="contains(lower-case($objectFilter),'informationmap')"><xsl:value-of select="$sasnavigatorInformationMapRelationalType"/></xsl:if></xsl:when>
+              <xsl:when test="$childType='imap_olap'"><xsl:if test="contains(lower-case($objectFilter),'informationmap')"><xsl:value-of select="$sasnavigatorInformationMapOlapType"/></xsl:if></xsl:when>
               <xsl:otherwise></xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
@@ -244,6 +250,8 @@
               <xsl:when test="$childType='folder'">Folder.gif</xsl:when>
               <xsl:when test="$childType='storedprocess'">StoredProcess.gif</xsl:when>
               <xsl:when test="$childType='report'">Report.gif</xsl:when>
+              <xsl:when test="$childType='imap_relational'">InformationMapRelational.gif</xsl:when>
+              <xsl:when test="$childType='imap_olap'">InformationMapOLAP.gif</xsl:when>
             </xsl:choose>
         </xsl:variable>
 
@@ -257,6 +265,7 @@
               <xsl:when test="$childType='folder'"><xsl:value-of select="concat($homeURL,$objectFilterEncoded,'&amp;_action=execute&amp;path=',$childPath,'&amp;navigatorId=',$navigatorId)"/></xsl:when>
               <xsl:when test="$childType='storedprocess'"><xsl:value-of select="concat('/SASStoredProcess/do?_action=form,properties,execute,newwindow&amp;_program=',$childPath)"/></xsl:when>
               <xsl:when test="$childType='report'"><xsl:value-of select="concat('/SASWebReportStudio/openRVUrl.do?rsRID=SBIP://METASERVER',$childPath,'(Report)')"/></xsl:when>
+              <xsl:when test="$childType='imap_relational' or $childType='imap_olap'"><xsl:value-of select="concat('/SASWebReportStudio/openRVUrl.do?rsRID=SBIP://METASERVER',$childPath,'(InformationMap)')"/></xsl:when>
               <xsl:otherwise></xsl:otherwise>
             </xsl:choose>
         </xsl:variable>

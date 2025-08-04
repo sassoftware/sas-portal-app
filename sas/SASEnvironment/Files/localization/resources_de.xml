@@ -240,6 +240,8 @@
   <string key="sasnavigatorFolderType">Ordner</string>
   <string key="sasnavigatorStoredProcessType">Gespeicherter Prozess</string>
   <string key="sasnavigatorReportType">Bericht</string>
+  <string key="sasnavigatorInformationMapRelationalType">Information map (relational)</string>
+  <string key="sasnavigatorInformationMapOlapType">Information map (OLAP)</string>
   <string key="sasnavigatorPathCheckbox">Setze den Anfangsordner auf den aktuell ausgewählten Ordner:</string>
 
   <string key="portletEditNavigatorFolder">Ordner:</string>

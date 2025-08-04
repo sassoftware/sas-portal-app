@@ -700,6 +700,7 @@
 
 
 <xsl:template name="SASNavigator">
+  <xsl:param name = "spaObjectsParam"  select="''"/>
 
    <!-- Get the SASNavigator and display and call stp -->
 
@@ -728,11 +729,15 @@
                     </xsl:if>
                 </xsl:for-each>
             </xsl:when>
+              <xsl:when test="$spaObjectsParam != ''">
+                  <xsl:value-of select="$spaObjectsParam"/>
+              </xsl:when>
             <xsl:otherwise>
                 <xsl:text>StoredProcess,Report,InformationMap</xsl:text>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:variable>
+
     
         <xsl:variable name="stpURI">/SASStoredProcess/do?_action=execute<xsl:text>&amp;</xsl:text>_program=<xsl:value-of select="$appLocEncoded"/>services/spaNavigatorPortlet<xsl:text>&amp;</xsl:text>path=<xsl:value-of select="$spaPath"/><xsl:text>&amp;</xsl:text>objectFilter=<xsl:value-of select="$spaObjects"/><xsl:text>&amp;</xsl:text>navigatorId=<xsl:value-of select="$navigatorId"/></xsl:variable>
     
@@ -971,6 +976,9 @@
             </xsl:call-template>
 
         </xsl:when>
+        <!--xsl:when test="@portletType = 'PersonalRepositoryNavigator'"-->
+        <xsl:when test="contains(',PersonalRepositoryNavigator,ResultsNavigator,', concat(',', @portletType, ','))">
+        </xsl:when>
         <xsl:otherwise>
 
            <!-- Non-placeholder portlets -->
@@ -1097,22 +1105,28 @@
                        <xsl:call-template name="SASNavigator"/>
                 </xsl:when>
               <xsl:when test="@portletType='InformationMapNavigator'">
-                        <xsl:call-template name="SASNavigator"/>
+                        <xsl:call-template name="SASNavigator">
+                          <xsl:with-param name="spaObjectsParam">InformationMap</xsl:with-param>
+                        </xsl:call-template>         
               </xsl:when>
-              <xsl:when test="@portletType='PersonalRepositoryNavigator'">
-                        <xsl:call-template name="SASNavigator"/>
+              <!--xsl:when test="@portletType='PersonalRepositoryNavigator'">
+                        < xsl:call-template name="SASNavigator"/>
               </xsl:when>     
               <xsl:when test="@portletType='ResultsNavigator'">
                         <xsl:call-template name="SASNavigator"/>
-              </xsl:when>
+              </xsl:when-->
               <xsl:when test="@portletType='StoredProcessNavigator'">
-                        <xsl:call-template name="SASNavigator"/>
+                        <xsl:call-template name="SASNavigator">
+                          <xsl:with-param name="spaObjectsParam">StoredProcess</xsl:with-param>
+                        </xsl:call-template>
               </xsl:when>
               <xsl:when test="@portletType='TreeNavigator'">
                         <xsl:call-template name="SASNavigator"/>
               </xsl:when>
               <xsl:when test="@portletType='ReportNavigator'">
-                        <xsl:call-template name="SASNavigator"/>
+                        <xsl:call-template name="SASNavigator">
+                          <xsl:with-param name="spaObjectsParam">Report</xsl:with-param>
+                        </xsl:call-template>
               </xsl:when>
               <xsl:otherwise>
                 <!-- currently unsupported portlet type, render an empty portlet -->

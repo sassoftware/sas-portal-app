@@ -241,6 +241,8 @@
   <string key="sasnavigatorFolderType">フォルダ</string>
   <string key="sasnavigatorStoredProcessType">ストアドプロセス</string>
   <string key="sasnavigatorReportType">報告</string>
+  <string key="sasnavigatorInformationMapRelationalType">情報マップ（リレーショナル）</string>
+  <string key="sasnavigatorInformationMapOlapType">情報マップ (OLAP)</string>
   <string key="sasnavigatorPathCheckbox">初期フォルダを現在選択されているフォルダに設定します:</string>
 
   <string key="portletEditNavigatorFolder">フォルダ：</string>
