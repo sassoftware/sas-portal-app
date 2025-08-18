@@ -33,7 +33,7 @@
 <xsl:variable name="sasnavigatorReportType" select="$localeXml/string[@key='sasnavigatorReportType']/text()"/>
 <xsl:variable name="sasnavigatorInformationMapRelationalType" select="$localeXml/string[@key='sasnavigatorInformationMapRelationalType']/text()"/>
 <xsl:variable name="sasnavigatorInformationMapOlapType" select="$localeXml/string[@key='sasnavigatorInformationMapOlapType']/text()"/>
-
+<xsl:variable name="portletEditNavigatorShowDescriptionLabel" select="$localeXml/string[@key='portletEditCollectionShowDescriptionLabel']/text()"/>
 <!-- Global Variables -->
 
 <xsl:variable name="path" select="/Mod_Request/NewMetadata/Path"/>
@@ -156,6 +156,44 @@
            </xsl:choose>
 
         </td>
+        <td nowrap='nowrap' class="none">
+                <input type="checkbox" name="showDescription" onclick="setBooleanHidden('showDescription');hasChanged=true;" id="showDescription">
+                  <xsl:choose>
+                  <xsl:when test="$showDescription = 'true'">
+                      <xsl:attribute name="checked">checked</xsl:attribute>
+                      <xsl:attribute name="value">on</xsl:attribute>
+                  </xsl:when>
+                  <xsl:when test="not($showDescription)">
+                      <!-- When a new Collection Portlet is created, it doesn't yet have properties, but 
+                           the old ID Portal set these values to true by default, so do the same thing
+                           so when it is saved, the properties get created.
+                      -->
+                      <!--xsl:attribute name="checked">checked</xsl:attribute-->
+                      <xsl:attribute name="value">off</xsl:attribute>
+                  </xsl:when>
+                  <xsl:otherwise>
+                      <xsl:attribute name="value">off</xsl:attribute>
+                  </xsl:otherwise>
+                  </xsl:choose>
+
+                </input>
+                <label for="showDescription">
+                    <xsl:value-of select="$portletEditNavigatorShowDescriptionLabel"/>
+                </label>
+                <input type="hidden" name="selectedShowDescription" id="selectedshowDescription">
+				 <xsl:choose>
+				   <xsl:when test="$showDescription = 'true'">
+					<xsl:attribute name="value">1</xsl:attribute>
+                   </xsl:when>
+				   <xsl:when test="not($showDescription)">
+					<xsl:attribute name="value">0</xsl:attribute>
+                   </xsl:when>
+				   <xsl:otherwise>
+					<xsl:attribute name="value">0</xsl:attribute>
+				   </xsl:otherwise>
+                 </xsl:choose>
+				</input>
+            </td>
     </tr>
 </table>
 
@@ -286,8 +324,10 @@
                                 </a>
                             </xsl:when>
                         </xsl:choose>
-                        <xsl:if test="$showDescription">
-                        <br/><small><xsl:value-of select="@Desc"/></small>
+                        <xsl:if test="@Desc != ''">
+                            <div class="descContainer" style="display: none;">
+                                <!--br/--><small><xsl:value-of select="@Desc"/></small>
+                            </div>
                         </xsl:if>
                         </span>
                     </td>
@@ -311,8 +351,10 @@
                             <xsl:value-of select="$childFolderName"/>
                         </xsl:otherwise>
                     </xsl:choose>
-                    <xsl:if test="$showDescription">
-                    <br/><small><xsl:value-of select="@Desc"/></small>
+                    <xsl:if test="@Desc != ''">
+                        <div class="descContainer" style="display: none;">
+                            <!--br/--><small><xsl:value-of select="@Desc"/></small>
+                        </div>
                     </xsl:if>
                     </span>
                 </td>
@@ -423,6 +465,23 @@ td.none {border: 0}
 
 <xsl:template name="thisPageScripts">
 
+<script>
+    function setBooleanHidden(fldName) {
+        var checkboxField = document.getElementById(fldName);
+        var hiddenField = document.getElementById("selected" + fldName);
+        var containers = document.getElementsByClassName('descContainer');
+        for (let i = 0; i  &lt; containers.length; i++) {
+            if (checkboxField.checked) {
+                hiddenField.value = "1";
+                containers[i].style.display = 'block';
+            } else {
+                hiddenField.value = "0";
+                containers[i].style.display = 'none';
+            }
+        }
+    }
+
+</script>
 </xsl:template>
 
 </xsl:stylesheet>
