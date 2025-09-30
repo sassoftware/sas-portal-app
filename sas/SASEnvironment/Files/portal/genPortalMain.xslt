@@ -573,13 +573,13 @@
 <xsl:template name="processCollection">
 
     <xsl:param name="collectionType" select="''"/>
-    <xsl:param name="collLocation" select="''"/>
     
     <xsl:variable name="numGroups">
         <xsl:value-of select="count(Groups/Group)"/>
     </xsl:variable>
     
     <xsl:choose>
+        <!-- Collection Portlet -->
         <xsl:when test="$collectionType = 'Collection'">
             <xsl:variable name="showDescription">
                 <xsl:value-of select="PropertySets/PropertySet/SetProperties/Property[@Name='show-description']/@DefaultValue"/>
@@ -634,6 +634,8 @@
                 <xsl:call-template name="emptyPortlet"/>
             </xsl:if>
         </xsl:when>
+        
+        <!-- SAS Collection Portlet -->
         <xsl:when test="$collectionType = 'CollectionPortlet'">
             <xsl:variable name="showDescription">
                 <xsl:value-of select="PropertySets/PropertySet/PropertySets/PropertySet[@Name='showDescription']/SetProperties/Property/@DefaultValue"/>
@@ -642,6 +644,7 @@
                 <xsl:value-of select="PropertySets/PropertySet/PropertySets/PropertySet[@Name='showLocation']/SetProperties/Property/@DefaultValue"/>
             </xsl:variable>
             
+            <!-- The SAS Collection Portlet has a different structure, everything is organized in PropertySet -->
             <xsl:variable name="numMembers">
                 <xsl:value-of select="count(PropertySets/PropertySet/PropertySets/PropertySet[@Name='collectionItems']/SetProperties/*)"/>
             </xsl:variable>
@@ -650,7 +653,7 @@
                 <xsl:if test="position() > 0">
                 <xsl:variable name="collLocation"><xsl:value-of select="substring-after(substring-before(@DefaultValue,'('),'SBIP://METASERVER')"/></xsl:variable>
                 <!--
-                  get description 
+                  TODo: get description of object
                 -->
                 <xsl:variable name="collDesc"></xsl:variable>
                 <tr>
@@ -680,19 +683,17 @@
                             
                         </xsl:when>
                         <xsl:when test="contains(@DefaultValue,'(InformationMap)') = 'true'">
-                            <xsl:variable name="collLocation"><xsl:value-of select="substring-after(substring-before(@DefaultValue,'(InformationMap)'),'SBIP://METASERVER')"/></xsl:variable>
-                            <xsl:variable name="wrsProgram"><xsl:value-of select="encode-for-uri(@DefaultValue)"/></xsl:variable>
-                            <xsl:variable name="wrsURI"><xsl:text>/SASWebReportStudio/openRVUrl.do?rsRID=</xsl:text><xsl:value-of select="$wrsProgram"/></xsl:variable>
-                            <xsl:variable name="wrsPath"><xsl:value-of select="substring-after(@DefaultValue,'SBIP://METASERVER')"/></xsl:variable>
+                            <xsl:variable name="imProgram"><xsl:value-of select="encode-for-uri(@DefaultValue)"/></xsl:variable>
+                            <xsl:variable name="imURI"><xsl:text>/SASWebReportStudio/openRVUrl.do?rsRID=</xsl:text><xsl:value-of select="$imProgram"/></xsl:variable>
                             
-                            <a><xsl:call-template name="fileName">
+                            <a><xsl:attribute name="target"><xsl:value-of select="$aTarget"/></xsl:attribute><xsl:attribute name="href"><xsl:value-of select="$imURI"/></xsl:attribute>
+                                <xsl:call-template name="fileName">
                                     <xsl:with-param name="path" select="@DefaultValue"/>
                                 </xsl:call-template>
                             </a><br/>
-                            
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:variable name="collLocation" select="''"></xsl:variable>
+                            <xsl:call-template name="emptyPortlet"/>
                         </xsl:otherwise>
                     </xsl:choose>
                     
@@ -743,7 +744,6 @@
 <xsl:template name="collectionPortlet">
 
     <!-- Collection portlet, build a list of the links -->
-
     <!-- not yet convinced there won't be some differences in how the different collections are processed so keep this redirection template here-->
 
     <xsl:call-template name="processCollection">
@@ -757,7 +757,7 @@
     <!-- Bookmark portlet, build a list of the links -->
 
     <xsl:call-template name="processCollection">
-        <xsl:with-param name="collectionType" select="@portletType"/>
+        <xsl:with-param name="collectionType">Collection</xsl:with-param>
     </xsl:call-template>
 
 </xsl:template>
