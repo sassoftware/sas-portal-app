@@ -533,8 +533,8 @@
    </xsl:variable>
 
     <xsl:call-template name="reportLink">
-       <xsl:with-param name="reportSBIPURI" select="$reportSBIPURI"/>
-      <xsl:with-param name="showDescription" select="$showDescription"/>
+        <xsl:with-param name="reportSBIPURI" select="$reportSBIPURI"/>
+        <xsl:with-param name="showDescription" select="$showDescription"/>
         <xsl:with-param name="showLocation" select="$showLocation"/>
     </xsl:call-template>
 
@@ -572,66 +572,172 @@
      -->
 <xsl:template name="processCollection">
 
-      <xsl:variable name="numGroups">
-           <xsl:value-of select="count(Groups/Group)"/>
-       </xsl:variable>
-
-       <xsl:variable name="showDescription">
-           <xsl:value-of select="PropertySets/PropertySet/SetProperties/Property[@Name='show-description']/@DefaultValue"/>
-       </xsl:variable>
-       <xsl:variable name="showLocation">
-           <xsl:value-of select="PropertySets/PropertySet/SetProperties/Property[@Name='show-location']/@DefaultValue"/>
-       </xsl:variable>
-       
-       <!-- The first member in the group seems to be a link back to itself, so skip that entry -->
-       <xsl:for-each select="Groups/Group">
-       
-             <xsl:variable name="numMembers">
-             <xsl:value-of select="count(Members/*)"/>
-          </xsl:variable>
-          
-          <xsl:for-each select="Members/*">
-                 <xsl:if test="position() > 1">
-                 <tr>
-                 <td class="portletEntry" valign="top">
-
-                     <!-- The user can make a bookmark to Portal Page.  If we just apply the templates
-                          to the current entry, it will try to create a new page div in the output html.
-                          In this case, we simply want to make a link to the right tab for this referenced portal page.
-                     -->
-                     <xsl:choose>
-                        <xsl:when test="name(.)='PSPortalPage'">
-                            <xsl:call-template name="PortalPageLink">
+    <xsl:param name="collectionType" select="''"/>
+    <xsl:param name="collLocation" select="''"/>
+    
+    <xsl:variable name="numGroups">
+        <xsl:value-of select="count(Groups/Group)"/>
+    </xsl:variable>
+    
+    <xsl:choose>
+        <xsl:when test="$collectionType = 'Collection'">
+            <xsl:variable name="showDescription">
+                <xsl:value-of select="PropertySets/PropertySet/SetProperties/Property[@Name='show-description']/@DefaultValue"/>
+            </xsl:variable>
+            <xsl:variable name="showLocation">
+                <xsl:value-of select="PropertySets/PropertySet/SetProperties/Property[@Name='show-location']/@DefaultValue"/>
+            </xsl:variable>
+            
+            <!-- The first member in the group seems to be a link back to itself, so skip that entry -->
+            <xsl:for-each select="Groups/Group">
+            
+                <xsl:variable name="numMembers">
+                    <xsl:value-of select="count(Members/*)"/>
+                </xsl:variable>
+              
+                <xsl:for-each select="Members/*">
+                    <xsl:if test="position() > 1">
+                    <tr>
+                    <td class="portletEntry" valign="top">
+                        <!-- The user can make a bookmark to Portal Page.  If we just apply the templates
+                             to the current entry, it will try to create a new page div in the output html.
+                             In this case, we simply want to make a link to the right tab for this referenced portal page.
+                        -->
+                        <xsl:choose>
+                            <xsl:when test="name(.)='PSPortalPage'">
+                                <xsl:call-template name="PortalPageLink">
                                     <xsl:with-param name="showDescription" select="$showDescription"/>
                                     <xsl:with-param name="showLocation" select="$showLocation"/>
-                                  </xsl:call-template>
+                                </xsl:call-template>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:apply-templates  select=".">
+                                    <xsl:with-param name="showDescription" select="$showDescription"/>
+                                    <xsl:with-param name="showLocation" select="$showLocation"/>
+                                </xsl:apply-templates>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </td>
+                    </tr>
+                    </xsl:if>
+                </xsl:for-each>
+                
+                <!-- If the portlet didn't have any members, add a few blank rows -->
+                
+                <xsl:if test="$numMembers = 1">
+                    <xsl:call-template name="emptyPortlet"/>
+                </xsl:if>
+                
+            </xsl:for-each>
+            
+            <xsl:if test="$numGroups = 0">
+                <xsl:call-template name="emptyPortlet"/>
+            </xsl:if>
+        </xsl:when>
+        <xsl:when test="$collectionType = 'CollectionPortlet'">
+            <xsl:variable name="showDescription">
+                <xsl:value-of select="PropertySets/PropertySet/PropertySets/PropertySet[@Name='showDescription']/SetProperties/Property/@DefaultValue"/>
+            </xsl:variable>
+            <xsl:variable name="showLocation">
+                <xsl:value-of select="PropertySets/PropertySet/PropertySets/PropertySet[@Name='showLocation']/SetProperties/Property/@DefaultValue"/>
+            </xsl:variable>
+            
+            <xsl:variable name="numMembers">
+                <xsl:value-of select="count(PropertySets/PropertySet/PropertySets/PropertySet[@Name='collectionItems']/SetProperties/*)"/>
+            </xsl:variable>
+            <xsl:for-each select="PropertySets/PropertySet/PropertySets/PropertySet[@Name='collectionItems']/SetProperties/*">
+            
+                <xsl:if test="position() > 0">
+                <xsl:variable name="collLocation"><xsl:value-of select="substring-after(substring-before(@DefaultValue,'('),'SBIP://METASERVER')"/></xsl:variable>
+                <!--
+                  get description 
+                -->
+                <xsl:variable name="collDesc"></xsl:variable>
+                <tr>
+                <td class="portletEntry" valign="top">
+                    <xsl:choose>
+                        <xsl:when test="contains(@DefaultValue,'(Report)') = 'true'">
+                            <xsl:variable name="wrsProgram"><xsl:value-of select="encode-for-uri(@DefaultValue)"/></xsl:variable>
+                            <xsl:variable name="wrsURI"><xsl:text>/SASWebReportStudio/openRVUrl.do?rsRID=</xsl:text><xsl:value-of select="$wrsProgram"/></xsl:variable>
+                            <xsl:variable name="wrsPath"><xsl:value-of select="substring-after(@DefaultValue,'SBIP://METASERVER')"/></xsl:variable>
+                            
+                            <a><xsl:attribute name="target"><xsl:value-of select="$aTarget"/></xsl:attribute><xsl:attribute name="href"><xsl:value-of select="$wrsURI"/></xsl:attribute>
+                                <xsl:call-template name="fileName">
+                                    <xsl:with-param name="path" select="@DefaultValue"/>
+                                </xsl:call-template>
+                            </a><br/>
+                            
+                        </xsl:when>
+                        <xsl:when test="contains(@DefaultValue,'(StoredProcess)') = 'true'">
+                            <xsl:variable name="stpProgram"><xsl:value-of select="encode-for-uri(substring-after(@DefaultValue,'SBIP://METASERVER'))"/></xsl:variable>
+                            <xsl:variable name="stpURI">/SASStoredProcess/do?_action=execute<xsl:text>&amp;</xsl:text>_program=<xsl:value-of select="$stpProgram"/></xsl:variable>
+                            
+                            <a><xsl:attribute name="target"><xsl:value-of select="$aTarget"/></xsl:attribute><xsl:attribute name="href"><xsl:value-of select="$stpURI"/></xsl:attribute>
+                                <xsl:call-template name="fileName">
+                                    <xsl:with-param name="path" select="@DefaultValue"/>
+                                </xsl:call-template>
+                            </a><br/>
+                            
+                        </xsl:when>
+                        <xsl:when test="contains(@DefaultValue,'(InformationMap)') = 'true'">
+                            <xsl:variable name="collLocation"><xsl:value-of select="substring-after(substring-before(@DefaultValue,'(InformationMap)'),'SBIP://METASERVER')"/></xsl:variable>
+                            <xsl:variable name="wrsProgram"><xsl:value-of select="encode-for-uri(@DefaultValue)"/></xsl:variable>
+                            <xsl:variable name="wrsURI"><xsl:text>/SASWebReportStudio/openRVUrl.do?rsRID=</xsl:text><xsl:value-of select="$wrsProgram"/></xsl:variable>
+                            <xsl:variable name="wrsPath"><xsl:value-of select="substring-after(@DefaultValue,'SBIP://METASERVER')"/></xsl:variable>
+                            
+                            <a><xsl:call-template name="fileName">
+                                    <xsl:with-param name="path" select="@DefaultValue"/>
+                                </xsl:call-template>
+                            </a><br/>
+                            
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:apply-templates  select=".">
-                                     <xsl:with-param name="showDescription" select="$showDescription"/>
-                                     <xsl:with-param name="showLocation" select="$showLocation"/>
-                                 </xsl:apply-templates>
-                         </xsl:otherwise>
-                     </xsl:choose>
-                 </td>
-                 </tr>
-                 </xsl:if>
-             </xsl:for-each>
-             
-          <!-- If the portlet didn't have any members, add a few blank rows -->
-          
-          <xsl:if test="$numMembers = 1">
-             <xsl:call-template name="emptyPortlet"/>                       
-          </xsl:if>
-          
-       </xsl:for-each>
+                            <xsl:variable name="collLocation" select="''"></xsl:variable>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    
+                    <xsl:choose>
+                        <xsl:when test="$showDescription = 'true' and $collDesc != ''">
+                            <span style="white-space: nowrap;" colspan="13" class="treeDescription">- <xsl:value-of select="$collDesc"/><br/></span>
+                        </xsl:when>
+                    </xsl:choose>
+                    <xsl:choose>
+                        <xsl:when test="$showLocation = 'true' and $collLocation != ''">
+                            <span style="white-space: nowrap;" colspan="13" class="treeDescription">- METASERVER<xsl:value-of select="$collLocation"/></span>
+                        </xsl:when>
+                    </xsl:choose>
+                    
+                </td>
+                </tr>
+                </xsl:if>
+            </xsl:for-each>
+            <xsl:if test="$numGroups = 0">
+                <xsl:call-template name="emptyPortlet"/>
+            </xsl:if>
+        </xsl:when>
+        <xsl:otherwise>
+            <xsl:call-template name="emptyPortlet"/>
+        </xsl:otherwise>
+    </xsl:choose>
+</xsl:template>
 
-          <xsl:if test="$numGroups = 0">
-                       
-              <xsl:call-template name="emptyPortlet"/>
-
-          </xsl:if>    
-
+<xsl:template name="fileName">
+  <xsl:param name="path" />
+  <xsl:choose>
+    <xsl:when test="contains($path,'\')">
+      <xsl:call-template name="fileName">
+        <xsl:with-param name="path" select="substring-after($path,'\')" />
+      </xsl:call-template>
+    </xsl:when>
+    <xsl:when test="contains($path,'/')">
+      <xsl:call-template name="fileName">
+        <xsl:with-param name="path" select="substring-after($path,'/')" />
+      </xsl:call-template>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="substring-before($path,'(')" />
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:template>
 
 <xsl:template name="collectionPortlet">
@@ -640,7 +746,9 @@
 
     <!-- not yet convinced there won't be some differences in how the different collections are processed so keep this redirection template here-->
 
-    <xsl:call-template name="processCollection"/>
+    <xsl:call-template name="processCollection">
+        <xsl:with-param name="collectionType" select="@portletType"/>
+    </xsl:call-template>
 
 </xsl:template>
 
@@ -648,9 +756,19 @@
 
     <!-- Bookmark portlet, build a list of the links -->
 
-    <!-- not yet convinced there won't be some differences in how the different collections are processed so keep this redirection template here-->
+    <xsl:call-template name="processCollection">
+        <xsl:with-param name="collectionType" select="@portletType"/>
+    </xsl:call-template>
 
-    <xsl:call-template name="processCollection"/>
+</xsl:template>
+
+<xsl:template name="sasCollectionPortlet">
+
+    <!-- SAS Collection portlet, build a list of the links -->
+
+    <xsl:call-template name="processCollection">
+        <xsl:with-param name="collectionType" select="@portletType"/>
+    </xsl:call-template>
 
 </xsl:template>
 
@@ -834,8 +952,8 @@
 </xsl:template>
 
 <xsl:template name="reportLink">
-   <xsl:param name = "reportSBIPURI" />
-   <xsl:param name="showDescription"/>
+    <xsl:param name="reportSBIPURI" />
+    <xsl:param name="showDescription"/>
     <xsl:param name="showLocation"/>
 
          <tr>
@@ -1081,11 +1199,14 @@
             <xsl:choose>
 
               <xsl:when test="@portletType='Collection'">
-                            <xsl:call-template name="collectionPortlet"/>
-                  </xsl:when>
-                  <xsl:when test="@portletType='DisplayURL'">
+                        <xsl:call-template name="collectionPortlet"/>
+              </xsl:when>
+              <xsl:when test="@portletType='CollectionPortlet'">
+                        <xsl:call-template name="sasCollectionPortlet"/>
+              </xsl:when>
+              <xsl:when test="@portletType='DisplayURL'">
                        <xsl:call-template name="displayURLPortlet"/>
-                </xsl:when>
+              </xsl:when>
               <xsl:when test="@portletType='SASStoredProcess'">
                        <xsl:call-template name="SASStoredProcessPortlet"/>
                 </xsl:when>
@@ -1104,7 +1225,7 @@
               <xsl:when test="@portletType='InformationMapNavigator'">
                         <xsl:call-template name="SASNavigator">
                           <xsl:with-param name="spaObjectsParam">InformationMap</xsl:with-param>
-                        </xsl:call-template>         
+                        </xsl:call-template>
               </xsl:when>
               <xsl:when test="@portletType='StoredProcessNavigator'">
                         <xsl:call-template name="SASNavigator">
@@ -1121,6 +1242,7 @@
               </xsl:when>
               <xsl:otherwise>
                 <!-- currently unsupported portlet type, render an empty portlet -->
+                    <xsl:value-of select="@portletType"/>
                     <xsl:call-template name="emptyPortlet"/>
               </xsl:otherwise>
             </xsl:choose>
