@@ -718,7 +718,7 @@
     
     <!-- @Desc does not work here -->
     <xsl:if test="'$showDescription' != '' and $showDescription = 'true' and @Desc != ''">
-        <table><tr><td><span style="white-space: nowrap;" colspan="13" class="treeDescription">- <xsl:value-of select="@Desc"/></span></td></tr></table>
+        <table><tr><td><span style="" colspan="13" class="treeDescription">- <xsl:value-of select="@Desc"/></span></td></tr></table>
     </xsl:if>
     <xsl:if test="'$showLocation' != '' and $showLocation = 'true'">
         <table><tr><td><span style="white-space: nowrap;" colspan="13" class="treeDescription">- <xsl:value-of select="$SBIPURL"/></span></td></tr></table>
@@ -950,7 +950,7 @@
 
          <xsl:choose>
               <xsl:when test="$showDescription = 'true' and @Desc != ''">
-                  <span style="white-space: nowrap;" colspan="13" class="treeDescription">- <xsl:value-of select="@Desc"/><br/></span>
+                  <span style="" colspan="13" class="treeDescription">- <xsl:value-of select="@Desc"/><br/></span>
               </xsl:when>
           </xsl:choose>
           <xsl:choose>
@@ -1263,21 +1263,20 @@
        <xsl:choose>
           <xsl:when test="$numColumns = 1">
             <tr valign="top">
-            <td><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[1]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[1]"/>
-            </td>
+              <td><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[1]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[1]"/></td>
             </tr>
           </xsl:when>
           <xsl:when test="$numColumns = 2">
             <tr valign="top">
-            <td align="top"><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[1]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[1]"/></td>
-            <td alight="top"><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[2]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[2]"/></td>
+              <td><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[1]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[1]"/></td>
+              <td><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[2]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[2]"/></td>
             </tr>
           </xsl:when>
           <xsl:when test="$numColumns = 3">
             <tr valign="top">
-               <td><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[1]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[1]"/></td>
-            <td><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[2]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[2]"/></td>
-            <td><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[3]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[3]"/></td>
+              <td><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[1]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[1]"/></td>
+              <td><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[2]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[2]"/></td>
+              <td><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[3]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[3]"/></td>
             </tr>
           </xsl:when>
           <xsl:otherwise>
