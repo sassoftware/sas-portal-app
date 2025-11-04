@@ -21,3 +21,7 @@ button.BannerTabButtonActive{
 .portletTableBorder {
     margin-bottom: 4px;
 }
+
+.portletTableHeaderRight {
+    border-bottom: 1px solid #cecfd2;
+}
