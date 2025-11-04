@@ -503,7 +503,7 @@
 
    <xsl:choose>
         <xsl:when test="$showDescription = 'true' and @Desc != ''">
-            <span style="white-space: nowrap;" colspan="13" class="treeDescription">- <xsl:value-of select="@Desc"/></span><br/>
+            <span style="" colspan="13" class="treeDescription">- <xsl:value-of select="@Desc"/></span><br/>
         </xsl:when>
     </xsl:choose>
     <xsl:choose>
