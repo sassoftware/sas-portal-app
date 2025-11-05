@@ -138,8 +138,8 @@
   <string key="portletEditPageShareType">Delingstype</string>
   <string key="portletEditPageShareTypeNotShared">Ikke delt</string>
   <string key="portletEditPageShareTypeAvailable">Tilgængelig</string>
-  <string key="portletEditPageShareTypeDefault">Default</string>
-  <string key="portletEditPageShareTypePersistent">Persistent</string>
+  <string key="portletEditPageShareTypeDefault">Standard</string>
+  <string key="portletEditPageShareTypePersistent">Fast</string>
 
   <string key="portletEditPageNumberOfColumns">Antal kolonner:</string>
   <string key="portletEditPageNumberOfColumns1">1</string>
