@@ -503,7 +503,7 @@
 
    <xsl:choose>
         <xsl:when test="$showDescription = 'true' and @Desc != ''">
-            <span style="white-space: nowrap;" colspan="13" class="treeDescription">- <xsl:value-of select="@Desc"/></span><br/>
+            <span style="" colspan="13" class="treeDescription">- <xsl:value-of select="@Desc"/></span><br/>
         </xsl:when>
     </xsl:choose>
     <xsl:choose>
@@ -633,6 +633,102 @@
           </xsl:if>    
 
 </xsl:template>
+
+<xsl:template name="SASCollectionPortlet">
+
+        <xsl:variable name="showDescription">
+            <xsl:value-of select="PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/PropertySets/PropertySet[@Name='showDescription']/SetProperties/Property[@Name='PreferenceInstanceProperty']/@DefaultValue"/>
+        </xsl:variable>
+        <xsl:variable name="showLocation">
+            <xsl:value-of select="PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/PropertySets/PropertySet[@Name='showLocation']/SetProperties/Property[@Name='PreferenceInstanceProperty']/@DefaultValue"/>
+        </xsl:variable>
+        
+    <!-- SAS Collection portlet, build a list of the links -->
+        
+          <xsl:variable name="numMembers">
+             <xsl:value-of select="count(PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/PropertySets/PropertySet[@Name='collectionItems']/SetProperties/Property)"/>
+          </xsl:variable>
+          
+          <xsl:for-each select="PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/PropertySets/PropertySet[@Name='collectionItems']/SetProperties/Property">
+                 <tr>
+                 <td class="portletEntry" valign="top">
+                
+                     <!-- The user can make a bookmark to Portal Page.  If we just apply the templates
+                          to the current entry, it will try to create a new page div in the output html.
+                          In this case, we simply want to make a link to the right tab for this referenced portal page.
+                     -->
+                     <xsl:choose>
+                        <xsl:when test="name(.)='PSPortalPage'">
+                            <xsl:call-template name="PortalPageLink">
+                                    <xsl:with-param name="showDescription" select="$showDescription"/>
+                                    <xsl:with-param name="showLocation" select="$showLocation"/>
+                                  </xsl:call-template>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:call-template name='processSASCollectionLink'>
+                                     <xsl:with-param name="showDescription" select="$showDescription"/>
+                                     <xsl:with-param name="showLocation" select="$showLocation"/>
+                                 </xsl:call-template>
+                         </xsl:otherwise>
+                     </xsl:choose>
+                 </td>
+                 </tr>
+             </xsl:for-each>
+
+          <!-- If the portlet didn't have any members, add a few blank rows -->
+
+          <xsl:if test="$numMembers = 1">
+             <xsl:call-template name="emptyPortlet"/>
+          </xsl:if>
+
+
+</xsl:template>
+
+<xsl:template name="processSASCollectionLink">
+
+    <xsl:param name="showDescription"/>
+    <xsl:param name="showLocation"/>
+    <xsl:message>showLocation=<xsl:value-of select="$showLocation"/></xsl:message>
+    <xsl:variable name="SBIPURL" select="@DefaultValue"/>
+    <xsl:variable name="linkFullName" select="tokenize($SBIPURL, '/')[last()]"/>
+    <xsl:variable name="lastParen" select="max(for $i in 1 to string-length($linkFullName)
+                                                return if (substring($linkFullName, $i, 1) = '(') then $i else ())" />
+    <xsl:variable name="linkName" select="substring($linkFullName,1, $lastParen - 1)" />
+    <xsl:variable name="linkFullPath" select="substring($SBIPURL, 1 , string-length($SBIPURL) - string-length($linkFullName ) -1 )" />
+    
+    <xsl:choose>
+        <xsl:when test="contains($SBIPURL, '(Report)') = 'true'">
+            <xsl:variable name="SASCollectionURI"><xsl:text>/SASWebReportStudio/openRVUrl.do?rsRID=</xsl:text><xsl:value-of select="$SBIPURL"/></xsl:variable>
+            <a><xsl:attribute name="target"><xsl:value-of select="$aTarget"/></xsl:attribute><xsl:attribute name="href"><xsl:value-of select="$SASCollectionURI"/></xsl:attribute><xsl:value-of select="$linkName"/></a>
+        </xsl:when>
+        <xsl:when test="contains($SBIPURL, '(StoredProcess)') = 'true'">
+            <xsl:variable name="SASCollectionURI">/SASStoredProcess/do?_action=execute<xsl:text>&amp;</xsl:text>_program=<xsl:value-of select="$SBIPURL"/></xsl:variable>
+            <a><xsl:attribute name="target"><xsl:value-of select="$aTarget"/></xsl:attribute><xsl:attribute name="href"><xsl:value-of select="$SASCollectionURI"/></xsl:attribute><xsl:value-of select="$linkName"/></a>
+        </xsl:when>
+        <xsl:when test="contains($SBIPURL, '(InformationMap)') = 'true'">
+            <xsl:variable name="SASCollectionURI"><xsl:text>/SASWebReportStudio/openRVUrl.do?rsRID=</xsl:text><xsl:value-of select="$SBIPURL"/></xsl:variable>
+            <a><xsl:attribute name="target"><xsl:value-of select="$aTarget"/></xsl:attribute><xsl:attribute name="href"><xsl:value-of select="$SASCollectionURI"/></xsl:attribute><xsl:value-of select="$linkName"/></a>
+        </xsl:when>
+        <xsl:when test="contains($SBIPURL, '(Link)') = 'true'">
+            <xsl:variable name="SASCollectionURI">/SASStoredProcess/do?_action=execute<xsl:text>&amp;</xsl:text>_program=<xsl:value-of select="$appLocEncoded"/>services/viewLink<xsl:text>&amp;</xsl:text>path=<xsl:value-of select="$SBIPURL"/></xsl:variable>
+            <a><xsl:attribute name="target"><xsl:value-of select="$aTarget"/></xsl:attribute><xsl:attribute name="href"><xsl:value-of select="$SASCollectionURI"/></xsl:attribute><xsl:value-of select="$linkName"/></a>
+        </xsl:when>
+        <xsl:otherwise>
+            <xsl:variable name="SASCollectionURI"></xsl:variable>
+            <xsl:call-template name="emptyPortlet"/>
+        </xsl:otherwise>
+    </xsl:choose>
+    
+    <!-- @Desc does not work here -->
+    <xsl:if test="'$showDescription' != '' and $showDescription = 'true' and @Desc != ''">
+        <table><tr><td><span style="" colspan="13" class="treeDescription">- <xsl:value-of select="@Desc"/></span></td></tr></table>
+    </xsl:if>
+    <xsl:if test="'$showLocation' != '' and $showLocation = 'true'">
+        <table><tr><td><span style="white-space: nowrap;" colspan="13" class="treeDescription">- <xsl:value-of select="$linkFullPath"/></span></td></tr></table>
+    </xsl:if>
+
+</xsl:template>
+
 
 <xsl:template name="collectionPortlet">
 
@@ -857,7 +953,7 @@
 
          <xsl:choose>
               <xsl:when test="$showDescription = 'true' and @Desc != ''">
-                  <span style="white-space: nowrap;" colspan="13" class="treeDescription">- <xsl:value-of select="@Desc"/><br/></span>
+                  <span style="" colspan="13" class="treeDescription">- <xsl:value-of select="@Desc"/><br/></span>
               </xsl:when>
           </xsl:choose>
           <xsl:choose>
@@ -1083,6 +1179,9 @@
               <xsl:when test="@portletType='Collection'">
                             <xsl:call-template name="collectionPortlet"/>
                   </xsl:when>
+              <xsl:when test="@portletType='CollectionPortlet'">
+                            <xsl:call-template name="SASCollectionPortlet"/>
+                  </xsl:when>
                   <xsl:when test="@portletType='DisplayURL'">
                        <xsl:call-template name="displayURLPortlet"/>
                 </xsl:when>
@@ -1167,21 +1266,20 @@
        <xsl:choose>
           <xsl:when test="$numColumns = 1">
             <tr valign="top">
-            <td><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[1]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[1]"/>
-            </td>
+              <td><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[1]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[1]"/></td>
             </tr>
           </xsl:when>
           <xsl:when test="$numColumns = 2">
             <tr valign="top">
-            <td align="top"><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[1]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[1]"/></td>
-            <td alight="top"><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[2]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[2]"/></td>
+              <td><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[1]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[1]"/></td>
+              <td><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[2]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[2]"/></td>
             </tr>
           </xsl:when>
           <xsl:when test="$numColumns = 3">
             <tr valign="top">
-               <td><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[1]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[1]"/></td>
-            <td><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[2]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[2]"/></td>
-            <td><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[3]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[3]"/></td>
+              <td><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[1]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[1]"/></td>
+              <td><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[2]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[2]"/></td>
+              <td><xsl:attribute name="width"><xsl:value-of select="LayoutComponents/PSColumnLayoutComponent[3]/@ColumnWidth"/>%</xsl:attribute><xsl:apply-templates select="LayoutComponents/PSColumnLayoutComponent[3]"/></td>
             </tr>
           </xsl:when>
           <xsl:otherwise>

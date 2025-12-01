@@ -1,20 +1,27 @@
 button.BannerTabButtonCenter {
-border-radius: 5px 5px 0px 0px;
-background-color: transparent;
-border-width: thin;
+    border-radius: 5px 5px 0px 0px;
+    background-color: transparent;
+    border-width: thin;
 }
 
 button.BannerTabButtonActive{
-border-radius: 5px 5px 0px 0px;
-border: none;
+    border-radius: 5px 5px 0px 0px;
+    border: none;
 }
 
 .tabcontent {
-  display: none;
-  padding: 10px 20px;
+    display: none;
+    padding: 5px 5px
 }
 
 .tabcontent.active {
-  display: block;
+    display: block;
 }
 
+.portletTableBorder {
+    margin-bottom: 4px;
+}
+
+.portletTableHeaderRight {
+    border-bottom: 1px solid #cecfd2;
+}

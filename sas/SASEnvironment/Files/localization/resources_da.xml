@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+  <string key="portalTitle">SAS &#174; Portal</string>
+  <string key="globalMenuBar_skipMenuBar">Spring menubaren over</string>
+  <string key="portalCustomizationMenu">Tilpas</string>
+  <string key="portalCustomizationMenuTitle">Vælg denne for at vise menuen for portaltilpasning.</string>
+  <string key="portalCustomizationMenuEditPage">Rediger side</string>
+  <string key="portalCustomizationMenuEditPageTitle">Rediger side</string>
+  <string key="portalCustomizationMenuEditPageContent">Rediger sideindhold</string>
+  <string key="portalCustomizationMenuEditPageContentTitle">Rediger sideindhold</string>
+  <string key="portalCustomizationMenuEditPageProperties">Rediger sideegenskaber</string>
+  <string key="portalCustomizationMenuEditPagePropertiesTitle">Rediger sideegenskaber</string>
+  <string key="portalCustomizationMenuArrangeTabs">Arranger fanerne på siden</string>
+  <string key="portalCustomizationMenuArrangeTabsTitle">Arranger fanerne på siden</string>
+  <string key="portalCustomizationMenuAddPage">Tilføj side</string>
+  <string key="portalCustomizationMenuAddPageTitle">Tilføj side</string>
+  <string key="portalCustomizationMenuRemovePage">Fjern side</string>
+  <string key="portalCustomizationMenuRemovePageTitle">Fjern side</string>
+  <string key="portalOptionsMenu">Indstillinger</string>
+  <string key="portalOptionsMenuTitle">Vælg denne for at vise menuen Indstillinger.</string>
+  <string key="portalSearchMenu">Søg</string>
+  <string key="portalSearchMenuTitle">Vælg denne for at gå til portalsøgesiden.</string>
+  <string key="portalLogoffMenu">Log af</string>
+  <string key="portalLogoffMenuTitle">Log af</string>
+  <string key="portalHelpMenu">Hjælp</string>
+  <string key="portalHelpMenuTitle">Vælg denne for at vise hjælpemenuen.</string>
+  <string key="pageTabs_skipTabMenuTitle">Spring fanebladmenu over</string>
+
+  <string key="portalAdminHeader">* Portaladministrator *</string>
+ 
+  <!-- 
+       Portlet Content Editor menu
+  -->
+  <string key="portletEditContent">Rediger indhold</string>
+  <string key="portletEditContentTitle">Rediger portletindhold</string>
+  <string key="portletEditNotSupported">Redigering af denne type portlet understøttes ikke.</string>
+ 
+  <string key="portletEditCollectionTitle">Rediger samlingsportlet</string>
+  <string key="portletEditStoredProcessTitle">Rediger Stored Process Portlet</string>
+  <string key="portletEditDisplayURLTitle">Rediger Display URL Portlet</string>
+  <string key="portletEditReportTitle">Rediger Report Portlet</string>
+
+  <string key="portletEditProperties">Rediger egenskaber</string>
+  <string key="portletEditPropertiesTitle">Rediger portletegenskaber</string>
+
+  <!-- 
+       Portlet Content Editing
+  -->
+  <string key="saveButton">Gem</string>
+  <string key="okButton">Ok</string>
+  <string key="cancelButton">Annuller</string>
+  <string key="doneButton">Færdig</string>
+  <string key="moveUpButton">Flyt op</string>
+  <string key="moveDownButton">Flyt ned</string>
+  <string key="addButton">Tilføj</string>
+  <string key="addItemsButton">Tilføj elementer...</string>
+  <string key="deleteButton">Slet</string>
+  <string key="editButton">Rediger</string>
+  <string key="removeButton">Fjern</string>
+
+  <!-- Common fields 
+    -->
+
+  <string key="portletEditItemName">Navn</string>
+  <string key="portletEditItemNameRequired">FEJL: Navn feltet er påkrævet.</string>
+  <string key="portletEditItemDescription">Beskrivelse</string>
+  <string key="portletEditItemURL">URL</string>
+  <string key="portletEditItemURLRequired">FEJL: URL feltet er påkrævet.</string>
+  <string key="portletEditItemKeywords">Nøgleord</string>
+
+  <string key="portletEditItemRequiredField">Skal udfyldes</string>
+
+  <string key="portletEditCreateTitle">Opret</string>
+  <string key="portletEditSearchTitle">Søg</string>
+
+  <!--
+       Create Portlet Listing
+   -->
+
+  <string key="portletEditPortletType">Portlet type:</string>
+  <string key="portletEditPortletTypeCollection">Samlingsportlet</string>
+  <string key="portletEditPortletTypeReport">SAS Report Portlet</string>
+  <string key="portletEditPortletTypeStoredProcess">SAS Stored Process Portlet</string>
+  <string key="portletEditPortletTypeDisplayURL">URL Display Portlet</string>
+  <string key="portletEditPortletTypeNavigator">SAS Navigator</string>
+
+  <!-- 
+       Display URL Portlet Content Editing
+  -->
+
+  <string key="portletEditDisplayURLUrl">URL</string>
+  <string key="portletEditDisplayURLHeight">Indholdshøjde</string>
+
+  <!--
+       SAS Report Portlet Content Editing
+  -->
+
+  <string key="portletEditSASReportUri">Rapportsti</string>
+  <string key="portletEditSASReportHeight">Portlethøjde</string>
+
+  <!-- 
+       SAS Stored Process Portlet Content Editing
+  -->
+
+  <string key="portletEditSASStoredProcessUri">Stored Process sti</string>
+  <string key="portletEditSASStoredProcessHeight">Portlethøjde</string>
+  <string key="portletEditCollectionShowFormLabel">Vis form</string>
+
+  <!-- 
+       Collection Portlet Content Editing
+  --> 
+  <string key="portletEditCollectionShowDescriptionLabel">Vis beskrivelse</string>
+  <string key="portletEditCollectionShowLocationLabel">Vis placering</string>
+  <string key="portletEditCollectionSortLabel">Sorter pakker i en kanal efter deres oprettelsesdato:</string> 
+  <string key="portletEditCollectionSortUsePreferencesLabel">Brug indstillinger</string> 
+  <string key="portletEditCollectionSortAscendingLabel">Stigende</string> 
+  <string key="portletEditCollectionSortDescendingLabel">Faldende</string> 
+  <string key="portletEditCollectionItemsLabel">Elementer:</string> 
+
+  <string key="portletCollectionItemTypeLinkLabel">Link</string> 
+  <string key="portletCollectionItemTypeApplicationLabel">Application</string> 
+
+  <string key="portletEditCollectionConfirmMessage">Dette vil fjerne elementet fra din portal, men ikke slette det permanent. Vil du fortsætte?</string>
+  <string key="portletEditCollectionTooManySelected">Vælg venligst kun ét element at redigere.</string> 
+  <string key="portletEditCollectionNoneSelected">Vælg venligst et element, der skal redigeres.</string>
+  <string key="portletEditCollectionNotEditable">Dette element kan ikke redigeres</string>
+  <string key="portletEditCollectionHasChangedMessage">Du har foretaget ændringer på denne side. Disse ændringer vil gå tabt, hvis du fortsætter. Vil du fortsætte og miste dine ændringer?</string>
+
+  <!-- Portal Page Editing -->
+
+  <string key="portletEditPageRank">Siderang</string>
+  <string key="portletEditPageRankTitle">Siderne er sorteret efter rang fra laveste til højeste.</string>
+
+  <string key="portletEditPageLocation">Placering (gruppe)</string>
+  <string key="portletEditPageLocationTitle">Placering (gruppe)</string>
+
+  <string key="portletEditPageShareType">Delingstype</string>
+  <string key="portletEditPageShareTypeNotShared">Ikke delt</string>
+  <string key="portletEditPageShareTypeAvailable">Tilgængelig</string>
+  <string key="portletEditPageShareTypeDefault">Standard</string>
+  <string key="portletEditPageShareTypePersistent">Fast</string>
+
+  <string key="portletEditPageNumberOfColumns">Antal kolonner:</string>
+  <string key="portletEditPageNumberOfColumns1">1</string>
+  <string key="portletEditPageNumberOfColumns2">2</string>
+  <string key="portletEditPageNumberOfColumns3">3</string>
+  <string key="portletEditPageColumnWidth">Kolonnebredde:</string>
+  <string key="portletEditPageColumnPercent">%</string>
+  <string key="portletEditPagePortletLayout">Portlet-layout:</string>
+  <string key="portletEditPageLayout">Layout:</string>
+  <string key="portletEditPageLayoutColumn">Efter kolonne</string>
+  <string key="portletEditPageLayoutGrid">Efter gitter</string>
+  <string key="portletEditPageAddPortlets">Tilføj Portlets...</string>
+
+  <string key="portletEditPageColumn1Heading">Kolonne 1:</string>
+  <string key="portletEditPageColumn2Heading">Kolonne 2:</string>
+  <string key="portletEditPageColumn3Heading">Kolonne 3:</string>
+  <string key="portletEditPageColumnLayoutMoveUp">Flyt op</string>
+  <string key="portletEditPageColumnLayoutMoveDown">Flyt ned</string>
+  <string key="portletEditPageColumnLayoutMoveLeft">Flyt til venstre</string>
+  <string key="portletEditPageColumnLayoutMoveRight">Flyt til højre</string>
+  <string key="portletEditPageColumnLayoutRemove">Fjern</string>
+  <string key="portletEditPageDeleteRow">Slet række</string>
+
+  <string key="portletEditPageHasChangedMessage">Du har foretaget ændringer på denne side. Disse ændringer vil gå tabt, hvis du fortsætter. Vil du fortsætte og miste dine ændringer?</string>
+
+  <string key="portletEditPageRemovePortlet">Dette vil fjerne elementet fra din portal, men det vil ikke slette det permanent. Vil du fortsætte?</string>
+
+  <string key="portletMovePagePortlets">Flyt følgende elementer til den angivne delingsplacering.</string>
+
+  <!-- The name of the page template for the User's home page.  Not sure if this is localized or not, but including it here in case it is -->
+  <string key="portletHomePrototypeName">Hjem</string>
+
+  <!--
+       Portlet Item Editor menu
+  -->
+  <string key="portletItemEdit">Rediger element</string>
+  <string key="portletItemEditTitle">Rediger portletegenskaber</string>
+  <string key="portletItemEditNotSupported">Redigering af denne type element understøttes ikke.</string>
+
+  <!-- Portlet Item Add
+    -->
+  <string key="portletItemAdd">Tilføj element</string>
+  <string key="portletItemAddTitle">Tilføj portlet-element</string>
+  <string key="portletAddNotSupported">Tilføjelse af denne type element understøttes ikke.</string>
+
+  <!-- Portlet Item Remove
+    -->
+  <string key="portletRemove">Fjern</string>
+  <string key="portletItemRemove">Fjern element</string>
+  <string key="portletItemRemoveTitle">Fjern portlet-element</string>
+  <string key="portletRemoveNotSupported">Fjernelse af denne type element understøttes ikke.</string>
+  <string key="portletRemovePortlet">Fjern denne portlet fra siden.</string>
+  <string key="portletRemovePortletPermanent">Fjern og slet denne portlet permanent fra systemet.</string>
+
+  <!-- PSPortalPage Remove
+    -->
+
+  <string key="portletRemovePagePersonal">Fjern denne side fra min personlige portal.</string>
+  <string key="portletRemovePagePermanent">Fjern og slet denne side permanent.</string>
+  <string key="portletRemovePagePortlets">Slet følgende portlets, der findes på siden.</string>
+
+  <!-- Search -->
+
+  <string key="portletSearchNotSupported">Denne type søgning understøttes ikke.</string>
+
+  <string key="portletSearchButton">Søg</string>
+  <string key="portletSearchCollapse">Klap sammen</string>
+  <string key="portletSearchExpand">Udvide</string>
+  <string key="portletSearchNoResults">Ingen søgeresultater fundet</string>
+  <string key="portletSearchNoSelection">Der blev ikke valgt noget søgeresultat</string>
+  <string key="portletSearchOnlyOneSelection">Kun ét søgeresultat kan vælges</string>
+  <string key="portletSearchNoQuery">Indtast venligst en søgestreng, og prøv igen.</string>
+  <string key="portletSearchType">Type</string> 
+  <string key="portletSearchTypePage">Side</string> 
+  <string key="portletSearchName">Navn</string> 
+  <string key="portletSearchDesc">Beskrivelse</string> 
+  <string key="portletSearchLocation">Placering</string> 
+  <string key="portletSearchCreated">Oprettelsesdato</string> 
+  <string key="portletSearchAscending">Stigende</string> 
+  <string key="portletSearchDescending">Faldende</string> 
+  <string key="portletSearchCheckbox">Vælg dette element for at tilføje</string> 
+
+  <string key="portletSearchTypeTitle">Indholdstyper</string> 
+  <string key="portletSearchTypeReport">SAS-rapport</string> 
+  <string key="portletSearchTypeStoredProcess">SAS Stored Process</string> 
+  <string key="portletSearchTypeUnknown">Ukendt type</string> 
+
+  <!-- SAS Navigator portlet -->
+
+  <string key="sasFolders">SAS Folders</string> 
+  <string key="myFolder">Min Folder</string> 
+  <string key="locationTitle">Placering:</string> 
+  <string key="upOneLevelTitle">Et niveau op</string> 
+  <string key="sasnavigatorNameTitle">Navn</string> 
+  <string key="sasnavigatorTypeTitle">Type</string> 
+  <string key="sasnavigatorCreatedTitle">Oprettelsesdato</string>
+  <string key="sasnavigatorModifiedTitle">Dato ændret</string> 
+  <string key="sasnavigatorFolderType">Folder</string> 
+  <string key="sasnavigatorStoredProcessType">Stored Process</string>
+  <string key="sasnavigatorReportType">Rapport</string>
+  <string key="sasnavigatorInformationMapRelationalType">Information map (relational)</string>
+  <string key="sasnavigatorInformationMapOlapType">Information map (OLAP)</string>
+  <string key="sasnavigatorPathCheckbox">Indstil den oprindelige mappe til den aktuelt valgte mappe:</string>
+
+  <string key="portletEditNavigatorFolder">Folder:</string>
+  <string key="portletEditNavigatorFolderRequired">FEJL: Folder feltet er påkrævet.</string>
+
+  <!-- 
+       Errors
+  -->
+  <string key="noUserPermissionTree">Administratoren har ikke initialiseret dit portalindholdsområde. Kontakt venligst administratoren</string>
+  <string key="noNewUserInit">Administratoren har ikke aktiveret selvbetjeningsinitialisering af brugeren. Kontakt venligst administratoren</string>
+  <string key="genericError">Der er opstået en ukendt fejl. Kontakt venligst administratoren</string>
+  <string key="ErrorLabel">FEJL</string>
+
+  <string key="metadataGenerationFailed">Genereringen af ​​metadataforespørgslen mislykkedes.</string>
+  <string key="pageGenerationFailed">Genereringen af ​​siden mislykkedes.</string>
+
+</resources>
