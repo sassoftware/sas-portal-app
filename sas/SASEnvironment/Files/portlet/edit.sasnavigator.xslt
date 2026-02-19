@@ -26,6 +26,11 @@
 <xsl:variable name="portletEditNavigatorFolderRequired" select="$localeXml/string[@key='portletEditNavigatorFolderRequired']/text()"/>
 <xsl:variable name="sasnavigatorPathCheckbox" select="$localeXml/string[@key='sasnavigatorPathCheckbox']/text()"/>
 
+<xsl:variable name="sasnavigatorTypeCheckbox" select="$localeXml/string[@key='sasnavigatorTypeCheckbox']/text()"/>
+<xsl:variable name="sasnavigatorInformationMapCheckbox" select="$localeXml/string[@key='sasnavigatorInformationMapCheckbox']/text()"/>
+<xsl:variable name="sasnavigatorSTPCheckbox" select="$localeXml/string[@key='sasnavigatorSTPCheckbox']/text()"/>
+<xsl:variable name="sasnavigatorReportCheckbox" select="$localeXml/string[@key='sasnavigatorReportCheckbox']/text()"/>
+
 <!-- Re-usable scripts -->
 
 <xsl:include href="SASPortalApp/sas/SASEnvironment/Files/portlet/form.functions.xslt"/>
@@ -54,6 +59,17 @@
 <!--  The Folder path we store has the prefix SBIP://METASERVER on it.  No need to force the user to enter that, just have them enter the full path -->
 
 <xsl:variable name="portletURIFolder" select="$configPropertySets/PropertySet[@Name='selectedFolder']/SetProperties/Property[@Name='PreferenceInstanceProperty']/@DefaultValue"/>
+<xsl:variable name="portletPIProperty" select="$configPropertySets/PropertySet[@Name='SMART_OBJECT_TYPE']/SetProperties/Property[@Name='PreferenceInstanceProperty']"/>
+<xsl:variable name="portletNavType">
+    <xsl:for-each select="$portletPIProperty">
+        <xsl:value-of select="@DefaultValue" />:<xsl:value-of select="@Id" />,
+        <!--xsl:if test="position() != last()">,</xsl:if-->
+    </xsl:for-each>
+</xsl:variable>
+
+
+
+
 <xsl:variable name="portletPathFolderTemp" select="substring-before(substring-after($portletURIFolder,'SBIP://METASERVER'),'(Folder)')"/>
 <xsl:variable name="portletPathFolder">
    <xsl:choose>
@@ -108,10 +124,100 @@
               <input type="checkbox" id="checkboxPath" name="checkboxPath"></input>
               <label for="checkboxPath"><xsl:value-of select="$sasnavigatorPathCheckbox"/></label>
               <label for="checkboxPath" id="labelPath"></label>
-            
-        </td>
-        <td>&#160;</td>
+            </td>
+            <td>&#160;</td>
+
         </tr>
+        <tr>
+          <td>&#160;</td>
+        </tr>
+        <tr> 
+            <td>&#160;</td>
+            <td>
+              <label for="checkboxPath"><xsl:value-of select="$sasnavigatorTypeCheckbox"/></label>
+            </td>
+         </tr>
+
+        <tr> 
+            <td>&#160;</td>
+            <td>
+              <xsl:variable name="afterInformationMap" select="substring-after($portletNavType, 'InformationMap:')" />
+              <xsl:variable name="valueIM" select="substring-before($afterInformationMap, ',')" />   
+              <input type="checkbox" id="checkboxIM" name="checkboxIM">
+              <xsl:choose>
+                  <!-- Checkbox aktivieren -->
+                  <xsl:when test="contains($portletNavType, 'InformationMap')">
+                      <xsl:attribute name="checked">checked</xsl:attribute>                    
+                      <xsl:attribute name="value"><xsl:value-of select="$valueIM" /></xsl:attribute>
+                  </xsl:when>
+                  <xsl:otherwise/>
+              </xsl:choose>
+              </input>
+               <input type="hidden" name="hiddenIM">
+               <xsl:choose>
+                  <xsl:when test="contains($portletNavType, 'InformationMap')">                 
+                      <xsl:attribute name="value"><xsl:value-of select="$valueIM" /></xsl:attribute>
+                  </xsl:when>
+              </xsl:choose>
+               </input>
+              <label for="checkboxIM"  id="labelIM"><xsl:value-of select="$sasnavigatorInformationMapCheckbox"/></label>
+              <!--label for="checkboxIM" id="labelIM"></label-->
+            </td>
+         </tr>
+
+        <tr> 
+            <td>&#160;</td>
+            <td>
+              <xsl:variable name="afterStoredProcess" select="substring-after($portletNavType, 'StoredProcess:')" />
+              <xsl:variable name="valueSTP" select="substring-before($afterStoredProcess, ',')" />   
+              <input type="checkbox" id="checkboxSTP" name="checkboxSTP">
+              <xsl:choose>
+                  <!-- Checkbox aktivieren -->
+                  <xsl:when test="contains($portletNavType, 'StoredProcess')">
+                      <xsl:attribute name="checked">checked</xsl:attribute>
+                      <xsl:attribute name="value"><xsl:value-of select="$valueSTP" /></xsl:attribute>
+                  </xsl:when>
+                  <xsl:otherwise/>
+              </xsl:choose>
+              </input>
+              <input type="hidden" name="hiddenSTP">
+               <xsl:choose>
+                  <xsl:when test="contains($portletNavType, 'StoredProcess')">                 
+                      <xsl:attribute name="value"><xsl:value-of select="$valueSTP" /></xsl:attribute>
+                  </xsl:when>
+              </xsl:choose>
+               </input>
+              <label for="checkboxSTP" id="labelSTP"><xsl:value-of select="$sasnavigatorSTPCheckbox"/></label>
+              <!--label for="checkboxSTP" id="labelSTP"></label>-->
+            </td>
+         </tr>
+         
+        <tr> 
+            <td>&#160;</td>
+            <td>
+              <xsl:variable name="afterReport" select="substring-after($portletNavType, 'Report:')" />
+              <xsl:variable name="valueR" select="substring-before($afterReport, ',')" />   
+              <input type="checkbox" id="checkboxReport" name="checkboxReport">
+              <xsl:choose>
+                  <!-- Checkbox aktivieren -->
+                  <xsl:when test="contains($portletNavType, 'Report')">
+                      <xsl:attribute name="checked">checked</xsl:attribute>
+                      <xsl:attribute name="value"><xsl:value-of select="$valueR" /></xsl:attribute>
+                  </xsl:when>
+                  <xsl:otherwise/>
+              </xsl:choose>
+              </input>
+              <input type="hidden" name="hiddenReport">
+               <xsl:choose>
+                  <xsl:when test="contains($portletNavType, 'Report')">                 
+                      <xsl:attribute name="value"><xsl:value-of select="$valueR" /></xsl:attribute>
+                  </xsl:when>
+              </xsl:choose>
+               </input>
+              <label for="checkboxReport" id="labelReport"><xsl:value-of select="$sasnavigatorReportCheckbox"/></label>
+              <!--label for="checkboxReport" id="labelReport"></label-->
+            </td>
+         </tr>
          <tr>
           <td nowrap="">
           </td>
@@ -173,8 +279,10 @@
           }
 
         if (validateForm()) {
-        
-           return submitDisableAllForms(); 
+        const context = window.location.pathname.substring(0, window.location.pathname.indexOf("/",1));
+
+         location.href=context;
+          /*return submitDisableAllForms(); */
            } 
 
         else  return false;

@@ -26,6 +26,18 @@
 <xsl:variable name="oldFolderURIPropertySet" select="$configPropertySets/PropertySet[@Name='selectedFolder']"/>
 <xsl:variable name="oldFolderURIProperty" select="$oldFolderURIPropertySet/SetProperties/Property[@Name='PreferenceInstanceProperty']"/>
 
+<xsl:variable name="smartObjectPropertySet" select="$configPropertySets/PropertySet[@Name='SMART_OBJECT_TYPE']"/>
+<xsl:variable name="smartObjectPropertySetId" select="$smartObjectPropertySet/@Id"/>
+<!--xsl:variable name="smartObjectPropertySetId">A56YJHUZ.AB0001I5</xsl:variable-->
+
+<xsl:variable name="reposId" select="Mod_Request/NewMetadata/Metareposid"/>
+<xsl:variable name="imSelected" select="Mod_Request/NewMetadata/IM_SELECTED"/>
+<xsl:variable name="imID" select="Mod_Request/NewMetadata/IM_ID"/>
+<xsl:variable name="stpSelected" select="Mod_Request/NewMetadata/STP_SELECTED"/>
+<xsl:variable name="stpID" select="Mod_Request/NewMetadata/STP_ID"/>
+<xsl:variable name="reportSelected" select="Mod_Request/NewMetadata/REPORT_SELECTED"/>
+<xsl:variable name="reportID" select="Mod_Request/NewMetadata/REPORT_ID"/>
+
 <xsl:variable name="oldFolderURI" select="$oldFolderURIProperty/@DefaultValue"/>
 <xsl:variable name="oldFolderPath" select="substring-before(substring-after($oldFolderURI,$folderURIPrefix),$folderURISuffix)"/>
 
@@ -59,6 +71,108 @@
 
   <xsl:when test="not($oldFolderURI = $newFolderURI) or $commonPropertiesChanged">
     <Multiple_Requests>
+
+    <!--  Add new Information Map Property -->
+    <xsl:if test="$imSelected='on' and string($imID) = ''">
+         <AddMetadata>
+            <Metadata>
+               <Property Name="PreferenceInstanceProperty" SQLType="12" DefaultValue="InformationMap">
+                  <AssociatedPropertySet>
+                     <PropertySet Name="SMART_OBJECT_TYPE">
+                        <xsl:attribute name="ObjRef"><xsl:value-of select="$smartObjectPropertySetId"/></xsl:attribute>
+                     </PropertySet>
+                  </AssociatedPropertySet>
+               </Property>
+            </Metadata>
+            <Reposid><xsl:value-of select="$reposId"/></Reposid>
+            <NS>SAS</NS>
+            <Flags>268435456</Flags>
+            <Options/>
+         </AddMetadata>
+    </xsl:if>
+
+      <!--  Delete Information Map Property -->
+      <xsl:if test="$imSelected='off' and string($imID) != '' and ($reportSelected='on' or $stpSelected='on')">
+         <DeleteMetadata>
+            <Metadata>
+               <Property Name="PreferenceInstanceProperty">
+                  <xsl:attribute name="Id"><xsl:value-of select="$imID"/></xsl:attribute>
+               </Property>
+            </Metadata>
+            <Reposid><xsl:value-of select="$reposId"/></Reposid>
+            <NS>SAS</NS>
+            <Flags>268435456</Flags>
+            <Options/>
+         </DeleteMetadata>
+      </xsl:if>
+
+      <!--  Add new Stored Process Property -->
+      <xsl:if test="$stpSelected='on' and string($stpID) = ''">
+            <AddMetadata>
+               <Metadata>
+                  <Property Name="PreferenceInstanceProperty" SQLType="12" DefaultValue="StoredProcess">
+                     <AssociatedPropertySet>
+                        <PropertySet Name="SMART_OBJECT_TYPE">
+                           <xsl:attribute name="ObjRef"><xsl:value-of select="$smartObjectPropertySetId"/></xsl:attribute>
+                        </PropertySet>
+                     </AssociatedPropertySet>
+                  </Property>
+               </Metadata>
+               <Reposid><xsl:value-of select="$reposId"/></Reposid>
+               <NS>SAS</NS>
+               <Flags>268435456</Flags>
+               <Options/>
+            </AddMetadata>
+      </xsl:if>
+
+      <!--  Delete Stored Process Property -->
+      <xsl:if test="$stpSelected='off' and string($stpID) != '' and ($reportSelected='on' or $imSelected='on')">
+         <DeleteMetadata>
+            <Metadata>
+               <Property Name="PreferenceInstanceProperty">
+                  <xsl:attribute name="Id"><xsl:value-of select="$stpID"/></xsl:attribute>
+               </Property>
+            </Metadata>
+            <Reposid><xsl:value-of select="$reposId"/></Reposid>
+            <NS>SAS</NS>
+            <Flags>268435456</Flags>
+            <Options/>
+         </DeleteMetadata>
+      </xsl:if>
+
+      <!--  Add new Report Property -->
+      <xsl:if test="$reportSelected='on' and string($reportID) = ''">
+            <AddMetadata>
+               <Metadata>
+                  <Property Name="PreferenceInstanceProperty" SQLType="12" DefaultValue="Report">
+                     <AssociatedPropertySet>
+                        <PropertySet Name="SMART_OBJECT_TYPE">
+                           <xsl:attribute name="ObjRef"><xsl:value-of select="$smartObjectPropertySetId"/></xsl:attribute>
+                        </PropertySet>
+                     </AssociatedPropertySet>
+                  </Property>
+               </Metadata>
+               <Reposid><xsl:value-of select="$reposId"/></Reposid>
+               <NS>SAS</NS>
+               <Flags>268435456</Flags>
+               <Options/>
+            </AddMetadata>
+      </xsl:if>
+
+         <!--  Delete Stored Process Property -->
+      <xsl:if test="$reportSelected='off' and string($reportID) != '' and ($stpSelected='on' or $imSelected='on')">
+         <DeleteMetadata>
+            <Metadata>
+               <Property Name="PreferenceInstanceProperty">
+                  <xsl:attribute name="Id"><xsl:value-of select="$reportID"/></xsl:attribute>
+               </Property>
+            </Metadata>
+            <Reposid><xsl:value-of select="$reposId"/></Reposid>
+            <NS>SAS</NS>
+            <Flags>268435456</Flags>
+            <Options/>
+         </DeleteMetadata>
+      </xsl:if>
 
     <UpdateMetadata>
 

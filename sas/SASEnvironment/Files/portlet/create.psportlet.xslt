@@ -80,6 +80,9 @@
          <xsl:variable name="newPSId"><xsl:value-of select="substring-after($reposId,'.')"/>.$newPS</xsl:variable>
          <PropertySet Name="PORTLET_CONFIG_ROOT">
             <xsl:attribute name="Id"><xsl:value-of select="$newPSId"/></xsl:attribute>
+            <PropertySets>
+                <PropertySet Name="SMART_OBJECT_TYPE" Desc="" PropertySetName=""/>
+            </PropertySets>
          </PropertySet>
 
          <!-- The portlets that come from the JSR 168 efforts have an additional PropertySet PortletRenderState.
