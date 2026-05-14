@@ -634,6 +634,78 @@
 
 </xsl:template>
 
+<xsl:template name="SASCollectionPortlet">
+
+       <xsl:variable name="showDescription">
+           <xsl:value-of select="PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/PropertySets/PropertySet[@Name='showDescription']/SetProperties/Property[@Name='PreferenceInstanceProperty']/@DefaultValue"/>
+       </xsl:variable>
+       <xsl:variable name="showLocation">
+           <xsl:value-of select="PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/PropertySets/PropertySet[@Name='showLocation']/SetProperties/Property[@Name='PreferenceInstanceProperty']/@DefaultValue"/>
+       </xsl:variable>
+
+    <!-- SAS Collection portlet, build a list of the links -->
+
+          <xsl:variable name="numMembers">
+             <xsl:value-of select="count(PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/PropertySets/PropertySet[@Name='collectionItems']/SetProperties/Property)"/>
+          </xsl:variable>
+
+          <xsl:for-each select="PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/PropertySets/PropertySet[@Name='collectionItems']/SetProperties/Property">
+                 <tr>
+                 <td class="portletEntry" valign="top">
+
+                     <!-- The user can make a bookmark to Portal Page.  If we just apply the templates
+                          to the current entry, it will try to create a new page div in the output html.
+                          In this case, we simply want to make a link to the right tab for this referenced portal page.
+                     -->
+                     <xsl:choose>
+                        <xsl:when test="name(.)='PSPortalPage'">
+                            <xsl:call-template name="PortalPageLink">
+                                    <xsl:with-param name="showDescription" select="$showDescription"/>
+                                    <xsl:with-param name="showLocation" select="$showLocation"/>
+                                  </xsl:call-template>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:call-template name='processSASCollectionLink'>
+                                     <xsl:with-param name="showDescription" select="$showDescription"/>
+                                     <xsl:with-param name="showLocation" select="$showLocation"/>
+                                 </xsl:call-template>
+                         </xsl:otherwise>
+                     </xsl:choose>
+                 </td>
+                 </tr>
+             </xsl:for-each>
+
+          <!-- If the portlet didn't have any members, add a few blank rows -->
+
+          <xsl:if test="$numMembers = 1">
+             <xsl:call-template name="emptyPortlet"/>
+          </xsl:if>
+
+
+</xsl:template>
+
+<xsl:template name="processSASCollectionLink">
+
+    <xsl:param name="showDescription"/>
+    <xsl:param name="showLocation"/>
+    <xsl:variable name="SBIPURL" select="@DefaultValue"/>
+    <xsl:variable name="linkFullName" select="tokenize($SBIPURL, '/')[last()]"/>
+    <xsl:variable name="linkName" select="tokenize($linkFullName,'\(')[1]"/>
+
+    <xsl:variable name="stpURI">/SASStoredProcess/do?_action=execute<xsl:text>&amp;</xsl:text>_program=<xsl:value-of select="$appLocEncoded"/>services/viewLink<xsl:text>&amp;</xsl:text>path=<xsl:value-of select="$SBIPURL"/></xsl:variable>
+
+    <a><xsl:attribute name="href"><xsl:value-of select="$stpURI"/></xsl:attribute><xsl:value-of select="$linkName"/></a>
+
+        <xsl:if test="'$showDescription' != '' and $showDescription = 'true'">
+            <table><tr><td><xsl:value-of select="@Desc"/></td></tr></table>
+        </xsl:if>
+        <xsl:if test="'$showLocation' != '' and $showLocation = 'true'">
+            <table><tr><td><xsl:value-of select="@URI"/></td></tr></table>
+        </xsl:if>
+
+</xsl:template>
+
+
 <xsl:template name="collectionPortlet">
 
     <!-- Collection portlet, build a list of the links -->
@@ -719,13 +791,18 @@
     <xsl:variable name="stpPortletHeight" select="250"/>
     <xsl:variable name="spaPath"><xsl:value-of select="substring-after(substring-before($spaNavPath,'(Folder)'),'SBIP://METASERVER')"/></xsl:variable>
     
+    <!-- The original SASPortal had more object filter types than the new SASPortalApp does.  Thus, we need to ignore any of the older ones -->
+
     <xsl:variable name="spaObjects">
         <xsl:choose>
             <xsl:when test="PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/PropertySets/PropertySet[@Name='SMART_OBJECT_TYPE']/SetProperties/Property[@Name='PreferenceInstanceProperty']/@DefaultValue">
                 <xsl:for-each select="PropertySets/PropertySet[@Name='PORTLET_CONFIG_ROOT']/PropertySets/PropertySet[@Name='SMART_OBJECT_TYPE']/SetProperties/Property[@Name='PreferenceInstanceProperty']/@DefaultValue">
+                    <xsl:if test=". = 'StoredProcess' or . = 'Report' or . = 'InformationMap'">
                     <xsl:value-of select="."/>
                     <xsl:if test="position() != last()">
                         <xsl:text>,</xsl:text>
+                    </xsl:if>
+
                     </xsl:if>
                 </xsl:for-each>
             </xsl:when>
@@ -738,7 +815,6 @@
         </xsl:choose>
     </xsl:variable>
 
-    
         <xsl:variable name="stpURI">/SASStoredProcess/do?_action=execute<xsl:text>&amp;</xsl:text>_program=<xsl:value-of select="$appLocEncoded"/>services/spaNavigatorPortlet<xsl:text>&amp;</xsl:text>path=<xsl:value-of select="$spaPath"/><xsl:text>&amp;</xsl:text>objectFilter=<xsl:value-of select="$spaObjects"/><xsl:text>&amp;</xsl:text>navigatorId=<xsl:value-of select="$navigatorId"/></xsl:variable>
     
         <tr>
@@ -1082,6 +1158,9 @@
 
               <xsl:when test="@portletType='Collection'">
                             <xsl:call-template name="collectionPortlet"/>
+                  </xsl:when>
+              <xsl:when test="@portletType='CollectionPortlet'">
+                            <xsl:call-template name="SASCollectionPortlet"/>
                   </xsl:when>
                   <xsl:when test="@portletType='DisplayURL'">
                        <xsl:call-template name="displayURLPortlet"/>

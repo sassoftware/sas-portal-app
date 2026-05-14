@@ -243,6 +243,10 @@
   <string key="sasnavigatorInformationMapRelationalType">Information map (relational)</string>
   <string key="sasnavigatorInformationMapOlapType">Information map (OLAP)</string>
   <string key="sasnavigatorPathCheckbox">Set the initial folder to the current selected folder:</string>
+  <string key="sasnavigatorTypeCheckbox">Select which content types to show:</string>
+  <string key="sasnavigatorInformationMapCheckbox">SAS Information Map</string>  
+  <string key="sasnavigatorSTPCheckbox">SAS Stored Process</string>  
+  <string key="sasnavigatorReportCheckbox">SAS Report</string>
 
   <string key="portletEditNavigatorFolder">Folder:</string>
   <string key="portletEditNavigatorFolderRequired">ERROR: Folder field is required.</string>

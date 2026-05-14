@@ -243,6 +243,10 @@
   <string key="sasnavigatorInformationMapRelationalType">Information map (relational)</string>
   <string key="sasnavigatorInformationMapOlapType">Information map (OLAP)</string>
   <string key="sasnavigatorPathCheckbox">Setze den Anfangsordner auf den aktuell ausgewählten Ordner:</string>
+  <string key="sasnavigatorTypeCheckbox">Wählen Sie aus, welche Inhaltstypen angezeigt werden sollen:</string>
+  <string key="sasnavigatorInformationMapCheckbox">SAS Information Map</string>  
+  <string key="sasnavigatorSTPCheckbox">SAS Stored Process</string>  
+  <string key="sasnavigatorReportCheckbox">SAS Report</string>
 
   <string key="portletEditNavigatorFolder">Ordner:</string>
   <string key="portletEditNavigatorFolderRequired">FEHLER: Das Ordnerfeld ist erforderlich.</string>

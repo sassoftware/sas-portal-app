@@ -37,7 +37,18 @@
 <!-- Global Variables -->
 
 <xsl:variable name="path" select="/Mod_Request/NewMetadata/Path"/>
-<xsl:variable name="objectFilter" select="/Mod_Request/NewMetadata/ObjectFilter"/>
+<xsl:variable name="objectFilterTemp" select="/Mod_Request/NewMetadata/ObjectFilter"/>
+
+<!-- if no filter was passed in, set it to include all of the current object types supported for search by SASPortalApp -->
+
+<xsl:variable name="objectFilter">
+   <xsl:choose>
+       <xsl:when test="string($objectFilterTemp) != ''"><xsl:value-of select="$objectFilterTemp"/></xsl:when>
+       <xsl:otherwise>StoredProcess,InformationMap,Report,</xsl:otherwise>
+   </xsl:choose>
+</xsl:variable>
+
+
 <xsl:variable name="objectFilterEncoded" select="concat('&amp;objectFilter=',encode-for-uri($objectFilter))"/>
 <xsl:variable name="navigatorId" select="/Mod_Request/NewMetadata/NavigatorId"/>
 
