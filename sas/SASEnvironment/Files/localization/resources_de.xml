@@ -251,6 +251,8 @@
   <string key="portletEditNavigatorFolder">Ordner:</string>
   <string key="portletEditNavigatorFolderRequired">FEHLER: Das Ordnerfeld ist erforderlich.</string>
 
+  <string key="portletEditNavigatorShowDescriptionLabel">Beschreibung anzeigen</string>
+
   <!--
        Errors
   -->

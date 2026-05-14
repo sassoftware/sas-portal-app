@@ -252,6 +252,8 @@
   <string key="portletEditNavigatorFolder">フォルダ：</string>
   <string key="portletEditNavigatorFolderRequired">エラー: フォルダー フィールドは必須です。</string>
 
+  <string key="portletEditNavigatorShowDescriptionLabel">説明を表示</string>
+
   <!--
        Errors
   -->
